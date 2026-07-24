@@ -48,6 +48,51 @@ um contrato transversal, não uma permissão para saturar a interface:
 - A linguagem editorial e calorosa evita aparência corporativa fria em um
   produto voltado a relacionamento.
 
+## Arquitetura de apresentação
+
+O futuro frontend segue uma direção de dependência única:
+
+```mermaid
+flowchart TD
+  Routes["Rotas e layouts"] --> Features["Composição de features"]
+  Features --> DomainUI["Componentes de domínio"]
+  DomainUI --> Primitives["Primitivas acessíveis"]
+  Primitives --> Semantic["Tokens semânticos"]
+  Semantic --> Primitive["Tokens primitivos"]
+  Mocks["Mocks explícitos"] --> Features
+```
+
+- Tokens não conhecem componente ou feature.
+- Primitivas não conhecem produto, papel ou entitlement.
+- Componentes de domínio apresentam estado recebido, mas não o calculam.
+- Features coordenam composição e cenário mock no Gate 3.
+- Rotas organizam navegação e headings; não redefinem visual localmente.
+- Mocks ficam na borda de composição e nunca entram no design system.
+
+### Autoridade dos estados
+
+| Estado apresentado | Autoridade no Gate 3 | Autoridade futura |
+|---|---|---|
+| Papel `member/admin` | Cenário mock explícito | Sessão validada no servidor |
+| Produto disponível/bloqueado | Mock de catálogo | Entitlement autorizado |
+| IA liberada/bloqueada | Mock de capacidade | `agent_access` autorizado |
+| Loading/empty/error | Cenário de apresentação | Resultado de operação real |
+| Feature de comentários | Flag mock desligada | Configuração publicada |
+
+Essa separação impede que aparência disponível seja confundida com autorização.
+O componente recebe `available`, `locked` ou `unknown`; nunca deriva acesso de
+URL, botão, local storage ou presença de conteúdo.
+
+### Contratos canônicos
+
+- Visual e tokens: [Design system](DESIGN-SYSTEM.md).
+- Semântica e comportamento de componentes:
+  [Contratos de componentes](COMPONENT-CONTRACTS.md).
+- Hierarquia e transições: [Mapa de navegação](NAVIGATION.md).
+- Cenários estáticos: [Especificação frontend](FRONTEND-SPEC.md).
+
+Uma alteração transversal começa nesses contratos antes de qualquer código.
+
 ## Domínios de dados futuros
 
 | Domínio | Entidades propostas |

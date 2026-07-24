@@ -3,11 +3,25 @@
 ## Gate
 
 Este documento descreve o próximo trabalho, mas não o autoriza. A implementação
-começa somente após conclusão do gate documental.
+começa somente após conclusão do Gate 2 **e nova autorização explícita para o
+Gate 3**.
 
 O frontend será inteiramente estático, em espanhol, com mocks explicitamente
 marcados. Não haverá endpoints, banco, auth, pagamentos, RAG ou chamadas
 externas.
+
+## Contratos obrigatórios
+
+O Gate 3 deverá implementar sem redefinir localmente:
+
+- tokens e fundamentos de [Design system](DESIGN-SYSTEM.md);
+- semântica, estados e responsividade de
+  [Contratos de componentes](COMPONENT-CONTRACTS.md);
+- hierarquia e transições de [Mapa de navegação](NAVIGATION.md);
+- fronteiras modulares de [Arquitetura](ARCHITECTURE.md).
+
+Qualquer incompatibilidade descoberta durante a implementação volta primeiro à
+documentação e ao checklist.
 
 ## Dados mock
 
@@ -96,6 +110,11 @@ preço, código Perfect Pay, domínio, asset ou credencial.
 - Modal mantém foco corretamente.
 - Estados de produto e IA são compreensíveis sem depender de cor.
 - Hero funciona sem asset final.
+- Fonte é auto-hospedada com licença incluída e sem chamada runtime externa.
+- Página reflow a 320 CSS px e suporta resize de texto a 200%.
+- Movimento reduzido remove deslocamentos não essenciais.
+- Trilhos não têm autoplay e continuam operáveis por teclado.
+- Foco não é encoberto por sidebar, dock ou overlay.
 - Comentários somem completamente com flag desligada.
 - Administração não aparece no cenário member.
 - Usuário revisa e aprova antes de qualquer backend.

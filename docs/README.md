@@ -9,16 +9,18 @@ leia este índice e o checklist mestre.
 2. [Arquitetura](ARCHITECTURE.md): módulos, limites e direção de dependências.
 3. [System design](SYSTEM-DESIGN.md): domínios, confiança, dados e fluxos futuros.
 4. [Design system](DESIGN-SYSTEM.md): linguagem visual, tokens e acessibilidade.
-5. [Navegação](NAVIGATION.md): mapa de telas, rotas propostas e permissões.
-6. [Especificação frontend](FRONTEND-SPEC.md): telas estáticas do próximo gate.
-7. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
-8. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+5. [Contratos de componentes](COMPONENT-CONTRACTS.md): composição, estados,
+   semântica e responsividade.
+6. [Navegação](NAVIGATION.md): mapa de telas, rotas propostas e permissões.
+7. [Especificação frontend](FRONTEND-SPEC.md): telas estáticas do próximo gate.
+8. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+9. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
 
 ## Estado atual
 
 - Gate 1: **concluído**.
-- Próximo gate: aguarda autorização explícita para validar system design e
-  design system.
+- Gate 2: **concluído**.
+- Próximo gate: aguarda nova autorização explícita para o frontend estático.
 - Código existente: scaffold padrão do Next.js em `apps/web`.
 - Frontend do produto: não iniciado.
 - Backend, agente Python, Docker, banco e integrações: congelados.
@@ -44,6 +46,7 @@ leia este índice e o checklist mestre.
 | Módulos e dependências | `ARCHITECTURE.md` |
 | Confiança, dados e integrações futuras | `SYSTEM-DESIGN.md` |
 | Tokens e componentes visuais | `DESIGN-SYSTEM.md` |
+| Semântica e comportamento de componentes | `COMPONENT-CONTRACTS.md` |
 | Rotas, papéis e transições | `NAVIGATION.md` |
 | Aceite do frontend estático | `FRONTEND-SPEC.md` |
 | Fontes externas e decisões atuais | `RESEARCH.md` |

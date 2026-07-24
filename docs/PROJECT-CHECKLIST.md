@@ -2,8 +2,8 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 24 de julho de 2026: **Gate 1 concluído; aguardando autorização
-> explícita para o Gate 2**.
+> Estado em 24 de julho de 2026: **Gate 2 concluído; aguardando autorização
+> explícita para o Gate 3**.
 >
 > Backend, agente Python, Docker, integrações, migrações, credenciais e deploy
 > estão congelados até autorização explícita.
@@ -12,7 +12,7 @@
 
 - [x] Resolver o checkout correto e versionar o estado inicial.
 - [x] Gate 1: consolidar documentação.
-- [ ] Gate 2: validar system design e design system.
+- [x] Gate 2: validar system design e design system.
 - [ ] Gate 3: implementar frontend estático com mocks.
 - [ ] Gate 4: obter aprovação explícita do frontend.
 - [ ] Gate 5: implementar backend em fatias autorizadas.
@@ -54,33 +54,37 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 - [ ] Definir qual produto libera a IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
 - [ ] Enviar asset final da hero e arquivos oficiais da marca.
-- [ ] Aprovar tipografia e licenças.
+- [x] Definir baseline tipográfica aberta e licenças.
 - [ ] Escolher modelo de IA, orçamento e limite de mensagens.
 - [ ] Fornecer WhatsApp de suporte.
 - [ ] Definir moderação de comentários.
 
 ## Gate 2 — system design e design system
 
-- [ ] Reler checklist, system design, design system e fontes do gate.
-- [ ] Atualizar a pesquisa Exa das decisões atuais do gate.
-- [ ] Validar preto/carvão e vermelho como direção obrigatória da paleta.
-- [ ] Validar a escala provisória completa de vermelhos.
-- [ ] Validar superfícies escuras, textos neutros e estados semânticos.
-- [ ] Revalidar contraste dos pares provisórios.
-- [ ] Aprovar tokens provisórios de cor.
-- [ ] Confirmar que vermelho guia atenção sem dominar os componentes.
-- [ ] Validar que o resultado não tem aparência corporativa fria.
-- [ ] Aprovar direção tipográfica e obter fontes licenciadas.
-- [ ] Aprovar escala de espaçamento, raios, sombras e movimento.
-- [ ] Aprovar estados disponível, bloqueado, loading, vazio e erro.
-- [ ] Aprovar comportamento da sidebar no desktop.
-- [ ] Aprovar navegação mobile.
-- [ ] Validar contraste e requisitos WCAG 2.2 AA.
-- [ ] Aprovar contratos dos componentes reutilizáveis.
-- [ ] Confirmar que a referência foi traduzida sem cópia de marca ou assets.
+- [x] Reler checklist, system design, design system e fontes do gate.
+- [x] Atualizar a pesquisa Exa das decisões atuais do gate.
+- [x] Validar preto/carvão e vermelho como direção obrigatória da paleta.
+- [x] Validar a escala provisória completa de vermelhos.
+- [x] Validar superfícies escuras, textos neutros e estados semânticos.
+- [x] Revalidar contraste dos pares provisórios.
+- [x] Aprovar tokens provisórios de cor.
+- [x] Confirmar que vermelho guia atenção sem dominar os componentes.
+- [x] Validar que o resultado não tem aparência corporativa fria.
+- [x] Aprovar direção tipográfica e obter fontes licenciadas.
+- [x] Aprovar escala de espaçamento, raios, sombras e movimento.
+- [x] Aprovar estados disponível, bloqueado, loading, vazio e erro.
+- [x] Aprovar comportamento da sidebar no desktop.
+- [x] Aprovar navegação mobile.
+- [x] Validar contraste e requisitos WCAG 2.2 AA.
+- [x] Aprovar contratos dos componentes reutilizáveis.
+- [x] Confirmar que a referência foi traduzida sem cópia de marca ou assets.
+- [x] Revisar independentemente padrões e aderência à especificação.
+- [x] Corrigir achados e revalidar documentação.
+- [x] Criar commit exclusivo do Gate 2.
+- [x] Reportar conclusão à coordenação e bloquear o Gate 3.
 
-As definições provisórias foram documentadas no Gate 1. Esta validação só
-começa depois de autorização explícita.
+A baseline visual v1 foi validada no Gate 2. Sua existência não autoriza
+implementação: o Gate 3 depende de nova autorização explícita.
 
 ## Gate 3 — frontend estático
 
@@ -128,8 +132,12 @@ começa depois de autorização explícita.
 
 - [ ] Todo texto visível está em espanhol.
 - [ ] Desktop e mobile inspecionados visualmente.
+- [ ] Reflow a 320 CSS px e resize de texto a 200% verificados.
 - [ ] Navegação por teclado verificada.
 - [ ] Modal com focus trap, Escape e retorno de foco.
+- [ ] Foco não é encoberto por sidebar, dock ou overlays.
+- [ ] `prefers-reduced-motion` remove deslocamento não essencial.
+- [ ] Fontes são auto-hospedadas com licenças incluídas.
 - [ ] Estados não dependem apenas de cor.
 - [ ] Nenhuma imagem, marca, texto ou asset da referência foi copiado.
 

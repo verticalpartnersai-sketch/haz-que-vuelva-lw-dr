@@ -115,7 +115,9 @@ Evitar `Curso`, `Mis cursos` e equivalentes em toda a interface.
 - `PENDENTE`: qual produto concede acesso à IA.
 - `PENDENTE`: conteúdos, PDFs, capas e documentos de conhecimento.
 - `PENDENTE`: asset final da hero e arquivos oficiais da marca.
-- `PENDENTE`: referência tipográfica ou licenças de fontes.
+- Baseline tipográfica do Gate 2: `Bodoni Moda` + `Source Sans 3`, ambas OFL
+  1.1. Arquivos tipográficos oficiais da marca, se existirem, podem motivar
+  revisão documentada.
 - `PENDENTE`: modelo de IA, orçamento e limite de mensagens.
 - `PENDENTE`: WhatsApp de suporte.
 - `PENDENTE`: política de moderação dos comentários.

@@ -1,145 +1,214 @@
 # HAZ QUE VUELVA — checklist mestre
 
-> Documento vivo. Consulte-o antes de iniciar uma etapa e atualize os itens ao concluí-los.
+> Documento vivo e fonte de verdade do progresso.
 >
-> Estado: fundação Greenfield iniciada em 24 de julho de 2026.
+> Estado em 24 de julho de 2026: **Gate 1 concluído; aguardando autorização
+> explícita para o Gate 2**.
+>
+> Backend, agente Python, Docker, integrações, migrações, credenciais e deploy
+> estão congelados até autorização explícita.
+
+## Sequência obrigatória
+
+- [x] Resolver o checkout correto e versionar o estado inicial.
+- [x] Gate 1: consolidar documentação.
+- [ ] Gate 2: validar system design e design system.
+- [ ] Gate 3: implementar frontend estático com mocks.
+- [ ] Gate 4: obter aprovação explícita do frontend.
+- [ ] Gate 5: implementar backend em fatias autorizadas.
+- [ ] Gate 6: integrar fornecedores.
+- [ ] Gate 7: infraestrutura, segurança operacional e lançamento.
+
+Nenhum gate pode começar antes da conclusão registrada do anterior.
+
+## Gate 1 — documentação
+
+- [x] Criar índice documental.
+- [x] Documentar produto, escopo, papéis e terminologia.
+- [x] Documentar arquitetura modular e direção de dependências.
+- [x] Documentar system design futuro e limites de confiança.
+- [x] Documentar design system provisório e acessibilidade.
+- [x] Documentar mapa de navegação e permissões.
+- [x] Especificar telas e mocks do frontend.
+- [x] Definir protocolo de pesquisa Exa e registrar fontes do Gate 1.
+- [x] Registrar o documento canônico de cada contrato.
+- [x] Corrigir os achados das revisões de padrões e especificação.
+- [x] Revisar consistência entre todos os documentos.
+- [x] Criar commit exclusivo de documentação.
+- [x] Reportar conclusão à coordenação.
 
 ## Produto
 
-- Idioma: espanhol.
-- Conteúdo inicial: e-books e anexos privados para download.
-- Compra: Perfect Pay; front-end, order bump e upsells.
-- Garantia: sete dias; reembolso, cancelamento e chargeback revogam acesso imediatamente.
-- Papéis: `admin` e `member`.
-- Infraestrutura: Hostinger VPS, Cloudflare, Supabase, Resend, Cloudflare R2 e Supermemory.
-- A IA é um produto com permissão própria, implementada em Python.
+- [x] Interface pública inteiramente em espanhol.
+- [x] Usar `Productos`, nunca cursos.
+- [x] Suportar produto principal, order bumps e upsells.
+- [x] Perfis previstos: `admin` e `member`.
+- [x] Conteúdo inicial: PDF e anexos.
+- [x] Vídeo fora da primeira entrega.
+- [x] Comentários condicionados a feature flag e política de moderação.
 
-## Princípios
-
-1. Perfect Pay é a fonte de verdade para compras e reembolsos.
-2. Toda autorização acontece no servidor e no banco; a UI nunca decide acesso.
-3. Supabase é o histórico canônico de conversa. Supermemory é memória e RAG, não o único armazenamento.
-4. Toda resposta substantiva da IA recupera conhecimento global aprovado e memória exclusiva da aluna.
-5. Documentos de RAG são dados de referência, não instruções com autoridade.
-6. Chaves são específicas por ambiente e nunca entram no Git.
-
-## Arquitetura
-
-```mermaid
-flowchart LR
-  User["Aluna/Admin"] --> Cloudflare --> Web["Next.js"]
-  Web --> Supabase["Supabase Auth + PostgreSQL"]
-  Web --> R2["R2 privado"]
-  Web --> Resend
-  PerfectPay -->|Webhook| Web
-  Web --> Agent["FastAPI"]
-  Agent --> Supermemory
-  Worker["Worker"] --> Supabase
-  Worker --> Supermemory
-  Worker --> Resend
-```
-
-## Domínios e tabelas
-
-- `profiles`: perfil, papel e status da conta.
-- `products` e `product_entitlements`: produtos e permissões concedidas.
-- `content_items`, `content_files`, `content_access_rules`: e-books, anexos e autorização.
-- `purchases`, `payment_webhook_events`, `entitlements`, `admin_overrides`: pagamentos e acessos.
-- `agent_configs`, `agent_knowledge_documents`, `agent_conversations`, `agent_messages`, `agent_memory_sync_jobs`: IA, RAG e memória.
-- `audit_logs`: alterações administrativas e eventos críticos.
-
-## Memória e RAG
-
-| Escopo | Conteúdo |
-|---|---|
-| `haz-que-vuelva:knowledge:global` | Método, FAQs e materiais aprovados |
-| `haz-que-vuelva:user:{id}` | Memória exclusiva da aluna |
-| Supabase | Transcrição integral, auditoria e reprocessamento |
-
-- [ ] O agente verifica `agent_access` antes de responder.
-- [ ] Cada pergunta recupera conhecimento global e memória individual filtrados.
-- [ ] Cada mensagem é gravada no Supabase antes da sincronização assíncrona.
-- [ ] O painel versiona prompt, permite rollback e registra quem publicou.
-- [ ] Upload aceita somente tipos permitidos, tamanho limitado e armazenamento privado.
-- [ ] Exclusão no Supermemory exige confirmação e mantém auditoria local.
-- [ ] Nenhuma recuperação cruza dados de alunas.
-
-## Checklist de implementação
-
-### 0. Dados que ainda faltam
+## Pendências do usuário
 
 - [ ] Confirmar domínio definitivo.
-- [ ] Criar produtos/planos na Perfect Pay e fornecer códigos, preços e nomes.
+- [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
 - [ ] Definir qual produto libera a IA.
-- [ ] Entregar conteúdos, capas e documentos da base de conhecimento.
+- [ ] Entregar conteúdos, capas e documentos de conhecimento.
+- [ ] Enviar asset final da hero e arquivos oficiais da marca.
+- [ ] Aprovar tipografia e licenças.
 - [ ] Escolher modelo de IA, orçamento e limite de mensagens.
-- [ ] Fornecer WhatsApp de suporte e referências visuais.
+- [ ] Fornecer WhatsApp de suporte.
+- [ ] Definir moderação de comentários.
 
-### 1. Contas e infraestrutura
+## Gate 2 — system design e design system
 
-- [ ] Criar projetos de produção e homologação no Supabase.
-- [ ] Criar bucket R2 privado e política de CORS mínima.
-- [ ] Criar projeto Supermemory dedicado.
-- [ ] Criar Resend e verificar subdomínio com SPF, DKIM e DMARC.
-- [ ] Criar VPS, DNS Cloudflare e segredos por ambiente.
+- [ ] Reler checklist, system design, design system e fontes do gate.
+- [ ] Atualizar a pesquisa Exa das decisões atuais do gate.
+- [ ] Validar preto/carvão e vermelho como direção obrigatória da paleta.
+- [ ] Validar a escala provisória completa de vermelhos.
+- [ ] Validar superfícies escuras, textos neutros e estados semânticos.
+- [ ] Revalidar contraste dos pares provisórios.
+- [ ] Aprovar tokens provisórios de cor.
+- [ ] Confirmar que vermelho guia atenção sem dominar os componentes.
+- [ ] Validar que o resultado não tem aparência corporativa fria.
+- [ ] Aprovar direção tipográfica e obter fontes licenciadas.
+- [ ] Aprovar escala de espaçamento, raios, sombras e movimento.
+- [ ] Aprovar estados disponível, bloqueado, loading, vazio e erro.
+- [ ] Aprovar comportamento da sidebar no desktop.
+- [ ] Aprovar navegação mobile.
+- [ ] Validar contraste e requisitos WCAG 2.2 AA.
+- [ ] Aprovar contratos dos componentes reutilizáveis.
+- [ ] Confirmar que a referência foi traduzida sem cópia de marca ou assets.
 
-### 2. Fundação do código
+As definições provisórias foram documentadas no Gate 1. Esta validação só
+começa depois de autorização explícita.
 
-- [ ] Criar Next.js TypeScript com lint, typecheck e testes.
-- [ ] Criar FastAPI para o agente.
-- [ ] Criar Dockerfiles não-root e Docker Compose.
-- [ ] Criar validação de variáveis de ambiente e `.env.example`.
-- [ ] Criar migrações, RLS, healthcheck e logs estruturados.
+## Gate 3 — frontend estático
 
-### 3. Identidade
+### Fundação
+
+- [x] Scaffold Next.js TypeScript existente.
+- [ ] Definir módulos por feature.
+- [ ] Criar design tokens e primitivas.
+- [ ] Criar mocks explícitos e isolados.
+- [ ] Configurar lint, typecheck e seams de teste acordados.
+
+### Shell e Inicio
+
+- [ ] Sidebar com `Inicio`, `Productos`, `IA` e `Perfil`.
+- [ ] `Administración` somente no cenário admin.
+- [ ] `Cerrar sesión` fixo no rodapé.
+- [ ] Tooltips e nomes acessíveis.
+- [ ] Hero cinematográfica com slot configurável.
+- [ ] Wordmark no topo e conteúdo à esquerda.
+- [ ] Trilhos horizontais de produtos.
+- [ ] Cards em proporção editorial.
+
+### Productos
+
+- [ ] Listar todos os produtos mock.
+- [ ] Diferenciar adquirido e bloqueado.
+- [ ] Abrir detalhe estático do produto adquirido.
+- [ ] Abrir modal do produto bloqueado.
+- [ ] Exibir CTA Perfect Pay simulado e não navegável.
+- [ ] Criar leitor PDF placeholder embutido.
+- [ ] Criar download simulado.
+- [ ] Mostrar painel lateral somente quando houver itens.
+- [ ] Ocultar comentários quando a flag estiver desligada.
+
+### IA, Perfil e Administración
+
+- [ ] Criar chat com identidade própria.
+- [ ] Criar variante IA bloqueada.
+- [ ] Simular estados vazio, pensando, erro e limite.
+- [ ] Criar perfil estático.
+- [ ] Criar esqueleto administrativo estático.
+- [ ] Não realizar qualquer chamada externa.
+
+### Qualidade
+
+- [ ] Todo texto visível está em espanhol.
+- [ ] Desktop e mobile inspecionados visualmente.
+- [ ] Navegação por teclado verificada.
+- [ ] Modal com focus trap, Escape e retorno de foco.
+- [ ] Estados não dependem apenas de cor.
+- [ ] Nenhuma imagem, marca, texto ou asset da referência foi copiado.
+
+## Gate 4 — aprovação explícita do frontend
+
+- [ ] Apresentar todas as telas e estados estáticos para revisão.
+- [ ] Registrar os ajustes solicitados pelo usuário.
+- [ ] Aplicar e revisar os ajustes autorizados.
+- [ ] Obter aprovação explícita do frontend.
+- [ ] Parar antes de qualquer backend, integração ou infraestrutura.
+
+## Gate 5 — backend futuro
+
+Este gate permanece congelado.
+
+### Identidade e autorização
 
 - [ ] Configurar Supabase Auth SSR.
-- [ ] Criar perfil, papéis e RLS.
-- [ ] Implementar convite, ativação e reset via Resend.
-- [ ] Implementar perfil e solicitação aprovada de troca de e-mail.
-- [ ] Exigir MFA para administradores antes da abertura pública.
+- [ ] Criar perfis, papéis e RLS.
+- [ ] Implementar convite expirável; a aluna define a própria senha.
+- [ ] Implementar reset e troca de e-mail segura.
+- [ ] Exigir MFA para admin antes da abertura pública.
 
-### 4. Conteúdo e permissões
+### Catálogo, conteúdo e acesso
 
-- [ ] Criar produtos, permissões e regras de acesso.
-- [ ] Criar painel de conteúdo e arquivos.
-- [ ] Fazer upload privado e validar arquivos.
-- [ ] Gerar URL temporária somente após autorização.
-- [ ] Implementar leitura, progresso e log de downloads.
-- [ ] Gerar marca-d’água individual para downloads.
+- [ ] Criar catálogo e entitlements.
+- [ ] Criar conteúdo e regras de acesso.
+- [ ] Fazer upload privado validado.
+- [ ] Gerar URL temporária após autorização.
+- [ ] Implementar leitura, progresso, download e watermark.
 
-### 5. Perfect Pay
+### Perfect Pay
 
-- [ ] Criar endpoint de webhook com validação e idempotência.
-- [ ] Mapear códigos Perfect Pay para produtos internos.
-- [ ] Liberar acesso em `approved`.
-- [ ] Revogar acesso em `cancelled`, `refunded` e `charged_back`.
-- [ ] Registrar e permitir reprocessamento seguro de eventos.
-- [ ] Testar duplicidade, eventos fora de ordem e todos os estados escolhidos.
+- [ ] Validar webhook e idempotência.
+- [ ] Mapear códigos para produtos internos.
+- [ ] Conceder somente em `approved`.
+- [ ] Revogar em `cancelled`, `refunded` e `charged_back`.
+- [ ] Tratar duplicidade e eventos fora de ordem.
+- [ ] Auditar e reprocessar com segurança.
 
-### 6. IA
+### IA
 
-- [ ] Implementar FastAPI, autorização e rate limit.
-- [ ] Implementar adaptador Supermemory: busca, upload, listagem e exclusão.
-- [ ] Implementar histórico canônico, outbox e retentativas.
-- [ ] Implementar prompt versionado, base de conhecimento e painel.
-- [ ] Testar isolamento entre duas alunas e exclusão de documento.
-- [ ] Implementar limites de custo, telemetria e mensagens de falha seguras.
+- [ ] Verificar `agent_access` antes de responder.
+- [ ] Persistir conversa canônica no Supabase.
+- [ ] Recuperar base global aprovada.
+- [ ] Recuperar memória exclusiva do membro.
+- [ ] Impedir cruzamento entre membros.
+- [ ] Tratar RAG como dado sem autoridade.
+- [ ] Versionar, publicar e reverter prompt.
+- [ ] Permitir que admin defina e publique limites de uso e custo.
+- [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
+- [ ] Implementar limites, telemetria e falhas seguras.
 
-### 7. VPS e liberação
+## Gate 6 — integrações futuras
 
-- [ ] Configurar servidor com SSH por chave, firewall, Docker e backups.
-- [ ] Configurar proxy, Cloudflare, TLS e healthchecks.
-- [ ] Configurar logs, alertas e deploy reproduzível com rollback.
-- [ ] Testar autorização por objeto, compra, reembolso, download e IA.
-- [ ] Testar celular, desktop, espanhol e fluxo de administrador.
-- [ ] Criar administrador inicial com MFA e executar lançamento controlado.
+- [ ] Criar projetos Supabase próprios.
+- [ ] Criar R2 privado e CORS mínimo.
+- [ ] Criar Supermemory dedicado.
+- [ ] Criar Resend e verificar subdomínio.
+- [ ] Usar somente credenciais deste projeto.
 
-## Critérios de aceite
+## Gate 7 — infraestrutura e lançamento
+
+- [ ] Criar Dockerfiles não-root e Compose.
+- [ ] Configurar VPS, firewall, proxy e TLS.
+- [ ] Configurar Cloudflare e DNS.
+- [ ] Criar backups e testar restauração.
+- [ ] Criar logs, métricas e alertas.
+- [ ] Validar rollback.
+- [ ] Testar autorização por objeto, compra, revogação, download e IA.
+- [ ] Testar espanhol, desktop e celular.
+- [ ] Criar admin inicial com MFA.
+
+## Critérios finais de aceite
 
 - Compra aprovada libera somente o produto comprado.
-- Reembolso, cancelamento ou chargeback revogam o acesso correto.
-- Uma aluna não acessa conteúdo, compra, conversa ou memória de outra.
-- A IA só atende quem possui a permissão e usa os escopos certos.
-- Administração consegue gerenciar conteúdo, permissões, convites e falhas de webhook.
-- Backup, restauração e rollback foram verificados antes da venda.
+- Cancelamento, reembolso e chargeback revogam o acesso correto.
+- Um membro não acessa conteúdo, compra, conversa ou memória de outro.
+- A IA só atende quem possui a permissão e usa os escopos corretos.
+- Administração gerencia conteúdo, permissões, convites e eventos.
+- Arquivos permanecem privados e downloads são autorizados.
+- Backup, restauração e rollback são verificados antes da venda.

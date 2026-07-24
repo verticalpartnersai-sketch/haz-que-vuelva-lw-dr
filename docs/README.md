@@ -1,5 +1,8 @@
 # Documentação HAZ QUE VUELVA
 
+O índice canônico passou a ser [INDEX.md](INDEX.md). Este arquivo é mantido como
+ponte para links anteriores.
+
 Este diretório é a fonte de verdade do produto. Antes de iniciar qualquer fase,
 leia este índice e o checklist mestre.
 
@@ -13,16 +16,19 @@ leia este índice e o checklist mestre.
    semântica e responsividade.
 6. [Navegação](NAVIGATION.md): mapa de telas, rotas propostas e permissões.
 7. [Especificação frontend](FRONTEND-SPEC.md): telas estáticas do próximo gate.
-8. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
-9. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md): rotas, mocks,
+   validações e evidências do Gate 3.
+9. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+10. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
 
 ## Estado atual
 
 - Gate 1: **concluído**.
 - Gate 2: **concluído**.
-- Próximo gate: aguarda nova autorização explícita para o frontend estático.
-- Código existente: scaffold padrão do Next.js em `apps/web`.
-- Frontend do produto: não iniciado.
+- Gate 3: **concluído tecnicamente e aguardando aprovação visual**.
+- Frontend do produto: rotas e interações estáticas implementadas em
+  `apps/web`, com mocks explícitos e sem serviços externos.
+- Gate 4: **não aprovado**; nenhuma etapa posterior foi iniciada.
 - Backend, agente Python, Docker, banco e integrações: congelados.
 - Deploy: proibido até autorização explícita.
 
@@ -49,6 +55,7 @@ leia este índice e o checklist mestre.
 | Semântica e comportamento de componentes | `COMPONENT-CONTRACTS.md` |
 | Rotas, papéis e transições | `NAVIGATION.md` |
 | Aceite do frontend estático | `FRONTEND-SPEC.md` |
+| Estado da implementação frontend | `FRONTEND-IMPLEMENTATION.md` |
 | Fontes externas e decisões atuais | `RESEARCH.md` |
 | Estado e gates | `PROJECT-CHECKLIST.md` |
 

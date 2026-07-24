@@ -2,9 +2,13 @@
 
 ## Gate
 
-Este documento descreve o próximo trabalho, mas não o autoriza. A implementação
-começa somente após conclusão do Gate 2 **e nova autorização explícita para o
-Gate 3**.
+Gate 3 autorizado explicitamente em 24 de julho de 2026. A autorização cobre
+somente o frontend estático descrito aqui. Gate 4, backend, integrações,
+infraestrutura, credenciais e deploy permanecem bloqueados.
+
+Implementação técnica concluída em 24 de julho de 2026 e registrada em
+[Implementação do frontend](FRONTEND-IMPLEMENTATION.md). A passagem ao Gate 4
+depende de aprovação visual explícita do usuário.
 
 O frontend será inteiramente estático, em espanhol, com mocks explicitamente
 marcados. Não haverá endpoints, banco, auth, pagamentos, RAG ou chamadas
@@ -42,15 +46,16 @@ preço, código Perfect Pay, domínio, asset ou credencial.
 
 ### Inicio
 
-- Shell preto cinematográfico.
-- Sidebar estreita.
-- Hero grande com slot de imagem e overlay.
+- Shell preto profundo com experiência reconhecível de catálogo audiovisual
+  premium, sem copiar marca ou assets da referência.
+- Rail lateral muito estreito, fixo e predominantemente preto.
+- Hero larga, dominante, com slot de imagem e gradientes fortes de leitura.
 - Wordmark HAZ QUE VUELVA no topo.
-- Copy à esquerda.
-- Primeiro trilho na transição inferior da hero e outros trilhos abaixo.
+- Copy compacta sobreposta à esquerda.
+- Primeiro trilho denso na transição inferior da hero e outros trilhos abaixo.
 - Exibir todos os produtos mock na home, incluindo cenários de produto
   principal, order bump e upsell.
-- Cards em proporção editorial.
+- Cards verticais em proporção editorial e alta densidade.
 - Próximo card parcialmente visível quando houver overflow horizontal.
 
 ### Productos

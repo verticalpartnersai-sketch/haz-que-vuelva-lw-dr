@@ -215,8 +215,9 @@ um modal. `unknown` nunca deve piscar como disponível.
 
 - É uma seção nomeada contendo lista horizontal; não é carrossel
   auto-rotativo.
-- Scroll por gesto/trackpad é nativo. Botões anterior/próximo aparecem somente
-  quando existe overflow e deslocam aproximadamente uma viewport do trilho.
+- Scroll por gesto/trackpad é nativo. Botões anterior/próximo permanecem
+  montados enquanto existe overflow, usam `aria-disabled` nos limites e
+  deslocam aproximadamente uma viewport do trilho.
 - Tab percorre controles e cards em ordem DOM; setas do teclado não são
   sequestradas fora de um padrão composto.
 - Próximo card parcialmente visível sugere continuidade.
@@ -225,10 +226,14 @@ um modal. `unknown` nunca deve piscar como disponível.
 ### `ProductCard`
 
 **Entradas conceituais:** `name`, `cover`, `accessState`, `category?`,
-`progress?`.
+`progress?`, `visualVariant?`.
 
-- Proporção da mídia: `productCard.aspectRatio`; nome permanece texto fora da
-  capa.
+- Proporção da mídia: `productCard.aspectRatio`.
+- A variante de catálogo `streaming` integra nome, categoria e estado à região
+  inferior da capa para preservar densidade e ritmo. O nome acessível inclui
+  produto e estado; nenhum significado fica escondido em `role="img"`.
+- Outras variantes podem manter o nome fora da capa quando a composição pedir
+  mais espaço editorial.
 - `available` usa link para detalhe.
 - `locked` usa botão que abre `ProductLockedDialog`.
 - `unknown` usa skeleton não interativo.

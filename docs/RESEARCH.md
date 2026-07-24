@@ -204,3 +204,35 @@ Decisão: `Bodoni Moda` para display e `Source Sans 3` para UI/corpo, com
 auto-hospedagem futura, arquivo de licença e sem chamada runtime ao Google.
 Revalidar os arquivos e a licença específica de cada família antes de
 adicioná-los ao Gate 3.
+
+## Registro de fontes — Gate 3
+
+Pesquisa realizada via Exa MCP em 24 de julho de 2026 e complementada pela
+documentação local da versão instalada. Não houve escolha de biblioteca de
+ícones, modal ou tooltip: os componentes são locais e seguem os contratos já
+aprovados.
+
+### Next.js instalado
+
+- Documentação local de Next.js `16.2.11` em
+  `apps/web/node_modules/next/dist/docs/01-app`: foram lidos os guias de layouts
+  e páginas, Server/Client Components, CSS, fontes locais, `use client` e rotas
+  dinâmicas.
+
+Decisão: manter páginas e layout como Server Components; criar limites client
+somente para shell mock, trilhos, modal, chat e controles com estado. A rota
+`/productos/[slug]` aguarda `params` e usa `generateStaticParams`. CSS global é
+importado uma vez no layout e separado por responsabilidade.
+
+### Arquivos e licença das fontes
+
+- [Repositório oficial Google Fonts](https://github.com/google/fonts):
+  informa que cada diretório de família contém binários e licença.
+- [Bodoni Moda no repositório oficial](https://github.com/google/fonts/tree/main/ofl/bodonimoda):
+  contém o variable font e a licença OFL 1.1 da família.
+- [Source Sans 3 no repositório oficial](https://github.com/google/fonts/tree/main/ofl/sourcesans3):
+  contém o variable font e a licença OFL 1.1 da família.
+
+Decisão: versionar os dois variable fonts em `src/assets/fonts`, junto de suas
+licenças específicas, e carregá-los com `next/font/local`. O navegador não faz
+requisição de fonte a terceiro.

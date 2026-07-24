@@ -2,8 +2,8 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 24 de julho de 2026: **Gate 2 concluído; aguardando autorização
-> explícita para o Gate 3**.
+> Estado em 24 de julho de 2026: **Gate 3 autorizado; frontend estático em
+> implementação**.
 >
 > Backend, agente Python, Docker, integrações, migrações, credenciais e deploy
 > estão congelados até autorização explícita.
@@ -13,7 +13,8 @@
 - [x] Resolver o checkout correto e versionar o estado inicial.
 - [x] Gate 1: consolidar documentação.
 - [x] Gate 2: validar system design e design system.
-- [ ] Gate 3: implementar frontend estático com mocks.
+- [x] Gate 3: implementar frontend estático com mocks. **Concluído
+  tecnicamente; aguarda aprovação visual.**
 - [ ] Gate 4: obter aprovação explícita do frontend.
 - [ ] Gate 5: implementar backend em fatias autorizadas.
 - [ ] Gate 6: integrar fornecedores.
@@ -91,55 +92,57 @@ implementação: o Gate 3 depende de nova autorização explícita.
 ### Fundação
 
 - [x] Scaffold Next.js TypeScript existente.
-- [ ] Definir módulos por feature.
-- [ ] Criar design tokens e primitivas.
-- [ ] Criar mocks explícitos e isolados.
-- [ ] Configurar lint, typecheck e seams de teste acordados.
+- [x] Definir módulos por feature.
+- [x] Criar design tokens e primitivas.
+- [x] Criar mocks explícitos e isolados.
+- [x] Reler índice, checklist, Gates 1 e 2 e instruções locais do Next.js.
+- [x] Registrar pesquisa atual do Gate 3 e revalidar fontes/licenças.
+- [x] Configurar lint, typecheck e seams de teste acordados.
 
 ### Shell e Inicio
 
-- [ ] Sidebar com `Inicio`, `Productos`, `IA` e `Perfil`.
-- [ ] `Administración` somente no cenário admin.
-- [ ] `Cerrar sesión` fixo no rodapé.
-- [ ] Tooltips e nomes acessíveis.
-- [ ] Hero cinematográfica com slot configurável.
-- [ ] Wordmark no topo e conteúdo à esquerda.
-- [ ] Trilhos horizontais de produtos.
-- [ ] Cards em proporção editorial.
+- [x] Sidebar com `Inicio`, `Productos`, `IA` e `Perfil`.
+- [x] `Administración` somente no cenário admin.
+- [x] `Cerrar sesión` fixo no rodapé.
+- [x] Tooltips e nomes acessíveis.
+- [x] Hero cinematográfica com slot configurável.
+- [x] Wordmark no topo e conteúdo à esquerda.
+- [x] Trilhos horizontais de produtos.
+- [x] Cards em proporção editorial.
 
 ### Productos
 
-- [ ] Listar todos os produtos mock.
-- [ ] Diferenciar adquirido e bloqueado.
-- [ ] Abrir detalhe estático do produto adquirido.
-- [ ] Abrir modal do produto bloqueado.
-- [ ] Exibir CTA Perfect Pay simulado e não navegável.
-- [ ] Criar leitor PDF placeholder embutido.
-- [ ] Criar download simulado.
-- [ ] Mostrar painel lateral somente quando houver itens.
-- [ ] Ocultar comentários quando a flag estiver desligada.
+- [x] Listar todos os produtos mock.
+- [x] Diferenciar adquirido e bloqueado.
+- [x] Abrir detalhe estático do produto adquirido.
+- [x] Abrir modal do produto bloqueado.
+- [x] Exibir CTA Perfect Pay simulado e não navegável.
+- [x] Criar leitor PDF placeholder embutido.
+- [x] Criar download simulado.
+- [x] Mostrar painel lateral somente quando houver itens.
+- [x] Ocultar comentários quando a flag estiver desligada.
 
 ### IA, Perfil e Administración
 
-- [ ] Criar chat com identidade própria.
-- [ ] Criar variante IA bloqueada.
-- [ ] Simular estados vazio, pensando, erro e limite.
-- [ ] Criar perfil estático.
-- [ ] Criar esqueleto administrativo estático.
-- [ ] Não realizar qualquer chamada externa.
+- [x] Criar chat com identidade própria.
+- [x] Criar variante IA bloqueada.
+- [x] Simular estados vazio, pensando, erro e limite.
+- [x] Criar perfil estático.
+- [x] Criar esqueleto administrativo estático.
+- [x] Não realizar qualquer chamada externa.
 
 ### Qualidade
 
-- [ ] Todo texto visível está em espanhol.
-- [ ] Desktop e mobile inspecionados visualmente.
-- [ ] Reflow a 320 CSS px e resize de texto a 200% verificados.
-- [ ] Navegação por teclado verificada.
-- [ ] Modal com focus trap, Escape e retorno de foco.
-- [ ] Foco não é encoberto por sidebar, dock ou overlays.
-- [ ] `prefers-reduced-motion` remove deslocamento não essencial.
-- [ ] Fontes são auto-hospedadas com licenças incluídas.
-- [ ] Estados não dependem apenas de cor.
-- [ ] Nenhuma imagem, marca, texto ou asset da referência foi copiado.
+- [x] Todo texto visível está em espanhol.
+- [x] Desktop e mobile inspecionados visualmente.
+- [x] Reflow a 320 CSS px e resize de texto a 200% verificados.
+- [x] Navegação por teclado verificada.
+- [x] Modal com focus trap, Escape e retorno de foco.
+- [x] Foco não é encoberto por sidebar, dock ou overlays.
+- [x] `prefers-reduced-motion` remove deslocamento não essencial.
+- [x] Fontes são auto-hospedadas com licenças incluídas.
+- [x] Estados não dependem apenas de cor.
+- [x] Nenhuma imagem, marca, texto ou asset da referência foi copiado.
 
 ## Gate 4 — aprovação explícita do frontend
 

@@ -2,20 +2,21 @@
 
 ## Status
 
-Contrato visual v1 definido no Gate 2 para orientar o futuro frontend estático.
-A composição vem da referência cinematográfica enviada, sem copiar Netflix,
-logotipos, textos, imagens ou assets. O asset da hero e os arquivos oficiais da
-marca continuam pendentes; sua chegada pode ajustar a direção por uma nova
-decisão documentada, nunca silenciosamente no código.
+Contrato visual v1 definido no Gate 2 e aplicado no Gate 3. Após a correção
+visual explícita do usuário, a experiência deve ser reconhecível como catálogo
+de streaming premium: não basta uma interpretação editorial abstrata. Isso não
+autoriza copiar Netflix, logotipos, textos, imagens ou assets. O asset da hero e
+os arquivos oficiais da marca continuam pendentes.
 
 ## Direção
 
-- Tom: cinematográfico, editorial, reservado e premium.
-- Shell: preto/carvão, densidade controlada e alto contraste.
-- Conteúdo: hero horizontal dominante e trilhos de capas editoriais.
+- Tom: cinematográfico, emocional, denso e premium.
+- Shell: preto profundo, rail fixo muito estreito e alto contraste.
+- Conteúdo: hero horizontal dominante, copy compacta sobreposta e trilhos
+  densos de capas verticais.
 - Marca: vermelho guia ação, seleção e destaques sem dominar cada componente.
-- Diferenciação: tipografia editorial grande, superfícies quentes e linguagem
-  emocional, evitando aparência corporativa fria.
+- Diferenciação: wordmark grande, arte abstrata própria enquanto o asset final
+  não existe e linguagem emocional, evitando aparência corporativa fria.
 - Evitar: gradiente roxo genérico, cards SaaS, vidro excessivo e efeitos sem
   função.
 
@@ -55,8 +56,8 @@ cru existe apenas na definição canônica do token; o componente consome o nome
 
 ## Leitura da referência
 
-A imagem original foi inspecionada diretamente. Somente estas abstrações de
-composição podem orientar o projeto:
+A imagem original e a nova referência aprovada foram inspecionadas diretamente.
+Elas orientam composição, densidade, escala, contraste e atmosfera:
 
 - Rail lateral preto muito estreito e visualmente separado do conteúdo.
 - Estado ativo perceptível junto ao ícone, com tratamento original da marca.
@@ -66,6 +67,8 @@ composição podem orientar o projeto:
 - Primeiro trilho começando na transição inferior da hero.
 - Capas verticais com ritmo horizontal e próxima capa parcialmente visível.
 - Continuidade de outros trilhos abaixo da primeira dobra.
+- Densidade suficiente para mostrar várias capas e o recorte da próxima capa na
+  mesma largura da referência.
 
 Não copiar a marca vermelha, logo, wordmark, nomes, descrições, imagem da hero,
 capas, ícones, selos, tipografia proprietária ou qualquer outro asset observado.
@@ -76,16 +79,16 @@ capas, ícones, selos, tipografia proprietária ou qualquer outro asset observad
 
 | Token | Valor | Uso |
 |---|---:|---|
-| `brand.50` | `#FFF1F1` | Fundo claro excepcional |
-| `brand.100` | `#FFDCDD` | Destaque suave |
-| `brand.200` | `#FFBABC` | Elemento decorativo |
-| `brand.300` | `#FF9699` | Anel de foco |
-| `brand.400` | `#FF7478` | Texto de marca sobre fundo escuro |
-| `brand.500` | `#E5484D` | Marca e indicador selecionado |
-| `brand.600` | `#C9313C` | Fundo da ação primária |
-| `brand.700` | `#A9232F` | Hover da ação primária |
-| `brand.800` | `#7F1822` | Active da ação primária |
-| `brand.900` | `#4D0C12` | Superfície vermelha profunda |
+| `brand.50` | `#FFF0F0` | Fundo claro excepcional |
+| `brand.100` | `#FFD6D6` | Destaque suave |
+| `brand.200` | `#FFADAD` | Elemento decorativo |
+| `brand.300` | `#FF7A7A` | Anel de foco |
+| `brand.400` | `#FF3D42` | Texto de marca sobre fundo escuro |
+| `brand.500` | `#E01822` | Marca e indicador selecionado |
+| `brand.600` | `#C5101A` | Fundo da ação primária |
+| `brand.700` | `#A00C14` | Hover da ação primária |
+| `brand.800` | `#75090F` | Active da ação primária |
+| `brand.900` | `#430507` | Superfície vermelha profunda |
 
 ### Primitivos neutros, feedback e alpha
 
@@ -114,7 +117,24 @@ capas, ícones, selos, tipografia proprietária ou qualquer outro asset observad
 | `alpha.black.72` | `rgba(0,0,0,.72)` |
 | `alpha.canvas.96` | `rgba(7,7,7,.96)` |
 | `alpha.canvas.18` | `rgba(7,7,7,.18)` |
-| `alpha.brand.14` | `rgba(229,72,77,.14)` |
+| `alpha.brand.14` | `rgba(224,24,34,.14)` |
+
+O código mantém a escala alpha completa em `tokens.css`: canvas
+`08/16/18/34/76/78/84/88/94/98`, shell `88/94/97`, marca
+`08/22/28/32/38/40/52`, marca profunda `12/58`, além de aliases pontuais de
+preto, branco, sucesso, informação e neutro. Gradientes e scrims consomem esses
+aliases; não declaram `rgba()` localmente.
+
+Tokens de composição também permanecem centralizados:
+
+| Família | Uso |
+|---|---|
+| `hero.art.*` | Pretos e carvão do placeholder abstrato da hero |
+| `cover.*` | Bases das capas mock `rose`, `noir`, `velvet`, `ink` e `wine` |
+| `paper.*` | Canvas, linhas e texto do PDF placeholder |
+
+São tokens temporários de composição mock, não cores de marca novas. Devem ser
+substituídos ou removidos quando os assets finais forem aprovados.
 
 ### Superfícies e texto
 
@@ -217,10 +237,10 @@ texto para uma área imprevisível.
 | `text.primary` / `surface.canvas` | `18.41:1` |
 | `text.secondary` / `surface.canvas` | `11.26:1` |
 | `text.muted` / `surface.canvas` | `6.63:1` |
-| `brand.400` / `surface.canvas` | `7.69:1` |
-| Branco / `brand.600` | `5.27:1` |
-| Branco / `brand.800` | `10.21:1` |
-| `state.focus` / `surface.canvas` | `9.66:1` |
+| `brand.400` / `surface.canvas` | `5.75:1` |
+| Branco / `brand.600` | `6.06:1` |
+| Branco / `brand.800` | `11.65:1` |
+| `state.focus` / `surface.canvas` | `7.98:1` |
 | `state.errorText` / `state.errorBg` | `7.52:1` |
 | `state.errorBorder` / `state.errorBg` | `3.34:1` |
 | `text.disabled` / `surface.elevated` | `4.52:1` |
@@ -254,7 +274,7 @@ permanecem neutros para que a cor de marca mantenha hierarquia.
 
 | Token | Família | Uso |
 |---|---|---|
-| `font.display` | `"Bodoni Moda", "Times New Roman", serif` | Hero e títulos editoriais curtos |
+| `font.display` | `"Bodoni Moda", "Times New Roman", serif` | Títulos editoriais curtos fora do wordmark de catálogo |
 | `font.body` | `"Source Sans 3", "Segoe UI", sans-serif` | Interface e leitura |
 | `font.mono` | `ui-monospace, "SFMono-Regular", monospace` | IDs e dados técnicos administrativos |
 
@@ -289,6 +309,9 @@ Regras:
 
 - Texto corrido usa `font.body`, largura preferencial de `45–68ch` e alinhamento
   à esquerda; nunca justificar.
+- O wordmark grande da home e os títulos compactos das capas usam
+  `font.body` em peso alto e caixa alta para aproximar a escala de catálogo
+  aprovada sem imitar tipografia proprietária.
 - `font.display` não é usado abaixo de `1.5rem` nem em parágrafos longos.
 - Texto visível não fica abaixo de `0.75rem`.
 - Não usar `vw` isolado para texto; todo tamanho fluido possui limites.

@@ -2,8 +2,8 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 24 de julho de 2026: **Gate 3 autorizado; frontend estático em
-> implementação**.
+> Estado em 26 de julho de 2026: **Gate 3 concluído tecnicamente; frontend
+> estático aguardando aprovação visual explícita**.
 >
 > Backend, agente Python, Docker, integrações, migrações, credenciais e deploy
 > estão congelados até autorização explícita.
@@ -37,10 +37,14 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 - [x] Revisar consistência entre todos os documentos.
 - [x] Criar commit exclusivo de documentação.
 - [x] Reportar conclusão à coordenação.
+- [x] Ingerir as notas Oracle 00–04 com matriz de rastreabilidade.
+- [x] Separar VUELVE IA, privacidade/segurança e integrações futuras da
+  implementação atual.
+- [x] Registrar conflitos Oracle sem sobrescrever decisões mais recentes.
 
 ## Produto
 
-- [x] Interface pública inteiramente em espanhol.
+- [x] Espanhol como idioma padrão, com seletor local para português e inglês.
 - [x] Usar `Productos`, nunca cursos.
 - [x] Suportar produto principal, order bumps e upsells.
 - [x] Perfis previstos: `admin` e `member`.
@@ -54,11 +58,16 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 - [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
 - [ ] Definir qual produto libera a IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
-- [ ] Enviar asset final da hero e arquivos oficiais da marca.
+- [x] Enviar a família final da hero para desktop, ultra-wide, tablet e mobile.
+- [ ] Enviar os demais arquivos oficiais da marca.
 - [x] Definir baseline tipográfica aberta e licenças.
 - [ ] Escolher modelo de IA, orçamento e limite de mensagens.
 - [ ] Fornecer WhatsApp de suporte.
 - [ ] Definir moderação de comentários.
+- [ ] Confirmar duração dos produtos editoriais.
+- [ ] Definir download versus leitura autenticada de PDF.
+- [ ] Validar base legal, consentimento, retenção e subprocessadores antes de
+  qualquer dado real.
 
 ## Gate 2 — system design e design system
 
@@ -105,10 +114,18 @@ implementação: o Gate 3 depende de nova autorização explícita.
 - [x] `Administración` somente no cenário admin.
 - [x] `Cerrar sesión` fixo no rodapé.
 - [x] Tooltips e nomes acessíveis.
-- [x] Hero cinematográfica com slot configurável.
+- [x] Rail desktop reduzido a 56 px, sem monograma superior e com navegação
+  centralizada nos dois eixos.
+- [x] Seletor de idioma no rodapé da sidebar: espanhol padrão, português e
+  inglês.
+- [x] Padronizar o gatilho de idioma com os demais ícones e dispensar seu
+  tooltip ao abrir ou selecionar uma opção.
+- [x] Hero cinematográfica com família WebP responsiva por breakpoint.
 - [x] Wordmark no topo e conteúdo à esquerda.
 - [x] Trilhos horizontais de produtos.
 - [x] Cards em proporção editorial.
+- [x] Capas da Home exibem somente imagem/placeholder e badge semântico no
+  canto superior esquerdo.
 
 ### Productos
 
@@ -121,34 +138,72 @@ implementação: o Gate 3 depende de nova autorização explícita.
 - [x] Criar download simulado.
 - [x] Mostrar painel lateral somente quando houver itens.
 - [x] Ocultar comentários quando a flag estiver desligada.
+- [x] Detalhes de produto com cabeçalho compacto no topo e título em Bebas
+  Neue, preservando leitor, download e painel condicional.
 
 ### IA, Perfil e Administración
 
 - [x] Criar chat com identidade própria.
 - [x] Criar variante IA bloqueada.
-- [x] Simular estados vazio, pensando, erro e limite.
+- [x] Adaptar ao design do Oráculo em Relatórios: canvas único, orb, sugestões,
+  bubble do membro, resposta da IA, composer e thinking por etapas.
+- [x] Simular localmente estados vazio, conversa e pensando, sem API, modelo,
+  memória ou persistência.
 - [x] Criar perfil estático.
 - [x] Criar esqueleto administrativo estático.
 - [x] Não realizar qualquer chamada externa.
+- [x] Posicionar cabeçalhos de Productos, Perfil e Administración no topo.
+- [x] Remover kicker, título e subtítulo externos de `/ia`; manter apenas o
+  chat central e o controle de acesso mock.
+- [x] Manter `/ia` fixa no viewport, sem rolagem da página; somente o histórico
+  interno pode rolar, com scrollbar oculta.
 
 ### Qualidade
 
 - [x] Todo texto visível está em espanhol.
 - [x] Desktop e mobile inspecionados visualmente.
+- [x] Fontes mobile, tablet, desktop e ultra-wide verificadas no navegador.
+- [x] WebPs finais inspecionados sem artefatos aparentes em rosto, mãos, vinho e
+  gradientes.
+- [x] Hero sem preload de imagem indevido; cada breakpoint seleciona sua WebP.
+- [x] Evidências confirmadas como PNG real em 1680 × 950 e 390 × 844.
 - [x] Reflow a 320 CSS px e resize de texto a 200% verificados.
 - [x] Navegação por teclado verificada.
 - [x] Modal com focus trap, Escape e retorno de foco.
 - [x] Foco não é encoberto por sidebar, dock ou overlays.
 - [x] `prefers-reduced-motion` remove deslocamento não essencial.
 - [x] Fontes são auto-hospedadas com licenças incluídas.
+- [x] Títulos de página usam Bebas Neue empacotada localmente.
+- [x] Remover fontes serifadas da interface e aplicar Bebas Neue a títulos,
+  destaques editoriais, leitor, painéis e dados de grande escala.
+- [x] Botões e selects de todas as telas usam estados, bordas, ícones e foco
+  customizados pelo design system.
+- [x] Substituir selects nativos do protótipo por listboxes customizadas com
+  navegação por setas, Home/End, Escape, retorno de foco e fechamento externo.
+- [x] Revisar individualmente controles de Home, Productos, detalhe, modal
+  bloqueado, IA, Perfil, Administración e sidebar.
 - [x] Estados não dependem apenas de cor.
 - [x] Nenhuma imagem, marca, texto ou asset da referência foi copiado.
 
 ## Gate 4 — aprovação explícita do frontend
 
 - [ ] Apresentar todas as telas e estados estáticos para revisão.
-- [ ] Registrar os ajustes solicitados pelo usuário.
-- [ ] Aplicar e revisar os ajustes autorizados.
+- [x] Registrar os ajustes solicitados pelo usuário.
+- [x] Aplicar e revisar sidebar compacta, idioma, cards da Home, cabeçalhos,
+  Bebas Neue, controles e detalhe de produto.
+- [x] Revisar todas as rotas e eliminar usos residuais de Bodoni/serif.
+- [x] Remover tipo e título duplicados das capas dos cards em `/productos`.
+- [x] Deixar a capa do modal bloqueado somente com imagem e remover o rótulo
+  técnico de simulação.
+- [x] Refatorar `/ia` com a linguagem visual do Oráculo e processamento
+  estritamente simulado no navegador.
+- [x] Substituir as esferas da IA por coração pulsante no mesmo sistema visual
+  dos controles e manter `Nueva conversación` no extremo direito do cabeçalho.
+- [x] Corrigir alinhamento e tooltip persistente do seletor de idioma.
+- [x] Integrar as cinco capas reais em WebP e substituir o catálogo genérico
+  pelos cinco produtos canônicos.
+- [x] Exibir capas bloqueadas em preto e branco e com opacidade reduzida,
+  restaurando a imagem no hover e no foco por teclado.
 - [ ] Obter aprovação explícita do frontend.
 - [ ] Parar antes de qualquer backend, integração ou infraestrutura.
 
@@ -193,6 +248,19 @@ Este gate permanece congelado.
 - [ ] Permitir que admin defina e publique limites de uso e custo.
 - [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
 - [ ] Implementar limites, telemetria e falhas seguras.
+- [ ] Implementar ciclo de caso, importação, fatos, política, análise,
+  validação, retenção e exclusão somente em gates autorizados.
+- [ ] Manter controles críticos de acesso, segurança, limite e exclusão fora do
+  LLM.
+
+### Privacidade, segurança e auditoria
+
+- [ ] Usar somente dados sintéticos até aprovação do gate jurídico.
+- [ ] Versionar consentimentos separados.
+- [ ] Manter conversa bruta fora de logs, analytics e suporte por padrão.
+- [ ] Testar isolamento entre contas e casos.
+- [ ] Testar exclusão em storage, dados derivados, cache, fila e backup.
+- [ ] Permitir desligar VUELVE IA sem derrubar a biblioteca.
 
 ## Gate 6 — integrações futuras
 

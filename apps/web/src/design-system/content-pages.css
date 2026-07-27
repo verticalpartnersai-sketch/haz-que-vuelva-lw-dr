@@ -5,7 +5,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   gap: var(--space-2);
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-6);
   min-height: 44px;
 }
 
@@ -24,8 +24,8 @@
   display: flex;
   gap: var(--space-8);
   justify-content: space-between;
-  margin-bottom: var(--space-10);
-  padding-bottom: var(--space-8);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
 }
 
 .product-detail__header > div {
@@ -104,8 +104,10 @@
 }
 
 .pdf-page strong {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 2.4rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
   line-height: 1;
   margin: var(--space-6) 0 var(--space-10);
 }
@@ -141,9 +143,10 @@
 }
 
 .related-panel h2 {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 0.025em;
   margin: var(--space-2) 0 var(--space-6);
 }
 
@@ -163,7 +166,7 @@
 
 .related-panel li > span {
   color: var(--brand-400);
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
 }
 
 .related-panel li div {
@@ -174,45 +177,6 @@
 
 .related-panel li small {
   color: var(--text-muted);
-}
-
-.ai-locked {
-  align-items: center;
-  background:
-    radial-gradient(circle at 50% 15%, var(--selected-bg), transparent 30%),
-    var(--surface-default);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  margin: var(--space-12) auto;
-  max-width: 760px;
-  padding: clamp(2rem, 8vw, 6rem);
-  text-align: center;
-}
-
-.ai-locked__orb {
-  align-items: center;
-  background: var(--selected-bg);
-  border: 1px solid var(--brand-800);
-  border-radius: 50%;
-  color: var(--brand-400);
-  display: flex;
-  height: 72px;
-  justify-content: center;
-  margin-bottom: var(--space-6);
-  width: 72px;
-}
-
-.ai-locked h2 {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1;
-  margin: var(--space-3) 0 var(--space-5);
-}
-
-.ai-locked p {
-  max-width: 54ch;
 }
 
 .mock-toggle {
@@ -226,6 +190,14 @@
   min-width: 150px;
   padding: var(--space-2) var(--space-4);
   text-align: left;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.mock-toggle:hover {
+  background: var(--surface-hover);
+  border-color: var(--brand-700);
 }
 
 .mock-toggle span {
@@ -277,6 +249,15 @@
   padding: var(--space-3);
   text-align: left;
   width: 100%;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.chat-history li button:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
 }
 
 .chat-history li button[aria-current="true"] {
@@ -306,8 +287,10 @@
 }
 
 .chat-panel__top h2 {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
   margin: var(--space-1) 0 0;
 }
 
@@ -411,6 +394,19 @@
   height: 44px;
   justify-content: center;
   width: 44px;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.send-button:not(:disabled):hover {
+  background: var(--brand-700);
+  box-shadow: 0 8px 24px var(--alpha-brand-22);
+}
+
+.send-button:not(:disabled):active {
+  transform: translateY(1px);
 }
 
 .send-button svg {

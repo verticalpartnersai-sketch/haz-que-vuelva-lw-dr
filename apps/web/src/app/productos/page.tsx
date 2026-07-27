@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ProductCatalog } from "@/features/products/product-catalog";
+import { ProductPageHeader } from "@/features/products/product-page-header";
 
 export const metadata: Metadata = {
   title: "Productos",
@@ -8,17 +9,8 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <div className="page-frame page-frame--catalog">
-      <header className="page-heading">
-        <span className="eyebrow">Biblioteca completa</span>
-        <h1 data-route-heading tabIndex={-1}>
-          Productos
-        </h1>
-        <p>
-          Reúne productos principales, complementos y productos adicionales.
-          Todos los datos de esta vista son simulados.
-        </p>
-      </header>
+    <div className="page-frame page-frame--catalog page-frame--top">
+      <ProductPageHeader />
       <ProductCatalog />
     </div>
   );

@@ -1,0 +1,446 @@
+/* Shared interaction language for buttons, selectors and navigation controls. */
+
+.button,
+.icon-button,
+.side-rail__item,
+.mock-toggle,
+.segmented-control button,
+.chat-history li button,
+.admin-modules li > button,
+.send-button {
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: inset 0 1px 0 var(--alpha-neutral-15);
+  position: relative;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.button {
+  border-radius: var(--radius-md);
+  letter-spacing: 0.015em;
+  overflow: hidden;
+}
+
+.button--primary {
+  background: linear-gradient(180deg, var(--brand-500), var(--brand-600));
+  border-color: var(--brand-400);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-38),
+    0 10px 28px var(--alpha-brand-22);
+}
+
+.button--primary:hover {
+  background: linear-gradient(180deg, var(--brand-400), var(--brand-600));
+  border-color: var(--brand-300);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-38),
+    0 12px 32px var(--alpha-brand-32);
+  transform: translateY(-1px);
+}
+
+.button--secondary {
+  background: linear-gradient(180deg, var(--neutral-800), var(--neutral-850));
+  border-color: var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 8px 22px var(--alpha-canvas-34);
+}
+
+.button--secondary:hover {
+  background: linear-gradient(180deg, var(--neutral-750), var(--neutral-850));
+  border-color: var(--brand-700);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 10px 26px var(--alpha-canvas-34);
+  transform: translateY(-1px);
+}
+
+.button--ghost {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.button--ghost:hover {
+  border-color: var(--border-subtle);
+}
+
+.button--compact {
+  min-height: 36px;
+  padding-inline: var(--space-3);
+}
+
+.button:active,
+.icon-button:active,
+.side-rail__item:active,
+.mock-toggle:active,
+.segmented-control button:active,
+.chat-history li button:active,
+.admin-modules li > button:active,
+.send-button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.icon-button {
+  background: linear-gradient(180deg, var(--neutral-800), var(--neutral-850));
+  border-color: var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 8px 20px var(--alpha-canvas-34);
+}
+
+.icon-button:hover {
+  background: var(--selected-bg);
+  border-color: var(--brand-600);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-22),
+    0 8px 22px var(--alpha-brand-deep-58);
+}
+
+.icon-button.product-dialog__close {
+  position: absolute;
+}
+
+.select-control {
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  min-height: 44px;
+  overflow: visible;
+  position: relative;
+}
+
+.select-control:hover,
+.select-control:focus-within {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.select-control__trigger {
+  align-items: center;
+  background: linear-gradient(180deg, var(--neutral-800), var(--neutral-850));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 8px 22px var(--alpha-canvas-34);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  font-weight: 650;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  text-align: left;
+  width: 100%;
+}
+
+.select-control__trigger:hover {
+  background: linear-gradient(180deg, var(--neutral-750), var(--neutral-850));
+  border-color: var(--brand-700);
+}
+
+.select-control--open .select-control__trigger {
+  background: var(--surface-hover);
+  border-color: var(--brand-500);
+  box-shadow:
+    0 0 0 3px var(--alpha-brand-22),
+    0 12px 30px var(--alpha-canvas-34);
+}
+
+.select-control__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-control__leading {
+  color: var(--text-muted);
+  grid-column: 1;
+  grid-row: 1;
+  height: 18px;
+  position: static;
+  width: 18px;
+}
+
+.select-control__trigger:has(.select-control__leading) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.select-control__trigger:has(.select-control__leading) .select-control__value {
+  grid-column: 2;
+}
+
+.select-control__caret {
+  color: var(--brand-400);
+  grid-column: -1;
+  height: 14px;
+  position: static;
+  transition: transform var(--duration-fast) var(--ease-standard);
+  width: 14px;
+}
+
+.select-control--open .select-control__caret {
+  transform: rotate(180deg);
+}
+
+.select-control__menu {
+  background: var(--neutral-900);
+  border: 1px solid var(--border-strong);
+  border-radius: calc(var(--radius-md) + 2px);
+  box-shadow: var(--shadow-overlay);
+  display: grid;
+  gap: 2px;
+  max-height: 17rem;
+  min-width: 100%;
+  overflow-y: auto;
+  padding: var(--space-1);
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  z-index: 90;
+}
+
+.select-control__option {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-md) - 2px);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  font-size: 0.875rem;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  text-align: left;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.select-control__option:hover,
+.select-control__option:focus-visible {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  outline: 0;
+}
+
+.select-control__option[aria-selected="true"] {
+  background: var(--selected-bg);
+  border-color: var(--brand-700);
+  color: var(--neutral-0);
+}
+
+.select-control__check {
+  color: var(--brand-400);
+  height: 16px;
+  opacity: 0;
+  width: 16px;
+}
+
+.select-control__option[aria-selected="true"] .select-control__check {
+  opacity: 1;
+}
+
+.select-control--compact {
+  width: 10.5rem;
+}
+
+.select-control--rail {
+  height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  width: 40px;
+}
+
+.select-control--rail .select-control__trigger {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 1px 0 var(--alpha-neutral-15);
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  place-items: center;
+  width: 40px;
+}
+
+.select-control--rail .select-control__trigger:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  box-shadow: inset 0 1px 0 var(--alpha-neutral-15);
+}
+
+.select-control--rail.select-control--open {
+  color: var(--brand-400);
+}
+
+.select-control--rail.select-control--open .select-control__trigger {
+  background: var(--selected-bg);
+  border-color: var(--brand-800);
+  box-shadow: inset 0 1px 0 var(--alpha-brand-22);
+}
+
+.select-control--rail .select-control__value {
+  clip: rect(0 0 0 0);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.select-control--rail .select-control__leading {
+  color: currentColor;
+  grid-column: 1;
+  grid-row: 1;
+  height: 19px;
+  inset: auto;
+  justify-self: center;
+  position: static;
+  width: 19px;
+}
+
+.select-control--rail:hover .select-control__leading,
+.select-control--rail:focus-within .select-control__leading {
+  color: var(--text-primary);
+}
+
+.select-control--rail
+  .select-control__trigger:has(.select-control__leading) {
+  grid-template-columns: 1fr;
+}
+
+.select-control--rail .select-control__caret {
+  display: none;
+}
+
+.select-control--rail .select-control__menu {
+  bottom: 0;
+  left: calc(100% + var(--space-2));
+  min-width: 9rem;
+  right: auto;
+  top: auto;
+}
+
+.tooltip-wrap:has(.select-control--open) > .tooltip {
+  display: none;
+}
+
+.side-rail__item {
+  border-color: transparent;
+}
+
+.side-rail__item:hover {
+  border-color: var(--border-strong);
+  box-shadow: inset 0 1px 0 var(--alpha-neutral-15);
+}
+
+.side-rail__item[aria-current="page"] {
+  border-color: var(--brand-800);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-22),
+    0 8px 22px var(--alpha-brand-deep-58);
+}
+
+.mock-toggle {
+  background: linear-gradient(180deg, var(--neutral-800), var(--neutral-850));
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 8px 22px var(--alpha-canvas-34);
+}
+
+.mock-toggle:hover {
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-22),
+    0 10px 24px var(--alpha-canvas-34);
+  transform: translateY(-1px);
+}
+
+.segmented-control {
+  background: var(--surface-shell);
+  border-color: var(--border-strong);
+  box-shadow: inset 0 1px 0 var(--alpha-neutral-15);
+}
+
+.segmented-control button[aria-pressed="true"] {
+  background: linear-gradient(180deg, var(--brand-500), var(--brand-700));
+  border-color: var(--brand-400);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-38),
+    0 6px 16px var(--alpha-brand-deep-58);
+  color: var(--neutral-0);
+}
+
+.chat-history li button[aria-current="true"],
+.admin-modules li > button[aria-current="page"] {
+  box-shadow:
+    inset 3px 0 0 var(--brand-500),
+    inset 0 1px 0 var(--alpha-brand-22);
+}
+
+.admin-modules li > button:hover {
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 10px 24px var(--alpha-canvas-34);
+}
+
+.send-button {
+  border: 1px solid var(--brand-400);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-brand-38),
+    0 8px 24px var(--alpha-brand-22);
+}
+
+.field-grid input:focus-visible,
+.chat-composer textarea:focus-visible {
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 3px var(--alpha-brand-22);
+  outline: 0;
+}
+
+.field-control {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  font-weight: 600;
+  gap: var(--space-2);
+}
+
+.field-control__label {
+  color: var(--text-primary);
+}
+
+.mobile-dock__item {
+  border-top: 1px solid transparent;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.mobile-dock__item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+@media (max-width: 639px) {
+  .select-control,
+  .select-control--compact {
+    width: 100%;
+  }
+
+  .select-control--rail {
+    width: 40px;
+  }
+}

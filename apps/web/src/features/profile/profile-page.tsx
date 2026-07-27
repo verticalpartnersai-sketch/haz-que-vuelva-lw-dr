@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Icon } from "@/components/icon";
+import { SelectControl } from "@/components/select-control";
+import { useLocale, type Locale } from "@/features/i18n/locale";
 import { useMockSession } from "@/features/shell/mock-session";
 import { mockMember } from "@/mocks/data";
 
@@ -11,44 +13,50 @@ type ProfileState = "ready" | "loading" | "error";
 
 export function ProfilePage() {
   const { role, setRole } = useMockSession();
+  const { l, locale, localeLabel, setLocale, t } = useLocale();
   const [status, setStatus] = useState("");
   const [viewState, setViewState] = useState<ProfileState>("ready");
 
   return (
-    <div className="profile-page page-frame">
+    <div className="profile-page page-frame page-frame--top">
       <header className="page-heading page-heading--row">
         <div>
-          <span className="eyebrow">Cuenta de demostración</span>
           <h1 data-route-heading tabIndex={-1}>
-            Perfil
+            {t("profile.title")}
           </h1>
-          <p>
-            Revisa los datos y alterna el papel mock para validar la navegación.
-          </p>
+          <p>{t("profile.description")}</p>
         </div>
         <div className="demo-toolbar demo-toolbar--compact">
           <span>
-            <strong>Estado simulado</strong>
-            <small>Datos ficticios</small>
+            <strong>{l("Estado simulado", "Estado simulado", "Simulated state")}</strong>
+            <small>{l("Datos ficticios", "Dados fictícios", "Fictional data")}</small>
           </span>
-          <select
-            aria-label="Estado simulado del perfil"
-            onChange={(event) =>
-              setViewState(event.target.value as ProfileState)
-            }
+          <SelectControl
+            ariaLabel={l(
+              "Estado simulado del perfil",
+              "Estado simulado do perfil",
+              "Simulated profile state",
+            )}
+            className="select-control--compact"
+            onChange={setViewState}
+            options={[
+              { label: l("Listo", "Pronto", "Ready"), value: "ready" },
+              { label: l("Cargando", "Carregando", "Loading"), value: "loading" },
+              { label: l("Error", "Erro", "Error"), value: "error" },
+            ]}
             value={viewState}
-          >
-            <option value="ready">Listo</option>
-            <option value="loading">Cargando</option>
-            <option value="error">Error</option>
-          </select>
+          />
         </div>
       </header>
 
       {viewState === "loading" ? (
         <section
           aria-busy="true"
-          aria-label="Cargando perfil simulado"
+          aria-label={l(
+            "Cargando perfil simulado",
+            "Carregando perfil simulado",
+            "Loading simulated profile",
+          )}
           className="surface-card"
         >
           <div aria-hidden="true" className="table-skeleton">
@@ -60,14 +68,27 @@ export function ProfilePage() {
       ) : viewState === "error" ? (
         <section className="feedback-panel feedback-panel--error" role="alert">
           <Icon name="close" />
-          <h2>No pudimos mostrar el perfil</h2>
-          <p>Error simulado: ningún dato real fue consultado.</p>
+          <h2>
+            {l(
+              "No pudimos mostrar el perfil",
+              "Não foi possível mostrar o perfil",
+              "We could not display the profile",
+            )}
+          </h2>
+          <p>
+            {l(
+              "Error simulado: ningún dato real fue consultado.",
+              "Erro simulado: nenhum dado real foi consultado.",
+              "Simulated error: no real data was queried.",
+            )}
+          </p>
           <button
             className="button button--secondary"
             onClick={() => setViewState("ready")}
             type="button"
           >
-            Intentar de nuevo
+            <Icon name="arrowRight" />
+            {l("Intentar de nuevo", "Tentar novamente", "Try again")}
           </button>
         </section>
       ) : (
@@ -77,35 +98,53 @@ export function ProfilePage() {
             A
           </div>
           <div>
-            <span className="section-kicker">Identidad</span>
+            <span className="section-kicker">
+              {l("Identidad", "Identidade", "Identity")}
+            </span>
             <h2 id="identity-title">{mockMember.name}</h2>
             <p>{mockMember.email}</p>
           </div>
           <span className="status-badge status-badge--available">
             <Icon name="check" />
-            Perfil mock
+            {l("Perfil mock", "Perfil mock", "Mock profile")}
           </span>
         </section>
 
         <section aria-labelledby="scenario-title" className="surface-card">
           <div className="card-heading">
             <div>
-              <span className="section-kicker">Escenario de revisión</span>
-              <h2 id="scenario-title">Papel simulado</h2>
+              <span className="section-kicker">
+                {l("Escenario de revisión", "Cenário de revisão", "Review scenario")}
+              </span>
+              <h2 id="scenario-title">
+                {l("Papel simulado", "Papel simulado", "Simulated role")}
+              </h2>
             </div>
-            <span className="mock-chip">Sin autenticación</span>
+            <span className="mock-chip">
+              {l("Sin autenticación", "Sem autenticação", "No authentication")}
+            </span>
           </div>
           <p>
-            La opción admin muestra Administración en la barra lateral. No
-            concede permisos ni crea una sesión real.
+            {l(
+              "La opción admin muestra Administración en la barra lateral. No concede permisos ni crea una sesión real.",
+              "A opção admin mostra Administração na barra lateral. Ela não concede permissões nem cria uma sessão real.",
+              "The admin option reveals Administration in the sidebar. It grants no permissions and creates no real session.",
+            )}
           </p>
-          <div aria-label="Seleccionar papel simulado" className="segmented-control">
+          <div
+            aria-label={l(
+              "Seleccionar papel simulado",
+              "Selecionar papel simulado",
+              "Select simulated role",
+            )}
+            className="segmented-control"
+          >
             <button
               aria-pressed={role === "member"}
               onClick={() => setRole("member")}
               type="button"
             >
-              Miembro
+              {l("Miembro", "Membro", "Member")}
             </button>
             <button
               aria-pressed={role === "admin"}
@@ -120,30 +159,80 @@ export function ProfilePage() {
         <section aria-labelledby="preferences-title" className="surface-card profile-preferences">
           <div className="card-heading">
             <div>
-              <span className="section-kicker">Preferencias</span>
-              <h2 id="preferences-title">Tu experiencia</h2>
+              <span className="section-kicker">
+                {l("Preferencias", "Preferências", "Preferences")}
+              </span>
+              <h2 id="preferences-title">
+                {l("Tu experiencia", "Sua experiência", "Your experience")}
+              </h2>
             </div>
           </div>
           <div className="field-grid">
+            <div className="field-control">
+              <span className="field-control__label">
+                {l("Idioma", "Idioma", "Language")}
+              </span>
+              <SelectControl
+                ariaLabel={l(
+                  "Idioma de la interfaz",
+                  "Idioma da interface",
+                  "Interface language",
+                )}
+                onChange={(value) => setLocale(value as Locale)}
+                options={[
+                  { label: "Español", value: "es" },
+                  { label: "Português", value: "pt" },
+                  { label: "English", value: "en" },
+                ]}
+                value={locale}
+              />
+              <small>
+                {l(
+                  "Selección local activa",
+                  "Seleção local ativa",
+                  "Active local selection",
+                )}
+                : {localeLabel}.
+              </small>
+            </div>
             <label>
-              <span>Idioma</span>
-              <input readOnly value={mockMember.locale} />
-              <small>Campo visual, no guarda cambios.</small>
-            </label>
-            <label>
-              <span>Notificaciones</span>
-              <input readOnly value={mockMember.notifications} />
-              <small>Preferencia de ejemplo.</small>
+              <span>{l("Notificaciones", "Notificações", "Notifications")}</span>
+              <input
+                readOnly
+                value={l(
+                  mockMember.notifications,
+                  "Resumo semanal",
+                  "Weekly summary",
+                )}
+              />
+              <small>
+                {l(
+                  "Preferencia de ejemplo.",
+                  "Preferência de exemplo.",
+                  "Example preference.",
+                )}
+              </small>
             </label>
           </div>
           <button
             className="button button--secondary"
             onClick={() =>
-              setStatus("Cambio de correo simulado. No se modificó ningún dato.")
+              setStatus(
+                l(
+                  "Cambio de correo simulado. No se modificó ningún dato.",
+                  "Alteração de e-mail simulada. Nenhum dado foi modificado.",
+                  "Email change simulated. No data was modified.",
+                ),
+              )
             }
             type="button"
           >
-            Simular cambio de correo
+            <Icon name="settings" />
+            {l(
+              "Simular cambio de correo",
+              "Simular alteração de e-mail",
+              "Simulate email change",
+            )}
           </button>
           <p aria-live="polite" className="form-status">
             {status}
@@ -151,21 +240,31 @@ export function ProfilePage() {
         </section>
 
         <section aria-labelledby="account-title" className="surface-card mobile-account-actions">
-          <span className="section-kicker">Cuenta</span>
-          <h2 id="account-title">Acciones</h2>
+          <span className="section-kicker">
+            {l("Cuenta", "Conta", "Account")}
+          </span>
+          <h2 id="account-title">{l("Acciones", "Ações", "Actions")}</h2>
           {role === "admin" ? (
             <Link className="button button--secondary" href="/administracion">
               <Icon name="settings" />
-              Administración
+              {l("Administración", "Administração", "Administration")}
             </Link>
           ) : null}
           <button
             className="button button--ghost"
-            onClick={() => setStatus("Cierre de sesión simulado.")}
+            onClick={() =>
+              setStatus(
+                l(
+                  "Cierre de sesión simulado.",
+                  "Saída simulada.",
+                  "Simulated sign out.",
+                ),
+              )
+            }
             type="button"
           >
             <Icon name="logout" />
-            Cerrar sesión
+            {l("Cerrar sesión", "Sair", "Sign out")}
           </button>
         </section>
         </div>

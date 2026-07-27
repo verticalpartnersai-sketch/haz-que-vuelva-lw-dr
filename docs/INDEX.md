@@ -13,15 +13,22 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 6. [Navegação](NAVIGATION.md)
 7. [Especificação frontend](FRONTEND-SPEC.md)
 8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md)
-9. [Pesquisa e fontes](RESEARCH.md)
-10. [Checklist mestre](PROJECT-CHECKLIST.md)
+9. [VUELVE IA futura](VUELVE-IA-FUTURE.md)
+10. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md)
+11. [Integrações futuras](INTEGRATIONS-FUTURE.md)
+12. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
+13. [Pesquisa e fontes](RESEARCH.md)
+14. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 
 - Gates 1 e 2: concluídos.
-- Gate 3: concluído tecnicamente, exclusivamente com frontend estático.
+- Gate 3: frontend estático concluído tecnicamente, incluindo a família
+  responsiva da hero; aguarda aprovação visual explícita.
 - Backend, integrações, infraestrutura, credenciais e deploy: congelados.
 - Gate 4: aguardando revisão e aprovação visual explícita do usuário.
+- As notas Oracle foram ingeridas como contexto e rastreadas sem liberar gates
+  posteriores.
 
 ## Regra de precedência
 

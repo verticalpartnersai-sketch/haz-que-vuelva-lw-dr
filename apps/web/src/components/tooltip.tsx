@@ -49,11 +49,19 @@ export function Tooltip({ label, children }: TooltipProps) {
   return (
     <span
       className="tooltip-wrap"
+      onClick={() => {
+        setDismissed(true);
+        setFocused(false);
+      }}
       onMouseEnter={() => {
         setDismissed(false);
         setHovered(true);
       }}
       onMouseLeave={() => setHovered(false)}
+      onPointerDown={() => {
+        setDismissed(true);
+        setFocused(false);
+      }}
     >
       {trigger}
       {open ? (

@@ -30,6 +30,10 @@ bumps e upsells.
 
 MFA de administrador é requisito antes da abertura pública.
 
+Suporte e identidades de serviço citados nas notas Oracle são escopos
+operacionais futuros, não novos perfis de interface. O produto mantém
+`member` e `admin` como papéis públicos previstos.
+
 ## Terminologia da interface
 
 | Conceito técnico | Texto em espanhol |
@@ -114,10 +118,18 @@ Evitar `Curso`, `Mis cursos` e equivalentes em toda a interface.
 - `PENDENTE`: códigos, preços, nomes e links de checkout dos produtos.
 - `PENDENTE`: qual produto concede acesso à IA.
 - `PENDENTE`: conteúdos, PDFs, capas e documentos de conhecimento.
-- `PENDENTE`: asset final da hero e arquivos oficiais da marca.
-- Baseline tipográfica do Gate 2: `Bodoni Moda` + `Source Sans 3`, ambas OFL
-  1.1. Arquivos tipográficos oficiais da marca, se existirem, podem motivar
-  revisão documentada.
+- `CONCLUÍDO`: família final da hero para mobile, tablet, desktop e ultra-wide.
+- `PENDENTE`: demais arquivos oficiais da marca.
+- Baseline tipográfica revisada no Gate 3: `Bebas Neue` para títulos e
+  destaques + `Source Sans 3` para textos corridos e controles, ambas OFL 1.1.
+  O produto não usa fontes serifadas. Arquivos tipográficos oficiais da marca,
+  se existirem, podem motivar revisão documentada.
 - `PENDENTE`: modelo de IA, orçamento e limite de mensagens.
 - `PENDENTE`: WhatsApp de suporte.
 - `PENDENTE`: política de moderação dos comentários.
+- `PENDENTE`: duração dos produtos editoriais.
+- `PENDENTE`: política final de download versus leitura autenticada de PDF.
+
+Os códigos, nomes e preços presentes nas notas Oracle são propostas e não
+substituem estas pendências. A reconciliação completa está em
+[Rastreabilidade Oracle](ORACLE-TRACEABILITY.md).

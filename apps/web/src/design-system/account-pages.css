@@ -18,7 +18,7 @@
     linear-gradient(140deg, var(--brand-600), var(--brand-900));
   border-radius: 50%;
   display: flex;
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 2rem;
   height: 72px;
   justify-content: center;
@@ -26,8 +26,10 @@
 }
 
 .identity-card h2 {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.025em;
   margin: var(--space-1) 0;
 }
 
@@ -67,9 +69,10 @@
 }
 
 .admin-summary strong {
-  font-family: var(--font-bodoni-moda), "Times New Roman", serif;
+  font-family: var(--font-display);
   font-size: 3.5rem;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   line-height: 1;
   margin: var(--space-4) 0 auto;
 }
@@ -104,12 +107,17 @@
   min-height: 88px;
   padding: var(--space-4);
   text-align: left;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
   width: 100%;
 }
 
 .admin-modules li > button:hover {
   background: var(--surface-hover);
-  border-color: var(--border-strong);
+  border-color: var(--brand-700);
+  transform: translateY(-1px);
 }
 
 .admin-modules li > button[aria-current="page"] {

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Icon } from "@/components/icon";
+import { useLocale } from "@/features/i18n/locale";
 import { ProductCard } from "@/features/products/product-card";
 import { ProductLockedDialog } from "@/features/products/product-locked-dialog";
 import type { Product } from "@/mocks/types";
@@ -14,6 +15,7 @@ export function ProductRail({
   title: string;
   products: readonly Product[];
 }) {
+  const { l } = useLocale();
   const railRef = useRef<HTMLUListElement>(null);
   const [canBack, setCanBack] = useState(false);
   const [canForward, setCanForward] = useState(false);
@@ -53,14 +55,20 @@ export function ProductRail({
     <section aria-labelledby={`rail-${title.replaceAll(" ", "-")}`} className="product-rail">
       <div className="section-heading">
         <div>
-          <span className="section-kicker">Productos</span>
+          <span className="section-kicker">
+            {l("Productos", "Produtos", "Products")}
+          </span>
           <h2 id={`rail-${title.replaceAll(" ", "-")}`}>{title}</h2>
         </div>
         <div className="rail-controls">
           {hasOverflow ? (
             <button
               aria-disabled={!canBack}
-              aria-label={`Ver productos anteriores en ${title}`}
+              aria-label={`${l(
+                "Ver productos anteriores en",
+                "Ver produtos anteriores em",
+                "View previous products in",
+              )} ${title}`}
               className="icon-button"
               onClick={() => {
                 if (canBack) move(-1);
@@ -73,7 +81,11 @@ export function ProductRail({
           {hasOverflow ? (
             <button
               aria-disabled={!canForward}
-              aria-label={`Ver más productos en ${title}`}
+              aria-label={`${l(
+                "Ver más productos en",
+                "Ver mais produtos em",
+                "View more products in",
+              )} ${title}`}
               className="icon-button"
               onClick={() => {
                 if (canForward) move(1);
@@ -88,8 +100,20 @@ export function ProductRail({
       {products.length === 0 ? (
         <div className="feedback-panel">
           <Icon name="library" />
-          <h3>No hay productos en este carril</h3>
-          <p>Cuando exista contenido de este grupo, aparecerá aquí.</p>
+          <h3>
+            {l(
+              "No hay productos en este carril",
+              "Não há produtos neste trilho",
+              "There are no products in this rail",
+            )}
+          </h3>
+          <p>
+            {l(
+              "Cuando exista contenido de este grupo, aparecerá aquí.",
+              "Quando houver conteúdo deste grupo, ele aparecerá aqui.",
+              "When this group has content, it will appear here.",
+            )}
+          </p>
         </div>
       ) : (
         <ul className="product-rail__list" onScroll={measure} ref={railRef}>
@@ -101,6 +125,7 @@ export function ProductRail({
                   setLockedProduct(selected);
                 }}
                 product={product}
+                showCoverDetails
               />
             </li>
           ))}

@@ -5,8 +5,9 @@
 Contrato visual v1 definido no Gate 2 e aplicado no Gate 3. Após a correção
 visual explícita do usuário, a experiência deve ser reconhecível como catálogo
 de streaming premium: não basta uma interpretação editorial abstrata. Isso não
-autoriza copiar Netflix, logotipos, textos, imagens ou assets. O asset da hero e
-os arquivos oficiais da marca continuam pendentes.
+autoriza copiar Netflix, logotipos, textos, imagens ou assets. A família final
+da hero foi aprovada e integrada; os demais arquivos oficiais da marca
+continuam pendentes.
 
 ## Direção
 
@@ -15,8 +16,8 @@ os arquivos oficiais da marca continuam pendentes.
 - Conteúdo: hero horizontal dominante, copy compacta sobreposta e trilhos
   densos de capas verticais.
 - Marca: vermelho guia ação, seleção e destaques sem dominar cada componente.
-- Diferenciação: wordmark grande, arte abstrata própria enquanto o asset final
-  não existe e linguagem emocional, evitando aparência corporativa fria.
+- Diferenciação: wordmark grande, fotografia cinematográfica própria e
+  linguagem emocional, evitando aparência corporativa fria.
 - Evitar: gradiente roxo genérico, cards SaaS, vidro excessivo e efeitos sem
   função.
 
@@ -129,12 +130,10 @@ Tokens de composição também permanecem centralizados:
 
 | Família | Uso |
 |---|---|
-| `hero.art.*` | Pretos e carvão do placeholder abstrato da hero |
 | `cover.*` | Bases das capas mock `rose`, `noir`, `velvet`, `ink` e `wine` |
 | `paper.*` | Canvas, linhas e texto do PDF placeholder |
 
-São tokens temporários de composição mock, não cores de marca novas. Devem ser
-substituídos ou removidos quando os assets finais forem aprovados.
+São tokens temporários de composição mock, não cores de marca novas.
 
 ### Superfícies e texto
 
@@ -223,12 +222,12 @@ O texto nunca depende da imagem para ter contraste. A hero combina:
   `alpha.canvas.18`;
 - `hero.scrim.block`: gradiente inferior de `alpha.transparent` até
   `surface.canvas`;
-- `hero.placeholder`: composição abstrata de carvão, sem fotografia, pessoa,
-  capa ou marca inventada.
+- `hero.media`: família WebP aprovada, selecionada por `picture` entre mobile,
+  tablet, desktop e ultra-wide, sem filtro de colorimetria.
 
-Na implementação, a área real atrás de todo texto deve ser testada no ponto de
-menor contraste. Se a imagem final não passar, aumenta-se o scrim; não se move
-texto para uma área imprevisível.
+Na implementação, a área real atrás de todo texto é testada no ponto de menor
+contraste. Se uma composição não passar, ajusta-se apenas o scrim de
+legibilidade; a fotografia não recebe filtro forte de cor.
 
 ### Contraste verificado
 
@@ -274,15 +273,14 @@ permanecem neutros para que a cor de marca mantenha hierarquia.
 
 | Token | Família | Uso |
 |---|---|---|
-| `font.display` | `"Bodoni Moda", "Times New Roman", serif` | Títulos editoriais curtos fora do wordmark de catálogo |
+| `font.display` | `"Bebas Neue", "Arial Narrow", sans-serif` | Títulos, destaques editoriais, leitor, painéis e dados de grande escala |
 | `font.body` | `"Source Sans 3", "Segoe UI", sans-serif` | Interface e leitura |
 | `font.mono` | `ui-monospace, "SFMono-Regular", monospace` | IDs e dados técnicos administrativos |
 
-`Bodoni Moda` cria contraste editorial e emocional. `Source Sans 3` preserva
-legibilidade de interface sem neutralizar a personalidade do display. Ambas
-possuem licença SIL Open Font License 1.1 e cobertura Latin Extended. No Gate 3,
-devem ser auto-hospedadas, com licença incluída e sem requisição runtime ao
-Google Fonts.
+`Bebas Neue` estabelece uma hierarquia direta e condensada em toda a camada de
+destaque. `Source Sans 3` mantém legibilidade em textos corridos e controles.
+O frontend não usa fontes serifadas. As famílias ativas são empacotadas
+localmente, sem requisição runtime ao Google Fonts.
 
 Antes de integrar, validar no navegador:
 
@@ -370,7 +368,7 @@ substitui borda ou contraste.
 
 | Token | Valor |
 |---|---:|
-| `shell.rail.width` | `72px` |
+| `shell.rail.width` | `56px` |
 | `shell.dock.minHeight` | `64px` |
 | `dialog.product.maxWidth` | `720px` |
 | `productCard.aspectRatio` | `3 / 4` |
@@ -390,8 +388,8 @@ substitui borda ou contraste.
 - Ícone decorativo recebe tratamento equivalente a `aria-hidden`.
 - Ícone interativo sempre pertence a `IconButton` com nome acessível.
 - Não usar emoji como ícone de produto, navegação ou feedback.
-- A biblioteca será escolhida e pesquisada no Gate 3; o contrato geométrico não
-  depende de fornecedor.
+- Phosphor Icons React é a biblioteca adotada no Gate 3, importada pelo
+  entrypoint SSR e limitada ao mapa interno de ícones do produto.
 
 ## Estados
 

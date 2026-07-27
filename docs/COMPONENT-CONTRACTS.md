@@ -196,13 +196,14 @@ um modal. `unknown` nunca deve piscar como disponível.
 
 ### `Hero`
 
-**Entradas conceituais:** `eyebrow?`, `title`, `description`, `image?`,
+**Entradas conceituais:** `eyebrow?`, `title`, `description`, `sources`,
 `primaryAction?`, `secondaryAction?`.
 
 - `title` é texto real e único `h1`; wordmark não substitui heading.
 - Imagem é decorativa quando não adiciona informação; slot aceita `alt` somente
   quando houver conteúdo relevante.
-- Sem asset, renderiza `hero.placeholder`, nunca foto ou ilustração inventada.
+- `sources` fornece as composições WebP aprovadas para mobile, tablet, desktop e
+  ultra-wide; o fallback preserva dimensões intrínsecas.
 - Scrims inline e inferior são obrigatórios.
 - A copy ocupa no máximo `hero.copy.maxColumns` e
   `content.reading.maxWidth` para descrição.

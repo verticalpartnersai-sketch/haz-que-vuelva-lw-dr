@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+import { LocaleProvider } from "@/features/i18n/locale";
 import { AppShell } from "@/features/shell/app-shell";
 import { MockSessionProvider } from "@/features/shell/mock-session";
 
+import "@fontsource/bebas-neue/400.css";
 import "./globals.css";
 
 const sourceSans = localFont({
@@ -11,13 +13,6 @@ const sourceSans = localFont({
   variable: "--font-source-sans",
   display: "swap",
   weight: "200 900",
-});
-
-const bodoniModa = localFont({
-  src: "../assets/fonts/BodoniModa-Variable.ttf",
-  variable: "--font-bodoni-moda",
-  display: "swap",
-  weight: "400 900",
 });
 
 export const metadata: Metadata = {
@@ -35,10 +30,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${sourceSans.variable} ${bodoniModa.variable}`}>
-        <MockSessionProvider>
-          <AppShell>{children}</AppShell>
-        </MockSessionProvider>
+      <body className={sourceSans.variable}>
+        <LocaleProvider>
+          <MockSessionProvider>
+            <AppShell>{children}</AppShell>
+          </MockSessionProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

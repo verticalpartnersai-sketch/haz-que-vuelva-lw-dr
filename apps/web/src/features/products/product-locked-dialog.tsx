@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { Icon } from "@/components/icon";
+import { useLocale } from "@/features/i18n/locale";
 import { ProductCover } from "@/features/products/product-cover";
 import type { Product } from "@/mocks/types";
 
@@ -27,6 +28,7 @@ export function ProductLockedDialog({
   returnFocusTo,
   onClose,
 }: ProductLockedDialogProps) {
+  const { l } = useLocale();
   const dialogRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -98,7 +100,11 @@ export function ProductLockedDialog({
         role="dialog"
       >
         <button
-          aria-label="Cerrar información del producto"
+          aria-label={l(
+            "Cerrar información del producto",
+            "Fechar informações do produto",
+            "Close product information",
+          )}
           className="icon-button product-dialog__close"
           onClick={onClose}
           type="button"
@@ -106,10 +112,9 @@ export function ProductLockedDialog({
           <Icon name="close" />
         </button>
         <div className="product-dialog__cover">
-          <ProductCover product={product} />
+          <ProductCover product={product} showDetails={false} />
         </div>
         <div className="product-dialog__content">
-          <span className="eyebrow">Producto bloqueado · simulación</span>
           <h2 id="locked-product-title" ref={titleRef} tabIndex={-1}>
             {product.name}
           </h2>
@@ -117,18 +122,31 @@ export function ProductLockedDialog({
           <div className="dialog-note">
             <Icon name="lock" />
             <span>
-              En el producto real, una compra aprobada habilitará únicamente
-              este acceso.
+              {l(
+                "En el producto real, una compra aprobada habilitará únicamente este acceso.",
+                "No produto real, uma compra aprovada liberará apenas este acesso.",
+                "In the real product, an approved purchase will unlock only this access.",
+              )}
             </span>
           </div>
           <button
             className="button button--primary"
             onClick={() =>
-              setNotice("Checkout no disponible en este prototipo estático.")
+              setNotice(
+                l(
+                  "Checkout no disponible en este prototipo estático.",
+                  "Checkout indisponível neste protótipo estático.",
+                  "Checkout is unavailable in this static prototype.",
+                ),
+              )
             }
             type="button"
           >
-            Ver oferta simulada
+            {l(
+              "Ver oferta simulada",
+              "Ver oferta simulada",
+              "View simulated offer",
+            )}
             <Icon name="external" />
           </button>
           <p aria-live="polite" className="dialog-status">

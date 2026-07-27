@@ -200,10 +200,10 @@ curtas e removidas ou reduzidas sob preferência de movimento reduzido.
   informa que as fontes oferecidas possuem licenças open source para uso
   comercial e não comercial.
 
-Decisão: `Bodoni Moda` para display e `Source Sans 3` para UI/corpo, com
-auto-hospedagem futura, arquivo de licença e sem chamada runtime ao Google.
-Revalidar os arquivos e a licença específica de cada família antes de
-adicioná-los ao Gate 3.
+Decisão histórica do Gate 2, substituída em 26 de julho de 2026: `Bodoni Moda`
+para display e `Source Sans 3` para UI/corpo. A pesquisa e as fontes permanecem
+registradas para rastreabilidade; a implementação atual não carrega nem usa
+Bodoni Moda.
 
 ## Registro de fontes — Gate 3
 
@@ -233,6 +233,36 @@ importado uma vez no layout e separado por responsabilidade.
 - [Source Sans 3 no repositório oficial](https://github.com/google/fonts/tree/main/ofl/sourcesans3):
   contém o variable font e a licença OFL 1.1 da família.
 
-Decisão: versionar os dois variable fonts em `src/assets/fonts`, junto de suas
-licenças específicas, e carregá-los com `next/font/local`. O navegador não faz
-requisição de fonte a terceiro.
+Decisão histórica do início do Gate 3, substituída em 26 de julho de 2026:
+Source Sans 3 continua em `src/assets/fonts` e é carregada com
+`next/font/local`; Bebas Neue é empacotada por `@fontsource/bebas-neue`.
+Bodoni Moda não é carregada pela aplicação. O navegador não faz requisição de
+fonte a terceiro.
+
+## Refinamento visual do Gate 3 — 26 de julho de 2026
+
+### Bebas Neue
+
+- [Google Fonts — Bebas Neue](https://fonts.google.com/specimen/Bebas+Neue):
+  identifica a família display e o peso regular.
+- [Bebas Neue no repositório oficial Google Fonts](https://github.com/google/fonts/tree/main/ofl/bebasneue):
+  contém binário, metadados e licença OFL da família.
+- [Fontsource — Bebas Neue](https://fontsource.org/fonts/bebas-neue):
+  documenta o pacote usado para empacotar a fonte no bundle da aplicação.
+
+Decisão revisada: títulos de página, títulos editoriais internos, leitor,
+painéis e dados de destaque usam Bebas Neue 400 por
+`@fontsource/bebas-neue`. Source Sans 3 permanece na interface e na leitura
+contínua. Não existe requisição runtime ao Google Fonts nem uso de fonte
+serifada no frontend.
+
+### Iconografia
+
+- [Phosphor Icons — repositório oficial React](https://github.com/phosphor-icons/react):
+  documenta o pacote React, pesos e uso por componente.
+- [Pacote oficial `@phosphor-icons/react`](https://www.npmjs.com/package/@phosphor-icons/react):
+  confirma o pacote atual e sua distribuição.
+
+Decisão: substituir desenhos de ícone locais por Phosphor Icons através de um
+mapa interno tipado. A aplicação importa o entrypoint SSR e expõe apenas os
+ícones necessários a navegação, controles, badges e placeholders.

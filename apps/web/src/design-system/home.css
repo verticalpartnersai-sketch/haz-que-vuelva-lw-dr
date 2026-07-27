@@ -11,69 +11,28 @@
   position: relative;
 }
 
-.home-hero__placeholder {
-  background:
-    repeating-radial-gradient(ellipse at 80% 38%, transparent 0 34px, var(--alpha-brand-08) 35px 37px, transparent 38px 68px),
-    radial-gradient(ellipse at 78% 34%, var(--alpha-brand-52), transparent 24%),
-    radial-gradient(ellipse at 88% 68%, var(--alpha-brand-deep-58), transparent 31%),
-    linear-gradient(112deg, var(--hero-art-black) 18%, var(--hero-art-charcoal) 54%, var(--hero-art-warm-black));
+.home-hero__media {
   inset: 0;
   overflow: hidden;
   position: absolute;
 }
 
-.home-hero__halo {
-  border: 1px solid var(--alpha-brand-28);
-  border-radius: 50%;
-  height: min(76vw, 880px);
-  position: absolute;
-  right: -17%;
-  top: -18%;
-  transform: rotate(-12deg);
-  width: min(76vw, 880px);
+.home-hero__media picture {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
-.home-hero__arc {
-  border: 1px solid var(--alpha-brand-40);
-  border-radius: 50%;
-  position: absolute;
-}
-
-.home-hero__arc--one {
-  height: 46vw;
-  max-height: 620px;
-  max-width: 760px;
-  right: -6%;
-  top: 8%;
-  transform: rotate(28deg);
-  width: 55vw;
-}
-
-.home-hero__arc--two {
-  bottom: -36%;
-  height: 36vw;
-  max-height: 520px;
-  max-width: 520px;
-  right: 22%;
-  transform: rotate(-24deg);
-  width: 36vw;
-}
-
-.home-hero__asset-note {
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  padding: var(--space-2) var(--space-3);
-  position: absolute;
-  right: var(--page-gutter);
-  top: var(--space-5);
+.home-hero__media img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
 }
 
 .home-hero__scrim {
   background:
-    linear-gradient(90deg, var(--alpha-canvas-98) 0%, var(--alpha-canvas-88) 28%, var(--alpha-canvas-34) 64%, var(--alpha-canvas-08) 100%),
+    linear-gradient(90deg, var(--alpha-canvas-98) 0%, var(--alpha-canvas-88) 22%, var(--alpha-canvas-34) 50%, var(--alpha-canvas-08) 70%, transparent 86%),
     linear-gradient(0deg, var(--surface-canvas) 0%, var(--alpha-canvas-78) 18%, transparent 58%);
   inset: 0;
   position: absolute;
@@ -88,27 +47,25 @@
 .home-hero__wordmark {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-source-sans), "Segoe UI", sans-serif;
-  font-weight: 850;
-  letter-spacing: -0.055em;
-  line-height: 0.78;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.012em;
+  line-height: 0.76;
   margin-bottom: var(--space-5);
   text-transform: uppercase;
-  transform: scaleX(0.84);
-  transform-origin: left center;
-  width: 119%;
+  width: max-content;
 }
 
 .home-hero__wordmark span {
   color: var(--text-primary);
-  font-size: clamp(3.1rem, 5.25vw, 5rem);
+  font-size: clamp(4.25rem, 7vw, 7rem);
 }
 
 .home-hero__wordmark strong {
   color: var(--brand-500);
-  font-size: clamp(4.3rem, 7vw, 6.7rem);
-  font-weight: 850;
-  margin-top: var(--space-4);
+  font-size: clamp(5.75rem, 9vw, 8.8rem);
+  font-weight: 400;
+  margin-top: var(--space-3);
 }
 
 .home-hero__content h1 {
@@ -163,7 +120,7 @@
 
 .home-page .product-rail__list {
   gap: var(--space-3);
-  grid-auto-columns: clamp(176px, 15vw, 220px);
+  grid-auto-columns: clamp(260px, 24vw, 340px);
   padding-bottom: var(--space-4);
 }
 
@@ -171,11 +128,30 @@
   position: relative;
 }
 
+.home-page .product-cover {
+  display: block;
+}
+
+.home-page .product-cover__image-placeholder {
+  border-bottom: 0;
+  height: 100%;
+}
+
+.home-page .product-cover__content {
+  inset: 0;
+  padding: var(--space-3);
+  pointer-events: none;
+  position: absolute;
+}
+
 .home-page .product-card__body {
   min-height: 0;
   padding: 0;
 }
 
+.home-page .product-cover__eyebrow,
+.home-page .product-cover__title,
+.home-page .product-cover__mark,
 .home-page .product-card__meta,
 .home-page .product-card__body > strong,
 .home-page .product-card__body > .status-badge {
@@ -191,54 +167,9 @@
   transform: none;
 }
 
-.home-page .product-cover {
-  padding: var(--space-4);
-}
-
-.home-page .product-cover::before {
-  inset: 30% 0 0;
-}
-
-.home-page .product-cover__line {
-  left: var(--space-4);
-}
-
-.home-page .product-cover__title {
-  font-family: var(--font-source-sans), "Segoe UI", sans-serif;
-  font-size: clamp(1.05rem, 1.2vw, 1.3rem);
-  font-weight: 750;
-  letter-spacing: 0.035em;
-  line-height: 1.05;
-  text-transform: uppercase;
-}
-
-.home-page .product-cover__mark {
-  display: none;
-}
-
 .home-page .product-cover__status {
-  align-items: center;
-  background: var(--brand-600);
-  border-radius: var(--radius-xs);
-  color: var(--neutral-0);
   display: inline-flex;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: var(--space-1);
-  margin-top: var(--space-3);
-  padding: var(--space-1) var(--space-2);
-  width: fit-content;
-}
-
-.home-page .product-cover__status svg {
-  height: 13px;
-  width: 13px;
-}
-
-.home-page .product-cover__status--locked {
-  background: var(--alpha-shell-88);
-  border: 1px solid var(--brand-600);
-  color: var(--brand-300);
+  margin: 0;
 }
 
 .home-page .progress-block {
@@ -275,30 +206,17 @@
   }
 
   .home-hero__wordmark span {
-    font-size: clamp(2.8rem, 14vw, 4rem);
+    font-size: clamp(3.3rem, 16vw, 4.6rem);
   }
 
   .home-hero__wordmark strong {
-    font-size: clamp(4rem, 19vw, 5.5rem);
-  }
-
-  .home-hero__asset-note {
-    left: var(--space-4);
-    right: auto;
-    top: var(--space-4);
+    font-size: clamp(4.7rem, 22vw, 6.3rem);
   }
 
   .home-hero__scrim {
     background:
-      linear-gradient(0deg, var(--surface-canvas) 1%, var(--alpha-canvas-84) 34%, var(--alpha-canvas-18) 74%),
-      linear-gradient(90deg, var(--alpha-canvas-94), var(--alpha-canvas-16));
-  }
-
-  .home-hero__halo {
-    height: 120vw;
-    right: -48%;
-    top: -5%;
-    width: 120vw;
+      linear-gradient(0deg, var(--surface-canvas) 1%, var(--alpha-canvas-76) 20%, var(--alpha-canvas-34) 48%, var(--alpha-canvas-16) 72%, transparent 88%),
+      linear-gradient(90deg, var(--alpha-canvas-76), var(--alpha-canvas-34) 58%, var(--alpha-canvas-16));
   }
 
   .home-page__rails {
@@ -310,7 +228,7 @@
   }
 
   .home-page .product-rail__list {
-    grid-auto-columns: min(58vw, 210px);
+    grid-auto-columns: min(72vw, 280px);
   }
 
   .home-page .product-card:hover {

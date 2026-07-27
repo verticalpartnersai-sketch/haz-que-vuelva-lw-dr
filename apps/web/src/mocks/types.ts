@@ -16,8 +16,7 @@ export type Product = {
   description: string;
   accessState: AccessState;
   kind: ProductKind;
-  coverVariant: "ember" | "velvet" | "noir" | "rose" | "ink" | "wine";
-  isMock: true;
+  coverImage: string;
   progress?: number;
   relatedItems?: RelatedItem[];
 };

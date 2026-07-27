@@ -21,10 +21,14 @@ test("la navegación administrativa solo existe para el escenario admin", () => 
   );
 });
 
-test("el catálogo mock cubre acceso disponible y bloqueado", () => {
+test("el catálogo cubre acceso disponible, bloqueado y portada", () => {
   assert.ok(products.some((product) => product.accessState === "available"));
   assert.ok(products.some((product) => product.accessState === "locked"));
-  assert.ok(products.every((product) => product.isMock));
+  assert.ok(
+    products.every((product) =>
+      product.coverImage.startsWith("/images/products/"),
+    ),
+  );
 });
 
 test("el contrato de producto admite acceso todavía no resuelto", () => {
@@ -41,10 +45,13 @@ test("la IA no trata acceso desconocido como disponible", () => {
     "utf8",
   );
   assert.match(aiSource, /aiAccess === "unknown"/);
-  assert.match(aiSource, /<UnknownAi \/>/);
+  assert.match(
+    aiSource,
+    /<AccessUnavailable checking=\{aiAccess === "unknown"\} \/>/,
+  );
 });
 
-test("cada slug público resuelve un producto mock", () => {
+test("cada slug público resuelve un producto", () => {
   for (const product of products) {
     assert.equal(getProductBySlug(product.slug)?.id, product.id);
   }

@@ -72,7 +72,18 @@ Todos permanecem congelados até autorização.
 | `ai-access` | Permissão, limites e configuração publicada |
 | `conversations` | Histórico canônico e mensagens |
 | `knowledge` | Documentos aprovados e sincronização de RAG |
+| `cases` | Ciclo de vida do caso de relacionamento |
+| `imports` | Recebimento privado, validação e normalização |
+| `facts` | Evidências observáveis e referências de origem |
+| `policy` | Consentimento, segurança, limites e decisão permitida |
+| `analysis` | Análise estruturada e versionada |
+| `generation` | Uso isolado do modelo após política |
+| `retention` | Expiração, exclusão e expurgo entre camadas |
 | `audit` | Registro imutável de ações críticas |
+
+Esses nomes descrevem capacidades do domínio extraídas das notas Oracle; não
+prescrevem tabelas, serviços ou uma aplicação Python separada. O contrato futuro
+da IA está em [VUELVE IA futura](VUELVE-IA-FUTURE.md).
 
 ## Direção de dependências
 

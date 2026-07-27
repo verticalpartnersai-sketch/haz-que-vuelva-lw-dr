@@ -1,0 +1,220 @@
+.oracle-chat__input {
+  background: linear-gradient(transparent, var(--alpha-shell-94) 18%);
+  padding: var(--space-2) clamp(1rem, 4vw, 3rem) var(--space-4);
+}
+
+.oracle-composer {
+  background: var(--surface-default);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--alpha-neutral-15),
+    0 14px 38px var(--alpha-canvas-34);
+  margin: 0 auto;
+  max-width: 760px;
+  padding: var(--space-3) var(--space-3) var(--space-2);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.oracle-composer:focus-within {
+  border-color: var(--brand-600);
+  box-shadow:
+    0 0 0 3px var(--alpha-brand-22),
+    0 16px 42px var(--alpha-canvas-34);
+}
+
+.oracle-composer textarea {
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  display: block;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  max-height: 112px;
+  min-height: 34px;
+  outline: 0;
+  padding: 0 var(--space-1);
+  resize: none;
+  width: 100%;
+}
+
+.oracle-composer textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.oracle-composer__footer {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  margin-top: var(--space-1);
+}
+
+.oracle-composer__footer small {
+  color: var(--text-muted);
+  font-size: 0.625rem;
+}
+
+.oracle-composer__footer button {
+  align-items: center;
+  background: linear-gradient(180deg, var(--brand-500), var(--brand-700));
+  border: 1px solid var(--brand-400);
+  border-radius: var(--radius-md);
+  color: var(--neutral-0);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.oracle-composer__footer button:hover:not(:disabled) {
+  box-shadow: 0 8px 24px var(--alpha-brand-32);
+  transform: translateY(-1px);
+}
+
+.oracle-composer__footer button:disabled {
+  background: var(--surface-disabled);
+  border-color: var(--border-subtle);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.oracle-composer__footer svg {
+  height: 16px;
+  width: 16px;
+}
+
+.oracle-thinking {
+  min-width: min(520px, 65vw);
+}
+
+.oracle-thinking__header {
+  align-items: center;
+  color: var(--text-secondary);
+  display: flex;
+  font-size: 0.8125rem;
+  gap: var(--space-2);
+}
+
+.oracle-thinking__header > span:last-child {
+  color: var(--text-muted);
+}
+
+.oracle-thinking__spinner {
+  animation: oracle-spin 0.9s linear infinite;
+  border: 2px solid var(--brand-800);
+  border-radius: 50%;
+  border-top-color: var(--brand-400);
+  height: 15px;
+  width: 15px;
+}
+
+.oracle-thinking__process {
+  background:
+    linear-gradient(180deg, var(--alpha-brand-08), transparent),
+    var(--surface-default);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  overflow: hidden;
+  padding: var(--space-4);
+  position: relative;
+}
+
+.oracle-thinking__process span {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 0.8125rem;
+  gap: var(--space-3);
+  position: relative;
+}
+
+.oracle-thinking__process span.is-active {
+  color: var(--text-primary);
+}
+
+.oracle-thinking__process i {
+  align-items: center;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 auto;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.oracle-thinking__process .is-complete i {
+  background: var(--selected-bg);
+  border-color: var(--brand-800);
+  color: var(--brand-400);
+}
+
+.oracle-thinking__process i svg {
+  height: 12px;
+  width: 12px;
+}
+
+.oracle-thinking__process i span {
+  animation: oracle-dot-pulse 1.1s ease-in-out infinite;
+  background: var(--brand-400);
+  border-radius: 50%;
+  height: 6px;
+  width: 6px;
+}
+
+.ai-access-state {
+  align-items: center;
+  background: var(--surface-default);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  padding: clamp(2rem, 8vw, 5rem);
+  text-align: center;
+}
+
+.ai-access-state > span {
+  align-items: center;
+  background: var(--selected-bg);
+  border: 1px solid var(--brand-800);
+  border-radius: 50%;
+  color: var(--brand-400);
+  display: flex;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+}
+
+.ai-access-state > span.is-checking {
+  animation: oracle-heart-beat 1.6s ease-in-out infinite;
+}
+
+.ai-access-state > span svg {
+  height: 24px;
+  width: 24px;
+}
+
+.ai-access-state h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+.ai-access-state p {
+  color: var(--text-muted);
+  margin: 0;
+}

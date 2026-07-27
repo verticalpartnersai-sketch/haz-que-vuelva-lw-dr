@@ -18,8 +18,16 @@ leia este índice e o checklist mestre.
 7. [Especificação frontend](FRONTEND-SPEC.md): telas estáticas do próximo gate.
 8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md): rotas, mocks,
    validações e evidências do Gate 3.
-9. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
-10. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+9. [VUELVE IA futura](VUELVE-IA-FUTURE.md): experiência, pipeline e limites
+   futuros sem implementação.
+10. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md): gate de
+    dados reais, isolamento, retenção e exclusão.
+11. [Integrações futuras](INTEGRATIONS-FUTURE.md): fornecedores previstos e
+    contratos ainda pendentes.
+12. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
+    pendências e conflitos.
+13. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+14. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
 
 ## Estado atual
 
@@ -56,6 +64,10 @@ leia este índice e o checklist mestre.
 | Rotas, papéis e transições | `NAVIGATION.md` |
 | Aceite do frontend estático | `FRONTEND-SPEC.md` |
 | Estado da implementação frontend | `FRONTEND-IMPLEMENTATION.md` |
+| Experiência e pipeline futuros da VUELVE IA | `VUELVE-IA-FUTURE.md` |
+| Privacidade, segurança, retenção e auditoria | `PRIVACY-SECURITY-AUDIT.md` |
+| Fronteiras das integrações futuras | `INTEGRATIONS-FUTURE.md` |
+| Ingestão e precedência das notas Oracle | `ORACLE-TRACEABILITY.md` |
 | Fontes externas e decisões atuais | `RESEARCH.md` |
 | Estado e gates | `PROJECT-CHECKLIST.md` |
 

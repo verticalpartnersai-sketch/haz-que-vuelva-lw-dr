@@ -158,6 +158,12 @@ Os escopos global e individual usam `containerTag` determinística em chamadas
 separadas, conforme a API v4 pesquisada. Nunca usar tag recebida livremente do
 cliente.
 
+A experiência e o pipeline de domínio pretendidos estão separados em
+[VUELVE IA futura](VUELVE-IA-FUTURE.md). Requisitos de consentimento,
+retenção, exclusão, suporte e auditoria estão em
+[Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md). Esses
+documentos não autorizam implementação.
+
 ## Prompt e documentos
 
 - Prompt é versionado, publicado e reversível.
@@ -201,3 +207,5 @@ cliente.
 
 Fontes oficiais e decisões sustentadas por Supabase, Perfect Pay, Cloudflare
 R2, Supermemory e Resend estão em [Pesquisa e fontes](RESEARCH.md).
+As fronteiras e pendências por fornecedor estão em
+[Integrações futuras](INTEGRATIONS-FUTURE.md).

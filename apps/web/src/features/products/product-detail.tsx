@@ -1,20 +1,28 @@
+"use client";
+
 import Link from "next/link";
 
 import { Icon } from "@/components/icon";
+import { useLocale } from "@/features/i18n/locale";
 import { DownloadSimulation } from "@/features/products/download-simulation";
 import { featureFlags } from "@/mocks/data";
 import type { Product } from "@/mocks/types";
 
 export function ProductDetail({ product }: { product: Product }) {
+  const { l, t } = useLocale();
+
   return (
-    <article className="product-detail page-frame">
+    <article className="product-detail page-frame page-frame--top">
       <Link className="back-link" href="/productos">
         <Icon name="arrowLeft" />
-        Volver a Productos
+        {l("Volver a Productos", "Voltar para Produtos", "Back to Products")}
       </Link>
       <header className="product-detail__header">
         <div>
-          <span className="eyebrow">{product.eyebrow} · Contenido de ejemplo</span>
+          <span className="eyebrow">
+            {product.eyebrow} ·{" "}
+            {l("Contenido de ejemplo", "Conteúdo de exemplo", "Example content")}
+          </span>
           <h1 data-route-heading tabIndex={-1}>
             {product.name}
           </h1>
@@ -22,7 +30,7 @@ export function ProductDetail({ product }: { product: Product }) {
         </div>
         <span className="status-badge status-badge--available">
           <Icon name="check" />
-          Disponible
+          {t("status.available")}
         </span>
       </header>
 
@@ -36,28 +44,56 @@ export function ProductDetail({ product }: { product: Product }) {
         <section aria-labelledby="reader-title" className="reader-section">
           <div className="reader-section__heading">
             <div>
-              <span className="section-kicker">Lectura integrada</span>
-              <h2 id="reader-title">Documento PDF de ejemplo</h2>
+              <span className="section-kicker">
+                {l("Lectura integrada", "Leitura integrada", "Embedded reading")}
+              </span>
+              <h2 id="reader-title">
+                {l(
+                  "Documento PDF de ejemplo",
+                  "Documento PDF de exemplo",
+                  "Example PDF document",
+                )}
+              </h2>
             </div>
             <DownloadSimulation />
           </div>
           <div
-            aria-label="Vista previa del lector PDF de ejemplo"
+            aria-label={l(
+              "Vista previa del lector PDF de ejemplo",
+              "Prévia do leitor de PDF de exemplo",
+              "Example PDF reader preview",
+            )}
             className="pdf-reader"
             role="img"
           >
             <div className="pdf-reader__toolbar">
-              <span>Documento de ejemplo</span>
-              <span>Página 1 de 12 · simulación</span>
+              <span>
+                {l("Documento de ejemplo", "Documento de exemplo", "Example document")}
+              </span>
+              <span>
+                {l(
+                  "Página 1 de 12 · simulación",
+                  "Página 1 de 12 · simulação",
+                  "Page 1 of 12 · simulation",
+                )}
+              </span>
             </div>
             <div className="pdf-reader__canvas">
               <div className="pdf-page">
                 <span className="pdf-page__eyebrow">HAZ QUE VUELVA</span>
-                <strong>Lectura de ejemplo</strong>
+                <strong>
+                  {l("Lectura de ejemplo", "Leitura de exemplo", "Example reading")}
+                </strong>
                 <span />
                 <span />
                 <span />
-                <small>Este contenedor no carga un archivo real.</small>
+                <small>
+                  {l(
+                    "Este contenedor no carga un archivo real.",
+                    "Este contêiner não carrega um arquivo real.",
+                    "This container does not load a real file.",
+                  )}
+                </small>
               </div>
             </div>
           </div>
@@ -65,8 +101,16 @@ export function ProductDetail({ product }: { product: Product }) {
 
         {product.relatedItems?.length ? (
           <aside aria-labelledby="related-title" className="related-panel">
-            <span className="section-kicker">Recorrido</span>
-            <h2 id="related-title">Contenido relacionado</h2>
+            <span className="section-kicker">
+              {l("Recorrido", "Percurso", "Journey")}
+            </span>
+            <h2 id="related-title">
+              {l(
+                "Contenido relacionado",
+                "Conteúdo relacionado",
+                "Related content",
+              )}
+            </h2>
             <ol>
               {product.relatedItems.map((item, index) => (
                 <li key={item.id}>
@@ -84,10 +128,16 @@ export function ProductDetail({ product }: { product: Product }) {
 
       {featureFlags.comments ? (
         <section aria-labelledby="comments-title" className="surface-card">
-          <span className="section-kicker">Comunidad</span>
-          <h2 id="comments-title">Comentarios</h2>
+          <span className="section-kicker">
+            {l("Comunidad", "Comunidade", "Community")}
+          </span>
+          <h2 id="comments-title">{l("Comentarios", "Comentários", "Comments")}</h2>
           <p>
-            Función futura sin envío, moderación ni persistencia en este gate.
+            {l(
+              "Función futura sin envío, moderación ni persistencia en este gate.",
+              "Função futura sem envio, moderação ou persistência neste gate.",
+              "Future feature with no posting, moderation, or persistence in this gate.",
+            )}
           </p>
         </section>
       ) : null}

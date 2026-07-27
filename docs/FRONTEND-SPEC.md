@@ -49,7 +49,12 @@ preço, código Perfect Pay, domínio, asset ou credencial.
 - Shell preto profundo com experiência reconhecível de catálogo audiovisual
   premium, sem copiar marca ou assets da referência.
 - Rail lateral muito estreito, fixo e predominantemente preto.
-- Hero larga, dominante, com slot de imagem e gradientes fortes de leitura.
+- Hero larga e dominante, com família fotográfica aprovada em WebP para
+  mobile, tablet, desktop e ultra-wide.
+- Seleção responsiva por `picture`/`source`, dimensões intrínsecas no fallback e
+  recorte por `object-fit: cover`.
+- Somente os gradientes de legibilidade do design system podem sobrepor a
+  fotografia; não aplicar filtro que altere sua colorimetria.
 - Wordmark HAZ QUE VUELVA no topo.
 - Copy compacta sobreposta à esquerda.
 - Primeiro trilho denso na transição inferior da hero e outros trilhos abaixo.
@@ -114,7 +119,8 @@ preço, código Perfect Pay, domínio, asset ou credencial.
 - Navegação funciona por teclado.
 - Modal mantém foco corretamente.
 - Estados de produto e IA são compreensíveis sem depender de cor.
-- Hero funciona sem asset final.
+- Hero seleciona a fonte correta nos quatro breakpoints e mantém área reservada
+  estável enquanto a imagem carrega.
 - Fonte é auto-hospedada com licença incluída e sem chamada runtime externa.
 - Página reflow a 320 CSS px e suporta resize de texto a 200%.
 - Movimento reduzido remove deslocamentos não essenciais.

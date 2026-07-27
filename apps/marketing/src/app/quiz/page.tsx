@@ -13,14 +13,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: {
-      es: "Diagnóstico de 60 segundos",
-      pt: "Diagnóstico de 60 segundos",
-      en: "60-second diagnosis",
+      es: "Diagnóstico privado de reconexión",
+      pt: "Diagnóstico privado de reconexão",
+      en: "Private reconnection diagnosis",
     }[locale],
     description: {
-      es: "Responde cinco preguntas y descubre qué error debes cortar hoy y qué ruta seguir durante los próximos 7 días.",
-      pt: "Responda a cinco perguntas e descubra qual erro interromper hoje e qual rota seguir durante os próximos 7 dias.",
-      en: "Answer five questions and discover which mistake to stop today and which route to follow for the next 7 days.",
+      es: "Responde cinco preguntas y descubre tu Índice de Distancia Emocional, la ruta de tu canal y la primera decisión para los próximos 7 días.",
+      pt: "Responda cinco perguntas e descubra seu Índice de Distância Emocional, a rota do seu canal e a primeira decisão para os próximos 7 dias.",
+      en: "Answer five questions to discover your Emotional Distance Index, the state of your channel, and the first decision for the next 7 days.",
     }[locale],
   };
 }

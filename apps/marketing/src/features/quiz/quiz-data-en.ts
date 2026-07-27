@@ -1,329 +1,292 @@
 import type {
-  MainError,
+  QuizCopy,
   QuizQuestion,
-  QuizRoute,
-  ResultDefinition,
-} from "@/features/quiz/quiz-data";
+} from "@/features/quiz/quiz-contracts";
+import { resultCopyEn } from "@/features/quiz/quiz-results-en";
 
-export const quizQuestionsEn: readonly QuizQuestion[] = [
+const questions: readonly QuizQuestion[] = [
   {
-    id: "tiempo_ruptura",
-    title: "How long has it been since the relationship ended or went cold?",
+    id: "current_state",
+    title: "To prepare a route for your case, where do things stand today?",
     microcopy:
-      "Time does not decide whether you will get back together, but it changes what a message can trigger today.",
-    transition:
-      "Good. Now I need to know whether there is still a real channel between you, not the one you wish existed.",
+      "Your answers are used only to organize this diagnosis. You do not need to upload conversations or share your name.",
     options: [
-      { label: "Less than 7 days", value: "menos_7d", tags: ["ruptura_reciente", "urgencia_alta"] },
-      { label: "Between 1 and 4 weeks", value: "1_4_semanas", tags: ["ruptura_activa"] },
-      { label: "Between 1 and 3 months", value: "1_3_meses", tags: ["distancia_instalada"] },
-      { label: "More than 3 months", value: "mas_3_meses", tags: ["distancia_larga"] },
       {
-        label: "We did not break up, but he is cold and distant",
-        value: "sin_ruptura_frio",
-        tags: ["yellow_possible"],
+        label: "We still talk, but he is cold, distant, or replies less and less",
+        value: "cold_contact",
       },
       {
-        label: "We start talking again, then he pulls away",
-        value: "intermitente",
-        tags: ["yellow_possible", "recaida"],
+        label: "He blocked me, stopped replying, or disappeared completely",
+        value: "blocked",
+      },
+      {
+        label: "There is another woman, he went back to an ex, or I feel replaced",
+        value: "third_person",
+      },
+      {
+        label: "He reaches out, gets close, and then disappears again",
+        value: "intermittent",
+      },
+      {
+        label: "He has started conversations again and keeps them going without pressure",
+        value: "green_contact",
+      },
+      {
+        label: "We only talk about children, work, money, or something we must resolve",
+        value: "logistics",
+      },
+      {
+        label: "He clearly asked me not to contact him, I am afraid, or there is a legal restriction",
+        value: "explicit_stop",
       },
     ],
   },
   {
-    id: "estado_canal",
-    title: "What is the contact between you like today?",
-    microcopy:
-      "Watching your stories or unblocking you is not the same as reaching out and sustaining a conversation.",
-    transition:
-      "This answer matters more than any isolated “sign.” Now we need to see what happened the last time you tried to get closer.",
+    context:
+      "We have identified the state of the channel. Now let’s measure how long the distance has been building.",
+    id: "distance_time",
+    title: "How long has the relationship been cold, broken, or interrupted?",
     options: [
-      { label: "He blocked me everywhere", value: "bloqueo_total", tags: ["gray"] },
       {
-        label: "He clearly asked me not to contact him",
-        value: "no_contacto_explicito",
-        tags: ["red"],
+        label: "Less than 7 days",
+        transition:
+          "You are still in the phase where an impulsive reaction can change the tone of everything.",
+        value: "lt_7d",
       },
       {
-        label: "He can see my messages, but replies coldly or leaves me on read",
-        value: "abierto_frio",
-        tags: ["yellow"],
+        label: "Between 1 and 4 weeks",
+        transition:
+          "Distance has already created a new routine. What you do now must break the pattern, not repeat it.",
+        value: "1_4w",
       },
       {
-        label: "He replies to be polite, but never reaches out",
-        value: "abierto_cortes",
-        tags: ["yellow"],
+        label: "Between 1 and 3 months",
+        transition:
+          "At this point, repeating the same strategy only confirms the image he is already avoiding.",
+        value: "1_3m",
       },
       {
-        label: "He starts some conversations and keeps them going",
-        value: "el_inicia",
-        tags: ["green"],
-      },
-      {
-        label: "We only talk about children, work, or unfinished business",
-        value: "solo_logistica",
-        tags: ["logistics"],
-      },
-      {
-        label: "There are threats, fear, harassment, or a legal issue",
-        value: "riesgo_seguridad",
-        tags: ["red"],
+        label: "More than 3 months",
+        transition:
+          "After months, the key is not sending more. It is creating a different experience and watching for real openness.",
+        value: "gt_3m",
       },
     ],
   },
   {
-    id: "intento_previo",
-    title: "Since he pulled away, what was the last thing you did?",
-    microcopy:
-      "Choose the closest answer, even if admitting it feels a little uncomfortable now.",
-    transition:
-      "A pattern is already emerging. Now let’s address what changes the decision most: whether there is another woman or only the fear that there is.",
+    id: "last_action",
+    title: "Since he pulled away, which action is closest to what you did?",
     options: [
       {
-        label: "I sent him a long message explaining everything",
-        value: "texton",
-        tags: ["presion", "main_error_texton"],
+        label: "I sent a long message, explained everything, or asked for another chance",
+        value: "long_message",
       },
       {
-        label: "I begged, insisted, or called him several times",
-        value: "insistencia",
-        tags: ["presion", "main_error_insistencia"],
+        label: "I insisted, demanded an answer, or texted again after no reply",
+        value: "insistence",
       },
       {
-        label: "I disappeared completely, hoping he would miss me",
-        value: "contacto_cero_ciego",
-        tags: ["main_error_silencio"],
+        label: "I disappeared because I was told no contact always works",
+        value: "blind_silence",
       },
       {
-        label: "I posted something to make him jealous or checked his social media",
-        value: "celos_vigilancia",
-        tags: ["main_error_celos", "third_person_possible"],
+        label: "I posted indirect messages, tried to make him jealous, or acted over it",
+        value: "jealousy",
       },
       {
-        label: "We slept together, then the silence returned",
-        value: "intimidad_intermitente",
-        tags: ["recaida", "dignidad"],
+        label: "We met or became intimate, but he turned cold again afterward",
+        value: "intimacy",
       },
       {
-        label: "I have not done anything yet; I came here before acting",
-        value: "sin_accion",
-        tags: ["neutral"],
+        label: "I have not done anything yet; I came here before another mistake",
+        value: "pause",
+      },
+    ].map((option) => ({
+      ...option,
+      transition:
+        "That action does not define your story, but it may be feeding the Rejection Loop™ that keeps the channel cold.",
+    })),
+  },
+  {
+    id: "dominant_pain",
+    title: "What is hurting you most right now?",
+    variant: "cards",
+    options: [
+      {
+        emoji: "◌",
+        label: "Opening WhatsApp, seeing his silence, and feeling the emptiness",
+        transition:
+          "Silence hurts because it gives your mind room to invent a different answer every hour.",
+        value: "silence",
+      },
+      {
+        emoji: "◇",
+        label: "Imagining him happy with someone else while I wait for a sign",
+        transition:
+          "Comparison makes her every move seem more important than what he actually does with you.",
+        value: "replacement",
+      },
+      {
+        emoji: "↯",
+        label: "Thinking my anxiety destroyed my last chance",
+        transition:
+          "Guilt pushes you to over-explain. Each new explanation can sound like more pressure.",
+        value: "guilt",
+      },
+      {
+        emoji: "↺",
+        label: "Having him return when lonely but never truly choose me",
+        transition:
+          "Returning out of nostalgia or loneliness does not mean he is willing to repair the relationship.",
+        value: "second_option",
       },
     ],
   },
   {
-    id: "tercera_persona",
-    title: "What is actually happening with the other woman?",
-    microcopy:
-      "A suspicion, a confirmed relationship, and being treated as a second option are not the same problem.",
-    transition:
-      "Understood. There is only one question left, and it may prevent your next mistake.",
+    id: "dominant_fear",
+    title: "If you keep acting the same way, what are you most afraid will happen?",
     options: [
       {
-        label: "He is with another woman, and I know for certain",
-        value: "otra_confirmada",
-        tags: ["third_person"],
-      },
-      { label: "He went back to his ex", value: "volvio_ex", tags: ["third_person"] },
-      {
-        label: "I suspect there is someone else, but I have no proof",
-        value: "otra_sospecha",
-        tags: ["third_person_light"],
+        emoji: "😔",
+        label: "He will forget me and our history will stop meaning anything",
+        value: "forgotten",
       },
       {
-        label: "He reaches out, but hides me or gives me no clear place",
-        value: "segunda_opcion",
-        tags: ["third_person", "dignidad"],
-      },
-      { label: "There is no other woman in my case", value: "sin_otra", tags: ["neutral"] },
-      { label: "I prefer not to answer", value: "otra_no_declara", tags: ["neutral"] },
-    ],
-  },
-  {
-    id: "accion_urgente",
-    title: "If you closed this quiz now, what would you do today?",
-    microcopy:
-      "Do not choose what sounds mature. Choose what you are genuinely about to do.",
-    transition:
-      "Done. Do not send anything yet. We will compare the state of the channel, your last attempt, and the presence of another woman.",
-    options: [
-      {
-        label: "I would send him a long message",
-        value: "enviar_texton_hoy",
-        tags: ["main_error_texton"],
+        emoji: "💔",
+        label: "He will fall for someone else and I will be too late",
+        value: "other_woman",
       },
       {
-        label: "I would call him or go find him",
-        value: "buscar_sin_avisar",
-        tags: ["risk_escalation"],
+        emoji: "⏳",
+        label: "The last window for contact will close completely",
+        value: "closed_window",
       },
       {
-        label: "I would post something to make him react",
-        value: "provocar_celos_hoy",
-        tags: ["main_error_celos"],
+        emoji: "🔁",
+        label: "He will return for one night, disappear again, and keep me in the cycle",
+        value: "repeat_cycle",
       },
-      {
-        label: "I would check his social media or hers",
-        value: "vigilar_hoy",
-        tags: ["main_error_celos"],
-      },
-      {
-        label: "If he messaged me, I would reply",
-        value: "responder_si_escribe",
-        tags: ["yellow_green"],
-      },
-      {
-        label: "I would wait to see my route before acting",
-        value: "esperar_ruta",
-        tags: ["neutral"],
-      },
-    ],
+    ].map((option) => ({
+      ...option,
+      transition:
+        "We have what we need. Now we will compare the channel, time, and your last action.",
+    })),
   },
 ];
 
-export const loadingMessagesEn = [
-  "Reviewing the channel between you...",
-  "Detecting which action could push him further away...",
-  "Separating facts about the other woman from what anxiety fills in...",
-  "Preparing your first decision...",
-] as const;
-
-export const commonOfferItemsEn = [
-  { title: "R.E.G.R.E.S.A. 7D™ Method", description: "one step a day so you can stop improvising." },
-  {
-    title: "Decision tree",
-    description: "write, reply, or wait according to the real state of the channel.",
+export const quizCopyEn: QuizCopy = {
+  intro: {
+    eyebrow: "PRIVATE RECONNECTION DIAGNOSIS · 2 MINUTES",
+    headline:
+      "Discover what is pushing him away… and how to open a new Affective Memory Window™.",
+    subheadline:
+      "Answer five questions. See what is closing the door, which mistake to stop today, and the first decision in your 7-day protocol.",
+    cta: "Discover what is happening",
+    privacy:
+      "Your answers are used only for this diagnosis. We do not ask for your name, screenshots, or conversations.",
   },
-  {
-    title: "Special routes",
-    description: "blocking, cold contact, openness, another woman, and required contact.",
-  },
-  {
-    title: "Essential messages",
-    description: "only with the right timing, limit, and next step.",
-  },
-  {
-    title: "Reciprocity map",
-    description: "so you do not confuse a read receipt, sex, nostalgia, or politeness with reconciliation.",
-  },
-  {
-    title: "Final worksheet",
-    description: "move forward, wait, repair, or close without continuing to lose yourself.",
-  },
-] as const;
-
-export const resultsEn: Record<QuizRoute, ResultDefinition> = {
-  red: {
-    route: "red",
-    label: "Safety first",
-    headline: "Your priority today is to stop putting yourself at risk.",
-    diagnosis:
-      "Your answer activated a clear boundary: threats, fear, harassment, legal action, or an explicit request not to contact him. In this situation, writing from another account, using another number, asking a friend to intervene, or showing up unannounced can make things worse for both of you.",
-    decisionTitle: "What to do during the next 24 hours",
-    decision: "",
-    safetySteps: [
-      "Do not contact him.",
-      "Save evidence if there are threats or harassment.",
-      "Tell someone you trust.",
-      "If you are in danger, seek local support, legal guidance, or emergency services.",
-      "Write what you wanted to say in a private note, but do not send it.",
+  questions,
+  loaderOne: {
+    title: "Analyzing your case and the real state of contact…",
+    states: [
+      "Reading the state of the channel…",
+      "Identifying the active Rejection Loop™…",
+      "Calculating your Emotional Distance Index…",
+      "Preparing the first decision for your case…",
     ],
-    closing:
-      "I will not turn a safety boundary into a sales objection. Haz Que Vuelva™ is not appropriate for trying to reopen this channel now.",
-    cta: "Find support and leave the quiz",
-  },
-  gray: {
-    route: "gray",
-    label: "Channel closed",
-    headline: "Right now, each attempt may make him see your name and expect more pressure.",
-    diagnosis:
-      "The channel is closed or has no legitimate sign of openness. He may have blocked you, stopped replying, or asked for space. Sending “just one last thing” may calm you for a few minutes; to him, it may confirm that distance was the only way to breathe.",
-    decisionTitle: "Your first decision",
-    decision:
-      "Do not look for an opening today. No other number, indirect posts, mutual friends, or “casual” phrase carrying a hidden confession. If he appears, reply briefly. If he does not, do not manufacture a sign.",
-    pitch: [
-      "The problem returns tomorrow, when anxiety starts bargaining with you again: “I’ll only check his profile,” “I’ll only ask how he is,” “I’ll only send this sentence.”",
-      "Haz Que Vuelva™ gives you a 7-day route to break that cycle, identify whether the channel is still closed, and know exactly when to write, reply, or wait. It includes the R.E.G.R.E.S.A. 7D™ Method, the decision tree, and routes for blocking, silence, and cold contact.",
+    captions: [
+      "Your case does not get a universal rule. It gets a route.",
+      "The decision comes before the message.",
+      "Seven days, one action at a time.",
     ],
-    cta: "Get my 7-day route for US$7",
-    microcopy: "Immediate access · 7-day guarantee · does not teach you to bypass blocks.",
   },
-  yellow: {
-    route: "yellow",
-    label: "Fragile channel",
-    headline: "There is conversation, but one word too many could send him back into silence.",
-    diagnosis:
-      "He may read, reply politely, or appear from time to time. That is enough for your hope to race ahead, but not enough to talk about everything. When he gives you two lines and you give him the whole relationship, the channel becomes heavy again.",
-    decisionTitle: "Your first decision",
-    decision:
-      "If he did not write, do not open an emotional conversation today. If he did, match his level of intensity: brief, calm, and without asking for a definition. A cold reply is not the moment to confront him about the past.",
-    pitch: [
-      "Your case needs sequence: how much to reply, when to stop, which sign allows you to advance, and how to distinguish politeness from interest.",
-      "Haz Que Vuelva™ organizes that sequence over 7 days with the R.E.G.R.E.S.A. 7D™ Method, the openness map, and messages that only appear when your route allows contact.",
+  prediagnosis: {
+    alert: "INITIAL ANALYSIS COMPLETE!",
+    scoreTitle: "Emotional Distance Index",
+    scoreSubtitle:
+      "Based on the channel, time, and pressure created by your last action.",
+    loop: [
+      "silence or an ambiguous signal",
+      "anxiety",
+      "message, pressure, jealousy, or a dramatic disappearance",
+      "more distance",
+      "more urgency to fix it",
+      "repeat",
     ],
-    cta: "I want to protect this opening for US$7",
-    microcopy: "Immediate access · 7-day guarantee · complete method with no required extras.",
-  },
-  green: {
-    route: "green",
-    label: "There is openness",
-    headline: "He reached out again. The risk now is rushing in and frightening him with everything you have held back.",
-    diagnosis:
-      "There is a better sign here: he initiates, asks questions, or sustains the conversation. There may be curiosity, nostalgia, or a wish to repair. You still do not know which one. Turning this opening into a talk about getting back together, promises, and defining everything can burn the moment you wanted to protect.",
-    decisionTitle: "Your first decision",
-    decision:
-      "Match the energy he brings. If he opens something emotional, listen before demanding answers. If he suggests meeting, choose a clear context; one intense night followed by silence is not reconciliation.",
-    pitch: [
-      "This route has the most opportunity and, for that exact reason, needs the most precision. Haz Que Vuelva™ guides you to show change without begging, measure reciprocity, and reach a real conversation without trying to solve the entire relationship at once.",
-      "You receive the R.E.G.R.E.S.A. 7D™ Method, the reciprocity scale, the Minimum Change Test, and the final decision to move forward, wait, or stop.",
+    bodyAfterLoop: [
+      "The way out does not begin with a magic phrase. It begins when you change the recent experience he associates with you inside the Affective Memory Window™.",
+      "This model does not read his mind. It helps you avoid repeating the pressure he is already trying to escape.",
     ],
-    cta: "I want to protect this opportunity for US$7",
-    microcopy: "Immediate access · 7-day guarantee · does not guarantee a reunion.",
-  },
-  logistics: {
-    route: "logistics",
-    label: "Required contact",
-    headline: "He replies because he has to. You still do not know whether he also wants to get closer.",
-    diagnosis:
-      "Children, work, money, or unfinished business keep a channel open, but it is functional. Each time you mix coordination with complaints, jealousy, or nostalgia, he learns that even necessary conversations carry an emotional burden.",
-    decisionTitle: "Your first decision",
-    decision:
-      "Reply only to the practical matter. Keep the message brief, the information clear, and the ending clean. If a separate emotional sign appears, evaluate it later; do not force it into a conversation about schedules, payments, or children.",
-    pitch: [
-      "Haz Que Vuelva™ shows you how to separate the functional channel from the emotional one, what to reply without seeming cold or desperate, and when an opening exists beyond obligation.",
-      "The plan includes the logistics route within the R.E.G.R.E.S.A. 7D™ Method, the write / reply / wait tree, and specific boundaries so children, work, or pending matters are not used as an emotional bridge.",
+    needs: [
+      "what to stop today",
+      "whether your channel allows writing, replying, or waiting",
+      "which signal to watch before the next step",
+      "when to move and when to do nothing",
     ],
-    cta: "I want to separate contact and reconnection for US$7",
-    microcopy: "Immediate access · 7-day guarantee · does not use third parties to pressure him.",
+    cta: "SHOW ME HOW TO REOPEN MY WINDOW",
+    microcopy:
+      "Your full result is being prepared. First, I need to know which change matters most to you.",
   },
-  third_person: {
-    route: "third_person",
-    label: "There is another woman",
-    headline: "Accepting crumbs out of fear of losing him can hurt you more than the other woman.",
-    diagnosis:
-      "There may be a confirmed relationship, a return to his ex, a suspicion, or a hidden place in his life where he only lets you in when he feels alone. While you watch her profile and think about competing, he keeps receiving your attention without giving you clarity.",
-    decisionTitle: "Your first decision",
-    decision:
-      "Do not check their social media or confront her. Separate facts from assumptions. If he is with someone else, do not try to break that relationship. If he reaches out in secret or only at night, do not turn desire into proof that he chose you.",
-    pitch: [
-      "Your route begins by recovering your judgment before seeking connection. Haz Que Vuelva™ guides you for 7 days to step out of comparison, measure the place he actually gives you, and recognize when an opening deserves a reply and when it only keeps you as a second option.",
-      "It includes the R.E.G.R.E.S.A. 7D™ Method, the third-person route, the reciprocity traffic light, and the first decision so you do not act from the fear of being replaced.",
+  desire: {
+    title:
+      "Besides knowing what to stop today, do you want to use the next 7 days to stop reinforcing pressure and rebuild curiosity and openness?",
+    options: [
+      {
+        label: "Yes. I want him to feel my absence and want to move closer",
+        value: "desire_missing",
+      },
+      {
+        label: "Yes. I want a direct route so anxiety does not cost me the opening",
+        value: "desire_control",
+      },
     ],
-    cta: "I want my route without competing for US$7",
-    microcopy: "Immediate access · 7-day guarantee · does not teach surveillance, attacks, or breaking up relationships.",
   },
-};
-
-export const mainErrorCopyEn: Record<MainError, string> = {
-  texton:
-    "You are trying to resolve fear with more words. He may read pressure where you are trying to show love.",
-  insistencia: "Your urgency is asking for presence when the channel needs space.",
-  contacto_cero_ciego:
-    "You are using silence as a bet, without knowing whether he feels your absence or is simply getting used to it.",
-  celos_vigilancia:
-    "The other woman is already taking up too much space in your decisions. Watching her will not restore your place; it only increases panic.",
-  intimidad_intermitente:
-    "The chemistry is still alive, but he is not yet showing that he wants to rebuild the relationship.",
-  none:
-    "You arrived before making the next mistake. That advantage is worth more than it seems.",
+  commitment: {
+    title:
+      "Your protocol may tell you to write, reply, or wait. Will you follow the route for 7 days, even when anxiety wants something else?",
+    options: [
+      {
+        label: "Yes. I want to stop improvising and follow one decision a day",
+        value: "commit_route",
+      },
+      {
+        label: "Yes. But it must be simple, direct, and useful starting today",
+        value: "commit_simple",
+      },
+    ],
+  },
+  loaderTwo: {
+    title: "Creating your initial 7-day route…",
+    states: [
+      "Separating real signals from interpretations…",
+      "Defining what you need to stop today…",
+      "Matching your route to the R.E.G.R.E.S.A. 7D™ Method…",
+      "Preparing your first 24-hour decision…",
+    ],
+    captions: [
+      "Day 1 · Regulate: stop acting to relieve anxiety.",
+      "Day 2 · Examine: identify the route and state of the channel.",
+      "Day 3 · Generate: create one small, observable change.",
+      "Days 4–7: reopen only with a channel, measure reciprocity, and decide.",
+    ],
+  },
+  painImpulses: {
+    silence: {
+      sentence: "his silence and the emptiness it left",
+      impulse: "look for an answer that relieves uncertainty right now",
+    },
+    replacement: {
+      sentence: "the fear of being replaced",
+      impulse: "compare, monitor, or try to provoke a reaction",
+    },
+    guilt: {
+      sentence: "guilt about what you did",
+      impulse: "over-explain and try to fix everything in one message",
+    },
+    second_option: {
+      sentence: "the fear of remaining his second option",
+      impulse: "accept a return without requiring consistency",
+    },
+  },
+  ...resultCopyEn,
 };

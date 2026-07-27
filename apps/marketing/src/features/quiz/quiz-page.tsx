@@ -1,199 +1,245 @@
 "use client";
 
-import type { FormEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useLocale } from "@/features/i18n/locale";
+import type {
+  DesireCommitment,
+  ExecutionCommitment,
+  QuizAnswers,
+  QuizOption,
+  QuizStage,
+} from "@/features/quiz/quiz-contracts";
 import {
-  type QuizAnswers,
-  type QuizOption,
-} from "@/features/quiz/quiz-data";
-import {
+  calculateDistanceIndex,
   channelStateForRoute,
-  resolveMainError,
+  distanceBandFor,
+  isReconquista30Eligible,
   resolveRoute,
+  resolvedLastAction,
+  routeSoFar,
 } from "@/features/quiz/quiz-engine";
 import {
-  Intro,
   PublicHeader,
-  QuestionStep,
 } from "@/features/quiz/quiz-intro-question";
-import {
-  LeadCapture,
-  Loading,
-} from "@/features/quiz/quiz-lead-loading";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
-import { Result } from "@/features/quiz/quiz-result";
+import { QuizStageRouter } from "@/features/quiz/quiz-stage-router";
 import {
-  selectedOption,
+  clearQuizState,
+  persistQuizState,
   track,
   utmParameters,
-  type Lead,
-  type QuizStage,
 } from "@/features/quiz/quiz-runtime";
 
 function scrollQuizToTop() {
   window.scrollTo({ behavior: "auto", left: 0, top: 0 });
+  document.documentElement.scrollTop = 0;
 }
 
 export function QuizPage() {
   const { l, locale } = useLocale();
-  const { loadingMessages, questions, results } = quizContentFor(locale);
+  const copy = quizContentFor(locale);
   const [stage, setStage] = useState<QuizStage>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
-  const [lead, setLead] = useState<Lead>({
-    name: "",
-    email: "",
-    country: "mx",
-    consent: false,
-  });
-  const [leadError, setLeadError] = useState("");
-  const [loadingCompleted, setLoadingCompleted] = useState(0);
+  const [locked, setLocked] = useState(false);
+  const [loaderTick, setLoaderTick] = useState(0);
   const [checkoutStatus, setCheckoutStatus] = useState("");
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const resultRoute = useMemo(() => resolveRoute(answers), [answers]);
+  const advanceTimerRef = useRef<number | null>(null);
+  const trackedViewRef = useRef("");
+  const route = useMemo(() => resolveRoute(answers), [answers]);
+  const distanceIndex = useMemo(
+    () => calculateDistanceIndex(answers),
+    [answers],
+  );
+  const distanceBand = distanceBandFor(distanceIndex);
 
   useEffect(() => {
-    const labels: Record<QuizStage, string> = {
-      intro: l("Diagnóstico", "Diagnóstico", "Diagnosis"),
-      question: `${l("Pregunta", "Pergunta", "Question")} ${questionIndex + 1} ${l("de", "de", "of")} ${questions.length}`,
-      lead: l(
-        "Tu diagnóstico está listo",
-        "Seu diagnóstico está pronto",
-        "Your diagnosis is ready",
-      ),
-      loading: l(
-        "Preparando tu resultado",
-        "Preparando seu resultado",
-        "Preparing your result",
-      ),
-      result: l("Tu resultado", "Seu resultado", "Your result"),
-    };
-
-    document.title = `${labels[stage]} · Haz Que Vuelva`;
     scrollQuizToTop();
     window.requestAnimationFrame(() => headingRef.current?.focus());
-  }, [l, locale, questionIndex, questions.length, stage]);
+
+    const titles: Record<QuizStage, string> = {
+      intro: l("Diagnóstico privado", "Diagnóstico privado", "Private diagnosis"),
+      question: l("Tu situación", "Sua situação", "Your situation"),
+      "loader-one": l("Analizando tu caso", "Analisando seu caso", "Analyzing your case"),
+      prediagnosis: l("Análisis inicial", "Análise inicial", "Initial analysis"),
+      desire: l("Tu objetivo", "Seu objetivo", "Your goal"),
+      demonstration: l("Cómo cambia la ruta", "Como a rota muda", "How the route changes"),
+      commitment: l("Tu compromiso", "Seu compromisso", "Your commitment"),
+      "loader-two": l("Creando tu ruta", "Criando sua rota", "Creating your route"),
+      result: l("Tu diagnóstico", "Seu diagnóstico", "Your diagnosis"),
+    };
+    document.title = `${titles[stage]} · Haz Que Vuelva`;
+  }, [l, locale, questionIndex, stage]);
+
+  useEffect(
+    () => () => {
+      if (advanceTimerRef.current !== null) {
+        window.clearTimeout(advanceTimerRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
+    const viewKey = `${stage}:${questionIndex}`;
+    if (trackedViewRef.current === viewKey) return;
+    trackedViewRef.current = viewKey;
+
     if (stage === "question") {
       track("quiz_step_view", {
-        step_id: questionIndex + 1,
-        step_name: questions[questionIndex].id,
+        question_id: copy.questions[questionIndex].id,
+        route_so_far: routeSoFar(answers),
+        step_id: `question_${questionIndex + 1}`,
+        step_number: questionIndex + 1,
       });
     }
-  }, [questionIndex, questions, stage]);
-
-  useEffect(() => {
+    if (stage === "loader-one" || stage === "loader-two") {
+      track("quiz_loader_view", {
+        duration: 6000,
+        loader_id: stage,
+      });
+    }
+    if (stage === "prediagnosis") {
+      track("quiz_prediagnosis_view", {
+        distance_band: distanceBand,
+        distance_index: distanceIndex,
+        main_error: resolvedLastAction(answers),
+        route,
+      });
+    }
+    if (stage === "demonstration") {
+      track("quiz_proof_view", {
+        proof_variant: route,
+        route,
+      });
+    }
     if (stage === "result") {
       track("quiz_result_view", {
-        route: resultRoute,
-        channel_state: channelStateForRoute(resultRoute),
-        main_error: resolveMainError(answers),
+        distance_band: distanceBand,
+        distance_index: distanceIndex,
+        first_action: copy.routes[route].firstAction,
+        reconquista30_eligible: isReconquista30Eligible(answers),
+        route,
       });
     }
-  }, [answers, questionIndex, resultRoute, stage]);
+  }, [
+    answers,
+    copy.questions,
+    copy.routes,
+    distanceBand,
+    distanceIndex,
+    questionIndex,
+    route,
+    stage,
+  ]);
 
   useEffect(() => {
-    if (stage !== "loading" || loadingCompleted >= loadingMessages.length) {
-      return;
+    if (stage !== "loader-one" && stage !== "loader-two") return;
+
+    if (loaderTick < 4) {
+      const timer = window.setTimeout(
+        () => setLoaderTick((tick) => tick + 1),
+        1500,
+      );
+      return () => window.clearTimeout(timer);
     }
 
-    const timer = window.setTimeout(
-      () => setLoadingCompleted((current) => current + 1),
-      760,
-    );
+    const reveal = window.setTimeout(() => {
+      if (stage === "loader-one") {
+        setStage("prediagnosis");
+      } else {
+        setStage("result");
+      }
+    }, 220);
 
-    return () => window.clearTimeout(timer);
-  }, [loadingCompleted, loadingMessages.length, stage]);
+    return () => window.clearTimeout(reveal);
+  }, [loaderTick, route, stage]);
 
   function startQuiz() {
-    track("quiz_start", {
-      ...utmParameters(),
-      country_detected: "unknown",
-    });
+    track("quiz_start", utmParameters());
+    scrollQuizToTop();
+    setQuestionIndex(0);
     setStage("question");
   }
 
-  function answerQuestion(option: QuizOption) {
-    const question = questions[questionIndex];
-    setAnswers((current) => ({ ...current, [question.id]: option.value }));
-    track("quiz_answer", {
-      step_id: questionIndex + 1,
-      answer_value: option.value,
-      tags: option.tags.join(","),
-    });
-
-    if (option.tags.includes("red")) {
-      track("quiz_safety_flag", { red_reason: option.value });
+  function queueAdvance(action: () => void, delay = 520) {
+    if (advanceTimerRef.current !== null) {
+      window.clearTimeout(advanceTimerRef.current);
     }
+    advanceTimerRef.current = window.setTimeout(() => {
+      scrollQuizToTop();
+      action();
+      setLocked(false);
+      advanceTimerRef.current = null;
+    }, delay);
   }
 
-  function continueQuestion() {
-    if (!selectedOption(questionIndex, answers)) return;
-
+  function changeStage(nextStage: QuizStage) {
     scrollQuizToTop();
-
-    if (questionIndex === questions.length - 1) {
-      setStage("lead");
-      return;
-    }
-
-    setQuestionIndex((current) => current + 1);
+    setStage(nextStage);
   }
 
-  function backFromQuestion() {
-    if (questionIndex === 0) {
-      setStage("intro");
-      return;
-    }
+  function answerQuestion(option: QuizOption) {
+    if (locked) return;
 
-    setQuestionIndex((current) => current - 1);
-  }
-
-  function beginLoading() {
-    setLeadError("");
-    setLoadingCompleted(0);
-    setStage("loading");
-  }
-
-  function submitLead(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    if (!lead.email.trim()) {
-      setLeadError(
-        l(
-          "Escribe un email o elige “Verlo sin dejar mis datos” para continuar.",
-          "Informe um e-mail ou escolha “Ver sem deixar meus dados” para continuar.",
-          "Enter an email or choose “See it without leaving my details” to continue.",
-        ),
-      );
-      return;
-    }
-
-    if (!lead.consent) {
-      setLeadError(
-        l(
-          "Confirma el permiso para recibir el resultado o continúa sin dejar tus datos.",
-          "Confirme a permissão para receber o resultado ou continue sem deixar seus dados.",
-          "Confirm permission to receive the result, or continue without leaving your details.",
-        ),
-      );
-      return;
-    }
-
-    track("quiz_lead_submit", {
-      country: lead.country,
-      has_email: true,
+    const question = copy.questions[questionIndex];
+    const nextAnswers = {
+      ...answers,
+      [question.id]: option.value,
+    } as QuizAnswers;
+    setAnswers(nextAnswers);
+    persistQuizState(nextAnswers);
+    setLocked(true);
+    track("quiz_answer", {
+      answer_id: option.value,
+      answer_value: option.value,
+      question_id: question.id,
+      step_id: `question_${questionIndex + 1}`,
     });
-    beginLoading();
+
+    queueAdvance(() => {
+      if (questionIndex === copy.questions.length - 1) {
+        setLoaderTick(0);
+        setStage("loader-one");
+      } else {
+        setQuestionIndex((index) => index + 1);
+      }
+    });
+  }
+
+  function answerCommitment(option: QuizOption) {
+    if (locked) return;
+
+    const isDesire = stage === "desire";
+    const nextAnswers: QuizAnswers = isDesire
+      ? { ...answers, desire: option.value as DesireCommitment }
+      : { ...answers, commitment: option.value as ExecutionCommitment };
+    setAnswers(nextAnswers);
+    persistQuizState(nextAnswers);
+    setLocked(true);
+    track("quiz_microcommitment", {
+      answer_value: option.value,
+      question_id: isDesire ? "desire" : "commitment",
+    });
+
+    queueAdvance(() => {
+      if (isDesire) {
+        setStage("demonstration");
+      } else {
+        setLoaderTick(0);
+        setStage("loader-two");
+      }
+    }, 420);
   }
 
   function checkout() {
     track("quiz_cta_click", {
-      route: resultRoute,
-      cta_variant: results[resultRoute].cta,
+      cta_id: "haz_que_vuelva_front",
+      destination: "checkout",
+      distance_index: distanceIndex,
+      route,
     });
 
     const configuredUrl = process.env.NEXT_PUBLIC_CHECKOUT_URL;
@@ -210,108 +256,67 @@ export function QuizPage() {
 
     try {
       const destination = new URL(configuredUrl);
-      destination.searchParams.set("route", resultRoute);
-      destination.searchParams.set(
-        "channel_state",
-        channelStateForRoute(resultRoute),
+      const checkoutContext = {
+        route,
+        channel_state: channelStateForRoute(route),
+        distance_index: String(distanceIndex),
+        distance_band: distanceBand,
+        main_error: resolvedLastAction(answers),
+        desire: answers.desire,
+        commitment: answers.commitment,
+      };
+      Object.entries({ ...checkoutContext, ...utmParameters() }).forEach(
+        ([key, value]) => {
+          if (value) destination.searchParams.set(key, String(value));
+        },
       );
-      destination.searchParams.set("main_error", resolveMainError(answers));
-      destination.searchParams.set("country", lead.country || "unknown");
-
-      Object.entries(utmParameters()).forEach(([key, value]) => {
-        if (value) destination.searchParams.set(key, value);
-      });
-
-      track("checkout_start", { route: resultRoute, price: 7 });
+      track("checkout_start", { price: 7, route });
       window.location.assign(destination.toString());
     } catch {
       setCheckoutStatus(
         l(
-          "La URL de checkout configurada no es válida. Revisa NEXT_PUBLIC_CHECKOUT_URL.",
-          "A URL de checkout configurada é inválida. Revise NEXT_PUBLIC_CHECKOUT_URL.",
-          "The configured checkout URL is invalid. Check NEXT_PUBLIC_CHECKOUT_URL.",
+          "La URL de checkout configurada no es válida.",
+          "A URL de checkout configurada é inválida.",
+          "The configured checkout URL is invalid.",
         ),
       );
     }
   }
 
   function restart() {
+    clearQuizState();
     setAnswers({});
-    setLead({
-      name: "",
-      email: "",
-      country: "mx",
-      consent: false,
-    });
     setQuestionIndex(0);
-    setLoadingCompleted(0);
+    setLoaderTick(0);
     setCheckoutStatus("");
     setStage("intro");
-  }
-
-  function safetyExit() {
-    const query = {
-      es: "servicios locales de emergencia y apoyo contra la violencia",
-      pt: "serviços locais de emergência e apoio contra a violência",
-      en: "local emergency services and domestic violence support",
-    }[locale];
-    window.location.assign(
-      `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-    );
   }
 
   return (
     <div className="quiz-public">
       <a className="skip-link" href="#quiz-content">
-        {l("Saltar al diagnóstico", "Ir para o diagnóstico", "Skip to diagnosis")}
+        {l("Ir al diagnóstico", "Ir para o diagnóstico", "Skip to diagnosis")}
       </a>
       <PublicHeader />
-      {stage === "intro" ? (
-        <Intro headingRef={headingRef} onStart={startQuiz} />
-      ) : null}
-      {stage === "question" ? (
-        <QuestionStep
-          answers={answers}
-          headingRef={headingRef}
-          onAnswer={answerQuestion}
-          onBack={backFromQuestion}
-          onContinue={continueQuestion}
-          questionIndex={questionIndex}
-        />
-      ) : null}
-      {stage === "lead" ? (
-        <LeadCapture
-          error={leadError}
-          headingRef={headingRef}
-          lead={lead}
-          onBack={() => {
-            setQuestionIndex(questions.length - 1);
-            setStage("question");
-          }}
-          onChange={setLead}
-          onSkip={beginLoading}
-          onSubmit={submitLead}
-        />
-      ) : null}
-      {stage === "loading" ? (
-        <Loading
-          completed={loadingCompleted}
-          headingRef={headingRef}
-          onReveal={() => setStage("result")}
-        />
-      ) : null}
-      {stage === "result" ? (
-        <Result
-          answers={answers}
-          checkoutStatus={checkoutStatus}
-          headingRef={headingRef}
-          lead={lead}
-          onCheckout={checkout}
-          onRestart={restart}
-          onSafetyExit={safetyExit}
-          route={resultRoute}
-        />
-      ) : null}
+      <QuizStageRouter
+        answers={answers}
+        checkoutStatus={checkoutStatus}
+        distanceBand={distanceBand}
+        distanceIndex={distanceIndex}
+        headingRef={headingRef}
+        loaderTick={loaderTick}
+        locale={locale}
+        locked={locked}
+        onAnswer={answerQuestion}
+        onCheckout={checkout}
+        onCommitment={answerCommitment}
+        onRestart={restart}
+        onStage={changeStage}
+        onStart={startQuiz}
+        questionIndex={questionIndex}
+        route={route}
+        stage={stage}
+      />
     </div>
   );
 }

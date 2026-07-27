@@ -275,6 +275,8 @@ dados reais e deploy não estão.
 
 - [x] `apps/web`: typecheck, lint, 10 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
+- [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
+  vulnerabilidades conhecidas após overrides documentados.
 - [x] Arquivos manuscritos novos permanecem abaixo do máximo de 400 linhas.
 - [ ] Aplicar migrações e executar pgTAP/RLS no Supabase cloud de
   desenvolvimento. Bloqueado até existir projeto dedicado.

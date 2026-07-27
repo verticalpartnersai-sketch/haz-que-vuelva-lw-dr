@@ -354,3 +354,21 @@ auditoria append-only. A decisão deve ser revisitada antes de produção.
 Decisão: substituir desenhos de ícone locais por Phosphor Icons através de um
 mapa interno tipado. A aplicação importa o entrypoint SSR e expõe apenas os
 ícones necessários a navegação, controles, badges e placeholders.
+
+### Dependências de build e imagem
+
+- [PostCSS GHSA-6g55-p6wh-862q](https://github.com/postcss/postcss/security/advisories/GHSA-6g55-p6wh-862q):
+  corrige leitura arbitrária de arquivo nas versões atuais da série 8.5.
+- [Sharp GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj):
+  versões anteriores a 0.35.0 herdam vulnerabilidades do libvips; a fonte
+  recomenda a versão 0.35.3.
+- [Issue oficial do Next.js sobre Sharp](https://github.com/vercel/next.js/issues/96064):
+  registra o transitivo vulnerável no Next 16.2 e o uso de override como
+  mitigação enquanto o pacote estável não eleva a dependência.
+
+Decisão: `apps/web` e `apps/marketing` usam Next 16.2.12 e overrides exatos
+`postcss@8.5.23` e `sharp@0.35.3`. Builds passam e o otimizador de imagem foi
+exercitado em runtime com resposta 200. `npm audit --omit=dev` retorna zero
+vulnerabilidades nos dois apps. O audit completo ainda aponta advisories
+somente na cadeia de ferramentas do `eslint-config-next`; não foi aplicado o
+downgrade incorreto sugerido pelo npm.

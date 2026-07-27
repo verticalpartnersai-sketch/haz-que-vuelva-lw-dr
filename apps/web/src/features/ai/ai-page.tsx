@@ -45,7 +45,7 @@ function AccessUnavailable({ checking = false }: { checking?: boolean }) {
 }
 
 export function AiPage() {
-  const { aiAccess, setAiAccess } = useMockSession();
+  const { aiAccess, aiAccessLocked, setAiAccess } = useMockSession();
   const { l } = useLocale();
   const accessLabel =
     aiAccess === "available"
@@ -56,7 +56,7 @@ export function AiPage() {
 
   return (
     <div className="ai-page">
-      <button
+      {!aiAccessLocked ? <button
         aria-label={`${l(
           "Cambiar acceso mock de IA. Estado actual",
           "Alterar acesso mock de IA. Estado atual",
@@ -76,11 +76,11 @@ export function AiPage() {
       >
         <span>{l("Acceso mock", "Acesso mock", "Mock access")}</span>
         <strong>{accessLabel}</strong>
-      </button>
+      </button> : null}
 
       <div className="ai-stage">
         {aiAccess === "available" ? (
-          <AiChat />
+          <AiChat live={aiAccessLocked} />
         ) : (
           <AccessUnavailable checking={aiAccess === "unknown"} />
         )}

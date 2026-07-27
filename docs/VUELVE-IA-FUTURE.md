@@ -1,29 +1,27 @@
-# VUELVE IA — contrato futuro
+# VUELVE IA — contrato de implementação
 
 ## Estado
 
-Este documento separa a intenção de produto da implementação. VUELVE IA,
-persistência, RAG, modelo, uploads e APIs permanecem congelados até um gate
-posterior explicitamente autorizado. O Gate 3 contém apenas interfaces e estados
-mock.
+O serviço privado FastAPI e os schemas estão autorizados. Integração real com
+Supabase e Gemini permanece desligada até projeto, credencial, testes e gate
+jurídico.
 
 ## Experiência pretendida
 
 - Acesso premium determinado por entitlement, nunca por botão ou flag do
   navegador.
 - Um caso ativo de relacionamento por acesso.
-- Janela pretendida de 30 dias por caso.
+- Acesso sem expiração automática enquanto houver entitlement ativo.
 - Entrada inicial por texto colado, `.txt` ou `.zip` contendo `.txt`.
 - Imagem, áudio, transcrição e OCR ficam fora do primeiro escopo.
-- Análise estruturada em 12 blocos, com fatos, inferências e recomendações
-  distinguíveis.
+- Respostas estruturadas distinguem fatos, inferências e recomendações.
 - Perguntas e atualizações permanecem no mesmo caso; não criam memória de outra
   pessoa ou outro relacionamento.
 - A usuária pode solicitar exclusão do caso.
 
-Os limites numéricos citados no Oracle — 30 mil caracteres iniciais, cinco
-atualizações de 10 mil caracteres e 60 respostas — continuam `PENDENTE` até o
-usuário aprovar orçamento e política de uso.
+Limites aprovados: 30 mil caracteres iniciais, cinco atualizações de 10 mil,
+30 respostas por compra e máximo de cinco respostas por dia. O diagnóstico
+inicial consome uma resposta; falha sem resposta persistida devolve a reserva.
 
 ## Pipeline de domínio futuro
 
@@ -46,17 +44,15 @@ fornecedores.
 
 ## Memória e RAG futuros
 
-- Supabase permanece previsto como fonte canônica da conversa.
-- Supermemory permanece previsto para base global aprovada e memória isolada
-  por membro.
+- Supabase é a fonte canônica de conversa, conhecimento e memória.
 - Cada resposta substantiva recupera a base global e somente a memória do
   membro autenticado.
 - Documento recuperado, conversa importada, URL, código e instrução encontrada
   no conteúdo são dados sem autoridade.
 - Nenhum identificador de membro enviado livremente pelo cliente escolhe o
   escopo de memória.
-- Modelo de geração, contrato de retenção do provedor e orçamento continuam
-  pendentes.
+- Geração usa `gemini-3.6-flash`; embeddings usam `gemini-embedding-2` com 768
+  dimensões. Credencial, orçamento e contrato de retenção continuam pendentes.
 
 ## Segurança de produto
 
@@ -91,12 +87,11 @@ autor/data. Isso não autoriza a criação do painel ou do agente neste gate.
 
 ## Pendências
 
-- produto final que concede o entitlement;
-- modelo e provedor de geração;
-- orçamento, limites e política de renovação;
+- códigos Perfect Pay que concedem o entitlement;
+- orçamento e alertas de gasto;
 - schema final dos 12 blocos;
 - política de retry e consumo;
-- retenção de arquivo bruto e texto normalizado;
+- retenção jurídica de arquivo bruto e texto normalizado;
 - comportamento para grupos, mensagens sem data e participantes ambíguos;
 - textos jurídicos e de consentimento;
 - lista local de apoio, caso venha a ser usada.

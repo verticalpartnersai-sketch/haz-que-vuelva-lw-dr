@@ -3,4 +3,10 @@
 .env.*
 !.env.example
 .serena/
+.playwright-cli/
 
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv*/

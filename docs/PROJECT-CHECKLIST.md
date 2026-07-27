@@ -2,21 +2,20 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 26 de julho de 2026: **Gate 3 concluído tecnicamente; frontend
-> estático aguardando aprovação visual explícita**.
+> Estado em 27 de julho de 2026: **frontend aprovado; Gate 5 autorizado e em
+> implementação incremental**.
 >
-> Backend, agente Python, Docker, integrações, migrações, credenciais e deploy
-> estão congelados até autorização explícita.
+> Integrações externas reais, credenciais, dados reais, infraestrutura e deploy
+> continuam bloqueados até seus pré-requisitos e autorizações.
 
 ## Sequência obrigatória
 
 - [x] Resolver o checkout correto e versionar o estado inicial.
 - [x] Gate 1: consolidar documentação.
 - [x] Gate 2: validar system design e design system.
-- [x] Gate 3: implementar frontend estático com mocks. **Concluído
-  tecnicamente; aguarda aprovação visual.**
-- [ ] Gate 4: obter aprovação explícita do frontend.
-- [ ] Gate 5: implementar backend em fatias autorizadas.
+- [x] Gate 3: implementar frontend estático com mocks.
+- [x] Gate 4: obter aprovação explícita do frontend.
+- [ ] Gate 5: implementar backend em fatias autorizadas. **Em andamento.**
 - [ ] Gate 6: integrar fornecedores.
 - [ ] Gate 7: infraestrutura, segurança operacional e lançamento.
 
@@ -56,16 +55,17 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 
 - [ ] Confirmar domínio definitivo.
 - [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
-- [ ] Definir qual produto libera a IA.
+- [x] Definir `vuelve_ia` como entitlement canônico da IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
 - [x] Enviar a família final da hero para desktop, ultra-wide, tablet e mobile.
 - [ ] Enviar os demais arquivos oficiais da marca.
 - [x] Definir baseline tipográfica aberta e licenças.
-- [ ] Escolher modelo de IA, orçamento e limite de mensagens.
+- [x] Escolher modelos e limites de mensagens da IA.
+- [ ] Aprovar orçamento e alertas de gasto da IA.
 - [ ] Fornecer WhatsApp de suporte.
 - [ ] Definir moderação de comentários.
 - [ ] Confirmar duração dos produtos editoriais.
-- [ ] Definir download versus leitura autenticada de PDF.
+- [x] Definir leitura autenticada e download de cópia individual marcada.
 - [ ] Validar base legal, consentimento, retenção e subprocessadores antes de
   qualquer dado real.
 
@@ -204,47 +204,56 @@ implementação: o Gate 3 depende de nova autorização explícita.
   pelos cinco produtos canônicos.
 - [x] Exibir capas bloqueadas em preto e branco e com opacidade reduzida,
   restaurando a imagem no hover e no foco por teclado.
-- [ ] Obter aprovação explícita do frontend.
-- [ ] Parar antes de qualquer backend, integração ou infraestrutura.
+- [x] Obter aprovação explícita do frontend.
+- [x] Preservar o frontend aprovado em commit próprio antes do backend.
 
-## Gate 5 — backend futuro
+## Gate 5 — backend autorizado
 
-Este gate permanece congelado.
+Código, migrações e testes locais estão autorizados. Ativação de fornecedores,
+dados reais e deploy não estão.
 
 ### Identidade e autorização
 
-- [ ] Configurar Supabase Auth SSR.
-- [ ] Criar perfis, papéis e RLS.
-- [ ] Implementar convite expirável; a aluna define a própria senha.
-- [ ] Implementar reset e troca de e-mail segura.
-- [ ] Exigir MFA para admin antes da abertura pública.
+- [x] Preparar clientes Supabase Auth SSR atrás de feature flag.
+- [x] Criar migração inicial de perfis, papéis e RLS.
+- [x] Implementar provisionamento e entrega recuperável do convite por outbox.
+- [x] Implementar confirmação do convite e definição de senha na UI.
+- [x] Implementar recuperação e reset de senha pelo fluxo PKCE.
+- [ ] Implementar troca de e-mail segura.
+- [x] Registrar decisão de não exigir MFA no primeiro release e o risco aceito.
+- [ ] Implementar reautenticação administrativa e controles compensatórios.
 
 ### Catálogo, conteúdo e acesso
 
-- [ ] Criar catálogo e entitlements.
-- [ ] Criar conteúdo e regras de acesso.
+- [x] Criar schema inicial de catálogo e ledger de entitlements.
+- [x] Criar schema inicial de conteúdo e regras de leitura.
 - [ ] Fazer upload privado validado.
-- [ ] Gerar URL temporária após autorização.
-- [ ] Implementar leitura, progresso, download e watermark.
+- [x] Gerar URL temporária somente para cópia marcada após autorização.
+- [ ] Implementar geração da cópia com watermark e progresso de leitura.
 
 ### Perfect Pay
 
-- [ ] Validar webhook e idempotência.
-- [ ] Mapear códigos para produtos internos.
-- [ ] Conceder somente em `approved`.
-- [ ] Revogar em `cancelled`, `refunded` e `charged_back`.
-- [ ] Tratar duplicidade e eventos fora de ordem.
-- [ ] Auditar e reprocessar com segurança.
+- [x] Implementar entrada de webhook validada, limitada e idempotente.
+- [ ] Mapear códigos reais para produtos internos após fixtures da conta.
+- [x] Projetar `approved`, `authorized` e `completed` como concessão.
+- [x] Projetar `cancelled`, `refunded` e `charged_back` como revogação.
+- [x] Implementar deduplicação, reparo da outbox e ordem por ocorrência.
+- [x] Implementar retry, dead-letter e reprocessamento idempotente.
+- [ ] Validar projeções com fixtures reais redigidas e testes cloud.
 
 ### IA
 
-- [ ] Verificar `agent_access` antes de responder.
-- [ ] Persistir conversa canônica no Supabase.
-- [ ] Recuperar base global aprovada.
-- [ ] Recuperar memória exclusiva do membro.
-- [ ] Impedir cruzamento entre membros.
-- [ ] Tratar RAG como dado sem autoridade.
-- [ ] Versionar, publicar e reverter prompt.
+- [x] Modelar entitlement `vuelve_ia`, créditos, casos e conversas.
+- [x] Criar serviço FastAPI privado e contrato SSE.
+- [x] Conectar o chat ao BFF e ao SSE somente quando a feature flag estiver
+  ativa, preservando o modo visual mock quando desligada.
+- [x] Implementar adapters Supabase/Gemini atrás de feature flag desligada.
+- [x] Implementar recuperação separada da base global aprovada.
+- [x] Implementar recuperação da memória pelo `member_id` autenticado no BFF.
+- [x] Restringir recuperação, persistência e RLS pelo `member_id` autenticado.
+- [x] Tratar RAG como dado sem autoridade no prompt do provider.
+- [x] Versionar, publicar e reverter prompt por RPC administrativa auditada.
+- [ ] Conectar a gestão de prompts ao painel administrativo.
 - [ ] Permitir que admin defina e publique limites de uso e custo.
 - [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
 - [ ] Implementar limites, telemetria e falhas seguras.
@@ -262,12 +271,24 @@ Este gate permanece congelado.
 - [ ] Testar exclusão em storage, dados derivados, cache, fila e backup.
 - [ ] Permitir desligar VUELVE IA sem derrubar a biblioteca.
 
+### Evidência local do Gate 5
+
+- [x] `apps/web`: typecheck, lint, 10 testes e build de produção passam.
+- [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
+- [x] Arquivos manuscritos novos permanecem abaixo do máximo de 400 linhas.
+- [ ] Aplicar migrações e executar pgTAP/RLS no Supabase cloud de
+  desenvolvimento. Bloqueado até existir projeto dedicado.
+- [ ] Executar smoke tests reais de Perfect Pay, Resend e Gemini. Bloqueado
+  até existirem contas, credenciais, mappings e autorização do gate de
+  integração.
+
 ## Gate 6 — integrações futuras
 
 - [ ] Criar projetos Supabase próprios.
-- [ ] Criar R2 privado e CORS mínimo.
-- [ ] Criar Supermemory dedicado.
+- [ ] Aplicar e validar Supabase Storage privado.
+- [ ] Aplicar e validar RAG no PostgreSQL/pgvector.
 - [ ] Criar Resend e verificar subdomínio.
+- [ ] Criar projeto/chave Gemini próprios.
 - [ ] Usar somente credenciais deste projeto.
 
 ## Gate 7 — infraestrutura e lançamento
@@ -280,7 +301,8 @@ Este gate permanece congelado.
 - [ ] Validar rollback.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.
 - [ ] Testar espanhol, desktop e celular.
-- [ ] Criar admin inicial com MFA.
+- [ ] Criar admin inicial pelo comando privado e revisar novamente a decisão
+  de MFA antes da abertura pública.
 
 ## Critérios finais de aceite
 

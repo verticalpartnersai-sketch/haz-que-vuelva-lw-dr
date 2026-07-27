@@ -1,19 +1,16 @@
-# Integrações futuras
+# Integrações
 
 ## Estado
 
-Nenhuma integração está ativa ou autorizada no Gate 3. Este documento delimita
-responsabilidades futuras sem inventar endpoints, payloads, IDs, chaves ou
-contratos atuais.
+Adapters e contratos locais estão autorizados. Nenhuma integração externa está
+ativa; não existem credenciais versionadas nem smoke tests reais autorizados.
 
 | Provedor/direção | Responsabilidade prevista | Estado |
 |---|---|---|
 | Perfect Pay | eventos de compra, cancelamento, reembolso e chargeback | fornecedor definido; contratos e IDs pendentes |
-| Supabase Auth/PostgreSQL | identidade, conversa canônica, autorização e RLS | direção definida; projeto e schema pendentes |
-| Cloudflare R2 | arquivos privados e URLs temporárias | direção definida; bucket e política pendentes |
-| Resend | convites e emails transacionais | direção definida; domínio e templates pendentes |
-| Supermemory | base global aprovada e memória isolada por membro | direção definida; projeto e contratos pendentes |
-| Modelo de IA | análise e resposta da VUELVE IA | provedor/modelo pendentes |
+| Supabase Auth/PostgreSQL/Storage | identidade, banco, arquivos privados, RLS e RAG | schemas locais criados; projeto cloud pendente |
+| Resend | convites e emails transacionais | adapter e outbox implementados; domínio e smoke test pendentes |
+| Gemini | geração e embeddings da VUELVE IA | adapters implementados e desligados; credencial e smoke test pendentes |
 | Cloudflare/VPS | borda, DNS, TLS e execução | direção definida; topologia e operação pendentes |
 
 ## Perfect Pay
@@ -37,10 +34,9 @@ códigos, preços e IDs finais continuam pendentes.
 - SDK ou contrato externo fica atrás de adaptador.
 - Segredos nunca chegam ao navegador nem entram na documentação.
 - Falha de provedor não cria acesso especulativo nem arquivo público.
-- Supermemory não substitui o histórico canônico.
 - Resend não concede acesso; convite apenas permite que a usuária defina senha.
-- R2 não decide autorização; a aplicação emite acesso curto depois de validar
-  objeto e entitlement.
+- Supabase Storage permanece privado; o BFF valida objeto e entitlement e RLS
+  impede leitura direta dos originais antes de emitir acesso curto.
 - Cada projeto e credencial deve pertencer ao HAZ QUE VUELVA, sem reutilização
   de outro produto.
 
@@ -57,8 +53,7 @@ código.
 - domínio e subdomínios;
 - projetos próprios e credenciais;
 - payloads e assinatura atuais da Perfect Pay;
-- schema/RLS e política de storage;
+- aplicação e validação cloud do schema, RLS e política de Storage;
 - templates e remetente;
-- contrato atual da Supermemory;
-- provedor/modelo e política de dados da IA;
+- contrato jurídico e política de dados do Gemini;
 - topologia de VPS, Cloudflare, backups, observabilidade e rollback.

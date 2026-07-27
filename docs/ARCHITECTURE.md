@@ -2,9 +2,8 @@
 
 ## Estado
 
-Este documento define a arquitetura pretendida. Ele não autoriza implementação
-de backend, integrações ou infraestrutura. O único código existente é o scaffold
-Next.js inicial.
+Frontend aprovado e backend autorizado em fatias. Integrações reais,
+infraestrutura e deploy dependem de gates próprios.
 
 ## Princípios
 
@@ -35,11 +34,12 @@ apps/
       design-system/
       mocks/                somente no gate frontend
       server/               futuro; sem uso no gate frontend
-  agent/                    futuro; congelado
+  marketing/                site público e quiz
+  agent/                    FastAPI privado, somente VUELVE IA
 packages/
   contracts/                futuro; contratos estáveis compartilhados
   config/                   futuro; configuração comum
-supabase/                   futuro; migrações e políticas
+supabase/                   migrações, políticas e testes de banco
 docs/
 ```
 
@@ -58,20 +58,18 @@ A estrutura é uma direção, não uma ordem para criar diretórios vazios.
 | `design-system` | Tokens e primitivas visuais | Conter regras de negócio |
 | `mocks` | Cenários estáticos explicitamente fictícios | Ser importado no backend futuro |
 
-## Módulos backend futuros
-
-Todos permanecem congelados até autorização.
+## Módulos backend
 
 | Módulo | Responsabilidade |
 |---|---|
-| `identity` | Perfil, papel, convite, MFA e sessão |
+| `identity` | Perfil, papel, convite, sessão e reautenticação |
 | `catalog` | Produtos, capas, descrições e checkout cadastrado |
 | `entitlements` | Permissões efetivas e concessões manuais |
 | `content` | Itens, arquivos, leitura e downloads |
 | `payments` | Eventos Perfect Pay, idempotência e reprocessamento |
 | `ai-access` | Permissão, limites e configuração publicada |
 | `conversations` | Histórico canônico e mensagens |
-| `knowledge` | Documentos aprovados e sincronização de RAG |
+| `knowledge` | Documentos aprovados e RAG no Supabase |
 | `cases` | Ciclo de vida do caso de relacionamento |
 | `imports` | Recebimento privado, validação e normalização |
 | `facts` | Evidências observáveis e referências de origem |
@@ -98,7 +96,7 @@ flowchart LR
 
 - Features podem depender de primitivas do design system.
 - Design system não depende de features.
-- Contratos não dependem de Next.js, Supabase, Perfect Pay ou Supermemory.
+- Contratos não dependem de Next.js, Supabase, Perfect Pay, Resend ou Gemini.
 - Adaptadores traduzem respostas externas para contratos internos.
 
 ## Gates de implementação

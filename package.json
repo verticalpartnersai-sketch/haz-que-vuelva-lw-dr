@@ -1,0 +1,13 @@
+{
+  "name": "haz-que-vuelva",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix apps/web run dev",
+    "dev:web": "npm --prefix apps/web run dev",
+    "dev:marketing": "npm --prefix apps/marketing run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "build:marketing": "npm --prefix apps/marketing run build",
+    "check:web": "npm --prefix apps/web run typecheck && npm --prefix apps/web run lint && npm --prefix apps/web test",
+    "check:marketing": "npm --prefix apps/marketing run typecheck"
+  }
+}

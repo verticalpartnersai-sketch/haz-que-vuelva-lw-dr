@@ -11,6 +11,7 @@ import {
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 
+import { createConversation, requestAnswer } from "./ai-client";
 import { AiThinkingPanel } from "./ai-thinking-panel";
 
 type ChatMessage = {
@@ -192,12 +193,13 @@ function ChatComposer({
   );
 }
 
-export function AiChat() {
+export function AiChat({ live = false }: { live?: boolean }) {
   const { l } = useLocale();
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [thinking, setThinking] = useState(false);
   const responseTimer = useRef<number | null>(null);
+  const conversationId = useRef<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -213,7 +215,7 @@ export function AiChat() {
     });
   }, [messages, thinking]);
 
-  function submitMessage(value = draft) {
+  async function submitMessage(value = draft) {
     const content = value.trim();
     if (!content || thinking) return;
 
@@ -223,6 +225,36 @@ export function AiChat() {
     ]);
     setDraft("");
     setThinking(true);
+
+    if (live) {
+      try {
+        conversationId.current ??= await createConversation();
+        const answer = await requestAnswer({
+          conversationId: conversationId.current,
+          message: content,
+        });
+        setMessages((current) => [
+          ...current,
+          { content: answer, id: `assistant-${Date.now()}`, role: "assistant" },
+        ]);
+      } catch {
+        setMessages((current) => [
+          ...current,
+          {
+            content: l(
+              "No pude responder ahora. Tu crédito no fue consumido. Inténtalo de nuevo.",
+              "Não consegui responder agora. Seu crédito não foi consumido. Tente novamente.",
+              "I could not respond now. Your credit was not consumed. Try again.",
+            ),
+            id: `assistant-error-${Date.now()}`,
+            role: "assistant",
+          },
+        ]);
+      } finally {
+        setThinking(false);
+      }
+      return;
+    }
 
     responseTimer.current = window.setTimeout(() => {
       setMessages((current) => [
@@ -251,6 +283,7 @@ export function AiChat() {
     setDraft("");
     setMessages([]);
     setThinking(false);
+    conversationId.current = null;
   }
 
   return (

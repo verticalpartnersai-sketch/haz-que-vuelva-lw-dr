@@ -18,26 +18,27 @@ leia este índice e o checklist mestre.
 7. [Especificação frontend](FRONTEND-SPEC.md): telas estáticas do próximo gate.
 8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md): rotas, mocks,
    validações e evidências do Gate 3.
-9. [VUELVE IA futura](VUELVE-IA-FUTURE.md): experiência, pipeline e limites
-   futuros sem implementação.
-10. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md): gate de
+9. [Implementação do backend](BACKEND-IMPLEMENTATION.md): módulos, flags,
+   evidências locais e bloqueios externos.
+10. [VUELVE IA](VUELVE-IA-FUTURE.md): experiência, pipeline e limites.
+11. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md): gate de
     dados reais, isolamento, retenção e exclusão.
-11. [Integrações futuras](INTEGRATIONS-FUTURE.md): fornecedores previstos e
+12. [Integrações futuras](INTEGRATIONS-FUTURE.md): fornecedores previstos e
     contratos ainda pendentes.
-12. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
+13. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
     pendências e conflitos.
-13. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
-14. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+14. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+15. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
 
 ## Estado atual
 
 - Gate 1: **concluído**.
 - Gate 2: **concluído**.
-- Gate 3: **concluído tecnicamente e aguardando aprovação visual**.
+- Gates 3 e 4: **frontend aprovado e preservado em commit próprio**.
 - Frontend do produto: rotas e interações estáticas implementadas em
   `apps/web`, com mocks explícitos e sem serviços externos.
-- Gate 4: **não aprovado**; nenhuma etapa posterior foi iniciada.
-- Backend, agente Python, Docker, banco e integrações: congelados.
+- Gate 5: **backend autorizado e em implementação incremental**.
+- Integrações externas, dados reais e infraestrutura continuam desligados.
 - Deploy: proibido até autorização explícita.
 
 ## Regras de manutenção
@@ -64,6 +65,7 @@ leia este índice e o checklist mestre.
 | Rotas, papéis e transições | `NAVIGATION.md` |
 | Aceite do frontend estático | `FRONTEND-SPEC.md` |
 | Estado da implementação frontend | `FRONTEND-IMPLEMENTATION.md` |
+| Estado da implementação backend | `BACKEND-IMPLEMENTATION.md` |
 | Experiência e pipeline futuros da VUELVE IA | `VUELVE-IA-FUTURE.md` |
 | Privacidade, segurança, retenção e auditoria | `PRIVACY-SECURITY-AUDIT.md` |
 | Fronteiras das integrações futuras | `INTEGRATIONS-FUTURE.md` |

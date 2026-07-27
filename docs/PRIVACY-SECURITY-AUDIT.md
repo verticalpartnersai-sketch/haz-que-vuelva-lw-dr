@@ -7,8 +7,8 @@ VUELVE IA devem usar somente dados sintéticos até existir validação jurídic
 base legal, termos, consentimento, subprocessadores, transferências e diferenças
 aplicáveis a México e Colômbia.
 
-Este documento é requisito para gates futuros; não descreve controles já
-implementados.
+Schemas, isolamento e limites de logging já possuem fundação local. Isso não é
+prova de conformidade nem autorização para dados reais.
 
 ## Princípios
 
@@ -18,7 +18,7 @@ implementados.
 4. consentimento específico e versionado;
 5. arquivos privados e autorização server-side;
 6. não treinamento por padrão;
-7. retenção limitada e exclusão verificável;
+7. retenção até exclusão/reset solicitado, com exclusão verificável;
 8. auditoria de ação sem replicar conteúdo;
 9. privilégios mínimos para pessoas e serviços;
 10. controles críticos fora do LLM.
@@ -78,9 +78,10 @@ Uma exclusão futura precisa alcançar, conforme o escopo solicitado:
 - referências de suporte;
 - backups conforme o ciclo aprovado.
 
-Não se declara conclusão antes das camadas previstas terminarem. Prazos de
-arquivo bruto, caso expirado, auditoria e backup continuam pendentes de decisão
-jurídica e operacional.
+Não se declara conclusão antes das camadas previstas terminarem. Caso, chats,
+arquivos, chunks e vetores são apagados no reset; compras, saldo restante e
+auditoria financeira mínima são preservados. Prazos de auditoria e backup
+continuam pendentes de decisão jurídica e operacional.
 
 ## Auditoria futura
 

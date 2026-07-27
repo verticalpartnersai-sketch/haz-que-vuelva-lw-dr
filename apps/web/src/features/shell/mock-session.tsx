@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useMemo,
   useState,
@@ -12,19 +13,46 @@ import type { AccessState, UserRole } from "@/mocks/types";
 
 type MockSession = {
   role: UserRole;
+  roleLocked: boolean;
   setRole: (role: UserRole) => void;
   aiAccess: AccessState;
+  aiAccessLocked: boolean;
   setAiAccess: (state: AccessState) => void;
 };
 
 const MockSessionContext = createContext<MockSession | null>(null);
 
-export function MockSessionProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<UserRole>("member");
-  const [aiAccess, setAiAccess] = useState<AccessState>("available");
+export function MockSessionProvider({
+  children,
+  initialRole = "member",
+  roleLocked = false,
+  initialAiAccess = "available",
+  aiAccessLocked = false,
+}: {
+  children: ReactNode;
+  initialRole?: UserRole;
+  roleLocked?: boolean;
+  initialAiAccess?: AccessState;
+  aiAccessLocked?: boolean;
+}) {
+  const [role, updateRole] = useState<UserRole>(initialRole);
+  const [aiAccess, updateAiAccess] = useState<AccessState>(initialAiAccess);
+  const setRole = useCallback((nextRole: UserRole) => {
+    if (!roleLocked) updateRole(nextRole);
+  }, [roleLocked]);
+  const setAiAccess = useCallback((nextAccess: AccessState) => {
+    if (!aiAccessLocked) updateAiAccess(nextAccess);
+  }, [aiAccessLocked]);
   const value = useMemo(
-    () => ({ role, setRole, aiAccess, setAiAccess }),
-    [aiAccess, role],
+    () => ({
+      role,
+      roleLocked,
+      setRole,
+      aiAccess,
+      aiAccessLocked,
+      setAiAccess,
+    }),
+    [aiAccess, aiAccessLocked, role, roleLocked, setAiAccess, setRole],
   );
 
   return (

@@ -2,9 +2,9 @@
 
 ## Estado
 
-Frontend estático concluído tecnicamente em 24 de julho de 2026 e aguardando
-aprovação visual explícita. Gate 4, backend, integrações, infraestrutura,
-credenciais e deploy não foram iniciados.
+Frontend estático concluído e aprovado pelo usuário. Este documento registra o
+snapshot do Gate 3; o backend posterior vive em módulos e rotas separados.
+Integrações reais, credenciais e deploy continuam bloqueados.
 
 ## Execução local
 
@@ -33,7 +33,8 @@ npm run start -- --hostname 127.0.0.1 --port 3100
 | `/perfil` | Perfil e controle dos cenários member/admin |
 | `/administracion` | Esqueleto e navegação secundária apenas no cenário admin |
 
-Os slugs são gerados estaticamente a partir dos mocks. Não existem rotas de API.
+Os slugs são gerados estaticamente a partir dos mocks. No snapshot do Gate 3
+não existiam rotas de API; as rotas posteriores pertencem ao Gate 5.
 
 ## Estrutura
 

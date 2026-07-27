@@ -12,7 +12,7 @@ import { mockMember } from "@/mocks/data";
 type ProfileState = "ready" | "loading" | "error";
 
 export function ProfilePage() {
-  const { role, setRole } = useMockSession();
+  const { role, roleLocked, setRole } = useMockSession();
   const { l, locale, localeLabel, setLocale, t } = useLocale();
   const [status, setStatus] = useState("");
   const [viewState, setViewState] = useState<ProfileState>("ready");
@@ -110,7 +110,8 @@ export function ProfilePage() {
           </span>
         </section>
 
-        <section aria-labelledby="scenario-title" className="surface-card">
+        {!roleLocked ? (
+          <section aria-labelledby="scenario-title" className="surface-card">
           <div className="card-heading">
             <div>
               <span className="section-kicker">
@@ -154,7 +155,8 @@ export function ProfilePage() {
               Admin
             </button>
           </div>
-        </section>
+          </section>
+        ) : null}
 
         <section aria-labelledby="preferences-title" className="surface-card profile-preferences">
           <div className="card-heading">

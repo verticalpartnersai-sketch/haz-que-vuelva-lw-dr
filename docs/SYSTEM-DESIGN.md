@@ -2,24 +2,23 @@
 
 ## Status e limite
 
-Especificação futura, sem implementação autorizada. Nomes de fornecedores
-representam decisões de direção já fornecidas pelo usuário; chaves, projetos,
-URLs e esquemas finais continuam pendentes.
+Fundação local autorizada e implementada atrás de feature flags. Chaves,
+projetos, URLs, dados reais e ativação externa continuam pendentes.
 
 ## Contexto pretendido
 
 ```mermaid
 flowchart LR
   Member["Membro"] --> Edge["Cloudflare"]
-  Admin["Admin com MFA"] --> Edge
+  Admin["Admin com sessão restrita"] --> Edge
   Edge --> Web["Next.js"]
   Web --> Auth["Supabase Auth"]
   Web --> DB["PostgreSQL + RLS"]
-  Web --> Files["Cloudflare R2 privado"]
+  Web --> Files["Supabase Storage privado"]
   Web --> Email["Resend"]
   PerfectPay["Perfect Pay"] --> Web
   Web --> Agent["FastAPI futuro"]
-  Agent --> Memory["Supermemory"]
+  Agent --> Memory["PostgreSQL + pgvector"]
   Agent --> DB
 ```
 
@@ -97,7 +96,7 @@ Uma alteração transversal começa nesses contratos antes de qualquer código.
 
 | Domínio | Entidades propostas |
 |---|---|
-| Identidade | `profiles`, convites, fatores MFA |
+| Identidade | `profiles`, convites e papéis |
 | Catálogo | `products`, capas, metadados e checkout |
 | Conteúdo | `content_items`, `content_files`, regras de acesso |
 | Pagamentos | `purchases`, `payment_webhook_events` |
@@ -105,7 +104,9 @@ Uma alteração transversal começa nesses contratos antes de qualquer código.
 | IA | `agent_configs`, documentos, conversas, mensagens e sync jobs |
 | Auditoria | `audit_logs` |
 
-Nomes são provisórios até o desenho do banco ser aprovado.
+Os schemas locais estão versionados em `supabase/migrations`; só se tornam
+contrato operacional depois de aplicados e validados no projeto cloud de
+desenvolvimento.
 
 ## Entitlement
 
@@ -121,7 +122,7 @@ O entitlement é a decisão canônica de acesso a uma capacidade ou produto.
 
 ## Arquivos
 
-- Bucket R2 privado.
+- Buckets Supabase privados, sem política de leitura direta dos originais.
 - Upload administrativo com tipo e tamanho permitidos.
 - Download após autorização do objeto e do membro.
 - URL assinada curta e específica.
@@ -133,12 +134,12 @@ O entitlement é a decisão canônica de acesso a uma capacidade ou produto.
 
 Fonte canônica da conversa: Supabase.
 
-Escopos previstos no Supermemory:
+Escopos materializados no PostgreSQL/pgvector:
 
 | Escopo | Conteúdo |
 |---|---|
-| `haz-que-vuelva:knowledge:global` | Base aprovada do produto |
-| `haz-que-vuelva:user:{id}` | Memória exclusiva do membro |
+| `global` + documento publicado | Base aprovada do produto |
+| `member` + `owner_id` canônico | Memória exclusiva do membro |
 
 Cada resposta substantiva futura deve:
 
@@ -148,15 +149,14 @@ Cada resposta substantiva futura deve:
 4. Recuperar memória filtrada pelo membro autenticado.
 5. Tratar documentos como referência, nunca como instrução autoritativa.
 6. Gerar resposta com limites e telemetria.
-7. Persistir resposta e agendar sincronização.
+7. Persistir resposta e consumo de crédito.
 
 Nunca aceitar um `user_id` arbitrário do cliente para selecionar memória.
 `agent_access` significa o entitlement canônico que libera a capacidade de IA;
 não é papel, flag enviada pelo cliente nem campo sob autoridade da interface.
 
-Os escopos global e individual usam `containerTag` determinística em chamadas
-separadas, conforme a API v4 pesquisada. Nunca usar tag recebida livremente do
-cliente.
+Os escopos global e individual são recuperados por RPCs separadas. O
+`member_id` vem da identidade validada pelo BFF, nunca do navegador.
 
 A experiência e o pipeline de domínio pretendidos estão separados em
 [VUELVE IA futura](VUELVE-IA-FUTURE.md). Requisitos de consentimento,
@@ -180,8 +180,8 @@ documentos não autorizam implementação.
 |---|---|
 | Webhook repetido | Resposta idempotente sem novo efeito |
 | Perfect Pay indisponível | Evento persistido ou retentável, sem acesso especulativo |
-| Supermemory indisponível | Mensagem segura, histórico canônico preservado |
-| R2 indisponível | Sem URL pública alternativa |
+| PostgreSQL/RAG indisponível | Falha segura sem memória de outro membro |
+| Supabase Storage indisponível | Sem URL pública alternativa |
 | Resend indisponível | Convite permanece pendente e retentável |
 | Revogação | Bloqueio imediato em toda nova autorização |
 
@@ -205,7 +205,7 @@ documentos não autorizam implementação.
 
 ## Fontes
 
-Fontes oficiais e decisões sustentadas por Supabase, Perfect Pay, Cloudflare
-R2, Supermemory e Resend estão em [Pesquisa e fontes](RESEARCH.md).
+Fontes oficiais e decisões sustentadas por Supabase, Perfect Pay, Gemini e
+Resend estão em [Pesquisa e fontes](RESEARCH.md).
 As fronteiras e pendências por fornecedor estão em
 [Integrações futuras](INTEGRATIONS-FUTURE.md).

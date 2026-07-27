@@ -6,9 +6,9 @@ Gate 3 autorizado explicitamente em 24 de julho de 2026. A autorização cobre
 somente o frontend estático descrito aqui. Gate 4, backend, integrações,
 infraestrutura, credenciais e deploy permanecem bloqueados.
 
-Implementação técnica concluída em 24 de julho de 2026 e registrada em
-[Implementação do frontend](FRONTEND-IMPLEMENTATION.md). A passagem ao Gate 4
-depende de aprovação visual explícita do usuário.
+Implementação técnica concluída e aprovada pelo usuário. Este documento é o
+contrato histórico do Gate 3; o estado atual está no
+[Checklist](PROJECT-CHECKLIST.md).
 
 O frontend será inteiramente estático, em espanhol, com mocks explicitamente
 marcados. Não haverá endpoints, banco, auth, pagamentos, RAG ou chamadas

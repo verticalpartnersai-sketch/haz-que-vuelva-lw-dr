@@ -29,9 +29,9 @@ churn; APIs, segurança, integrações e operação exigem verificação atual.
 | Frontend | Documentação local do Next.js instalado e APIs atuais escolhidas |
 | Identidade | Supabase Auth, SSR, MFA, RLS e cookies |
 | Pagamentos | Perfect Pay webhook, autenticação, payload e estados |
-| Arquivos | Cloudflare R2, CORS, URLs temporárias e limites |
+| Arquivos | Supabase Storage, RLS, URLs temporárias e limites |
 | E-mail | Resend, domínio, SPF, DKIM, DMARC e limites |
-| IA | Supermemory, modelo de IA, isolamento, filtros e limites |
+| IA | Gemini, pgvector, isolamento, structured output e limites |
 | Infraestrutura | Docker, Hostinger VPS, Cloudflare, TLS, backup e hardening |
 
 Cada gate deve repetir a pesquisa relevante; esta página não congela APIs.
@@ -50,8 +50,9 @@ Pesquisa realizada via Exa MCP em 24 de julho de 2026.
   sustenta sessão SSR por cookies; a página informa que `@supabase/ssr` está em
   beta e pode sofrer breaking changes.
 
-Decisão: manter Auth SSR + RLS + MFA como direção, mas revalidar pacote e API no
-gate de identidade.
+Decisão histórica: Auth SSR + RLS permanecem. MFA como gate obrigatório foi
+posteriormente removido por decisão explícita e está registrado como risco
+aceito no Gate 5.
 
 ### Perfect Pay
 
@@ -64,6 +65,9 @@ ordem permanecem `PENDENTE` até pesquisa específica do gate.
 
 ### Cloudflare R2
 
+Pesquisa histórica. A decisão de Storage foi substituída por Supabase Storage
+no Gate 5.
+
 - [Presigned URLs](https://developers.cloudflare.com/r2/api/s3/presigned-urls/):
   confirma acesso temporário a uma operação e objeto; a URL funciona como
   bearer token até expirar.
@@ -75,6 +79,9 @@ Decisão: bucket privado, autorização antes da emissão, validade curta e CORS
 mínimo. O prazo exato será decidido no gate de arquivos.
 
 ### Supermemory
+
+Pesquisa histórica. A decisão de memória/RAG foi substituída por
+PostgreSQL/pgvector no Gate 5.
 
 - [Container Tags](https://supermemory.ai/docs/concepts/container-tags):
   confirma isolamento por `containerTag`; API v4 usa o campo singular e o
@@ -255,6 +262,87 @@ painéis e dados de destaque usam Bebas Neue 400 por
 `@fontsource/bebas-neue`. Source Sans 3 permanece na interface e na leitura
 contínua. Não existe requisição runtime ao Google Fonts nem uso de fonte
 serifada no frontend.
+
+## Registro de fontes — Gate 5
+
+Pesquisa realizada via Exa MCP em 27 de julho de 2026, antes da fundação do
+backend. Foram priorizadas fontes oficiais.
+
+### Supabase
+
+- [Auth SSR e clientes Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client):
+  orienta clientes browser/server separados, refresh por Proxy e uso de
+  `getClaims()` para validar identidade; alerta para não autorizar com o objeto
+  de `getSession()` lido de cookies.
+- [Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security):
+  exige RLS em tabelas de schemas expostos e mantém service keys fora do
+  navegador.
+- [Downloads em buckets privados](https://supabase.com/docs/guides/storage/serving/downloads):
+  confirma acesso autenticado ou URL assinada temporária.
+- [Busca semântica e pgvector](https://supabase.com/docs/guides/ai/semantic-search):
+  sustenta vetores no Postgres e combinação futura com busca por palavras.
+- [Auth Admin `generateLink`](https://supabase.com/docs/reference/javascript/auth-admin-generatelink):
+  documenta links de convite e recuperação para envio por provedor próprio.
+- [Implementação oficial do Supabase Auth](https://github.com/supabase/auth/blob/effd6624/internal/api/mail.go):
+  confirma que um novo `invite` cria a identidade e que um novo convite para
+  identidade ainda não confirmada rotaciona o token de confirmação.
+
+Decisão: Supabase substitui R2 e Supermemory. Autorização é repetida no BFF e
+em RLS; signed URL só é criada depois do entitlement. O Proxy renova sessão,
+mas o DAL valida claims e perfil. O provisionamento cria uma identidade
+pendente e a outbox gera um convite novo somente no momento do envio; nenhum
+link tokenizado é persistido em payload, log ou tabela da aplicação.
+
+### Perfect Pay
+
+- [Webhook oficial](https://support.perfectpay.com.br/doc/perfect-pay/postback/integracao-via-webhook-com-a-perfect-pay):
+  documenta token, `code`, produto, plano, `plan_itens` e enums de status.
+- [API oficial de vendas](https://support.perfectpay.com.br/doc/perfectpay/perfectpay-api/vendas):
+  documenta consulta autenticada, filtros por status e identificador de venda.
+
+Decisão: `approved`, `authorized` e `completed` concedem de modo idempotente;
+`cancelled`, `refunded` e `charged_back` revogam o grant correspondente.
+Entrada persiste dados mínimos e enfileira projeção. A documentação não prova
+como order bumps reais desta conta aparecerão; nenhum mapping será ativado sem
+payloads redigidos e IDs reais.
+
+### Gemini
+
+- [Modelos Gemini](https://ai.google.dev/gemini-api/docs/models):
+  lista `gemini-3.6-flash` como modelo estável.
+- [Gemini 3.6 Flash](https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash):
+  confirma thinking e structured outputs.
+- [Embeddings](https://ai.google.dev/gemini-api/docs/embeddings):
+  lista `gemini-embedding-2` estável e recomenda 768, 1536 ou 3072 dimensões.
+- [Structured outputs](https://ai.google.dev/gemini-api/docs/structured-output):
+  confirma JSON Schema e streaming de saída estruturada.
+- [REST `generateContent`](https://ai.google.dev/api/generate-content):
+  confirma que a configuração REST usa `responseMimeType` e
+  `responseSchema` dentro de `generationConfig`.
+
+Decisão: geração `gemini-3.6-flash`, embeddings
+`gemini-embedding-2`/768 e validação Pydantic. O adapter usa o contrato REST
+oficial e permanece desligado até chave, orçamento, política de dados e testes
+de falha. `generateContent` não recebe retry automático: sem idempotency key
+documentada, uma repetição após falha ambígua pode duplicar custo.
+
+### Resend
+
+- [Idempotency keys](https://resend.com/docs/dashboard/emails/idempotency-keys):
+  confirma suporte em envio, validade de 24 horas e limite de 256 caracteres.
+- [Domínios](https://resend.com/docs/dashboard/domains):
+  exige domínio verificado e recomenda subdomínio para isolar reputação.
+
+Decisão: e-mail sai por outbox própria e usa também idempotency key do Resend.
+Domínio, remetente e smoke test continuam pendentes.
+
+### Risco aceito — MFA administrativo
+
+O usuário decidiu que MFA não será gate obrigatório do primeiro release. Isso
+reduz a segurança de contas administrativas e não é equivalente a
+reautenticação. Controles compensatórios previstos: sessão admin curta,
+reautenticação em mutações críticas, rate limiting, privilégio mínimo e
+auditoria append-only. A decisão deve ser revisitada antes de produção.
 
 ### Iconografia
 

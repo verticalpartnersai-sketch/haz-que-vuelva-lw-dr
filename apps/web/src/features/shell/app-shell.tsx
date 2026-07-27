@@ -35,7 +35,7 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function SideRail() {
+function SideRail({ authEnabled }: { authEnabled: boolean }) {
   const pathname = usePathname();
   const { role } = useMockSession();
   const { l, locale, setLocale, t } = useLocale();
@@ -89,15 +89,20 @@ function SideRail() {
               "simulation",
             )}`}
             className="side-rail__item"
-            onClick={() =>
+            onClick={async () => {
+              if (authEnabled) {
+                await fetch("/api/auth/logout", { method: "POST" });
+                window.location.assign("/login");
+                return;
+              }
               setStatus(
                 l(
                   "Cierre de sesión simulado.",
                   "Saída simulada.",
                   "Simulated sign out.",
                 ),
-              )
-            }
+              );
+            }}
             type="button"
           >
             <Icon name="logout" />
@@ -135,7 +140,13 @@ function MobileDock() {
   );
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  authEnabled,
+  children,
+}: {
+  authEnabled: boolean;
+  children: ReactNode;
+}) {
   const { l } = useLocale();
 
   return (
@@ -143,7 +154,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <a className="skip-link" href="#contenido-principal">
         {l("Saltar al contenido", "Pular para o conteúdo", "Skip to content")}
       </a>
-      <SideRail />
+      <SideRail authEnabled={authEnabled} />
       <div className="app-shell__viewport">
         <header className="mobile-header">
           <Link aria-label="Haz Que Vuelva — Inicio" href="/">

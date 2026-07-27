@@ -43,13 +43,13 @@ Estados usados:
 | O01/O04 | Upsell e downsell equivalentes concedem o mesmo acesso | `FUTURO` | [Integrações futuras](INTEGRATIONS-FUTURE.md) | Regra útil para o futuro mapeamento, dependente do catálogo final |
 | O01/O03 | PDFs em espanhol privados; versões PT-BR não são expostas | `FUTURO` | [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md) | Requisito de conteúdo futuro, sem storage implementado |
 | O01 | Produtos editoriais sem expiração | `PENDENTE` | [Produto](PRODUCT.md) | O próprio Oracle marca a duração para aprovação |
-| O01/O04 | Download de PDF versus leitura autenticada | `PENDENTE` | [Produto](PRODUCT.md) | O Gate 3 simula download; a política real ainda não foi decidida |
+| O01/O04 | Download de PDF versus leitura autenticada | `CANÔNICO` | [Produto](PRODUCT.md) | A decisão atual permite ambos, sempre com autorização e cópia marcada |
 | O02/O04 | VUELVE IA com um caso ativo, janela de 30 dias e análise em 12 blocos | `FUTURO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Define a experiência pretendida, sem autorizar IA ou persistência |
-| O02/O04 | Limites de 30 mil caracteres, cinco atualizações e 60 respostas | `PENDENTE` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | O repositório ainda registra orçamento e limites como decisão do usuário |
+| O02/O04 | Limites de entrada e respostas | `CANÔNICO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | A decisão atual fixa 30 mil caracteres, cinco atualizações, 30 respostas por compra e cinco por dia |
 | O02 | Entrada por texto, `.txt` e `.zip` com `.txt`; imagem, áudio e OCR fora do MVP | `FUTURO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Contrato de formato futuro, sujeito ao gate técnico e jurídico |
 | O02/O03 | Conversa importada e documentos RAG são dados não confiáveis | `FUTURO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Compatível com a regra já aprovada de proteção contra prompt injection |
 | O02 | Pipeline modular de caso, importação, fatos, política, análise, geração, validação e retenção | `FUTURO` | [Arquitetura](ARCHITECTURE.md) | Modelo de domínio, não esquema de banco nem ordem de implementação |
-| O02 | Provedor de IA não definido | `PENDENTE` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Supermemory continua previsto para memória/RAG, mas não escolhe modelo de geração |
+| O02 | Provedor de IA não definido | `CANÔNICO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Decisão posterior escolheu Gemini para geração/embedding e Supabase para RAG |
 | O03 | Dados sintéticos até gate jurídico específico | `FUTURO` | [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md) | Nenhum dado real pode entrar em desenvolvimento/QA antes das validações |
 | O03 | Consentimentos separados para termos, terceiros, marketing e depoimentos | `FUTURO` | [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md) | Requisito para identidade/casos futuros |
 | O03 | Logs, analytics e suporte não recebem conversa bruta | `FUTURO` | [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md) | Minimização e auditoria sem vigilância |
@@ -57,12 +57,13 @@ Estados usados:
 | O03 | Reembolso/chargeback revoga somente o item correspondente | `FUTURO` | [Integrações futuras](INTEGRATIONS-FUTURE.md) | Confirma a regra de entitlement já documentada |
 | O03 | Segurança, não contato e risco vencem reconexão | `FUTURO` | [VUELVE IA futura](VUELVE-IA-FUTURE.md) | Regra de produto e segurança, fora do LLM quando crítica |
 | O03 | Retenção, subprocessadores, base legal MX/CO, suporte excepcional e incidente | `PENDENTE` | [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md) | Dependem de decisão jurídica e operacional |
-| O04 | Começar imediatamente fundamentos, auth, uploads, IA e webhooks | `CONFLITO` | [Checklist](PROJECT-CHECKLIST.md) | A ordem aprovada mantém Gate 4 e todos os backends congelados até aprovação visual |
-| O04 | Perfect Pay em staging/simulação já na etapa Oracle | `CONFLITO` | [Integrações futuras](INTEGRATIONS-FUTURE.md) | O Gate 3 proíbe endpoints, eventos e integração, inclusive simulada no servidor |
+| O04 | Começar fundamentos, auth, uploads, IA e webhooks | `CANÔNICO` | [Checklist](PROJECT-CHECKLIST.md) | Passou a valer apenas após a aprovação explícita do frontend e abertura do Gate 5 |
+| O04 | Perfect Pay em staging/simulação | `FUTURO` | [Integrações futuras](INTEGRATIONS-FUTURE.md) | Adapter local está autorizado; smoke test aguarda conta, IDs e payloads reais |
 | O04 | Matriz futura de QA por acesso, isolamento, segurança, exclusão e responsividade | `FUTURO` | [Checklist](PROJECT-CHECKLIST.md) | Será refinada quando cada gate for autorizado |
 
 ## Conclusão da ingestão
 
 O Oracle ampliou o contexto de domínio, principalmente para VUELVE IA,
-privacidade, segurança, retenção e QA futuro. Ele não alterou o escopo do Gate
-3, não aprovou valores comerciais e não liberou fornecedores ou dados reais.
+privacidade, segurança, retenção e QA. Ele não aprovou valores comerciais nem
+liberou fornecedores ou dados reais; a autorização posterior do Gate 5 veio do
+usuário, não do Oracle.

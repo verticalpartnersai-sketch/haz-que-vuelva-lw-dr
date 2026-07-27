@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { LocaleProvider } from "@/features/i18n/locale";
-import { AppShell } from "@/features/shell/app-shell";
-import { MockSessionProvider } from "@/features/shell/mock-session";
 
 import "@fontsource/bebas-neue/400.css";
 import "./globals.css";
@@ -20,7 +18,7 @@ export const metadata: Metadata = {
     default: "Haz Que Vuelva",
     template: "%s · Haz Que Vuelva",
   },
-  description: "Prototipo estático del área de miembros Haz Que Vuelva.",
+  description: "Área privada de miembros Haz Que Vuelva.",
 };
 
 export default function RootLayout({
@@ -31,11 +29,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={sourceSans.variable}>
-        <LocaleProvider>
-          <MockSessionProvider>
-            <AppShell>{children}</AppShell>
-          </MockSessionProvider>
-        </LocaleProvider>
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

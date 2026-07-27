@@ -13,20 +13,21 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 6. [Navegação](NAVIGATION.md)
 7. [Especificação frontend](FRONTEND-SPEC.md)
 8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md)
-9. [VUELVE IA futura](VUELVE-IA-FUTURE.md)
-10. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md)
-11. [Integrações futuras](INTEGRATIONS-FUTURE.md)
-12. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
-13. [Pesquisa e fontes](RESEARCH.md)
-14. [Checklist mestre](PROJECT-CHECKLIST.md)
+9. [Implementação do backend](BACKEND-IMPLEMENTATION.md)
+10. [VUELVE IA](VUELVE-IA-FUTURE.md)
+11. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md)
+12. [Integrações](INTEGRATIONS-FUTURE.md)
+13. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
+14. [Pesquisa e fontes](RESEARCH.md)
+15. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 
 - Gates 1 e 2: concluídos.
-- Gate 3: frontend estático concluído tecnicamente, incluindo a família
-  responsiva da hero; aguarda aprovação visual explícita.
-- Backend, integrações, infraestrutura, credenciais e deploy: congelados.
-- Gate 4: aguardando revisão e aprovação visual explícita do usuário.
+- Gates 3 e 4: frontend aprovado pelo usuário e preservado em commit próprio.
+- Gate 5: backend autorizado e em implementação incremental.
+- Integrações reais, dados reais, infraestrutura e deploy continuam bloqueados
+  pelos respectivos pré-requisitos.
 - As notas Oracle foram ingeridas como contexto e rastreadas sem liberar gates
   posteriores.
 

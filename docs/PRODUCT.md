@@ -28,7 +28,10 @@ bumps e upsells.
 | `member` | Consumir produtos autorizados, usar IA quando liberada e gerenciar o próprio perfil |
 | `admin` | Operar catálogo, conteúdo, membros, permissões, compras, eventos, limites e configuração da IA |
 
-MFA de administrador é requisito antes da abertura pública.
+MFA deixou de ser gate obrigatório por decisão explícita do usuário. O risco
+aceito e os controles compensatórios pendentes estão em
+[Pesquisa e fontes](RESEARCH.md). Isso não torna uma sessão comum equivalente
+a MFA.
 
 Suporte e identidades de serviço citados nas notas Oracle são escopos
 operacionais futuros, não novos perfis de interface. O produto mantém
@@ -103,12 +106,12 @@ Evitar `Curso`, `Mis cursos` e equivalentes em toda a interface.
 5. No produto final, cada resposta usa conhecimento global aprovado e memória
    exclusiva daquele membro.
 
-## Fora de escopo até autorização
+## Implementação permitida, ativação bloqueada
 
-- Banco, autenticação, RLS e migrações.
-- Webhooks e qualquer chamada à Perfect Pay.
-- Supabase, R2, Resend e Supermemory.
-- Agente Python, RAG e chamadas a modelos.
+- Código, migrações, adapters e testes locais do backend estão autorizados.
+- Supabase, Perfect Pay, Resend e Gemini permanecem sem projeto/chave ativa.
+- Supabase Storage e PostgreSQL/pgvector substituem R2 e Supermemory.
+- Chamadas reais, dados reais e smoke tests externos dependem de gate próprio.
 - Docker de produção, VPS, Cloudflare e deploy.
 - Dados reais, credenciais e importação de conteúdo.
 
@@ -116,7 +119,7 @@ Evitar `Curso`, `Mis cursos` e equivalentes em toda a interface.
 
 - `PENDENTE`: domínio definitivo.
 - `PENDENTE`: códigos, preços, nomes e links de checkout dos produtos.
-- `PENDENTE`: qual produto concede acesso à IA.
+- `CONCLUÍDO`: `vuelve_ia` concede acesso à IA.
 - `PENDENTE`: conteúdos, PDFs, capas e documentos de conhecimento.
 - `CONCLUÍDO`: família final da hero para mobile, tablet, desktop e ultra-wide.
 - `PENDENTE`: demais arquivos oficiais da marca.
@@ -124,11 +127,12 @@ Evitar `Curso`, `Mis cursos` e equivalentes em toda a interface.
   destaques + `Source Sans 3` para textos corridos e controles, ambas OFL 1.1.
   O produto não usa fontes serifadas. Arquivos tipográficos oficiais da marca,
   se existirem, podem motivar revisão documentada.
-- `PENDENTE`: modelo de IA, orçamento e limite de mensagens.
+- `CONCLUÍDO`: modelos e limites de mensagens definidos.
+- `PENDENTE`: orçamento e alertas de gasto da IA.
 - `PENDENTE`: WhatsApp de suporte.
 - `PENDENTE`: política de moderação dos comentários.
 - `PENDENTE`: duração dos produtos editoriais.
-- `PENDENTE`: política final de download versus leitura autenticada de PDF.
+- `CONCLUÍDO`: leitura autenticada e download de cópia individual marcada.
 
 Os códigos, nomes e preços presentes nas notas Oracle são propostas e não
 substituem estas pendências. A reconciliação completa está em

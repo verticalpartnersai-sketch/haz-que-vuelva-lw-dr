@@ -11,7 +11,7 @@ ativa; não existem credenciais versionadas nem smoke tests reais autorizados.
 | Supabase Auth/PostgreSQL/Storage | identidade, banco, arquivos privados, RLS e RAG | schemas locais criados; projeto cloud pendente |
 | Resend | convites e emails transacionais | adapter e outbox implementados; domínio e smoke test pendentes |
 | Gemini | geração e embeddings da VUELVE IA | adapters implementados e desligados; credencial e smoke test pendentes |
-| Cloudflare/VPS | borda, DNS, TLS e execução | direção definida; topologia e operação pendentes |
+| Cloudflare Workers/Containers | borda, DNS, TLS e execução | configuração local e dry-runs prontos; conta, domínios e publicação pendentes |
 
 ## Perfect Pay
 
@@ -56,4 +56,8 @@ código.
 - aplicação e validação cloud do schema, RLS e política de Storage;
 - templates e remetente;
 - contrato jurídico e política de dados do Gemini;
-- topologia de VPS, Cloudflare, backups, observabilidade e rollback.
+- conta, domínios, secrets, Containers, backups, observabilidade e rollback no
+  Cloudflare.
+
+A topologia e a sequência operacional estão em
+[Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md).

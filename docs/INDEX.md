@@ -19,7 +19,8 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 12. [Integrações](INTEGRATIONS-FUTURE.md)
 13. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
 14. [Pesquisa e fontes](RESEARCH.md)
-15. [Checklist mestre](PROJECT-CHECKLIST.md)
+15. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
+16. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 

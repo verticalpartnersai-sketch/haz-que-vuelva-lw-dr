@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import type { RefObject } from "react";
 
 import { Icon } from "@/components/icon";
@@ -65,12 +66,12 @@ export function PublicHeader({
 
 export function QuizLogo({ compact = false }: { compact?: boolean }) {
   return (
-    <img
+    <Image
       alt="Haz Que Vuelva"
       className={compact ? "quiz-logo quiz-logo--step" : "quiz-logo quiz-logo--intro"}
-      decoding="async"
       fetchPriority={compact ? "auto" : "high"}
       height={392}
+      priority={!compact}
       src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
       width={1451}
     />
@@ -197,7 +198,7 @@ export function QuestionStep({
                 />
                 {option.image ? (
                   <span aria-hidden="true" className="quiz-option__media">
-                    <img
+                    <Image
                       alt=""
                       height="512"
                       src={option.image}

@@ -1,0 +1,13 @@
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.pytest_cache
+.ruff_cache
+.venv
+.venv*
+__pycache__
+*.egg-info
+tests
+node_modules
+npm-debug.log

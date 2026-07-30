@@ -295,9 +295,17 @@ dados reais e deploy não estão.
 
 ## Gate 7 — infraestrutura e lançamento
 
-- [ ] Criar Dockerfiles não-root e Compose.
-- [ ] Configurar VPS, firewall, proxy e TLS.
-- [ ] Configurar Cloudflare e DNS.
+- [x] Preparar Workers OpenNext de marketing e área de membros.
+- [x] Validar build, bundle, dry-run e preview local dos dois Workers.
+- [x] Criar Dockerfile não-root e Worker/Container do agente.
+- [x] Validar typecheck e dry-run estático do agente.
+- [ ] Construir e executar a imagem do agente para `linux/amd64`.
+- [ ] Confirmar plano Cloudflare compatível com Containers.
+- [ ] Criar Workers, Preview URLs, variáveis e secrets na conta correta.
+- [ ] Executar smoke tests remotos sem domínio customizado.
+- [ ] Configurar Service Binding privado entre BFF e agente.
+- [ ] Conectar Cloudflare DNS/TLS a `hazquevuelva.site` e
+  `miembros.hazquevuelva.site`.
 - [ ] Criar backups e testar restauração.
 - [ ] Criar logs, métricas e alertas.
 - [ ] Validar rollback.

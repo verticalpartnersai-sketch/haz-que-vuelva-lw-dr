@@ -4,6 +4,10 @@
 !.env.example
 .serena/
 .playwright-cli/
+.dev.vars*
+!.dev.vars.example
+.open-next/
+.wrangler/
 
 __pycache__/
 *.egg-info/

@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "haz-que-vuelva-agent",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-07-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "keep_vars": true,
+  "vars": {
+    "ENVIRONMENT": "production",
+    "FEATURE_GENERATION": "false",
+    "GEMINI_MODEL": "gemini-3.6-flash",
+    "EMBEDDING_MODEL": "gemini-embedding-2",
+    "EMBEDDING_DIMENSIONS": "768",
+    "DAILY_RESPONSE_LIMIT": "5"
+  },
+  "containers": [
+    {
+      "class_name": "VuelveAgentContainer",
+      "image": "./Dockerfile",
+      "max_instances": 3,
+      "instance_type": "lite"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "VUELVE_AGENT",
+        "class_name": "VuelveAgentContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["VuelveAgentContainer"]
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

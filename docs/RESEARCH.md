@@ -372,3 +372,64 @@ exercitado em runtime com resposta 200. `npm audit --omit=dev` retorna zero
 vulnerabilidades nos dois apps. O audit completo ainda aponta advisories
 somente na cadeia de ferramentas do `eslint-config-next`; não foi aplicado o
 downgrade incorreto sugerido pelo npm.
+
+## Registro de fontes — Gate 7
+
+Pesquisa realizada em 30 de julho de 2026. A consulta Exa MCP foi tentada
+primeiro, mas expirou sem resposta; a decisão foi então verificada diretamente
+nas documentações oficiais do Cloudflare, OpenNext e Next.js.
+
+### Next.js no Cloudflare
+
+- [Cloudflare — Next.js no Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/):
+  confirma OpenNext como adaptador, App Router, SSR, streaming, middleware,
+  otimização de imagens e preview no runtime `workerd`. A mesma matriz informa
+  que Node.js Middleware ainda não é suportado.
+- [OpenNext — configuração de app existente](https://opennext.js.org/cloudflare/get-started):
+  documenta `wrangler.jsonc`, `open-next.config.ts`, `.dev.vars`, scripts,
+  cache de assets e `.open-next` ignorado.
+- [Next.js 16 — guia de atualização](https://nextjs.org/docs/app/guides/upgrading/version-16):
+  documenta a preferência por `proxy.ts` e a depreciação de `middleware.ts`.
+
+Decisão: publicar `apps/marketing` e `apps/web` como Workers separados com
+OpenNext `1.20.2` e Wrangler `4.115.0`. A área de membros usa
+`middleware.ts` como exceção consciente para permanecer no Edge Runtime;
+autorização continua no DAL e no RLS. Migrar de volta para `proxy.ts` somente
+quando Node.js Middleware estiver suportado pelo adaptador.
+
+### Cloudflare Containers
+
+- [Cloudflare Containers — getting started](https://developers.cloudflare.com/containers/get-started/):
+  confirma Dockerfile/imagem, arquitetura `linux/amd64`, Durable Object com
+  `new_sqlite_classes`, `defaultPort`, `sleepAfter` e `envVars`.
+- [Containers — variáveis e segredos](https://developers.cloudflare.com/containers/examples/env-vars-and-secrets/):
+  confirma que bindings do Worker podem ser repassados ao contêiner por
+  `envVars`.
+
+Decisão: preservar FastAPI em um Container gerenciado por Worker e Durable
+Object. O Worker expõe somente health e geração, valida o segredo antes de
+iniciar o contêiner e mantém geração desligada. O build real da imagem permanece
+pendente porque Docker não está instalado na máquina atual.
+
+### Monorepo e CI/CD
+
+- [Workers Builds — monorepos](https://developers.cloudflare.com/workers/ci-cd/builds/advanced-setups/):
+  orienta conectar cada Worker ao mesmo repositório e configurar root directory,
+  build/deploy próprios e watch paths.
+- [Workers Builds — watch paths](https://developers.cloudflare.com/workers/ci-cd/builds/build-watch-paths/):
+  documenta includes/excludes para evitar builds de apps não afetados.
+
+Decisão: três projetos Cloudflare, com raízes `apps/marketing`, `apps/web` e
+`apps/agent`. A primeira publicação deve criar versões/Preview URLs sem domínio
+customizado. Domínio e tráfego entram somente após smoke test e rollback
+verificados. A configuração completa está em
+[Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md).
+
+### Dependência transitiva do OpenNext
+
+`@opennextjs/cloudflare@1.20.2` depende de `@node-minify/core@8.0.6`, cuja faixa
+antiga aceita versões vulneráveis de `glob`. Atualizar o pacote core inteiro
+para 9 ou 10 quebra interfaces consumidas pelo OpenNext. A mitigação compatível
+fixa somente `glob@12.0.0` dentro de `@node-minify/core`. Build OpenNext e audit
+de produção passaram nos dois apps. O audit completo ainda mantém nove
+advisories altos exclusivamente na cadeia de lint já documentada.

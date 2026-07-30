@@ -219,7 +219,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar provisionamento e entrega recuperável do convite por outbox.
 - [x] Implementar confirmação do convite e definição de senha na UI.
 - [x] Implementar recuperação e reset de senha pelo fluxo PKCE.
-- [ ] Implementar troca de e-mail segura.
+- [x] Implementar troca de e-mail segura com prova da senha atual, confirmação
+  dupla, sincronização do perfil e auditoria sem registrar os endereços.
 - [x] Registrar decisão de não exigir MFA no primeiro release e o risco aceito.
 - [ ] Implementar reautenticação administrativa e controles compensatórios em
   todas as mutações críticas.

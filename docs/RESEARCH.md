@@ -358,6 +358,20 @@ um token aleatório de 256 bits. O navegador recebe o valor em cookie HttpOnly,
 na mesma transação da mutação. A sessão admin autenticada não recebe permissão
 para criar essa autorização diretamente.
 
+### Troca segura de e-mail
+
+- [Supabase Auth — `updateUser`](https://supabase.com/docs/reference/javascript/auth-updateuser):
+  documenta a alteração de e-mail da identidade autenticada.
+- [Supabase CLI — `double_confirm_changes`](https://supabase.com/docs/guides/local-development/cli/config#auth-email-double-confirm-changes):
+  confirma que o modo seguro exige confirmação nos endereços antigo e novo.
+- [Supabase — templates de e-mail](https://supabase.com/docs/guides/auth/auth-email-templates):
+  documenta o template de troca e a notificação de endereço alterado.
+
+Decisão: o BFF confirma a senha atual antes de pedir `updateUser`, usa redirect
+permitido para o callback PKCE e nunca atualiza `profiles.email` antecipadamente.
+Um trigger em `auth.users` sincroniza o perfil somente após o Auth efetivar a
+mudança e registra auditoria sem duplicar o endereço antigo ou novo no log.
+
 ### Iconografia
 
 - [Phosphor Icons — repositório oficial React](https://github.com/phosphor-icons/react):

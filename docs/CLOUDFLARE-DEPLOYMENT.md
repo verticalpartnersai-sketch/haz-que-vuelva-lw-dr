@@ -316,6 +316,9 @@ respectivo serviço estejam aprovados.
   qualquer PDF pelo painel;
 - aplicar e validar `202607300015_admin_reauthentication.sql`; sem essa
   migração, nenhuma mutação administrativa crítica deve ser habilitada;
+- aplicar e validar `202607300016_secure_email_change.sql` antes de habilitar
+  a troca de e-mail no perfil conectado; manter `Secure email change` ativo,
+  cadastrar a URL de callback e revisar os templates de troca/notificação;
 - confirmar plano de Workers com CPU suficiente para `pdf-lib` e medir um PDF
   real antes de ligar `FEATURE_CONTENT`;
 - construir e executar a imagem Docker localmente ou em CI;

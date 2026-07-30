@@ -6,16 +6,30 @@ import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { SelectControl } from "@/components/select-control";
 import { useLocale, type Locale } from "@/features/i18n/locale";
+import { ProfileEmailChange } from "@/features/profile/profile-email-change";
 import { useMockSession } from "@/features/shell/mock-session";
 import { mockMember } from "@/mocks/data";
 
 type ProfileState = "ready" | "loading" | "error";
 
-export function ProfilePage() {
+type ConnectedIdentity = {
+  email: string;
+  displayName: string | null;
+};
+
+export function ProfilePage({
+  identity,
+}: {
+  identity: ConnectedIdentity | null;
+}) {
   const { role, roleLocked, setRole } = useMockSession();
   const { l, locale, localeLabel, setLocale, t } = useLocale();
   const [status, setStatus] = useState("");
   const [viewState, setViewState] = useState<ProfileState>("ready");
+  const profileName =
+    identity?.displayName?.trim() ||
+    identity?.email.split("@")[0] ||
+    mockMember.name;
 
   return (
     <div className="profile-page page-frame page-frame--top">
@@ -26,27 +40,36 @@ export function ProfilePage() {
           </h1>
           <p>{t("profile.description")}</p>
         </div>
-        <div className="demo-toolbar demo-toolbar--compact">
-          <span>
-            <strong>{l("Estado simulado", "Estado simulado", "Simulated state")}</strong>
-            <small>{l("Datos ficticios", "Dados fictícios", "Fictional data")}</small>
-          </span>
-          <SelectControl
-            ariaLabel={l(
-              "Estado simulado del perfil",
-              "Estado simulado do perfil",
-              "Simulated profile state",
-            )}
-            className="select-control--compact"
-            onChange={setViewState}
-            options={[
-              { label: l("Listo", "Pronto", "Ready"), value: "ready" },
-              { label: l("Cargando", "Carregando", "Loading"), value: "loading" },
-              { label: l("Error", "Erro", "Error"), value: "error" },
-            ]}
-            value={viewState}
-          />
-        </div>
+        {!identity ? (
+          <div className="demo-toolbar demo-toolbar--compact">
+            <span>
+              <strong>
+                {l("Estado simulado", "Estado simulado", "Simulated state")}
+              </strong>
+              <small>
+                {l("Datos ficticios", "Dados fictícios", "Fictional data")}
+              </small>
+            </span>
+            <SelectControl
+              ariaLabel={l(
+                "Estado simulado del perfil",
+                "Estado simulado do perfil",
+                "Simulated profile state",
+              )}
+              className="select-control--compact"
+              onChange={setViewState}
+              options={[
+                { label: l("Listo", "Pronto", "Ready"), value: "ready" },
+                {
+                  label: l("Cargando", "Carregando", "Loading"),
+                  value: "loading",
+                },
+                { label: l("Error", "Erro", "Error"), value: "error" },
+              ]}
+              value={viewState}
+            />
+          </div>
+        ) : null}
       </header>
 
       {viewState === "loading" ? (
@@ -93,22 +116,27 @@ export function ProfilePage() {
         </section>
       ) : (
         <div className="profile-layout">
-        <section aria-labelledby="identity-title" className="surface-card identity-card">
-          <div className="identity-card__avatar" aria-hidden="true">
-            A
-          </div>
-          <div>
-            <span className="section-kicker">
-              {l("Identidad", "Identidade", "Identity")}
+          <section
+            aria-labelledby="identity-title"
+            className="surface-card identity-card"
+          >
+            <div className="identity-card__avatar" aria-hidden="true">
+              {profileName.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <span className="section-kicker">
+                {l("Identidad", "Identidade", "Identity")}
+              </span>
+              <h2 id="identity-title">{profileName}</h2>
+              <p>{identity?.email ?? mockMember.email}</p>
+            </div>
+            <span className="status-badge status-badge--available">
+              <Icon name="check" />
+              {identity
+                ? l("Cuenta conectada", "Conta conectada", "Connected account")
+                : l("Perfil mock", "Perfil mock", "Mock profile")}
             </span>
-            <h2 id="identity-title">{mockMember.name}</h2>
-            <p>{mockMember.email}</p>
-          </div>
-          <span className="status-badge status-badge--available">
-            <Icon name="check" />
-            {l("Perfil mock", "Perfil mock", "Mock profile")}
-          </span>
-        </section>
+          </section>
 
         {!roleLocked ? (
           <section aria-labelledby="scenario-title" className="surface-card">
@@ -198,44 +226,61 @@ export function ProfilePage() {
               </small>
             </div>
             <label>
-              <span>{l("Notificaciones", "Notificações", "Notifications")}</span>
+              <span>
+                {identity
+                  ? l("Correo actual", "E-mail atual", "Current email")
+                  : l("Notificaciones", "Notificações", "Notifications")}
+              </span>
               <input
                 readOnly
-                value={l(
-                  mockMember.notifications,
-                  "Resumo semanal",
-                  "Weekly summary",
-                )}
+                value={
+                  identity?.email ??
+                  l(
+                    mockMember.notifications,
+                    "Resumo semanal",
+                    "Weekly summary",
+                  )
+                }
               />
               <small>
-                {l(
-                  "Preferencia de ejemplo.",
-                  "Preferência de exemplo.",
-                  "Example preference.",
-                )}
+                {identity
+                  ? l(
+                      "Se usa para iniciar sesión y recibir avisos de seguridad.",
+                      "Usado para entrar e receber avisos de segurança.",
+                      "Used to sign in and receive security notices.",
+                    )
+                  : l(
+                      "Preferencia de ejemplo.",
+                      "Preferência de exemplo.",
+                      "Example preference.",
+                    )}
               </small>
             </label>
           </div>
-          <button
-            className="button button--secondary"
-            onClick={() =>
-              setStatus(
-                l(
-                  "Cambio de correo simulado. No se modificó ningún dato.",
-                  "Alteração de e-mail simulada. Nenhum dado foi modificado.",
-                  "Email change simulated. No data was modified.",
-                ),
-              )
-            }
-            type="button"
-          >
-            <Icon name="settings" />
-            {l(
-              "Simular cambio de correo",
-              "Simular alteração de e-mail",
-              "Simulate email change",
-            )}
-          </button>
+          {identity ? (
+            <ProfileEmailChange />
+          ) : (
+            <button
+              className="button button--secondary"
+              onClick={() =>
+                setStatus(
+                  l(
+                    "Cambio de correo simulado. No se modificó ningún dato.",
+                    "Alteração de e-mail simulada. Nenhum dado foi modificado.",
+                    "Email change simulated. No data was modified.",
+                  ),
+                )
+              }
+              type="button"
+            >
+              <Icon name="settings" />
+              {l(
+                "Simular cambio de correo",
+                "Simular alteração de e-mail",
+                "Simulate email change",
+              )}
+            </button>
+          )}
           <p aria-live="polite" className="form-status">
             {status}
           </p>
@@ -254,15 +299,20 @@ export function ProfilePage() {
           ) : null}
           <button
             className="button button--ghost"
-            onClick={() =>
+            onClick={async () => {
+              if (identity) {
+                await fetch("/api/auth/logout", { method: "POST" });
+                window.location.assign("/login");
+                return;
+              }
               setStatus(
                 l(
                   "Cierre de sesión simulado.",
                   "Saída simulada.",
                   "Simulated sign out.",
                 ),
-              )
-            }
+              );
+            }}
             type="button"
           >
             <Icon name="logout" />

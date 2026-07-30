@@ -7,6 +7,7 @@ import { createSupabaseServerClient } from "@/server/supabase/server-client";
 export type CurrentIdentity = {
   id: string;
   email: string;
+  displayName: string | null;
   role: "member" | "admin";
 };
 
@@ -23,7 +24,7 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
 
   const { data: profile, error: profileError } = await client
     .from("profiles")
-    .select("id,email,role")
+    .select("id,email,display_name,role")
     .eq("id", subject)
     .single();
   if (profileError || !profile) {
@@ -33,6 +34,7 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
   return {
     id: profile.id,
     email: profile.email,
+    displayName: profile.display_name,
     role: profile.role,
   };
 });

@@ -18,6 +18,8 @@ Implementado nesta fundação:
 - projeção de pagamento, ledger SQL, RLS, conteúdo privado, outbox e auditoria;
 - workers independentes para pagamento e convite, com retry e dead-letter;
 - login, confirmação de convite, definição de senha e logout atrás de flag;
+- troca de e-mail com prova da senha atual, confirmação nos endereços antigo e
+  novo, sincronização transacional do perfil e auditoria sem registrar e-mail;
 - entrega de conteúdo com fila idempotente, watermark individual, URL assinada
   curta e auditoria de download;
 - publicação administrativa do PDF original em bucket privado, com validação
@@ -43,7 +45,6 @@ Implementado nesta fundação:
 Ainda não implementado ou ativado:
 
 - projeto Supabase cloud e aplicação das migrações;
-- troca segura de e-mail;
 - projeto e remetente reais do Resend;
 - mapping real de ofertas Perfect Pay;
 - painel admin conectado;
@@ -93,6 +94,14 @@ versão por produto em uma RPC auditada; se a transação de metadados falhar, o
 objeto recém-enviado é removido. Falha dessa compensação sobe como incidente,
 sem ativar a versão incompleta.
 
+No perfil conectado, a troca de e-mail passa pelo BFF e exige sessão válida,
+mesma origem, payload limitado e a senha atual. O Supabase envia confirmação
+para o endereço antigo e para o novo; `profiles.email` só é sincronizado pelo
+trigger depois que o Auth efetiva a mudança. A auditoria registra a ação e o
+ator, mas não copia os endereços para o log. O projeto cloud ainda precisa
+replicar `double_confirm_changes=true`, autorizar o callback da área de membros
+e instalar os templates antes da flag de Auth ser ligada.
+
 ## Módulos Next.js
 
 | Módulo | Responsabilidade |
@@ -133,7 +142,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 33 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 36 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

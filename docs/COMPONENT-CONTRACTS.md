@@ -183,7 +183,9 @@ um modal. `unknown` nunca deve piscar como disponível.
 - Regiões: heading `Perfil`, resumo de identidade, e-mail, preferências e ações
   de conta.
 - No Gate 3, dados são mocks visivelmente fictícios e campos não enviam dados.
-- Estados: `ready`, `loading`, `error`; troca de e-mail é somente fluxo visual.
+- Estados: `ready`, `loading`, `error`. Com Auth desligado, a troca de e-mail é
+  somente visual; no modo conectado, exige senha atual e confirmação nos
+  endereços antigo e novo antes de atualizar o perfil.
 - Desktop usa coluna de leitura de até `profile.mainColumns`; mobile empilha em
   ordem DOM.
 - No mobile, ações de conta incluem `Administración` somente para admin e

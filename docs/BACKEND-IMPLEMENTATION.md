@@ -1,6 +1,6 @@
 # Backend — implementação autorizada
 
-## Estado em 27 de julho de 2026
+## Estado em 30 de julho de 2026
 
 O usuário aprovou o frontend e autorizou o backend em fatias. Esta autorização
 permite código, migrações e testes locais, mas não ativa fornecedores, não cria
@@ -16,7 +16,10 @@ Implementado nesta fundação:
 - projeção de pagamento, ledger SQL, RLS, conteúdo privado, outbox e auditoria;
 - workers independentes para pagamento e convite, com retry e dead-letter;
 - login, confirmação de convite, definição de senha e logout atrás de flag;
-- download somente de cópia com watermark previamente gerada;
+- entrega de conteúdo com fila idempotente, watermark individual, URL assinada
+  curta e auditoria de download;
+- Cron Trigger por minuto para pagamento, convite e cópia individual, sempre
+  condicionado às respectivas flags e credenciais;
 - schema inicial de VUELVE IA com pgvector 768;
 - FastAPI privado com portas de geração, recuperação, quota e persistência;
 - prompt da IA com rascunho, publicação, rollback e leitura service-only;
@@ -35,7 +38,7 @@ Ainda não implementado ou ativado:
 - troca segura de e-mail;
 - projeto e remetente reais do Resend;
 - mapping real de ofertas Perfect Pay;
-- geração do watermark de PDF;
+- upload administrativo validado dos PDFs reais;
 - painel admin conectado;
 - ingestão/indexação administrativa de documentos;
 - rate limiting distribuído, circuit breaker e telemetria de custo;
@@ -92,14 +95,22 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 1. Criar projeto Supabase de desenvolvimento dedicado.
 2. Aplicar migrações somente após revisão SQL e backup inicial.
 3. Executar testes negativos RLS com duas alunas, admin e anônimo.
-4. Fornecer payloads redigidos reais e IDs Perfect Pay.
-5. Definir domínio de envio e remetente Resend.
-6. Aprovar textos jurídicos antes de qualquer conteúdo real.
+4. Fazer upload privado de um PDF otimizado de até 12 MiB.
+5. Executar o Cron Trigger e comprovar geração, retry e download auditado.
+6. Fornecer payloads redigidos reais e IDs Perfect Pay.
+7. Definir domínio de envio e remetente Resend.
+8. Aprovar textos jurídicos antes de qualquer conteúdo real.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 10 testes, lint e build passam.
+- `apps/web`: typecheck, 17 testes, lint e build OpenNext/Cloudflare passam.
+- o audit de dependências de produção da área de membros não encontrou
+  vulnerabilidades;
+- o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de
+  3 MiB do Workers Free; processamento real de PDF exige plano com CPU
+  compatível e smoke test antes de receber tráfego.
 - `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - migrações e testes pgTAP foram versionados, mas ainda não executados porque
-  não existe projeto Supabase de desenvolvimento vinculado.
+  não existe projeto Supabase de desenvolvimento vinculado e o Docker local
+  não está ativo.
 - nenhuma chamada real a Perfect Pay, Resend, Gemini ou Supabase foi feita.

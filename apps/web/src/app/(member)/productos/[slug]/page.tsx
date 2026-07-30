@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { ProductDetail } from "@/features/products/product-detail";
 import { getProductBySlug, products } from "@/mocks/data";
+import { environment } from "@/server/config/environment";
+import { createSupabaseServerClient } from "@/server/supabase/server-client";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
@@ -18,6 +22,7 @@ export default async function ProductPage({
   const product = getProductBySlug(slug);
 
   if (!product) notFound();
+  const contentEnabled = environment().FEATURE_CONTENT;
 
   if (product.accessState === "locked") {
     return (
@@ -39,5 +44,27 @@ export default async function ProductPage({
     );
   }
 
-  return <ProductDetail product={product} />;
+  let contentFileId: string | null = null;
+  if (contentEnabled) {
+    const client = await createSupabaseServerClient();
+    const { data } = await client
+      .from("content_files")
+      .select("id,version,content_items!inner(product_code,active,kind)")
+      .eq("content_items.product_code", product.id)
+      .eq("content_items.active", true)
+      .eq("content_items.kind", "pdf")
+      .eq("mime_type", "application/pdf")
+      .order("version", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    contentFileId = data?.id ?? null;
+  }
+
+  return (
+    <ProductDetail
+      contentEnabled={contentEnabled}
+      contentFileId={contentFileId}
+      product={product}
+    />
+  );
 }

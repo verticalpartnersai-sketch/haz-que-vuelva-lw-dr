@@ -275,6 +275,12 @@ respectivo serviço estejam aprovados.
 - middleware renova sessão, mas DAL/RLS negam acessos indevidos;
 - download, admin, pagamentos e IA permanecem fechados enquanto as flags
   estiverem desligadas.
+- o Custom Worker executa as outboxes a cada minuto e ignora integrações cuja
+  flag ou credencial esteja ausente;
+- primeiro download retorna `202` e enfileira a cópia; após o Cron, a mesma
+  ação recebe URL assinada somente do PDF individual em `member-sensitive`;
+- PDF inválido, criptografado, acima de 12 MiB ou 300 páginas falha fechado e
+  não entrega o original.
 
 ### Agente
 
@@ -304,6 +310,10 @@ respectivo serviço estejam aprovados.
 - conectar Workers Builds ao repositório GitHub;
 - confirmar plano pago e disponibilidade de Containers;
 - cadastrar secrets e variáveis da área de membros e do agente;
+- aplicar e validar `202607300013_content_watermark_delivery.sql` em projeto de
+  homologação;
+- confirmar plano de Workers com CPU suficiente para `pdf-lib` e medir um PDF
+  real antes de ligar `FEATURE_CONTENT`;
 - construir e executar a imagem Docker localmente ou em CI;
 - testar cold start do contêiner;
 - configurar Service Binding;

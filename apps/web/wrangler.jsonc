@@ -1,12 +1,15 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "haz-que-vuelva-members",
-  "main": ".open-next/worker.js",
+  "main": "worker.ts",
   "compatibility_date": "2026-07-29",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "preview_urls": true,
   "keep_vars": true,
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"

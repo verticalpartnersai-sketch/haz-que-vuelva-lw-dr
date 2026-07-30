@@ -126,7 +126,11 @@ O entitlement é a decisão canônica de acesso a uma capacidade ou produto.
 - Upload administrativo com tipo e tamanho permitidos.
 - Download após autorização do objeto e do membro.
 - URL assinada curta e específica.
-- Download final de PDF deve receber watermark individual.
+- Primeiro acesso enfileira uma cópia individual e responde `202` sem expor o
+  original; Cron Trigger processa a outbox em lote unitário.
+- O PDF final recebe marca visível e identificador opaco em todas as páginas.
+- Fonte acima de 12 MiB, PDF criptografado ou documento acima de 300 páginas
+  falha fechado e exige otimização administrativa.
 - Download e falhas críticas entram na auditoria.
 - Leitor embutido não torna o arquivo público.
 

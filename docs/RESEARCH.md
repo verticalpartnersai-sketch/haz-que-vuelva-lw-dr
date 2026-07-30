@@ -492,3 +492,63 @@ Worker do agente e serviço Python. O workflow usa Node 22, Python 3.12, caches
 por lockfile, permissões somente de leitura e concorrência cancelável. Deploy
 permanece separado do CI para não conceder credenciais de produção ao GitHub
 antes da conexão deliberada do Workers Builds.
+
+## Registro de fontes — Gate 5, cópia individual de conteúdo
+
+Pesquisa realizada em 30 de julho de 2026. O backend Exa do `agent-reach` foi
+consultado primeiro, mas retornou `HTTP 429` por limite gratuito. As decisões
+abaixo foram então verificadas diretamente nas fontes oficiais.
+
+### Supabase Storage privado
+
+- [Supabase — upload com JavaScript](https://supabase.com/docs/reference/javascript/file-buckets-upload):
+  documenta upload de `ArrayBuffer`, `contentType` explícito e a opção `upsert`.
+- [Supabase — downloads e buckets privados](https://supabase.com/docs/guides/storage/serving/downloads):
+  confirma que objetos privados não possuem URL pública e devem ser servidos
+  por download autenticado ou URL assinada.
+- [Supabase — standard uploads](https://supabase.com/docs/guides/storage/uploads/standard-uploads):
+  recomenda upload padrão para arquivos de até 6 MB e TUS para arquivos
+  maiores, embora o endpoint aceite arquivos maiores.
+
+Decisão: o arquivo-fonte permanece em `product-content`; somente a cópia
+individual final entra em `member-sensitive`. O worker usa a chave de serviço,
+grava em caminho determinístico por membro e arquivo, e o navegador recebe
+apenas uma URL assinada curta depois que a linha de auditoria existe. O fluxo
+rejeita fontes que não sejam PDF e limita o tamanho processado no Worker para
+não transformar uma requisição em consumo de memória sem limite.
+
+### Mutação do PDF
+
+- [`pdf-lib` — `PDFDocument`](https://pdf-lib.js.org/docs/api/classes/pdfdocument):
+  documenta `load` a partir de `Uint8Array`/`ArrayBuffer`, desenho em páginas e
+  `save` para `Uint8Array`.
+- [`pdf-lib` — repositório oficial](https://github.com/Hopding/pdf-lib):
+  confirma execução em ambientes JavaScript, modificação de PDFs existentes e
+  uso do pacote publicado no npm.
+
+Decisão: usar `pdf-lib` atrás de um port de aplicação, sem acoplar domínio ou
+orquestração ao pacote. A marca visível contém somente `HAZ QUE VUELVA` e um
+identificador opaco; e-mail ou nome da cliente não são impressos no arquivo. A
+mesma marca é salva em `watermarked_files` e `download_events` para auditoria.
+
+### Limites do Cloudflare Worker
+
+- [Cloudflare Workers — limites](https://developers.cloudflare.com/workers/platform/limits/):
+  documenta 128 MB de memória por isolate, CPU de 10 ms no plano gratuito e até
+  5 minutos no plano pago, além de recomendar mover processamento pesado para
+  outro mecanismo quando necessário.
+- [OpenNext — Custom Worker](https://opennext.js.org/cloudflare/howtos/custom-worker):
+  documenta a reutilização do handler gerado junto de um handler `scheduled`.
+- [Cloudflare — Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/):
+  documenta `scheduled()`, a configuração `triggers.crons` no Wrangler e o
+  endpoint local de teste do evento.
+
+Decisão: a geração nunca ocorre na requisição pública de download. O acesso
+enfileira uma operação idempotente e retorna estado pendente; uma rota interna,
+protegida por segredo, processa lotes unitários. O lote pequeno e os limites de
+tamanho/páginas protegem o Worker. Antes da ativação real, a conta deverá usar
+plano compatível com processamento de PDF ou o mesmo port deverá ser conectado
+a um worker dedicado com mais memória; a entrega jamais deve cair para o PDF
+original sem marca. O Worker customizado da área de membros chama as outboxes a
+cada minuto e não faz chamadas quando a feature ou as credenciais associadas
+estão desligadas.

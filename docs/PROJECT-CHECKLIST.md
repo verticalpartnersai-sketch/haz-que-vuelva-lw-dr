@@ -229,7 +229,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Criar schema inicial de conteúdo e regras de leitura.
 - [ ] Fazer upload privado validado.
 - [x] Gerar URL temporária somente para cópia marcada após autorização.
-- [ ] Implementar geração da cópia com watermark e progresso de leitura.
+- [x] Implementar fila, geração idempotente e retry da cópia com watermark.
+- [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
+- [x] Agendar as outboxes no Custom Worker sem executar flags desligadas.
+- [ ] Validar migration, storage e geração com duas alunas no Supabase cloud.
+- [ ] Implementar progresso de leitura.
 
 ### Perfect Pay
 

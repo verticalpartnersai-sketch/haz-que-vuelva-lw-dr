@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { SupabaseContentAccess } from "@/modules/content/adapters/supabase-content-access";
 import {
   ContentAccessDeniedError,
   ContentFileNotFoundError,
@@ -26,8 +27,8 @@ export async function POST(_request: Request, context: RouteContext) {
     const identity = await currentIdentity();
     const { fileId } = await context.params;
     const access = await requestFileAccess({
-      client: createSupabaseServiceClient(),
       fileId,
+      gateway: new SupabaseContentAccess(createSupabaseServiceClient()),
       memberId: identity.id,
     });
     return NextResponse.json(access, {
@@ -41,7 +42,16 @@ export async function POST(_request: Request, context: RouteContext) {
       return NextResponse.json({ code: "file_not_found" }, { status: 404 });
     }
     if (error instanceof WatermarkedFilePendingError) {
-      return NextResponse.json({ code: "watermark_pending" }, { status: 409 });
+      return NextResponse.json(
+        { code: "watermark_pending", retryAfterSeconds: 3 },
+        {
+          headers: {
+            "Cache-Control": "no-store",
+            "Retry-After": "3",
+          },
+          status: 202,
+        },
+      );
     }
     if (error instanceof ContentAccessDeniedError) {
       return NextResponse.json({ code: "access_denied" }, { status: 403 });

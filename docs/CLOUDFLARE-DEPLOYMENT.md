@@ -2,10 +2,14 @@
 
 ## Estado
 
-A topologia e os artefatos locais estão preparados. Nenhum Worker, contêiner,
-domínio, variável ou segredo foi criado na conta Cloudflare por esta operação.
-Publicação, tráfego real e ativação das integrações continuam pendentes de uma
-autorização separada.
+O site público e o quiz estão em produção no Worker
+`haz-que-vuelva-marketing`, versão
+`7eaec229-ace9-4290-b98c-a92477fe09fe`, publicado a partir do commit
+`1d0186c9a34bd332966fa475d0c9cdbd3b52aff3`.
+
+O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
+criados pelo Cloudflare. A área de membros, o Container do agente e as
+integrações reais continuam fechados até seus próprios gates.
 
 ## Topologia escolhida
 
@@ -34,16 +38,16 @@ flowchart TD
 
 ## Aplicações e domínios
 
-| Aplicação | Worker | Domínio pretendido | Exposição |
+| Aplicação | Worker | Domínio | Estado |
 |---|---|---|---|
-| Marketing e quiz | `haz-que-vuelva-marketing` | `hazquevuelva.site` | pública |
-| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | pública, com autorização no app e RLS |
-| VUELVE IA | `haz-que-vuelva-agent` | sem domínio público | somente chamada autenticada pelo BFF |
+| Marketing e quiz | `haz-que-vuelva-marketing` | `hazquevuelva.site` | produção |
+| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | não publicado |
+| VUELVE IA | `haz-que-vuelva-agent` | sem domínio público | não publicado |
 
-Na primeira homologação, os três serviços devem usar Preview URLs. O domínio
-principal só entra depois do smoke test remoto. Para o agente, `workers.dev` e
-Preview URLs devem ser desativados depois que a comunicação privada por Service
-Binding substituir o URL público autenticado.
+O Worker de marketing não expõe `workers.dev` nem Preview URL. Para os serviços
+restantes, a primeira homologação deve usar uma versão sem tráfego real. O
+agente só poderá ser chamado por Service Binding depois do build e do teste
+real do Container.
 
 ## Artefatos versionados
 
@@ -184,22 +188,17 @@ Segredos:
 mesmo valor aleatório de pelo menos 32 caracteres. A rotação deve aceitar uma
 janela controlada ou ocorrer em uma publicação coordenada.
 
-## Sequência segura de publicação
+## Sequência segura dos serviços restantes
 
-1. Confirmar plano, conta, zona DNS e limites de Workers/Containers.
-2. Criar os três Workers sem domínio customizado.
-3. Cadastrar build variables e secrets diretamente no Cloudflare.
-4. Fazer upload de uma versão sem tráfego de produção.
-5. Executar smoke tests nas Preview URLs.
-6. Validar logs sem PII, métricas, cold start e respostas de erro.
-7. Promover primeiro marketing, depois área de membros.
-8. Manter todas as feature flags de backend desligadas.
-9. Conectar `hazquevuelva.site` e `miembros.hazquevuelva.site`.
-10. Publicar o agente somente após build real da imagem e teste de autenticação.
-11. Trocar o acesso público do agente por Service Binding e desabilitar
-    `workers.dev`.
-12. Ativar cada integração em uma operação independente, com rollback
-    comprovado.
+1. Cadastrar as variáveis e os segredos aprovados diretamente no Cloudflare.
+2. Fazer upload da área de membros sem tráfego de produção.
+3. Executar smoke tests remotos de autenticação e autorização.
+4. Promover a área de membros com todas as feature flags de backend desligadas.
+5. Conectar `miembros.hazquevuelva.site`.
+6. Publicar o agente somente após build real da imagem e teste de autenticação.
+7. Conectar BFF e agente por Service Binding, sem URL pública.
+8. Ativar cada integração em uma operação independente, com rollback
+   comprovado.
 
 ## Comandos locais
 
@@ -228,19 +227,20 @@ cd apps/marketing
 npm run upload
 ```
 
-Não executar `deploy` até que conta, secrets, domínio, smoke test e rollback
-estejam aprovados.
+O deploy de marketing está autorizado e ativo. Não executar `deploy` da área de
+membros ou do agente até que variáveis, segredos, smoke test e rollback do
+respectivo serviço estejam aprovados.
 
 ## Smoke test remoto obrigatório
 
 ### Marketing
 
-- `/` redireciona para `/quiz`;
-- `/quiz` responde 200;
-- imagens e áudio carregam;
-- seletor de idioma e fluxo completo funcionam;
-- CTA usa o checkout aprovado, em nova aba;
-- nenhum marcador de preview interno aparece em produção.
+- [x] `/` redireciona para `/quiz`;
+- [x] `/quiz` responde 200;
+- [x] imagens e áudio carregam;
+- [x] seletor de idioma e fluxo completo funcionam;
+- [ ] CTA usa o checkout aprovado, em nova aba;
+- [x] nenhum marcador de preview interno aparece em produção.
 
 ### Área de membros
 
@@ -276,13 +276,13 @@ estejam aprovados.
 
 ## Pendências reais
 
-- autenticar o Wrangler na conta correta;
+- receber e configurar `NEXT_PUBLIC_CHECKOUT_URL`;
+- conectar Workers Builds ao repositório GitHub;
 - confirmar plano pago e disponibilidade de Containers;
-- cadastrar secrets e variáveis;
+- cadastrar secrets e variáveis da área de membros e do agente;
 - construir e executar a imagem Docker localmente ou em CI;
-- criar Preview URLs;
 - testar cold start do contêiner;
 - configurar Service Binding;
-- conectar os dois domínios;
+- publicar a área de membros e conectar `miembros.hazquevuelva.site`;
 - validar observabilidade, alertas e rollback remoto;
-- aprovar e executar a publicação.
+- ativar integrações reais somente após os gates correspondentes.

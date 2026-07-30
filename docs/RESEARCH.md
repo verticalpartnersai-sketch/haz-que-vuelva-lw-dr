@@ -425,6 +425,19 @@ customizado. Domínio e tráfego entram somente após smoke test e rollback
 verificados. A configuração completa está em
 [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md).
 
+### Domínio customizado do Worker
+
+- [Cloudflare — Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/):
+  documenta `routes[].custom_domain=true` e confirma que o Cloudflare cria o
+  registro DNS e emite o certificado quando o Worker é a origem do hostname.
+
+Decisão e prova em 30 de julho de 2026: `hazquevuelva.site` foi vinculado
+diretamente ao Worker `haz-que-vuelva-marketing`. A publicação gerou a versão
+`7eaec229-ace9-4290-b98c-a92477fe09fe`. O DNS público retornou endereços
+Cloudflare, `/` respondeu `307` para `/quiz`, `/quiz` respondeu `200`, áudio e
+WebP responderam `200`, e o fluxo completo foi percorrido em navegador real.
+O checkout continua pendente porque a URL comercial ainda não foi fornecida.
+
 ### Dependência transitiva do OpenNext
 
 `@opennextjs/cloudflare@1.20.2` depende de `@node-minify/core@8.0.6`, cuja faixa

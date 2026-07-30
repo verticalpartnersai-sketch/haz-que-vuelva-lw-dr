@@ -301,11 +301,15 @@ dados reais e deploy não estão.
 - [x] Validar typecheck e dry-run estático do agente.
 - [ ] Construir e executar a imagem do agente para `linux/amd64`.
 - [ ] Confirmar plano Cloudflare compatível com Containers.
-- [ ] Criar Workers, Preview URLs, variáveis e secrets na conta correta.
-- [ ] Executar smoke tests remotos sem domínio customizado.
+- [x] Publicar `haz-que-vuelva-marketing` na conta correta.
+- [x] Conectar DNS/TLS de `hazquevuelva.site`.
+- [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
+- [ ] Configurar o checkout real no CTA do quiz.
+- [ ] Conectar Workers Builds do marketing ao GitHub.
+- [ ] Criar o Worker da área de membros, suas variáveis e seus segredos.
+- [ ] Executar smoke tests remotos da área de membros sem domínio customizado.
 - [ ] Configurar Service Binding privado entre BFF e agente.
-- [ ] Conectar Cloudflare DNS/TLS a `hazquevuelva.site` e
-  `miembros.hazquevuelva.site`.
+- [ ] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
 - [ ] Criar backups e testar restauração.
 - [ ] Criar logs, métricas e alertas.
 - [ ] Validar rollback.

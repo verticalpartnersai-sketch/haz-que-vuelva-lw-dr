@@ -28,6 +28,8 @@ Implementado nesta fundação:
 - reautenticação por senha na publicação administrativa de PDF, com credencial
   aleatória de uso único, armazenada somente como SHA-256, expiração curta e
   cookie HttpOnly;
+- reautenticação transacional nas concessões, revogações, transferências e
+  versões de prompt; escrita direta de catálogo, ofertas e prompts removida;
 - Cron Trigger por minuto para pagamento, convite e cópia individual, sempre
   condicionado às respectivas flags e credenciais;
 - schema inicial de VUELVE IA com pgvector 768;
@@ -94,6 +96,13 @@ versão por produto em uma RPC auditada; se a transação de metadados falhar, o
 objeto recém-enviado é removido. Falha dessa compensação sobe como incidente,
 sem ativar a versão incompleta.
 
+As demais operações administrativas críticas seguem o mesmo limite. A sessão
+admin comum pode ler as projeções necessárias, mas não escreve catálogo,
+ofertas ou prompts diretamente. Conceder ou revogar acesso, transferir compra e
+criar ou publicar prompt passa por wrappers que consomem a credencial curta na
+mesma transação. Os módulos ainda não conectados ao painel permanecem, portanto,
+inoperantes sem uma reautenticação emitida pelo BFF.
+
 No perfil conectado, a troca de e-mail passa pelo BFF e exige sessão válida,
 mesma origem, payload limitado e a senha atual. O Supabase envia confirmação
 para o endereço antigo e para o novo; `profiles.email` só é sincronizado pelo
@@ -142,7 +151,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 36 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 39 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

@@ -356,7 +356,10 @@ persistir a nova sessão. Após sucesso, somente o BFF com chave secreta registr
 um token aleatório de 256 bits. O navegador recebe o valor em cookie HttpOnly,
 `SameSite=Strict`; o banco guarda apenas SHA-256 por cinco minutos e o consome
 na mesma transação da mutação. A sessão admin autenticada não recebe permissão
-para criar essa autorização diretamente.
+para criar essa autorização diretamente. O mesmo token é obrigatório para
+publicar PDF, conceder ou revogar acesso, transferir compra e criar ou publicar
+prompt. Catálogo, ofertas e prompts não aceitam mais DML direto da sessão
+autenticada; módulos ainda sem BFF conectado permanecem fechados.
 
 ### Troca segura de e-mail
 

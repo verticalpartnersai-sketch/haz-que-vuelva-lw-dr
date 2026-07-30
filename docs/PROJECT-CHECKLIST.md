@@ -222,11 +222,14 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar troca de e-mail segura com prova da senha atual, confirmação
   dupla, sincronização do perfil e auditoria sem registrar os endereços.
 - [x] Registrar decisão de não exigir MFA no primeiro release e o risco aceito.
-- [ ] Implementar reautenticação administrativa e controles compensatórios em
+- [x] Implementar reautenticação administrativa e controles compensatórios em
   todas as mutações críticas.
   - [x] Proteger a publicação de PDF com prova de senha, cookie HttpOnly,
     credencial aleatória hasheada, expiração de cinco minutos, consumo único,
     privilégio mínimo no Storage e auditoria.
+  - [x] Remover escrita direta de catálogo, ofertas e prompts; concessão,
+    revogação, transferência e publicação de prompt só executam por RPC que
+    consome a mesma credencial curta na transação.
 
 ### Catálogo, conteúdo e acesso
 
@@ -290,7 +293,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 33 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 39 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

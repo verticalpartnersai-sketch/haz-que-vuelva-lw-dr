@@ -474,6 +474,12 @@ Decisão: respostas do marketing recebem HSTS, bloqueio de MIME sniffing,
 negação de framing, referrer policy restritiva e desativação de câmera,
 geolocalização e microfone. CSP não foi adicionada sem nonces porque uma policy
 incompleta quebraria scripts inline do Next.js e não seria um controle real.
+O deploy inicial comprovou que os headers do `next.config` não chegavam à
+resposta SSR transformada pelo adaptador. Foi adotado o
+[Custom Worker oficial do OpenNext](https://opennext.js.org/cloudflare/howtos/custom-worker)
+como entrypoint, reutilizando o handler gerado e endurecendo sua resposta. Os
+assets continuam no binding estático, com cache e `nosniff` definidos por
+`_headers`.
 
 ### Integração contínua no GitHub
 

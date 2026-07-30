@@ -12,6 +12,7 @@ type ProductLockedDialogProps = {
   product: Product;
   returnFocusTo: HTMLElement | null;
   onClose: () => void;
+  simulated: boolean;
 };
 
 const focusableSelector = [
@@ -27,6 +28,7 @@ export function ProductLockedDialog({
   product,
   returnFocusTo,
   onClose,
+  simulated,
 }: ProductLockedDialogProps) {
   const { l } = useLocale();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -123,32 +125,40 @@ export function ProductLockedDialog({
             <Icon name="lock" />
             <span>
               {l(
-                "En el producto real, una compra aprobada habilitará únicamente este acceso.",
-                "No produto real, uma compra aprovada liberará apenas este acesso.",
-                "In the real product, an approved purchase will unlock only this access.",
+                simulated
+                  ? "En el producto real, una compra aprobada habilitará únicamente este acceso."
+                  : "Este producto no está activo en tu cuenta. Una compra aprobada habilita únicamente el producto correspondiente.",
+                simulated
+                  ? "No produto real, uma compra aprovada liberará apenas este acesso."
+                  : "Este produto não está ativo na sua conta. Uma compra aprovada libera apenas o produto correspondente.",
+                simulated
+                  ? "In the real product, an approved purchase will unlock only this access."
+                  : "This product is not active on your account. An approved purchase unlocks only the corresponding product.",
               )}
             </span>
           </div>
-          <button
-            className="button button--primary"
-            onClick={() =>
-              setNotice(
-                l(
-                  "Checkout no disponible en este prototipo estático.",
-                  "Checkout indisponível neste protótipo estático.",
-                  "Checkout is unavailable in this static prototype.",
-                ),
-              )
-            }
-            type="button"
-          >
-            {l(
-              "Ver oferta simulada",
-              "Ver oferta simulada",
-              "View simulated offer",
-            )}
-            <Icon name="external" />
-          </button>
+          {simulated ? (
+            <button
+              className="button button--primary"
+              onClick={() =>
+                setNotice(
+                  l(
+                    "Checkout no disponible en este prototipo estático.",
+                    "Checkout indisponível neste protótipo estático.",
+                    "Checkout is unavailable in this static prototype.",
+                  ),
+                )
+              }
+              type="button"
+            >
+              {l(
+                "Ver oferta simulada",
+                "Ver oferta simulada",
+                "View simulated offer",
+              )}
+              <Icon name="external" />
+            </button>
+          ) : null}
           <p aria-live="polite" className="dialog-status">
             {notice}
           </p>

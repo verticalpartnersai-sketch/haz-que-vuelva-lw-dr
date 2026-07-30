@@ -97,11 +97,13 @@ export function ProductCard({
   }
 
   if (product.accessState === "available") {
+    const href =
+      product.id === "vuelve_ia" ? "/ia" : `/productos/${product.slug}`;
     return (
       <Link
         aria-label={`${product.name} — ${t("status.available")}`}
         className="product-card"
-        href={`/productos/${product.slug}`}
+        href={href}
       >
         <CardContents product={product} showCoverDetails={showCoverDetails} />
       </Link>

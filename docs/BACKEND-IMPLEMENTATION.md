@@ -10,6 +10,8 @@ Implementado nesta fundação:
 
 - governança raiz e instruções locais;
 - domínio inicial de catálogo, entitlements e pagamentos no Next.js;
+- Home, catálogo e detalhe resolvidos no servidor pelo catálogo ativo e pelo
+  entitlement da identidade autenticada quando `FEATURE_CONTENT=true`;
 - configuração validada e feature flags;
 - clientes Supabase SSR/server separados;
 - webhook Perfect Pay estrito, limitado e idempotente na entrada;
@@ -63,6 +65,14 @@ flowchart LR
 O FastAPI não é um segundo backend generalista. Conta, catálogo, compras,
 permissões, arquivos, administração e auditoria pertencem ao Next.js/Supabase.
 
+No modo conectado, a interface não deriva acesso dos mocks, da URL ou da
+existência de um arquivo. A rota consulta produtos ativos e
+`effective_entitlements` com a sessão do membro; RLS limita o ledger à própria
+conta. Produto sem entitlement permanece bloqueado, inclusive quando a URL de
+detalhe é digitada diretamente. `vuelve_ia` autorizado encaminha para o chat,
+não para o leitor de PDF. O segmento autenticado é sempre dinâmico para que
+flags e entitlements de runtime não sejam congelados durante o build.
+
 ## Módulos Next.js
 
 | Módulo | Responsabilidade |
@@ -103,7 +113,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 17 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 23 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

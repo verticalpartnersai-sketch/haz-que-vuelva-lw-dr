@@ -3,14 +3,15 @@ import { notFound } from "next/navigation";
 
 import { Icon } from "@/components/icon";
 import { ProductDetail } from "@/features/products/product-detail";
-import { getProductBySlug, products } from "@/mocks/data";
+import { products as mockProducts } from "@/mocks/data";
+import { loadMemberProducts } from "@/server/catalog/load-member-products";
 import { environment } from "@/server/config/environment";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
 export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+  return mockProducts.map((product) => ({ slug: product.slug }));
 }
 
 export default async function ProductPage({
@@ -19,7 +20,8 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const { products, simulated } = await loadMemberProducts();
+  const product = products.find((candidate) => candidate.slug === slug);
 
   if (!product) notFound();
   const contentEnabled = environment().FEATURE_CONTENT;
@@ -33,8 +35,9 @@ export default async function ProductPage({
             Producto bloqueado
           </h1>
           <p>
-            El detalle no se muestra sin acceso. Vuelve al catálogo para abrir
-            la información simulada de este producto.
+            {simulated
+              ? "El detalle no se muestra sin acceso. Vuelve al catálogo para abrir la información simulada de este producto."
+              : "Tu cuenta no tiene acceso activo a este producto. Vuelve al catálogo para revisar tus productos disponibles."}
           </p>
           <Link className="button button--secondary" href="/productos">
             Volver a Productos

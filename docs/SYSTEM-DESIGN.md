@@ -64,16 +64,20 @@ flowchart TD
 - Tokens não conhecem componente ou feature.
 - Primitivas não conhecem produto, papel ou entitlement.
 - Componentes de domínio apresentam estado recebido, mas não o calculam.
-- Features coordenam composição e cenário mock no Gate 3.
+- Features coordenam composição e cenário mock quando a feature conectada está
+  desligada.
 - Rotas organizam navegação e headings; não redefinem visual localmente.
 - Mocks ficam na borda de composição e nunca entram no design system.
+- Com `FEATURE_CONTENT=true`, as rotas de membro carregam produtos ativos e
+  entitlements no servidor; a apresentação recebe apenas o estado já
+  autorizado.
 
 ### Autoridade dos estados
 
 | Estado apresentado | Autoridade no Gate 3 | Autoridade futura |
 |---|---|---|
 | Papel `member/admin` | Cenário mock explícito | Sessão validada no servidor |
-| Produto disponível/bloqueado | Mock de catálogo | Entitlement autorizado |
+| Produto disponível/bloqueado | Mock de catálogo | `effective_entitlements` com RLS |
 | IA liberada/bloqueada | Mock de capacidade | `agent_access` autorizado |
 | Loading/empty/error | Cenário de apresentação | Resultado de operação real |
 | Feature de comentários | Flag mock desligada | Configuração publicada |

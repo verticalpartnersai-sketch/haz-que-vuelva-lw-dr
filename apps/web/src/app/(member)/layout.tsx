@@ -4,6 +4,8 @@ import { currentIdentity } from "@/modules/identity/application/current-identity
 import { environment } from "@/server/config/environment";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function MemberLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

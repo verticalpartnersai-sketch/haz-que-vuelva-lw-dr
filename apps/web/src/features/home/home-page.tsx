@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { useLocale, type CopyKey } from "@/features/i18n/locale";
 import { ProductRail } from "@/features/products/product-rail";
-import { productGroups } from "@/mocks/data";
+import type { Product } from "@/mocks/types";
 
 function Hero() {
   const { t } = useLocale();
@@ -69,8 +69,25 @@ function Hero() {
   );
 }
 
-export function HomePage() {
+export function HomePage({
+  products,
+  simulated,
+}: {
+  products: readonly Product[];
+  simulated: boolean;
+}) {
   const { t } = useLocale();
+  const productGroups = [
+    { id: "todos", products },
+    {
+      id: "disponibles",
+      products: products.filter((product) => product.accessState === "available"),
+    },
+    {
+      id: "bloqueados",
+      products: products.filter((product) => product.accessState === "locked"),
+    },
+  ] as const;
   const railTitleKeys: Record<(typeof productGroups)[number]["id"], CopyKey> = {
     todos: "home.rail.all",
     disponibles: "home.rail.available",
@@ -83,7 +100,11 @@ export function HomePage() {
       <div className="home-page__rails">
         {productGroups.map((group, index) => (
           <div className={index === 0 ? "home-rail home-rail--featured" : "home-rail"} key={group.id}>
-            <ProductRail products={group.products} title={t(railTitleKeys[group.id])} />
+            <ProductRail
+              products={group.products}
+              simulated={simulated}
+              title={t(railTitleKeys[group.id])}
+            />
           </div>
         ))}
       </div>

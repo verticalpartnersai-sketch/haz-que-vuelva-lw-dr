@@ -226,6 +226,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 ### Catálogo, conteúdo e acesso
 
 - [x] Criar schema inicial de catálogo e ledger de entitlements.
+- [x] Conectar Home, catálogo e detalhe ao catálogo ativo e aos entitlements
+  da sessão quando `FEATURE_CONTENT=true`.
+- [x] Impedir que o estado mock `available` autorize a página de detalhe no
+  modo conectado.
+- [x] Encaminhar `vuelve_ia` autorizado ao chat, sem tratá-lo como PDF.
 - [x] Criar schema inicial de conteúdo e regras de leitura.
 - [ ] Fazer upload privado validado.
 - [x] Gerar URL temporária somente para cópia marcada após autorização.
@@ -277,7 +282,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 10 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 23 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

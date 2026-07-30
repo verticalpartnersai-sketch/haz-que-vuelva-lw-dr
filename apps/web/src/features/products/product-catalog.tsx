@@ -7,12 +7,17 @@ import { SelectControl } from "@/components/select-control";
 import { ProductCard } from "@/features/products/product-card";
 import { ProductLockedDialog } from "@/features/products/product-locked-dialog";
 import { useLocale } from "@/features/i18n/locale";
-import { products } from "@/mocks/data";
 import type { Product } from "@/mocks/types";
 
 type CatalogState = "ready" | "loading" | "empty" | "error";
 
-export function ProductCatalog() {
+export function ProductCatalog({
+  products,
+  simulated,
+}: {
+  products: readonly Product[];
+  simulated: boolean;
+}) {
   const { l } = useLocale();
   const [state, setState] = useState<CatalogState>("ready");
   const [lockedProduct, setLockedProduct] = useState<Product | null>(null);
@@ -20,36 +25,43 @@ export function ProductCatalog() {
 
   return (
     <>
-      <div className="demo-toolbar">
-        <span>
-          <strong>{l("Vista simulada", "Visualização simulada", "Simulated view")}</strong>
-          <small>
-            {l(
-              "Estos controles no consultan datos.",
-              "Estes controles não consultam dados.",
-              "These controls do not query data.",
+      {simulated ? (
+        <div className="demo-toolbar">
+          <span>
+            <strong>
+              {l("Vista simulada", "Visualização simulada", "Simulated view")}
+            </strong>
+            <small>
+              {l(
+                "Estos controles no consultan datos.",
+                "Estes controles não consultam dados.",
+                "These controls do not query data.",
+              )}
+            </small>
+          </span>
+          <SelectControl
+            ariaLabel={l(
+              "Estado del catálogo",
+              "Estado do catálogo",
+              "Catalog state",
             )}
-          </small>
-        </span>
-        <SelectControl
-          ariaLabel={l(
-            "Estado del catálogo",
-            "Estado do catálogo",
-            "Catalog state",
-          )}
-          className="select-control--compact"
-          onChange={setState}
-          options={[
-            { label: l("Catálogo", "Catálogo", "Catalog"), value: "ready" },
-            { label: l("Cargando", "Carregando", "Loading"), value: "loading" },
-            { label: l("Vacío", "Vazio", "Empty"), value: "empty" },
-            { label: l("Error", "Erro", "Error"), value: "error" },
-          ]}
-          value={state}
-        />
-      </div>
+            className="select-control--compact"
+            onChange={setState}
+            options={[
+              { label: l("Catálogo", "Catálogo", "Catalog"), value: "ready" },
+              {
+                label: l("Cargando", "Carregando", "Loading"),
+                value: "loading",
+              },
+              { label: l("Vacío", "Vazio", "Empty"), value: "empty" },
+              { label: l("Error", "Erro", "Error"), value: "error" },
+            ]}
+            value={state}
+          />
+        </div>
+      ) : null}
 
-      {state === "ready" ? (
+      {state === "ready" && products.length > 0 ? (
         <ul
           aria-label={l(
             "Todos los productos",
@@ -91,7 +103,7 @@ export function ProductCatalog() {
         </div>
       ) : null}
 
-      {state === "empty" ? (
+      {state === "empty" || (state === "ready" && products.length === 0) ? (
         <div className="feedback-panel">
           <Icon name="library" />
           <h2>
@@ -103,15 +115,27 @@ export function ProductCatalog() {
           </h2>
           <p>
             {l(
-              "Esta es una vista vacía simulada para revisar el estado del catálogo.",
-              "Esta é uma visualização vazia simulada para revisar o estado do catálogo.",
-              "This is a simulated empty view for reviewing the catalog state.",
+              simulated
+                ? "Esta es una vista vacía simulada para revisar el estado del catálogo."
+                : "Los productos activos aparecerán aquí cuando estén disponibles para tu cuenta.",
+              simulated
+                ? "Esta é uma visualização vazia simulada para revisar o estado do catálogo."
+                : "Os produtos ativos aparecerão aqui quando estiverem disponíveis para sua conta.",
+              simulated
+                ? "This is a simulated empty view for reviewing the catalog state."
+                : "Active products will appear here when they are available for your account.",
             )}
           </p>
-          <button className="button button--secondary" onClick={() => setState("ready")} type="button">
-            <Icon name="arrowLeft" />
-            {l("Volver al catálogo", "Voltar ao catálogo", "Back to catalog")}
-          </button>
+          {simulated ? (
+            <button
+              className="button button--secondary"
+              onClick={() => setState("ready")}
+              type="button"
+            >
+              <Icon name="arrowLeft" />
+              {l("Volver al catálogo", "Voltar ao catálogo", "Back to catalog")}
+            </button>
+          ) : null}
         </div>
       ) : null}
 
@@ -144,6 +168,7 @@ export function ProductCatalog() {
           onClose={() => setLockedProduct(null)}
           product={lockedProduct}
           returnFocusTo={returnFocusTo}
+          simulated={simulated}
         />
       ) : null}
     </>

@@ -11,9 +11,11 @@ import type { Product } from "@/mocks/types";
 export function ProductRail({
   title,
   products,
+  simulated,
 }: {
   title: string;
   products: readonly Product[];
+  simulated: boolean;
 }) {
   const { l } = useLocale();
   const railRef = useRef<HTMLUListElement>(null);
@@ -136,6 +138,7 @@ export function ProductRail({
           onClose={() => setLockedProduct(null)}
           product={lockedProduct}
           returnFocusTo={returnFocusTo}
+          simulated={simulated}
         />
       ) : null}
     </section>

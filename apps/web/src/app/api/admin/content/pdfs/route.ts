@@ -9,25 +9,40 @@ import {
 } from "@/modules/content/application/publish-content-pdf";
 import { MAX_SOURCE_PDF_BYTES } from "@/modules/content/application/run-content-watermark-worker";
 import {
+  ADMIN_REAUTH_COOKIE,
+  AdminReauthenticationError,
+  AdminReauthenticationRequiredError,
+  hashAdminReauthenticationToken,
+} from "@/modules/identity/application/admin-reauthentication";
+import {
   AuthenticationRequiredError,
   requireAdmin,
 } from "@/modules/identity/application/current-identity";
 import { environment } from "@/server/config/environment";
+import { isSameOriginMutation } from "@/server/security/request-origin";
+import { createSupabaseServiceClient } from "@/server/supabase/service-client";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
 const MULTIPART_OVERHEAD_BYTES = 512 * 1024;
 
-function requestOriginAllowed(request: NextRequest) {
-  const configuredUrl = environment().MEMBER_APP_URL;
-  const expectedOrigin = configuredUrl
-    ? new URL(configuredUrl).origin
-    : request.nextUrl.origin;
-  return request.headers.get("origin") === expectedOrigin;
-}
-
 function validationStatus(error: ContentPdfValidationError) {
   if (error.message === "source_pdf_size_out_of_bounds") return 413;
   return 422;
+}
+
+function reauthenticationRequiredResponse(request: NextRequest) {
+  const response = NextResponse.json(
+    { code: "admin_reauthentication_required" },
+    { status: 428 },
+  );
+  response.cookies.set(ADMIN_REAUTH_COOKIE, "", {
+    httpOnly: true,
+    maxAge: 0,
+    path: "/api/admin",
+    sameSite: "strict",
+    secure: request.nextUrl.protocol === "https:",
+  });
+  return response;
 }
 
 export async function POST(request: NextRequest) {
@@ -35,7 +50,7 @@ export async function POST(request: NextRequest) {
   if (!config.FEATURE_ADMIN || !config.FEATURE_CONTENT) {
     return NextResponse.json({ code: "not_found" }, { status: 404 });
   }
-  if (!requestOriginAllowed(request)) {
+  if (!isSameOriginMutation(request, config.MEMBER_APP_URL)) {
     return NextResponse.json({ code: "origin_not_allowed" }, { status: 403 });
   }
 
@@ -58,6 +73,19 @@ export async function POST(request: NextRequest) {
       { code: status === 403 ? "admin_required" : "identity_unavailable" },
       { status },
     );
+  }
+
+  const reauthenticationToken = request.cookies.get(ADMIN_REAUTH_COOKIE)?.value;
+  let reauthenticationTokenHash: string;
+  try {
+    reauthenticationTokenHash = await hashAdminReauthenticationToken(
+      reauthenticationToken ?? "",
+    );
+  } catch (error) {
+    if (error instanceof AdminReauthenticationError) {
+      return reauthenticationRequiredResponse(request);
+    }
+    throw error;
   }
 
   let form: FormData;
@@ -85,16 +113,29 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const client = await createSupabaseServerClient();
+    const metadataClient = await createSupabaseServerClient();
+    const storageClient = createSupabaseServiceClient();
     const result = await publishContentPdf({
       bytes: new Uint8Array(await file.arrayBuffer()),
       contentType: file.type,
       inspector: new PdfLibContentInspector(),
       productCode,
-      publisher: new SupabasePrivateContentPublisher(client),
+      publisher: new SupabasePrivateContentPublisher(
+        metadataClient,
+        storageClient,
+      ),
+      reauthenticationTokenHash,
       title,
     });
-    return NextResponse.json(result, { status: 201 });
+    const response = NextResponse.json(result, { status: 201 });
+    response.cookies.set(ADMIN_REAUTH_COOKIE, "", {
+      httpOnly: true,
+      maxAge: 0,
+      path: "/api/admin",
+      sameSite: "strict",
+      secure: request.nextUrl.protocol === "https:",
+    });
+    return response;
   } catch (error) {
     if (error instanceof ContentPdfValidationError) {
       return NextResponse.json(
@@ -107,6 +148,9 @@ export async function POST(request: NextRequest) {
         { code: "content_pdf_cleanup_required" },
         { status: 500 },
       );
+    }
+    if (error instanceof AdminReauthenticationRequiredError) {
+      return reauthenticationRequiredResponse(request);
     }
     return NextResponse.json(
       { code: "content_pdf_publish_failed" },

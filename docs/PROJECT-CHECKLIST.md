@@ -221,7 +221,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar recuperação e reset de senha pelo fluxo PKCE.
 - [ ] Implementar troca de e-mail segura.
 - [x] Registrar decisão de não exigir MFA no primeiro release e o risco aceito.
-- [ ] Implementar reautenticação administrativa e controles compensatórios.
+- [ ] Implementar reautenticação administrativa e controles compensatórios em
+  todas as mutações críticas.
+  - [x] Proteger a publicação de PDF com prova de senha, cookie HttpOnly,
+    credencial aleatória hasheada, expiração de cinco minutos, consumo único,
+    privilégio mínimo no Storage e auditoria.
 
 ### Catálogo, conteúdo e acesso
 
@@ -285,7 +289,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 30 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 33 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

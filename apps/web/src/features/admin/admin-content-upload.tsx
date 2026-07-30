@@ -19,6 +19,7 @@ const productOptions = [
 export function AdminContentUpload() {
   const { l } = useLocale();
   const fileRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [productCode, setProductCode] =
@@ -57,14 +58,37 @@ export function AdminContentUpload() {
     setBusy(true);
     setStatusKind("idle");
     setStatus(
-      l("Validando y publicando…", "Validando e publicando…", "Validating and publishing…"),
+      l(
+        "Confirmando identidad y validando…",
+        "Confirmando identidade e validando…",
+        "Confirming identity and validating…",
+      ),
     );
+    const password = passwordRef.current?.value ?? "";
+    if (passwordRef.current) passwordRef.current.value = "";
     const body = new FormData();
     body.set("file", file);
     body.set("productCode", productCode);
     body.set("title", title);
 
     try {
+      const reauthenticationResponse = await fetch(
+        "/api/admin/reauthenticate",
+        {
+          body: JSON.stringify({ password }),
+          headers: { "content-type": "application/json" },
+          method: "POST",
+        },
+      );
+      if (!reauthenticationResponse.ok) {
+        const payload = (await reauthenticationResponse.json()) as {
+          code?: string;
+        };
+        throw new Error(
+          payload.code ?? "admin_reauthentication_failed",
+        );
+      }
+
       const response = await fetch("/api/admin/content/pdfs", {
         body,
         method: "POST",
@@ -87,14 +111,22 @@ export function AdminContentUpload() {
           `PDF published as version ${payload.version ?? "new"}.`,
         ),
       );
-    } catch {
+    } catch (error) {
       setStatusKind("error");
+      const code =
+        error instanceof Error ? error.message : "content_pdf_publish_failed";
       setStatus(
-        l(
-          "No se pudo publicar. El archivo no quedó activo; inténtalo de nuevo.",
-          "Não foi possível publicar. O arquivo não ficou ativo; tente novamente.",
-          "Publishing failed. The file was not activated; try again.",
-        ),
+        code.startsWith("admin_reauthentication")
+          ? l(
+              "No pudimos confirmar tu contraseña. Revisa los datos e inténtalo de nuevo.",
+              "Não foi possível confirmar sua senha. Revise os dados e tente novamente.",
+              "We could not confirm your password. Check it and try again.",
+            )
+          : l(
+              "No se pudo publicar. El archivo no quedó activo; inténtalo de nuevo.",
+              "Não foi possível publicar. O arquivo não ficou ativo; tente novamente.",
+              "Publishing failed. The file was not activated; try again.",
+            ),
       );
     } finally {
       setBusy(false);
@@ -135,6 +167,28 @@ export function AdminContentUpload() {
             options={productOptions}
             value={productCode}
           />
+        </label>
+        <label>
+          {l(
+            "Confirma tu contraseña",
+            "Confirme sua senha",
+            "Confirm your password",
+          )}
+          <input
+            autoComplete="current-password"
+            maxLength={256}
+            minLength={1}
+            ref={passwordRef}
+            required
+            type="password"
+          />
+          <small>
+            {l(
+              "La confirmación dura cinco minutos y autoriza una sola publicación.",
+              "A confirmação dura cinco minutos e autoriza uma única publicação.",
+              "Confirmation lasts five minutes and authorizes one publication.",
+            )}
+          </small>
         </label>
         <label>
           {l("Título interno", "Título interno", "Internal title")}

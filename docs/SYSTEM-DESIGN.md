@@ -129,6 +129,10 @@ O entitlement é a decisão canônica de acesso a uma capacidade ou produto.
 - Buckets Supabase privados, sem política de leitura direta dos originais.
 - Upload administrativo exige origem do app e papel `admin`; valida MIME,
   assinatura PDF, parse, criptografia, páginas, tamanho e SHA-256.
+- A publicação crítica exige prova de senha recente. O token aleatório nunca
+  é salvo em claro, fica em cookie HttpOnly e seu hash é consumido uma única
+  vez pela transação autorizada. A sessão admin não escreve diretamente nas
+  tabelas ou no bucket de conteúdo.
 - Cada publicação cria versão transacional auditada. Falha de metadados remove
   o objeto recém-enviado antes de devolver erro.
 - Download após autorização do objeto e do membro.

@@ -37,6 +37,7 @@ export interface PrivateContentPublisher {
     contentType: string;
     path: string;
     productCode: string;
+    reauthenticationTokenHash: string;
     sha256: string;
     sizeBytes: number;
     title: string;
@@ -65,6 +66,7 @@ export async function publishContentPdf({
   inspector,
   productCode,
   publisher,
+  reauthenticationTokenHash,
   title,
 }: {
   bytes: Uint8Array;
@@ -72,6 +74,7 @@ export async function publishContentPdf({
   inspector: ContentPdfInspector;
   productCode: string;
   publisher: PrivateContentPublisher;
+  reauthenticationTokenHash: string;
   title: string;
 }) {
   const normalizedTitle = title.trim();
@@ -114,6 +117,7 @@ export async function publishContentPdf({
       contentType: PDF_MIME_TYPE,
       path,
       productCode,
+      reauthenticationTokenHash,
       sha256: hash,
       sizeBytes: bytes.byteLength,
       title: normalizedTitle,

@@ -23,6 +23,9 @@ Implementado nesta fundação:
 - publicação administrativa do PDF original em bucket privado, com validação
   de MIME, assinatura, parse, páginas, tamanho, SHA-256, versionamento
   transacional e limpeza compensatória;
+- reautenticação por senha na publicação administrativa de PDF, com credencial
+  aleatória de uso único, armazenada somente como SHA-256, expiração curta e
+  cookie HttpOnly;
 - Cron Trigger por minuto para pagamento, convite e cópia individual, sempre
   condicionado às respectivas flags e credenciais;
 - schema inicial de VUELVE IA com pgvector 768;
@@ -77,6 +80,14 @@ flags e entitlements de runtime não sejam congelados durante o build.
 
 O módulo `Contenido` é a primeira operação administrativa conectada. A rota
 exige flags de admin e conteúdo, origem do app, sessão com papel `admin` e RLS.
+Antes do upload, a senha é verificada novamente pelo Supabase Auth. Somente o
+BFF com chave secreta pode registrar a credencial curta; a sessão admin comum
+não consegue fabricá-la chamando a Data API. A publicação consome essa
+credencial na mesma transação dos metadados.
+O cliente autenticado não recebe mais `insert`, `update` ou `delete` direto nas
+tabelas de conteúdo nem política de escrita no Storage. Somente o BFF usa a
+chave servidor para upload e limpeza; a sessão admin permanece responsável
+pela RPC auditada.
 O arquivo é validado antes de tocar o Storage. A publicação cria uma nova
 versão por produto em uma RPC auditada; se a transação de metadados falhar, o
 objeto recém-enviado é removido. Falha dessa compensação sobe como incidente,
@@ -122,7 +133,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 30 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 33 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

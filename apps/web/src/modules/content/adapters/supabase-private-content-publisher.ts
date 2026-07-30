@@ -6,6 +6,7 @@ import type {
   PrivateContentPublisher,
   PublishedContentPdf,
 } from "../application/publish-content-pdf.ts";
+import { AdminReauthenticationRequiredError } from "../../identity/application/admin-reauthentication.ts";
 
 type PublishedRow = {
   content_file_id: string;
@@ -16,7 +17,10 @@ type PublishedRow = {
 export class SupabasePrivateContentPublisher
   implements PrivateContentPublisher
 {
-  constructor(private readonly client: SupabaseClient) {}
+  constructor(
+    private readonly metadataClient: SupabaseClient,
+    private readonly storageClient: SupabaseClient,
+  ) {}
 
   async upload(input: {
     bucket: string;
@@ -25,7 +29,7 @@ export class SupabasePrivateContentPublisher
     path: string;
   }) {
     const body = input.bytes.slice().buffer as ArrayBuffer;
-    const { error } = await this.client.storage
+    const { error } = await this.storageClient.storage
       .from(input.bucket)
       .upload(input.path, body, {
         cacheControl: "0",
@@ -40,19 +44,29 @@ export class SupabasePrivateContentPublisher
     contentType: string;
     path: string;
     productCode: string;
+    reauthenticationTokenHash: string;
     sha256: string;
     sizeBytes: number;
     title: string;
   }): Promise<PublishedContentPdf> {
-    const { data, error } = await this.client.rpc("publish_content_pdf", {
-      p_mime_type: input.contentType,
-      p_product_code: input.productCode,
-      p_sha256: input.sha256,
-      p_size_bytes: input.sizeBytes,
-      p_storage_bucket: input.bucket,
-      p_storage_path: input.path,
-      p_title: input.title,
-    });
+    const { data, error } = await this.metadataClient.rpc(
+      "publish_content_pdf_with_reauthentication",
+      {
+        p_mime_type: input.contentType,
+        p_product_code: input.productCode,
+        p_reauth_token_hash: input.reauthenticationTokenHash,
+        p_sha256: input.sha256,
+        p_size_bytes: input.sizeBytes,
+        p_storage_bucket: input.bucket,
+        p_storage_path: input.path,
+        p_title: input.title,
+      },
+    );
+    if (error?.code === "42501") {
+      throw new AdminReauthenticationRequiredError(
+        "admin_reauthentication_required",
+      );
+    }
     if (error) throw new Error(`content_pdf_persist_failed:${error.code}`);
 
     const row = (data as PublishedRow[] | null)?.[0];
@@ -65,7 +79,9 @@ export class SupabasePrivateContentPublisher
   }
 
   async remove(bucket: string, path: string) {
-    const { error } = await this.client.storage.from(bucket).remove([path]);
+    const { error } = await this.storageClient.storage
+      .from(bucket)
+      .remove([path]);
     if (error) throw new Error(`content_pdf_cleanup_failed:${error.name}`);
   }
 }

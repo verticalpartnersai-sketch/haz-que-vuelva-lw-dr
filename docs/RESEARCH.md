@@ -344,6 +344,20 @@ reautenticação. Controles compensatórios previstos: sessão admin curta,
 reautenticação em mutações críticas, rate limiting, privilégio mínimo e
 auditoria append-only. A decisão deve ser revisitada antes de produção.
 
+- [Supabase SSR para Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs&queryGroups=framework):
+  orienta usar o cliente de servidor com cookies e `getClaims` para proteger
+  páginas e dados.
+- [Supabase Auth no servidor](https://supabase.com/docs/reference/javascript/auth):
+  documenta cliente sem persistência nem refresh automático para operações de
+  autenticação isoladas no servidor e os rate limits do Auth.
+
+Decisão: a senha administrativa é verificada em um cliente Auth isolado, sem
+persistir a nova sessão. Após sucesso, somente o BFF com chave secreta registra
+um token aleatório de 256 bits. O navegador recebe o valor em cookie HttpOnly,
+`SameSite=Strict`; o banco guarda apenas SHA-256 por cinco minutos e o consome
+na mesma transação da mutação. A sessão admin autenticada não recebe permissão
+para criar essa autorização diretamente.
+
 ### Iconografia
 
 - [Phosphor Icons — repositório oficial React](https://github.com/phosphor-icons/react):

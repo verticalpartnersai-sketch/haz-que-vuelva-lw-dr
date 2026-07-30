@@ -331,6 +331,9 @@ um modal. `unknown` nunca deve piscar como disponível.
 - Com `FEATURE_ADMIN` e `FEATURE_CONTENT` ligadas, o módulo `Contenido` aceita
   um PDF privado de até 12 MiB e 300 páginas, anuncia sucesso/erro e nunca
   transforma o estado visual em autorização.
+- A publicação pede novamente a senha. A UI não persiste esse valor; o BFF
+  emite cookie HttpOnly de cinco minutos e a RPC consome a autorização uma
+  única vez. Erro de senha ou credencial expirada mantém o arquivo inativo.
 - Os demais módulos continuam estruturais até seus casos de uso conectados
   serem implementados.
 - Mobile prioriza lista/resumo; tabela larga pode ter região horizontal

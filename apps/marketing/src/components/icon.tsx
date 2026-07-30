@@ -5,8 +5,10 @@ import {
   CaretRight,
   Check,
   GlobeSimple,
-  Heart,
+  SpeakerHigh,
+  SpeakerSlash,
   Sparkle,
+  Warning,
 } from "@phosphor-icons/react/dist/ssr";
 import type { IconProps as PhosphorIconProps } from "@phosphor-icons/react";
 import type { ComponentType } from "react";
@@ -18,8 +20,10 @@ export type IconName =
   | "check"
   | "external"
   | "globe"
-  | "heart"
-  | "spark";
+  | "speakerHigh"
+  | "speakerSlash"
+  | "spark"
+  | "warning";
 
 type IconProps = Omit<PhosphorIconProps, "name"> & { name: IconName };
 
@@ -30,8 +34,10 @@ const icons: Record<IconName, ComponentType<PhosphorIconProps>> = {
   check: Check,
   external: ArrowSquareOut,
   globe: GlobeSimple,
-  heart: Heart,
+  speakerHigh: SpeakerHigh,
+  speakerSlash: SpeakerSlash,
   spark: Sparkle,
+  warning: Warning,
 };
 
 export function Icon({ name, weight = "regular", ...props }: IconProps) {

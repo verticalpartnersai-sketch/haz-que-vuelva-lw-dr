@@ -1,0 +1,276 @@
+.quiz-primal {
+  display: grid;
+  gap: clamp(3.5rem, 9vw, 7rem);
+  margin: clamp(4rem, 10vw, 8rem) auto;
+  max-width: 1040px;
+}
+
+.quiz-neuro {
+  align-items: start;
+  background: #111114;
+  border: 1px solid #3c2529;
+  border-radius: 20px;
+  display: grid;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+  grid-template-columns: auto 1fr;
+  overflow: hidden;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  position: relative;
+}
+
+.quiz-neuro::after {
+  background: #e5484d;
+  content: "";
+  height: 3px;
+  left: 0;
+  position: absolute;
+  right: 72%;
+  top: 0;
+}
+
+.quiz-neuro__signal {
+  align-items: center;
+  border: 1px solid #6b3137;
+  border-radius: 50%;
+  display: flex;
+  height: 74px;
+  justify-content: center;
+  position: relative;
+  width: 74px;
+}
+
+.quiz-neuro__signal span {
+  border: 1px solid #3f282b;
+  border-radius: inherit;
+  inset: 9px;
+  position: absolute;
+}
+
+.quiz-neuro__signal svg {
+  color: #e5484d;
+  height: 22px;
+  width: 22px;
+}
+
+.quiz-neuro h2,
+.quiz-brand-story h2,
+.quiz-rituals h2,
+.quiz-lexicon h2 {
+  color: #f7f2ea;
+  font-family: var(--font-sans);
+  font-size: clamp(1.45rem, 3vw, 2.35rem);
+  line-height: 1.18;
+  margin: var(--space-4) 0;
+}
+
+.quiz-neuro > div > p,
+.quiz-brand-story p,
+.quiz-rituals header + ol p,
+.quiz-lexicon dd {
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.quiz-neuro__mirror {
+  border-top: 1px solid #393236;
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+}
+
+.quiz-neuro__mirror strong {
+  color: #e5484d;
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  margin-bottom: var(--space-3);
+}
+
+.quiz-neuro__mirror p {
+  color: #f7f2ea;
+  font-size: 1.02rem;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.quiz-creed {
+  border-bottom: 1px solid #302d2d;
+  border-top: 1px solid #302d2d;
+  padding: clamp(2rem, 6vw, 4rem) 0;
+}
+
+.quiz-creed > .section-kicker {
+  display: block;
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.quiz-creed ol {
+  list-style: none;
+  margin: 0 auto;
+  max-width: 820px;
+  padding: 0;
+}
+
+.quiz-creed li {
+  align-items: baseline;
+  border-bottom: 1px solid #252326;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 2rem 1fr;
+  padding: var(--space-4) 0;
+}
+
+.quiz-creed li:last-child {
+  border-bottom: 0;
+}
+
+.quiz-creed li span,
+.quiz-rituals li > span {
+  color: #8d474d;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.quiz-creed strong {
+  color: #f7f2ea;
+  font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.quiz-brand-story {
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+.quiz-brand-story > article {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.quiz-brand-story > article:first-child {
+  border-left: 1px solid #514045;
+  padding-left: clamp(1.5rem, 5vw, 3rem);
+}
+
+.quiz-brand-enemy {
+  background: #17171b;
+  border-radius: 18px;
+}
+
+.quiz-brand-enemy > svg {
+  color: #e5484d;
+  height: 24px;
+  margin-top: var(--space-8);
+  width: 24px;
+}
+
+.quiz-rituals header,
+.quiz-lexicon header {
+  margin-bottom: var(--space-8);
+  max-width: 760px;
+}
+
+.quiz-rituals > ol {
+  border-bottom: 1px solid #302d2d;
+  border-top: 1px solid #302d2d;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.quiz-rituals li {
+  border-right: 1px solid #302d2d;
+  min-height: 230px;
+  padding: var(--space-6);
+}
+
+.quiz-rituals li:last-child {
+  border-right: 0;
+}
+
+.quiz-rituals h3 {
+  color: #f7f2ea;
+  font-size: 1.05rem;
+  margin: var(--space-8) 0 var(--space-3);
+}
+
+.quiz-rituals p {
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.quiz-lexicon dl {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 0;
+}
+
+.quiz-lexicon dl > div {
+  border-top: 1px solid #302d2d;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(140px, 0.7fr) 1.3fr;
+  padding: var(--space-5) var(--space-4);
+}
+
+.quiz-lexicon dt {
+  color: #f7f2ea;
+  font-weight: 700;
+}
+
+.quiz-lexicon dd {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .quiz-brand-story,
+  .quiz-lexicon dl {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-rituals > ol {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quiz-rituals li:nth-child(2) {
+    border-right: 0;
+  }
+
+  .quiz-rituals li:nth-child(-n + 2) {
+    border-bottom: 1px solid #302d2d;
+  }
+}
+
+@media (max-width: 560px) {
+  .quiz-neuro {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-neuro__signal {
+    height: 56px;
+    width: 56px;
+  }
+
+  .quiz-rituals > ol {
+    grid-template-columns: 1fr;
+  }
+
+  .quiz-rituals li {
+    border-bottom: 1px solid #302d2d;
+    border-right: 0;
+    min-height: 0;
+  }
+
+  .quiz-rituals li:last-child {
+    border-bottom: 0;
+  }
+
+  .quiz-lexicon dl > div {
+    grid-template-columns: 1fr;
+  }
+}

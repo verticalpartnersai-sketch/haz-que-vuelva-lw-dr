@@ -47,6 +47,8 @@ export type QuizRoute =
   | "logistics"
   | "third_person";
 
+export type ProofPreviewStoryId = "camila" | "valentina" | "sofia";
+
 export type DistanceBand = "low" | "medium" | "high";
 
 export type QuizAnswers = {
@@ -61,9 +63,18 @@ export type QuizAnswers = {
 
 export type QuizOption = {
   emoji?: string;
+  image?: string;
   label: string;
   transition?: string;
   value: string;
+};
+
+export type ProofPreviewStory = {
+  conclusion: string;
+  id: ProofPreviewStoryId;
+  imageAlt: string;
+  intro: string;
+  messages: readonly string[];
 };
 
 export type QuizQuestion = {
@@ -77,18 +88,63 @@ export type QuizQuestion = {
 
 export type LoaderCopy = {
   captions: readonly string[];
+  socialProof?: {
+    highlight: string;
+    lead: string;
+    middle: string;
+  };
   states: readonly string[];
   title: string;
 };
 
 export type RouteCopy = {
   bridge: string;
+  costOfInaction: string;
   cta: string;
   diagnosis: readonly string[];
   firstAction: string;
   headline: string;
+  offerHeadline: string;
+  offerLead: string;
   prediagnosisHeadline: string;
   publicName: string;
+};
+
+export type BrandItem = {
+  description: string;
+  title: string;
+};
+
+export type PrimalBrandCopy = {
+  creation: {
+    body: string;
+    eyebrow: string;
+    headline: string;
+  };
+  creed: {
+    eyebrow: string;
+    lines: readonly string[];
+  };
+  enemy: {
+    body: string;
+    eyebrow: string;
+    headline: string;
+  };
+  lexicon: {
+    eyebrow: string;
+    headline: string;
+    items: readonly BrandItem[];
+  };
+  neuro: {
+    body: string;
+    eyebrow: string;
+    headline: string;
+  };
+  rituals: {
+    eyebrow: string;
+    headline: string;
+    items: readonly BrandItem[];
+  };
 };
 
 export type DemonstrationCase = {
@@ -108,7 +164,58 @@ export type OfferItem = {
   title: string;
 };
 
+export type QuizPreviewCopy = {
+  commitment: {
+    eyebrow: string;
+    options: readonly QuizOption[];
+    title: string;
+  };
+  internalLabel: string;
+  loader: {
+    title: string;
+  };
+  mirror: {
+    actionPrefix: string;
+    conclusion: string;
+    distancePrefix: string;
+    statePrefix: string;
+  };
+  pitch: {
+    commitmentLead: Record<ExecutionCommitment, string>;
+    cost: {
+      body: string;
+      eyebrow: string;
+    };
+    mechanism: {
+      body: string;
+      eyebrow: string;
+    };
+    heroLead: string;
+    offer: {
+      cta: string;
+      guarantee: string;
+      guaranteeTitle: string;
+      payment: string;
+      price: string;
+    };
+    reveal: {
+      brand: string;
+      description: string;
+      eyebrow: string;
+    };
+  };
+  proof: {
+    body: string;
+    cta: string;
+    headline: string;
+    heroAlt: string;
+    stories: readonly ProofPreviewStory[];
+  };
+  routeHeadlines: Record<QuizRoute, string>;
+};
+
 export type QuizCopy = {
+  brand: PrimalBrandCopy;
   commitment: {
     options: readonly QuizOption[];
     title: string;
@@ -133,6 +240,7 @@ export type QuizCopy = {
     cta: string;
     eyebrow: string;
     headline: string;
+    headlineAccent: string;
     privacy: string;
     subheadline: string;
   };
@@ -162,6 +270,7 @@ export type QuizCopy = {
     scoreSubtitle: string;
     scoreTitle: string;
   };
+  preview: QuizPreviewCopy;
   questions: readonly QuizQuestion[];
   result: {
     confirmation: string;

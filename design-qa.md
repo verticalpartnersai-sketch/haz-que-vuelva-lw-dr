@@ -338,3 +338,15 @@ Referência de implementação inspecionada:
 
 Por solicitação explícita do usuário, nenhum teste, lint, typecheck ou build foi
 executado nesta passagem.
+
+---
+
+## Prediagnóstico vertical do quiz — 29 de julho de 2026
+
+- Fonte visual: `/var/folders/pl/7jlgb9_s1413_b0bhb05p3qm0000gn/T/codex-clipboard-18bd3695-cadf-49a9-a259-c7ddf23df89a.png`.
+- Implementação verificada em `http://127.0.0.1:3001/quiz`, estado de prediagnóstico em espanhol.
+- Relatório detalhado: `docs/evidence/quiz-prediagnosis-design-qa.md`.
+- Comparação conjunta: `docs/evidence/quiz-prediagnosis-comparison.png`.
+- Resultado: composição vertical de 510 px no desktop e 370 px no mobile, sem overflow horizontal; CTA testado até a próxima etapa.
+
+final result: passed

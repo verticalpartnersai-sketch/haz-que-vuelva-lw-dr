@@ -2,14 +2,16 @@ import type {
   QuizCopy,
   QuizQuestion,
 } from "@/features/quiz/quiz-contracts";
+import { brandCopyEn } from "@/features/quiz/quiz-brand-copy-en";
+import { previewCopyEn } from "@/features/quiz/quiz-preview-copy-en";
 import { resultCopyEn } from "@/features/quiz/quiz-results-en";
 
 const questions: readonly QuizQuestion[] = [
   {
     id: "current_state",
-    title: "To prepare a route for your case, where do things stand today?",
+    title: "Before you text him again, I need to know what is happening between you today.",
     microcopy:
-      "Your answers are used only to organize this diagnosis. You do not need to upload conversations or share your name.",
+      "Answer based on what he does, not what you wish he still felt.",
     options: [
       {
         label: "We still talk, but he is cold, distant, or replies less and less",
@@ -43,7 +45,7 @@ const questions: readonly QuizQuestion[] = [
   },
   {
     context:
-      "We have identified the state of the channel. Now let’s measure how long the distance has been building.",
+      "I know how much access you still have to him. Now I need to measure how long he has been learning to live with your absence.",
     id: "distance_time",
     title: "How long has the relationship been cold, broken, or interrupted?",
     options: [
@@ -104,7 +106,7 @@ const questions: readonly QuizQuestion[] = [
     ].map((option) => ({
       ...option,
       transition:
-        "That action does not define your story, but it may be feeding the Rejection Loop™ that keeps the channel cold.",
+        "The relief of acting may last seconds. The distance that action reinforces may last days—that is the Rejection Loop™.",
     })),
   },
   {
@@ -113,28 +115,28 @@ const questions: readonly QuizQuestion[] = [
     variant: "cards",
     options: [
       {
-        emoji: "◌",
+        image: "/images/quiz/pain/pain-silence-v1.webp",
         label: "Opening WhatsApp, seeing his silence, and feeling the emptiness",
         transition:
           "Silence hurts because it gives your mind room to invent a different answer every hour.",
         value: "silence",
       },
       {
-        emoji: "◇",
+        image: "/images/quiz/pain/pain-replacement-v1.webp",
         label: "Imagining him happy with someone else while I wait for a sign",
         transition:
           "Comparison makes her every move seem more important than what he actually does with you.",
         value: "replacement",
       },
       {
-        emoji: "↯",
+        image: "/images/quiz/pain/pain-guilt-v1.webp",
         label: "Thinking my anxiety destroyed my last chance",
         transition:
           "Guilt pushes you to over-explain. Each new explanation can sound like more pressure.",
         value: "guilt",
       },
       {
-        emoji: "↺",
+        image: "/images/quiz/pain/pain-second-option-v1.webp",
         label: "Having him return when lonely but never truly choose me",
         transition:
           "Returning out of nostalgia or loneliness does not mean he is willing to repair the relationship.",
@@ -175,29 +177,37 @@ const questions: readonly QuizQuestion[] = [
 ];
 
 export const quizCopyEn: QuizCopy = {
+  brand: brandCopyEn,
+  preview: previewCopyEn,
   intro: {
-    eyebrow: "PRIVATE RECONNECTION DIAGNOSIS · 2 MINUTES",
-    headline:
-      "Discover what is pushing him away… and how to open a new Affective Memory Window™.",
+    eyebrow: "EVERY DAY YOU IMPROVISE, HE LEARNS TO MISS YOU LESS",
+    headline: "He has not forgotten you yet.",
+    headlineAccent:
+      "But your next mistake can teach him to live without you.",
     subheadline:
-      "Answer five questions. See what is closing the door, which mistake to stop today, and the first decision in your 7-day protocol.",
-    cta: "Discover what is happening",
+      "Answer five questions and discover what is killing his desire, what you must stop today, and how to get back on his mind before distance turns into indifference.",
+    cta: "DISCOVER WHAT TO DO BEFORE I LOSE HIM",
     privacy:
       "Your answers are used only for this diagnosis. We do not ask for your name, screenshots, or conversations.",
   },
   questions,
   loaderOne: {
-    title: "Analyzing your case and the real state of contact…",
+    title: "Finding what is pushing him away and how much of your connection is still alive…",
+    socialProof: {
+      lead: "More than 5,732 women",
+      middle: "replaced anxiety with a clear path to",
+      highlight: "regain control and reopen the connection",
+    },
     states: [
-      "Reading the state of the channel…",
-      "Identifying the active Rejection Loop™…",
-      "Calculating your Emotional Distance Index…",
-      "Preparing the first decision for your case…",
+      "Measuring how much emotional access you still have…",
+      "Identifying the mistake reinforcing his distance…",
+      "Calculating the risk of losing the window that still exists…",
+      "Preparing what you must do before opening the chat again…",
     ],
     captions: [
-      "Your case does not get a universal rule. It gets a route.",
-      "The decision comes before the message.",
-      "Seven days, one action at a time.",
+      "You do not need another phrase. You need to stop triggering his resistance.",
+      "Your next move can awaken curiosity or confirm his distance.",
+      "Over seven days, each decision must move you toward a different response.",
     ],
   },
   prediagnosis: {
@@ -214,8 +224,8 @@ export const quizCopyEn: QuizCopy = {
       "repeat",
     ],
     bodyAfterLoop: [
-      "The way out does not begin with a magic phrase. It begins when you change the recent experience he associates with you inside the Affective Memory Window™.",
-      "This model does not read his mind. It helps you avoid repeating the pressure he is already trying to escape.",
+      "He does not need to forget your whole story to pull away. He only needs to associate your presence with pressure, anxiety, or a conversation he never wants to relive.",
+      "If you repeat the same pattern, you may give him the final confirmation he needs to close the door. Haz Que Vuelva™ changes the experience he expects from you before distance becomes indifference, so your absence can create curiosity, tension, and a desire to move closer again.",
     ],
     needs: [
       "what to stop today",
@@ -223,40 +233,42 @@ export const quizCopyEn: QuizCopy = {
       "which signal to watch before the next step",
       "when to move and when to do nothing",
     ],
-    cta: "SHOW ME HOW TO REOPEN MY WINDOW",
+    cta: "I WANT TO STOP THIS WINDOW FROM CLOSING",
     microcopy:
-      "Your full result is being prepared. First, I need to know which change matters most to you.",
+      "We have identified what is working against you. Now I need to know what you want him to feel.",
   },
   desire: {
     title:
-      "Besides knowing what to stop today, do you want to use the next 7 days to stop reinforcing pressure and rebuild curiosity and openness?",
+      "Besides discovering the mistake that is pushing him away, do you want to use the next 7 days to make your absence weigh on him, reignite desire, and make his urge to return increasingly difficult to ignore?",
     options: [
       {
-        label: "Yes. I want him to feel my absence and want to move closer",
+        label:
+          "Yes. I want him to miss me and reach out again because he genuinely wants to",
         value: "desire_missing",
       },
       {
-        label: "Yes. I want a direct route so anxiety does not cost me the opening",
+        label:
+          "Yes. I want a simple path to awaken that without having to chase him",
         value: "desire_control",
       },
     ],
   },
   commitment: {
     title:
-      "Your protocol may tell you to write, reply, or wait. Will you follow the route for 7 days, even when anxiety wants something else?",
+      "If one impulse can close the last window that still exists, will you follow your route for 7 days before anxiety makes your next move?",
     options: [
       {
-        label: "Yes. I want to stop improvising and follow one decision a day",
+        label: "Yes. I want to stop chasing answers and make every move work in my favor",
         value: "commit_route",
       },
       {
-        label: "Yes. But it must be simple, direct, and useful starting today",
+        label: "Yes. I want to know exactly what to do when anxiety tries to sabotage me",
         value: "commit_simple",
       },
     ],
   },
   loaderTwo: {
-    title: "Creating your initial 7-day route…",
+    title: "Building the next 7 days so you stop pushing him farther away…",
     states: [
       "Separating real signals from interpretations…",
       "Defining what you need to stop today…",

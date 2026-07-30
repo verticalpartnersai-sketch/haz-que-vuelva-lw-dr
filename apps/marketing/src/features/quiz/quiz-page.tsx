@@ -19,14 +19,13 @@ import {
   resolvedLastAction,
   routeSoFar,
 } from "@/features/quiz/quiz-engine";
-import {
-  PublicHeader,
-} from "@/features/quiz/quiz-intro-question";
+import { PublicHeader } from "@/features/quiz/quiz-intro-question";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import { QuizStageRouter } from "@/features/quiz/quiz-stage-router";
 import {
-  clearQuizState,
   persistQuizState,
+  persistQuizSessionState,
+  restoreQuizSessionState,
   track,
   utmParameters,
 } from "@/features/quiz/quiz-runtime";
@@ -36,8 +35,30 @@ function scrollQuizToTop() {
   document.documentElement.scrollTop = 0;
 }
 
+function progressForStage(
+  stage: QuizStage,
+  questionIndex: number,
+  questionCount: number,
+  loaderTick: number,
+  internalPreview: boolean,
+) {
+  if (stage === "intro") return 0;
+  if (stage === "question") {
+    const lastQuestionIndex = Math.max(1, questionCount - 1);
+    return 8 + (questionIndex / lastQuestionIndex) * 36;
+  }
+  if (stage === "loader-one") return 48 + (loaderTick / 4) * 10;
+  if (stage === "prediagnosis") return 60;
+  if (stage === "desire") return 68;
+  if (stage === "demonstration") return 76;
+  if (stage === "commitment") return 84;
+  if (stage === "loader-two" && internalPreview) return 96;
+  if (stage === "loader-two") return 88 + (loaderTick / 4) * 10;
+  return 100;
+}
+
 export function QuizPage() {
-  const { l, locale } = useLocale();
+  const { l, locale, setLocale } = useLocale();
   const copy = quizContentFor(locale);
   const [stage, setStage] = useState<QuizStage>("intro");
   const [questionIndex, setQuestionIndex] = useState(0);
@@ -45,8 +66,17 @@ export function QuizPage() {
   const [locked, setLocked] = useState(false);
   const [loaderTick, setLoaderTick] = useState(0);
   const [checkoutStatus, setCheckoutStatus] = useState("");
+  const [audioStarted, setAudioStarted] = useState(false);
+  const [audioMuted, setAudioMuted] = useState(true);
+  const [audioNeedsGesture, setAudioNeedsGesture] = useState(false);
+  const [sessionHydrated, setSessionHydrated] = useState(false);
+  const internalPreview =
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_QUIZ_SOCIAL_PROOF_PREVIEW !== "0";
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const ambientAudioRef = useRef<HTMLAudioElement>(null);
   const advanceTimerRef = useRef<number | null>(null);
+  const hydrationStartedRef = useRef(false);
   const trackedViewRef = useRef("");
   const route = useMemo(() => resolveRoute(answers), [answers]);
   const distanceIndex = useMemo(
@@ -54,6 +84,89 @@ export function QuizPage() {
     [answers],
   );
   const distanceBand = distanceBandFor(distanceIndex);
+  const progress = progressForStage(
+    stage,
+    questionIndex,
+    copy.questions.length,
+    loaderTick,
+    internalPreview,
+  );
+  const progressIsLive =
+    stage === "loader-one" || (stage === "loader-two" && !internalPreview);
+
+  useEffect(() => {
+    const hydrationFrame = window.requestAnimationFrame(() => {
+      if (hydrationStartedRef.current) return;
+      hydrationStartedRef.current = true;
+
+      const restored = restoreQuizSessionState();
+      if (restored) {
+        const restoredLocale = restored.locale ?? locale;
+        const questionCount = quizContentFor(restoredLocale).questions.length;
+        const restoredStage =
+          restored.stage === "loader-one"
+            ? "prediagnosis"
+            : restored.stage === "loader-two"
+              ? "result"
+              : restored.stage;
+
+        setAnswers(restored.answers);
+        setQuestionIndex(
+          Math.min(
+            Math.max(0, restored.questionIndex ?? 0),
+            Math.max(0, questionCount - 1),
+          ),
+        );
+        if (restoredStage) setStage(restoredStage);
+        if (restored.locale) setLocale(restored.locale);
+        setAudioStarted(restored.audioStarted ?? false);
+        setAudioMuted(restored.audioMuted ?? true);
+      }
+      setSessionHydrated(true);
+    });
+
+    return () => window.cancelAnimationFrame(hydrationFrame);
+  }, [locale, setLocale]);
+
+  useEffect(() => {
+    if (!sessionHydrated) return;
+    persistQuizSessionState({
+      answers,
+      audioMuted,
+      audioStarted,
+      locale,
+      questionIndex,
+      stage,
+    });
+  }, [
+    answers,
+    audioMuted,
+    audioStarted,
+    locale,
+    questionIndex,
+    sessionHydrated,
+    stage,
+  ]);
+
+  useEffect(() => {
+    if (!sessionHydrated) return;
+    const ambientAudio = ambientAudioRef.current;
+    if (!ambientAudio) return;
+
+    ambientAudio.loop = true;
+    ambientAudio.volume = 1;
+    ambientAudio.muted = audioMuted;
+
+    if (!audioStarted || audioMuted) {
+      ambientAudio.pause();
+      return;
+    }
+
+    void ambientAudio
+      .play()
+      .then(() => setAudioNeedsGesture(false))
+      .catch(() => setAudioNeedsGesture(true));
+  }, [audioMuted, audioStarted, sessionHydrated]);
 
   useEffect(() => {
     scrollQuizToTop();
@@ -62,7 +175,11 @@ export function QuizPage() {
     const titles: Record<QuizStage, string> = {
       intro: l("Diagnóstico privado", "Diagnóstico privado", "Private diagnosis"),
       question: l("Tu situación", "Sua situação", "Your situation"),
-      "loader-one": l("Analizando tu caso", "Analisando seu caso", "Analyzing your case"),
+      "loader-one": l(
+        "Analizando la conexión",
+        "Analisando a conexão",
+        "Analyzing the connection",
+      ),
       prediagnosis: l("Análisis inicial", "Análise inicial", "Initial analysis"),
       desire: l("Tu objetivo", "Seu objetivo", "Your goal"),
       demonstration: l("Cómo cambia la ruta", "Como a rota muda", "How the route changes"),
@@ -77,6 +194,10 @@ export function QuizPage() {
     () => () => {
       if (advanceTimerRef.current !== null) {
         window.clearTimeout(advanceTimerRef.current);
+      }
+      const ambientAudio = ambientAudioRef.current;
+      if (ambientAudio) {
+        ambientAudio.pause();
       }
     },
     [],
@@ -97,7 +218,7 @@ export function QuizPage() {
     }
     if (stage === "loader-one" || stage === "loader-two") {
       track("quiz_loader_view", {
-        duration: 6000,
+        duration: stage === "loader-two" && internalPreview ? 900 : 6000,
         loader_id: stage,
       });
     }
@@ -130,6 +251,7 @@ export function QuizPage() {
     copy.routes,
     distanceBand,
     distanceIndex,
+    internalPreview,
     questionIndex,
     route,
     stage,
@@ -137,6 +259,11 @@ export function QuizPage() {
 
   useEffect(() => {
     if (stage !== "loader-one" && stage !== "loader-two") return;
+
+    if (stage === "loader-two" && internalPreview) {
+      const reveal = window.setTimeout(() => setStage("result"), 900);
+      return () => window.clearTimeout(reveal);
+    }
 
     if (loaderTick < 4) {
       const timer = window.setTimeout(
@@ -155,9 +282,29 @@ export function QuizPage() {
     }, 220);
 
     return () => window.clearTimeout(reveal);
-  }, [loaderTick, route, stage]);
+  }, [internalPreview, loaderTick, route, stage]);
+
+  function playAmbientAudio(restart = false) {
+    const ambientAudio = ambientAudioRef.current;
+    if (!ambientAudio) return;
+    if (restart) ambientAudio.currentTime = 0;
+    ambientAudio.loop = true;
+    ambientAudio.muted = false;
+    ambientAudio.volume = 1;
+    void ambientAudio
+      .play()
+      .then(() => setAudioNeedsGesture(false))
+      .catch(() => setAudioNeedsGesture(true));
+  }
 
   function startQuiz() {
+    const ambientAudio = ambientAudioRef.current;
+    ambientAudio?.pause();
+    if (ambientAudio) ambientAudio.muted = true;
+    setAudioStarted(false);
+    setAudioMuted(true);
+    setAudioNeedsGesture(false);
+
     track("quiz_start", utmParameters());
     scrollQuizToTop();
     setQuestionIndex(0);
@@ -178,6 +325,60 @@ export function QuizPage() {
 
   function changeStage(nextStage: QuizStage) {
     scrollQuizToTop();
+    setStage(nextStage);
+  }
+
+  function toggleAmbientAudio() {
+    const ambientAudio = ambientAudioRef.current;
+    if (!audioStarted || audioMuted) {
+      setAudioStarted(true);
+      setAudioMuted(false);
+      playAmbientAudio();
+      return;
+    }
+
+    ambientAudio?.pause();
+    setAudioMuted(true);
+    setAudioNeedsGesture(false);
+  }
+
+  function resumeAmbientAudio() {
+    if (!audioNeedsGesture || audioMuted || !audioStarted) return;
+    playAmbientAudio();
+  }
+
+  function goBackInDevelopment() {
+    if (advanceTimerRef.current !== null) {
+      window.clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+    setLocked(false);
+    setLoaderTick(0);
+    scrollQuizToTop();
+
+    if (stage === "question") {
+      if (questionIndex > 0) {
+        setQuestionIndex((index) => index - 1);
+      } else {
+        setStage("intro");
+      }
+      return;
+    }
+
+    const previousStage: Partial<Record<QuizStage, QuizStage>> = {
+      "loader-one": "question",
+      prediagnosis: "question",
+      desire: "prediagnosis",
+      demonstration: "desire",
+      commitment: "demonstration",
+      "loader-two": "commitment",
+      result: "commitment",
+    };
+    const nextStage = previousStage[stage];
+    if (!nextStage) return;
+    if (nextStage === "question") {
+      setQuestionIndex(copy.questions.length - 1);
+    }
     setStage(nextStage);
   }
 
@@ -234,11 +435,11 @@ export function QuizPage() {
     }, 420);
   }
 
-  function checkout() {
+  function checkout(ctaPosition = "unknown") {
     track("quiz_cta_click", {
       cta_id: "haz_que_vuelva_front",
+      cta_position: ctaPosition,
       destination: "checkout",
-      distance_index: distanceIndex,
       route,
     });
 
@@ -259,19 +460,25 @@ export function QuizPage() {
       const checkoutContext = {
         route,
         channel_state: channelStateForRoute(route),
-        distance_index: String(distanceIndex),
         distance_band: distanceBand,
-        main_error: resolvedLastAction(answers),
-        desire: answers.desire,
-        commitment: answers.commitment,
+        cta_position: ctaPosition,
       };
       Object.entries({ ...checkoutContext, ...utmParameters() }).forEach(
         ([key, value]) => {
           if (value) destination.searchParams.set(key, String(value));
         },
       );
-      track("checkout_start", { price: 7, route });
-      window.location.assign(destination.toString());
+      track("checkout_start", {
+        cta_position: ctaPosition,
+        price: 7,
+        route,
+      });
+      const checkoutWindow = window.open(
+        destination.toString(),
+        "_blank",
+        "noopener,noreferrer",
+      );
+      if (checkoutWindow) checkoutWindow.opener = null;
     } catch {
       setCheckoutStatus(
         l(
@@ -283,21 +490,60 @@ export function QuizPage() {
     }
   }
 
-  function restart() {
-    clearQuizState();
-    setAnswers({});
-    setQuestionIndex(0);
-    setLoaderTick(0);
-    setCheckoutStatus("");
-    setStage("intro");
-  }
-
   return (
-    <div className="quiz-public">
+    <div className="quiz-public" onPointerDown={resumeAmbientAudio}>
+      <audio
+        aria-hidden="true"
+        loop
+        preload="auto"
+        ref={ambientAudioRef}
+        src="/audio/ambient-sound.mp3"
+      />
       <a className="skip-link" href="#quiz-content">
         {l("Ir al diagnóstico", "Ir para o diagnóstico", "Skip to diagnosis")}
       </a>
-      <PublicHeader />
+      {internalPreview ? (
+        <span className="quiz-preview-badge">{copy.preview.internalLabel}</span>
+      ) : null}
+      {stage !== "intro" &&
+      stage !== "prediagnosis" &&
+      stage !== "demonstration" &&
+      stage !== "result" ? (
+        <div
+          aria-label={l(
+            "Progreso del diagnóstico",
+            "Progresso do diagnóstico",
+            "Diagnosis progress",
+          )}
+          aria-valuemax={100}
+          aria-valuemin={0}
+          aria-valuenow={Math.round(progress)}
+          className={
+            progressIsLive
+              ? "quiz-global-progress is-live"
+              : "quiz-global-progress"
+          }
+          role="progressbar"
+        >
+          <span style={{ width: `${progress}%` }} />
+        </div>
+      ) : null}
+      <PublicHeader
+        audioMuted={audioMuted}
+        audioNeedsGesture={audioNeedsGesture}
+        audioStarted={audioStarted}
+        onToggleAudio={toggleAmbientAudio}
+      />
+      {process.env.NODE_ENV === "development" && stage !== "intro" ? (
+        <button
+          className="quiz-dev-back"
+          onClick={goBackInDevelopment}
+          type="button"
+        >
+          <span aria-hidden="true">←</span>
+          {l("VOLVER", "VOLTAR", "BACK")}
+        </button>
+      ) : null}
       <QuizStageRouter
         answers={answers}
         checkoutStatus={checkoutStatus}
@@ -305,12 +551,12 @@ export function QuizPage() {
         distanceIndex={distanceIndex}
         headingRef={headingRef}
         loaderTick={loaderTick}
+        internalPreview={internalPreview}
         locale={locale}
         locked={locked}
         onAnswer={answerQuestion}
         onCheckout={checkout}
         onCommitment={answerCommitment}
-        onRestart={restart}
         onStage={changeStage}
         onStart={startQuiz}
         questionIndex={questionIndex}

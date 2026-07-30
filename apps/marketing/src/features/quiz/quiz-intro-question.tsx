@@ -12,25 +12,68 @@ import type {
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import { selectedOption } from "@/features/quiz/quiz-runtime";
 
-export function PublicHeader() {
-  const { locale, setLocale } = useLocale();
+export function PublicHeader({
+  audioMuted,
+  audioNeedsGesture,
+  audioStarted,
+  onToggleAudio,
+}: {
+  audioMuted: boolean;
+  audioNeedsGesture: boolean;
+  audioStarted: boolean;
+  onToggleAudio: () => void;
+}) {
+  const { l, locale, setLocale } = useLocale();
   const copy = quizContentFor(locale);
+  const audioOff = !audioStarted || audioMuted;
 
   return (
-    <div className="quiz-language-control">
-      <SelectControl
-        ariaLabel={copy.ui.changeLanguage}
-        className="select-control--quiz"
-        leadingIcon="globe"
-        onChange={(value) => setLocale(value as Locale)}
-        options={[
-          { label: "ES", value: "es" },
-          { label: "PT-BR", value: "pt" },
-          { label: "EN", value: "en" },
-        ]}
-        value={locale}
-      />
+    <div className="quiz-header-controls">
+      <button
+        aria-label={
+          audioOff
+            ? l("Activar audio", "Ativar áudio", "Turn audio on")
+            : l("Silenciar audio", "Silenciar áudio", "Mute audio")
+        }
+        className={
+          audioNeedsGesture
+            ? "quiz-audio-control needs-gesture"
+            : "quiz-audio-control"
+        }
+        onClick={onToggleAudio}
+        type="button"
+      >
+        <Icon name={audioOff ? "speakerSlash" : "speakerHigh"} />
+      </button>
+      <div className="quiz-language-control">
+        <SelectControl
+          ariaLabel={copy.ui.changeLanguage}
+          className="select-control--quiz"
+          leadingIcon="globe"
+          onChange={(value) => setLocale(value as Locale)}
+          options={[
+            { label: "ES", value: "es" },
+            { label: "PT-BR", value: "pt" },
+            { label: "EN", value: "en" },
+          ]}
+          value={locale}
+        />
+      </div>
     </div>
+  );
+}
+
+export function QuizLogo({ compact = false }: { compact?: boolean }) {
+  return (
+    <img
+      alt="Haz Que Vuelva"
+      className={compact ? "quiz-logo quiz-logo--step" : "quiz-logo quiz-logo--intro"}
+      decoding="async"
+      fetchPriority={compact ? "auto" : "high"}
+      height={392}
+      src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
+      width={1451}
+    />
   );
 }
 
@@ -69,12 +112,13 @@ export function Intro({
         />
       </picture>
       <div className="quiz-intro__copy">
-        <span aria-hidden="true" className="quiz-intro__heartbeat">
-          <Icon name="heart" weight="fill" />
-        </span>
+        <QuizLogo />
         <span className="quiz-intro__eyebrow">{intro.eyebrow}</span>
         <h1 ref={headingRef} tabIndex={-1}>
           {intro.headline}
+          <span className="quiz-intro__headline-accent">
+            {intro.headlineAccent}
+          </span>
         </h1>
         <p className="quiz-intro__subheadline">{intro.subheadline}</p>
         <button
@@ -112,11 +156,9 @@ export function QuestionStep({
   return (
     <main className="quiz-question-page quiz-stage" id="quiz-content">
       <section aria-labelledby={`question-${question.id}`} className="quiz-question">
+        <QuizLogo compact />
         {question.context ? (
-          <p className="quiz-question__context">
-            <Icon name="spark" />
-            {question.context}
-          </p>
+          <p className="quiz-question__context">{question.context}</p>
         ) : null}
         <header className="quiz-question__heading">
           <h1
@@ -153,14 +195,25 @@ export function QuestionStep({
                   type="radio"
                   value={option.value}
                 />
-                {option.emoji ? (
+                {option.image ? (
+                  <span aria-hidden="true" className="quiz-option__media">
+                    <img
+                      alt=""
+                      height="512"
+                      src={option.image}
+                      width="512"
+                    />
+                  </span>
+                ) : option.emoji ? (
                   <span aria-hidden="true" className="quiz-option__emoji">
                     {option.emoji}
                   </span>
                 ) : null}
-                <span className="quiz-option__label">{option.label}</span>
-                <span aria-hidden="true" className="quiz-option__mark">
-                  {checked ? <Icon name="check" /> : null}
+                <span className="quiz-option__content">
+                  <span className="quiz-option__label">{option.label}</span>
+                  <span aria-hidden="true" className="quiz-option__mark">
+                    {checked ? <Icon name="check" /> : null}
+                  </span>
                 </span>
               </label>
             );
@@ -185,26 +238,38 @@ export function QuestionStep({
 export function CommitmentQuestion({
   disabled,
   headingRef,
+  internalPreview = false,
   kind,
   onAnswer,
   selectedValue,
 }: {
   disabled: boolean;
   headingRef: RefObject<HTMLHeadingElement | null>;
+  internalPreview?: boolean;
   kind: "commitment" | "desire";
   onAnswer: (option: QuizOption) => void;
   selectedValue: string | undefined;
 }) {
   const { locale } = useLocale();
   const copy = quizContentFor(locale);
-  const content = copy[kind];
+  const previewCommitment = internalPreview && kind === "commitment";
+  const content = previewCommitment ? copy.preview.commitment : copy[kind];
 
   return (
     <main className="quiz-question-page quiz-stage" id="quiz-content">
-      <section className="quiz-question quiz-question--commitment">
-        <span aria-hidden="true" className="quiz-question__signal">
-          <Icon name={kind === "desire" ? "heart" : "check"} weight="fill" />
-        </span>
+      <section
+        className={
+          previewCommitment
+            ? "quiz-question quiz-question--commitment quiz-question--commitment-preview"
+            : "quiz-question quiz-question--commitment"
+        }
+      >
+        <QuizLogo compact />
+        {previewCommitment ? (
+          <span className="quiz-question__kicker section-kicker">
+            {copy.preview.commitment.eyebrow}
+          </span>
+        ) : null}
         <header className="quiz-question__heading">
           <h1 ref={headingRef} tabIndex={-1}>
             {content.title}
@@ -229,7 +294,7 @@ export function CommitmentQuestion({
                 />
                 <span className="quiz-option__label">{option.label}</span>
                 <span aria-hidden="true" className="quiz-option__mark">
-                  {checked ? <Icon name="check" /> : null}
+                  {checked && !previewCommitment ? <Icon name="check" /> : null}
                 </span>
               </label>
             );

@@ -21,6 +21,7 @@ const environmentSchema = z
     RESEND_API_KEY: z.string().min(1).optional(),
     RESEND_FROM: z.string().min(3).optional(),
     MEMBER_APP_URL: z.url().optional(),
+    MARKETING_APP_URL: z.url().optional(),
     AGENT_INTERNAL_URL: z.url().optional(),
     AGENT_INTERNAL_SECRET: z.string().min(32).optional(),
     WORKER_INTERNAL_SECRET: z.string().min(32).optional(),

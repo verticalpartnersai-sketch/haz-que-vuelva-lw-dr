@@ -4,8 +4,12 @@ import Image from "next/image";
 
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
-import type { QuizAnswers } from "@/features/quiz/quiz-contracts";
+import type {
+  QuizAnswers,
+  QuizRoute,
+} from "@/features/quiz/quiz-contracts";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
+import { QuizLogo } from "@/features/quiz/quiz-intro-question";
 import {
   productProofAssets,
   ProofCarousel,
@@ -15,6 +19,7 @@ import {
 function offerProofSlides(
   caption: string,
   locale: "en" | "es" | "pt",
+  route: QuizRoute,
 ): readonly ProofSlide[] {
   const labels = {
     en: ["Haz Que Vuelva™ cover", "Special routes", "7-day calendar", "Decision sheet", "R0–R4 reciprocity scale"],
@@ -28,11 +33,23 @@ function offerProofSlides(
     productProofAssets.decision,
     productProofAssets.scale,
   ];
+  const preferredAsset: Record<QuizRoute, number> = {
+    gray: 1,
+    green: 4,
+    logistics: 3,
+    red: 1,
+    third_person: 3,
+    yellow: 4,
+  };
+  const order = [
+    preferredAsset[route],
+    ...assets.map((_, index) => index),
+  ].filter((index, position, values) => values.indexOf(index) === position);
 
-  return labels.map((label, index) => ({
-    alt: label,
-    caption: index === 0 ? caption : label,
-    src: assets[index],
+  return order.map((assetIndex, position) => ({
+    alt: labels[assetIndex],
+    caption: position === 0 ? caption : labels[assetIndex],
+    src: assets[assetIndex],
   }));
 }
 
@@ -86,26 +103,33 @@ export function OfferSection({
   answers,
   checkoutStatus,
   onCheckout,
+  route,
 }: {
   answers: QuizAnswers;
   checkoutStatus: string;
   onCheckout: () => void;
+  route: QuizRoute;
 }) {
   const { locale } = useLocale();
-  const { pitch } = quizContentFor(locale);
+  const copy = quizContentFor(locale);
+  const { pitch } = copy;
+  const routeCopy = copy.routes[route];
   const labels = {
     en: {
       benefits: "YOUR ROUTE, NOT A MAGIC PHRASE",
+      cost: "THE COST OF IMPROVISING AGAIN",
       duration: "7 DAYS",
       product: "COMPLETE FRONT PRODUCT",
     },
     es: {
       benefits: "TU RUTA, NO UNA FRASE MÁGICA",
+      cost: "EL COSTO DE VOLVER A IMPROVISAR",
       duration: "7 DÍAS",
       product: "PRODUCTO FRONT COMPLETO",
     },
     pt: {
       benefits: "SUA ROTA, NÃO UMA FRASE MÁGICA",
+      cost: "O CUSTO DE VOLTAR A IMPROVISAR",
       duration: "7 DIAS",
       product: "PRODUTO FRONT COMPLETO",
     },
@@ -120,9 +144,12 @@ export function OfferSection({
       <header className="quiz-offer-section__header">
         <div>
           <span className="section-kicker">
-            HAZ QUE VUELVA™ · {labels.duration}
+            {routeCopy.publicName} · {labels.duration}
           </span>
-          <h2>{pitch.headline}</h2>
+          <h2>{routeCopy.offerHeadline}</h2>
+          <p className="quiz-offer-section__route-lead">
+            {routeCopy.offerLead}
+          </p>
           {pitch.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -170,9 +197,17 @@ export function OfferSection({
 
       <ProofCarousel
         label={pitch.proofTitle}
-        slides={offerProofSlides(pitch.caption, locale)}
+        slides={offerProofSlides(pitch.caption, locale, route)}
         title={pitch.proofTitle}
       />
+
+      <aside className="quiz-offer-cost">
+        <Icon name="arrowDown" />
+        <div>
+          <span className="section-kicker">{labels.cost}</span>
+          <p>{routeCopy.costOfInaction}</p>
+        </div>
+      </aside>
 
       <aside className="quiz-checkout">
         <div>
@@ -186,7 +221,7 @@ export function OfferSection({
             onClick={onCheckout}
             type="button"
           >
-            {pitch.cta}
+            {routeCopy.cta}
             <Icon name="arrowRight" />
           </button>
           <small>{pitch.microcopy}</small>
@@ -199,13 +234,154 @@ export function OfferSection({
   );
 }
 
-export function Faq({
+export function PreviewOfferSection({
+  answers,
+  checkoutStatus,
   onCheckout,
+  route,
 }: {
+  answers: QuizAnswers;
+  checkoutStatus: string;
   onCheckout: () => void;
+  route: QuizRoute;
 }) {
   const { locale } = useLocale();
-  const { faq } = quizContentFor(locale);
+  const copy = quizContentFor(locale);
+  const { pitch, preview } = copy;
+  const routeCopy = copy.routes[route];
+  const commitment = answers.commitment ?? "commit_route";
+  const labels = {
+    en: {
+      bookAlt: "Haz Que Vuelva protocol shown as a hardcover book",
+      bundleAlt:
+        "Haz Que Vuelva protocol on a book, laptop, tablet and phone",
+      guaranteeAlt: "Haz Que Vuelva seven-day guarantee seal",
+    },
+    es: {
+      bookAlt: "Protocolo Haz Que Vuelva presentado como libro físico",
+      bundleAlt:
+        "Protocolo Haz Que Vuelva en libro, computadora, tableta y celular",
+      guaranteeAlt: "Sello de garantía de siete días de Haz Que Vuelva",
+    },
+    pt: {
+      bookAlt: "Protocolo Haz Que Vuelva apresentado como livro físico",
+      bundleAlt:
+        "Protocolo Haz Que Vuelva em livro, computador, tablet e celular",
+      guaranteeAlt: "Selo de garantia de sete dias do Haz Que Vuelva",
+    },
+  }[locale];
+
+  return (
+    <section
+      className="quiz-offer-section quiz-offer-section--preview"
+      id="quiz-offer"
+    >
+      <header className="quiz-offer-section__header">
+        <div>
+          <span className="section-kicker">
+            {routeCopy.publicName}
+          </span>
+          <h2>{routeCopy.offerHeadline}</h2>
+          <p className="quiz-offer-section__route-lead">
+            {routeCopy.offerLead}
+          </p>
+          <p className="quiz-offer-section__commitment-lead">
+            {preview.pitch.commitmentLead[commitment]}
+          </p>
+        </div>
+        <Image
+          alt={labels.bookAlt}
+          height={800}
+          loading="lazy"
+          sizes="(max-width: 900px) 100vw, 680px"
+          src={productProofAssets.bookMockup}
+          width={1200}
+        />
+      </header>
+
+      <section className="quiz-stack">
+        <h2>{pitch.proofTitle}</h2>
+        <div>
+          {pitch.items.map((item) => (
+            <article key={item.title}>
+              <span className="quiz-stack__icon">
+                <Icon name="check" />
+              </span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <figure className="quiz-offer-bundle">
+          <Image
+            alt={labels.bundleAlt}
+            height={960}
+            loading="lazy"
+            sizes="(max-width: 900px) 100vw, 680px"
+            src={productProofAssets.bundleMockup}
+            width={1440}
+          />
+          <figcaption>{pitch.caption}</figcaption>
+        </figure>
+      </section>
+
+      <aside className="quiz-offer-cost">
+        <h2>{preview.pitch.cost.eyebrow}</h2>
+        <p>{preview.pitch.cost.body}</p>
+      </aside>
+
+      <aside className="quiz-checkout">
+        <div>
+          <div className="quiz-checkout__logo">
+            <QuizLogo compact />
+          </div>
+          <strong>{preview.pitch.offer.price}</strong>
+        </div>
+        <div>
+          <button
+            className="button button--primary button--full quiz-button--large"
+            onClick={onCheckout}
+            type="button"
+          >
+            {preview.pitch.offer.cta}
+            <Icon name="arrowRight" />
+          </button>
+          <p aria-live="polite" className="quiz-checkout-status">
+            {checkoutStatus}
+          </p>
+        </div>
+      </aside>
+
+      <section className="quiz-guarantee">
+        <Image
+          alt={labels.guaranteeAlt}
+          height={640}
+          loading="lazy"
+          sizes="180px"
+          src={productProofAssets.guaranteeSeal}
+          width={640}
+        />
+        <h2>{preview.pitch.offer.guaranteeTitle}</h2>
+        <p>{preview.pitch.offer.guarantee}</p>
+      </section>
+    </section>
+  );
+}
+
+export function Faq({
+  ctaLabel,
+  onCheckout,
+  route,
+}: {
+  ctaLabel?: string;
+  onCheckout: () => void;
+  route: QuizRoute;
+}) {
+  const { locale } = useLocale();
+  const copy = quizContentFor(locale);
+  const { faq } = copy;
 
   return (
     <section className="quiz-faq">
@@ -226,7 +402,7 @@ export function Faq({
         onClick={onCheckout}
         type="button"
       >
-        {faq.cta}
+        {ctaLabel ?? copy.routes[route].cta}
         <Icon name="arrowRight" />
       </button>
     </section>

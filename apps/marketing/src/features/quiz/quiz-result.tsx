@@ -4,6 +4,7 @@ import type { RefObject } from "react";
 
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
+import { QuizBrandSystem } from "@/features/quiz/quiz-brand-system";
 import type {
   DistanceBand,
   QuizAnswers,
@@ -11,7 +12,9 @@ import type {
 } from "@/features/quiz/quiz-contracts";
 import { distanceBandLabel, resolvedLastAction } from "@/features/quiz/quiz-engine";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
+import { QuizLogo } from "@/features/quiz/quiz-intro-question";
 import { Faq, OfferSection } from "@/features/quiz/quiz-offer";
+import { QuizSalesPage } from "@/features/quiz/quiz-sales-page";
 
 function ResultSummary({
   answers,
@@ -61,11 +64,31 @@ function ResultSummary({
           </dd>
         </div>
       </dl>
-      <p>
-        <Icon name="spark" />
-        {copy.result.disclaimer}
-      </p>
     </section>
+  );
+}
+
+function PreviewResult({
+  answers,
+  checkoutStatus,
+  headingRef,
+  onCheckout,
+  route,
+}: {
+  answers: QuizAnswers;
+  checkoutStatus: string;
+  headingRef: RefObject<HTMLHeadingElement | null>;
+  onCheckout: (position?: string) => void;
+  route: QuizRoute;
+}) {
+  return (
+    <QuizSalesPage
+        answers={answers}
+        checkoutStatus={checkoutStatus}
+        onCheckout={onCheckout}
+        headingRef={headingRef}
+        route={route}
+      />
   );
 }
 
@@ -75,8 +98,8 @@ export function Result({
   checkoutStatus,
   headingRef,
   index,
+  internalPreview,
   onCheckout,
-  onRestart,
   route,
 }: {
   answers: QuizAnswers;
@@ -84,16 +107,29 @@ export function Result({
   checkoutStatus: string;
   headingRef: RefObject<HTMLHeadingElement | null>;
   index: number;
-  onCheckout: () => void;
-  onRestart: () => void;
+  internalPreview: boolean;
+  onCheckout: (position?: string) => void;
   route: QuizRoute;
 }) {
   const { l, locale } = useLocale();
   const copy = quizContentFor(locale);
   const routeCopy = copy.routes[route];
 
+  if (internalPreview) {
+    return (
+      <PreviewResult
+        answers={answers}
+        checkoutStatus={checkoutStatus}
+        headingRef={headingRef}
+        onCheckout={onCheckout}
+        route={route}
+      />
+    );
+  }
+
   return (
     <main className="quiz-result quiz-stage" id="quiz-content">
+      <QuizLogo compact />
       <header className="quiz-result__hero">
         <span className="status-badge status-badge--available">
           <Icon name="check" />
@@ -139,20 +175,17 @@ export function Result({
         </ol>
       </section>
 
+      <QuizBrandSystem answers={answers} />
+
       <p className="quiz-result__bridge">{routeCopy.bridge}</p>
       <OfferSection
         answers={answers}
         checkoutStatus={checkoutStatus}
-        onCheckout={onCheckout}
+        onCheckout={() => onCheckout("legacy_offer")}
+        route={route}
       />
-      <Faq onCheckout={onCheckout} />
+      <Faq onCheckout={() => onCheckout("legacy_faq")} route={route} />
 
-      <footer className="quiz-result__footer">
-        <p>{copy.result.disclaimer}</p>
-        <button className="button button--ghost" onClick={onRestart} type="button">
-          {copy.ui.restart}
-        </button>
-      </footer>
     </main>
   );
 }

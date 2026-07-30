@@ -6,28 +6,46 @@ import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 import type { LoaderCopy } from "@/features/quiz/quiz-contracts";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
-import {
-  productProofAssets,
-  ProofCarousel,
-  type ProofSlide,
-} from "@/features/quiz/quiz-proof";
+import { QuizLogo } from "@/features/quiz/quiz-intro-question";
+import { ProofCarousel, type ProofSlide } from "@/features/quiz/quiz-proof";
 
-function loaderSlides(copy: LoaderCopy): readonly ProofSlide[] {
+const relationshipProofAssets = {
+  colombiaHome: "/images/quiz/loader/happy-couple-colombia-home-v1.webp",
+  colombiaStreet: "/images/quiz/loader/happy-couple-colombia-street-v2.webp",
+  mexicoKitchen: "/images/quiz/loader/happy-couple-mexico-kitchen-v1.webp",
+} as const;
+
+function loaderSlides(locale: "en" | "es" | "pt"): readonly ProofSlide[] {
+  const alt = {
+    en: [
+      "Happy Mexican couple cooking together at home",
+      "Happy Colombian couple walking together in Bogotá",
+      "Happy Colombian couple relaxing together at home",
+    ],
+    es: [
+      "Pareja mexicana feliz cocinando junta en casa",
+      "Pareja colombiana feliz caminando junta en Bogotá",
+      "Pareja colombiana feliz descansando junta en casa",
+    ],
+    pt: [
+      "Casal mexicano feliz cozinhando junto em casa",
+      "Casal colombiano feliz caminhando junto em Bogotá",
+      "Casal colombiano feliz descansando junto em casa",
+    ],
+  }[locale];
+
   return [
     {
-      alt: "Route map page from Haz Que Vuelva",
-      caption: copy.captions[0],
-      src: productProofAssets.routes,
+      alt: alt[0],
+      src: relationshipProofAssets.mexicoKitchen,
     },
     {
-      alt: "Decision page from Haz Que Vuelva",
-      caption: copy.captions[1],
-      src: productProofAssets.decision,
+      alt: alt[1],
+      src: relationshipProofAssets.colombiaStreet,
     },
     {
-      alt: "Seven-day calendar page from Haz Que Vuelva",
-      caption: copy.captions[2],
-      src: productProofAssets.calendar,
+      alt: alt[2],
+      src: relationshipProofAssets.colombiaHome,
     },
   ];
 }
@@ -35,27 +53,48 @@ function loaderSlides(copy: LoaderCopy): readonly ProofSlide[] {
 export function AnalysisLoader({
   copy,
   headingRef,
+  internalPreview = false,
   mode,
   tick,
 }: {
   copy: LoaderCopy;
   headingRef: RefObject<HTMLHeadingElement | null>;
+  internalPreview?: boolean;
   mode: "analysis" | "route";
   tick: number;
 }) {
   const { locale } = useLocale();
   const fullCopy = quizContentFor(locale);
   const engineLabel = {
-    en: "DIAGNOSTIC ENGINE",
-    es: "MOTOR DE DIAGNÓSTICO",
-    pt: "MOTOR DE DIAGNÓSTICO",
+    en: "PREPARING YOUR DIAGNOSIS",
+    es: "PREPARANDO TU DIAGNÓSTICO",
+    pt: "PREPARANDO SEU DIAGNÓSTICO",
   }[locale];
   const active = Math.min(tick, copy.states.length - 1);
   const progress = Math.min(100, tick * 25);
 
+  if (internalPreview && mode === "route") {
+    return (
+      <main
+        className="quiz-loading quiz-loading--minimal quiz-stage"
+        id="quiz-content"
+      >
+        <section className="quiz-loading__content quiz-loading__minimal-content">
+          <QuizLogo compact />
+          <header className="quiz-loading__heading">
+            <h1 ref={headingRef} tabIndex={-1}>
+              {fullCopy.preview.loader.title}
+            </h1>
+          </header>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="quiz-loading quiz-stage" id="quiz-content">
       <section className="quiz-loading__content">
+        <QuizLogo compact />
         <div aria-hidden="true" className="quiz-loader-mark">
           <span>{progress}</span>
           <svg viewBox="0 0 48 48">
@@ -93,11 +132,21 @@ export function AnalysisLoader({
         </div>
 
         {mode === "analysis" ? (
-          <ProofCarousel
-            autoIndex={active}
-            label={fullCopy.ui.loadingProofLabel}
-            slides={loaderSlides(copy)}
-          />
+          <div className="quiz-loader-proof">
+            {copy.socialProof ? (
+              <p className="quiz-loader-proof__copy">
+                <strong>{copy.socialProof.lead}</strong>{" "}
+                {copy.socialProof.middle}{" "}
+                <strong>{copy.socialProof.highlight}</strong>
+              </p>
+            ) : null}
+            <ProofCarousel
+              autoIndex={active}
+              eager
+              label={fullCopy.ui.loadingProofLabel}
+              slides={loaderSlides(locale)}
+            />
+          </div>
         ) : (
           <ol className="quiz-method-preview">
             {copy.captions.map((caption, index) => (

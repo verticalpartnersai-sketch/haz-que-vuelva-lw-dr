@@ -1,7 +1,36 @@
 @import "./quiz-shell.css";
 @import "./quiz-flow.css";
 @import "./quiz-middle.css";
+@import "./quiz-brand.css";
 @import "./quiz-proof.css";
 @import "./quiz-result.css";
 @import "./quiz-offer.css";
+@import "./quiz-sales.css";
 @import "./quiz-responsive.css";
+
+.quiz-public .quiz-stage h1,
+.quiz-public .quiz-stage h2,
+.quiz-public .quiz-stage h3 {
+  font-weight: 550;
+  letter-spacing: 0.012em;
+}
+
+.quiz-public .quiz-stage :where(
+    p,
+    li,
+    dt,
+    dd,
+    figcaption,
+    .quiz-option__label
+  ) {
+  letter-spacing: 0.01em;
+}
+
+.quiz-public .quiz-sales :where(h1, h2, h3) {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.quiz-public .quiz-sales :where(p, li, summary, small) {
+  letter-spacing: 0.008em;
+}

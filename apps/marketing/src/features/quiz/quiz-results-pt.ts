@@ -8,41 +8,41 @@ type ResultCopy = Pick<
 export const resultCopyPt: ResultCopy = {
   demonstration: {
     headline:
-      "Você não precisa ter um caso fácil. Precisa parar de usar a mesma resposta para situações completamente diferentes.",
+      "O problema não é ele não sentir nada. É cada movimento ansioso poder fazer com que ficar longe de você pareça um alívio.",
     subheadline:
-      "Veja por que um único conselho pode ajudar uma mulher e destruir a oportunidade de outra.",
+      "E enquanto esse alívio se repete, ele aprende a resistir à sua presença em vez de sentir sua falta. É isso que você precisa interromper antes de voltar ao chat.",
     cases: [
       {
-        eyebrow: "CASO · BLOQUEIO",
+        eyebrow: "QUANDO VOCÊ BUSCA ALÍVIO",
         description:
-          "Ele bloqueou depois de três mensagens seguidas. Mandar uma quarta explicação não demonstra amor: reforça a pressão que ele tentou cortar.",
+          "Uma mensagem longa, outra explicação ou pedir mais uma chance pode acalmar você por minutos. Para ele, pode confirmar que voltar significa reviver a mesma pressão.",
         decision:
-          "Retirar pressão, não buscar atalhos e só preparar reabertura se o canal voltar a ser legítimo.",
+          "Resultado: ele sente alívio quando se afasta e aprende a se proteger do seu próximo contato.",
         proof: "routes",
       },
       {
-        eyebrow: "CASO · CONTATO FRIO",
+        eyebrow: "QUANDO VOCÊ TENTA PROVOCAR",
         description:
-          "Ele ainda responde, mas com frases curtas e sem iniciar. Sumir 30 dias por regra pode matar o pouco contexto que existe. Cobrar interesse também.",
+          "Sumir sem estratégia, postar indiretas ou provocar ciúme não cria desejo sozinho. Se ele percebe a manobra, só enxerga ansiedade disfarçada de controle.",
         decision:
-          "Igualar intensidade, responder sem puxar definição e observar se ele investe espontaneamente.",
+          "Resultado: a atenção dele continua em se defender, não em se perguntar por que você parece diferente.",
         proof: "scale",
       },
       {
-        eyebrow: "CASO · OUTRA MULHER",
+        eyebrow: "QUANDO VOCÊ MUDA O PADRÃO",
         description:
-          "Existe outra mulher e você acompanha cada história, comparação e sinal. Competir ou provocar ciúme faz ela dirigir toda a estratégia.",
+          "Quando você para de reagir como ele espera e faz o movimento proporcional ao canal, a pressão cai. Sua presença deixa de parecer uma repetição do passado.",
         decision:
-          "Separar fatos de suspeitas, parar a triangulação e medir só o que ele oferece diretamente.",
+          "Resultado: a resistência perde força e podem voltar a surgir curiosidade, contraste e vontade de se aproximar.",
         proof: "decision",
       },
     ],
     dynamicLabels: [
-      "Sua rota inicial",
-      "O erro que mais pode fechar a porta",
-      "A primeira decisão que vamos preparar",
+      "O que ainda existe entre vocês",
+      "O movimento que pode destruir isso",
+      "O primeiro passo para mudar o padrão",
     ],
-    cta: "QUERO UMA ROTA PARA O MEU CASO",
+    cta: "QUERO FAZER MEU PRÓXIMO MOVIMENTO JOGAR A MEU FAVOR",
   },
   result: {
     confirmation: "SEU DIAGNÓSTICO INICIAL ESTÁ PRONTO!",
@@ -80,17 +80,23 @@ export const resultCopyPt: ResultCopy = {
     gray: {
       publicName: "Porta fechada",
       prediagnosisHeadline:
-        "Seu caso não precisa de outra explicação. Precisa retirar pressão antes que o silêncio vire rejeição definitiva.",
+        "Você não precisa enviar outra explicação. Precisa retirar pressão antes que o silêncio vire rejeição definitiva.",
       headline:
         "Ele está fechando o canal. Insistir agora pode transformar distância em rejeição.",
       diagnosis: [
-        "Seu caso não se resolve com uma mensagem mais convincente. Quando existe bloqueio ou silêncio completo, cada tentativa por outra rede, número ou pessoa pode confirmar que se afastar foi a única forma de parar a pressão.",
+        "Isso não se resolve com uma mensagem mais convincente. Quando existe bloqueio ou silêncio completo, cada tentativa por outra rede, número ou pessoa pode confirmar que se afastar foi a única forma de parar a pressão.",
         "A primeira vitória não é conseguir uma resposta; é parar de criar novos motivos para ele se proteger de você.",
       ],
       firstAction:
         "Não buscar canal alternativo. Não enviar nova explicação. Registrar o que disparou a última tentativa e preparar uma pausa com critério.",
       bridge:
         "Haz Que Vuelva™ mostra como atravessar os próximos sete dias sem perseguir e como reconhecer uma abertura legítima.",
+      costOfInaction:
+        "Se você voltar ao chat sem critério, cada atalho, explicação ou tentativa por outro canal pode transformar um afastamento temporário em rejeição consolidada.",
+      offerHeadline:
+        "Seu primeiro ganho não é uma resposta. É parar de entregar novos motivos para ele manter a porta fechada.",
+      offerLead:
+        "Na rota Porta Fechada, Haz Que Vuelva™ organiza uma pausa com critério e mostra quais sinais precisam existir antes de qualquer reabertura.",
       cta: "QUERO MINHA ROTA PARA PARAR DE FECHAR A PORTA",
     },
     yellow: {
@@ -107,6 +113,12 @@ export const resultCopyPt: ResultCopy = {
         "Reduzir seu próximo movimento ao tamanho real do canal. Se ele não perguntou nada, não transformar resposta fria em conversa forçada.",
       bridge:
         "Haz Que Vuelva™ organiza quando responder, quando encerrar com leveza e qual sinal precisa aparecer antes de avançar.",
+      costOfInaction:
+        "Se você tratar cada resposta curta como oportunidade, vai colocar sobre um canal frágil uma pressão que ele ainda não consegue sustentar.",
+      offerHeadline:
+        "Você ainda tem acesso a ele. Agora precisa impedir que a ansiedade transforme essa abertura na confirmação de que ficar longe de você é melhor.",
+      offerLead:
+        "O Haz Que Vuelva organiza a intensidade, o tempo e cada próxima decisão para ele deixar de encontrar a mesma pressão e começar a perceber uma versão sua que não esperava.",
       cta: "QUERO PROTEGER O CANAL QUE AINDA EXISTE",
     },
     green: {
@@ -123,6 +135,12 @@ export const resultCopyPt: ResultCopy = {
         "Responder com proporção, não abrir a história inteira de uma vez e observar se ele sustenta o próximo movimento sem ser empurrado.",
       bridge:
         "Haz Que Vuelva™ entrega a escala R0–R4 para diferenciar abertura, investimento e reparação.",
+      costOfInaction:
+        "Se você pedir definição antes de existir consistência, pode converter curiosidade em pressão e uma abertura real em novo afastamento.",
+      offerHeadline:
+        "Você não precisa fazê-lo voltar. Precisa impedir que a pressa estrague a abertura que ele já começou a mostrar.",
+      offerLead:
+        "Na rota Abertura Real, Haz Que Vuelva™ mostra como responder com proporção, medir investimento e avançar sem acelerar a relação.",
       cta: "QUERO SABER COMO AVANÇAR SEM ACELERAR ELE",
     },
     third_person: {
@@ -139,6 +157,12 @@ export const resultCopyPt: ResultCopy = {
         "Não investigar, não competir e não publicar indireta. Anotar os fatos comprovados e retirar qualquer ação movida por comparação.",
       bridge:
         "Haz Que Vuelva™ entrega a decisão inicial sem ensinar a vigiar, atacar ou romper outra relação.",
+      costOfInaction:
+        "Enquanto você monitora, compara ou tenta vencer a outra mulher, ela ocupa sua atenção e passa a dirigir uma estratégia que deveria pertencer a você.",
+      offerHeadline:
+        "Pare de competir por uma posição que só o comportamento dele pode confirmar.",
+      offerLead:
+        "Na rota Interferência de Outra Mulher, o protocolo separa fatos de medo e devolve sua atenção à única evidência que importa: reciprocidade direta.",
       cta: "QUERO PARAR DE COMPETIR E RECUPERAR MINHA POSIÇÃO",
     },
     logistics: {
@@ -155,12 +179,18 @@ export const resultCopyPt: ResultCopy = {
         "Separar mensagem funcional da emocional. Resolver o necessário sem nostalgia, cobrança ou conversa sobre a relação.",
       bridge:
         "Haz Que Vuelva™ mostra como preservar o canal funcional e qual sinal deve existir antes de testar uma reabertura emocional.",
+      costOfInaction:
+        "Se você usar filhos, trabalho ou dinheiro para criar proximidade, qualquer resposta obrigatória vai alimentar esperança sem provar interesse.",
+      offerHeadline:
+        "Contato obrigatório não é abertura emocional. Misturar os dois mantém você presa em sinais que nunca foram promessas.",
+      offerLead:
+        "Na rota Contato Funcional, Haz Que Vuelva™ separa logística de reconexão e define o sinal mínimo antes de qualquer avanço emocional.",
       cta: "QUERO SEPARAR OBRIGAÇÃO DE INTERESSE REAL",
     },
     red: {
       publicName: "Pausa estratégica",
       prediagnosisHeadline:
-        "Seu caso exige uma rota sem contato: primeiro recuperar o controle, depois avaliar qualquer sinal.",
+        "Sua situação exige uma rota sem contato: primeiro recuperar o controle, depois avaliar qualquer sinal.",
       headline:
         "Seu próximo passo não é insistir: é parar de piorar o canal e recuperar o controle.",
       diagnosis: [
@@ -171,6 +201,12 @@ export const resultCopyPt: ResultCopy = {
         "Não entrar em contato nem buscar outro canal. Registrar o que disparou o último impulso e começar uma pausa deliberada de sete dias.",
       bridge:
         "Haz Que Vuelva™ pode guiar essa pausa: mostra o que não fazer, como organizar os sinais e quando um limite significa que você deve manter distância.",
+      costOfInaction:
+        "Buscar outro número, conta ou intermediário não reabre o canal: aumenta a pressão, destrói confiança e pode agravar uma restrição que precisa ser respeitada.",
+      offerHeadline:
+        "Nesta rota, vencer não significa enviar a mensagem certa. Significa recuperar o controle antes que o impulso decida por você.",
+      offerLead:
+        "Na rota Pausa Estratégica, Haz Que Vuelva™ funciona como um protocolo de contenção, leitura de fatos e decisão sem contato.",
       cta: "QUERO UMA ROTA PARA PARAR DE IMPROVISAR",
     },
   },
@@ -178,8 +214,8 @@ export const resultCopyPt: ResultCopy = {
     headline:
       "Seu diagnóstico mostrou o problema. Haz Que Vuelva™ guia você pelos próximos sete dias para não voltar a improvisar.",
     paragraphs: [
-      "Seu resultado já entregou uma primeira decisão. A parte difícil começa quando aparece a ansiedade de mudar o plano, mandar “só mais uma coisa” ou transformar qualquer sinal em oportunidade.",
-      "A Ventana de Memoria Afectiva™ não é diagnóstico cerebral. É um modelo para reconhecer quando uma interação reforça pressão e quando pode criar uma experiência mais leve e coerente.",
+      "Seu resultado já entregou uma primeira decisão. A parte perigosa começa quando seu cérebro busca alívio rápido e tenta negociar o plano com “só mais uma mensagem”.",
+      "Haz Que Vuelva™ interrompe esse ciclo antes do chat: você identifica o estado do canal, executa uma decisão proporcional e só avança quando existe reciprocidade observável.",
     ],
     bullets: [
       "o que parar hoje",
@@ -220,46 +256,92 @@ export const resultCopyPt: ResultCopy = {
         description: "somente quando sua rota permite contato.",
       },
     ],
-    proofTitle: "Isto é o que existe dentro do protocolo",
+    proofTitle: "Tudo o que você vai encontrar dentro do seu protocolo",
     caption:
       "Você não compra uma promessa sobre o que ele vai fazer. Compra uma decisão clara sobre o que faz a partir de hoje.",
-    price: "Acesso imediato por US$7 · pagamento único",
+    price: "Acesso imediato por US$7",
     guarantee:
       "7 dias de garantia. Se o protocolo não ajudar você a entender sua rota e executar a primeira decisão, solicite reembolso no prazo do checkout.",
     cta: "QUERO ACESSAR HAZ QUE VUELVA™ AGORA",
-    microcopy:
-      "Acesso após a aprovação. Os complementos do checkout são opcionais; o método principal está completo.",
+    microcopy: "",
   },
   faq: {
     title: "Antes de decidir",
     items: [
       {
-        question: "Isso garante que ele vai voltar?",
+        question: "E se eu sentir que preciso escrever para ele hoje?",
         answer:
-          "Não. Organiza o que você controla: parar o erro, ler o canal, escolher a próxima ação e medir reciprocidade.",
+          "Esse impulso é justamente o momento em que você mais precisa de uma rota. Antes de abrir o chat, o protocolo ajuda a separar urgência emocional de abertura real e escolher o movimento que não adiciona mais pressão.",
       },
       {
-        question: "Serve se estou bloqueada?",
+        question: "Isso serve se ele me bloqueou?",
         answer:
-          "Serve para saber o que não fazer e reconhecer abertura legítima. Não ensina a furar bloqueios nem procurar outro canal.",
+          "Sim. Nessa rota, o primeiro objetivo não é procurar outra conta ou número. É parar de transformar o bloqueio em mais perseguição, recuperar o controle e entender quais sinais precisariam existir antes de uma reabertura legítima.",
       },
       {
         question: "E se existir outra mulher?",
         answer:
-          "O protocolo entrega a decisão inicial. O aprofundamento é um complemento opcional no checkout.",
+          "Sua rota separa fatos, suspeitas e reciprocidade direta. Assim, você deixa de competir com uma história que pode estar completando pelo medo e volta a olhar o que realmente orienta uma decisão: o comportamento dele com você.",
       },
       {
-        question: "Vou receber mensagens prontas?",
+        question: "Funciona se ainda conversamos, mas ele está frio?",
         answer:
-          "Inclui mensagens essenciais quando a rota permite contato. Não transforma uma frase em garantia.",
+          "Esse é um dos cenários centrais do protocolo. Você aprende a igualar a intensidade real do canal, encerrar conversas sem arrastá-las e observar se ele volta a investir sem você precisar empurrá-lo.",
       },
       {
-        question: "Quando recebo acesso?",
-        answer: "Depois da aprovação do pagamento, pelo canal do checkout.",
+        question: "E se só falamos por filhos, trabalho ou dinheiro?",
+        answer:
+          "O protocolo ajuda a separar contato obrigatório de interesse emocional. Você resolve o necessário sem usar a logística como desculpa para buscar proximidade e aprende qual sinal precisa aparecer fora da obrigação.",
       },
       {
-        question: "Quanto custa?",
-        answer: "US$7, pagamento único, com garantia de sete dias.",
+        question: "Vou receber mensagens prontas para enviar?",
+        answer:
+          "Você recebe mensagens essenciais, mas apenas para os momentos em que sua rota permite contato. A força não está em uma frase mágica; está em usar a frase certa, na intensidade certa e no momento certo.",
+      },
+      {
+        question: "Preciso desaparecer por 30 dias?",
+        answer:
+          "Não. O Haz Que Vuelva não aplica contato zero como regra universal. Algumas rotas exigem pausa; outras exigem resposta proporcional. O diagnóstico existe para você não usar o mesmo conselho em situações diferentes.",
+      },
+      {
+        question: "E se eu já cometi muitos erros e pedi outra chance?",
+        answer:
+          "Você não pode apagar o que aconteceu, mas pode parar de confirmá-lo. Os próximos sete dias servem para interromper o padrão que ele já espera e criar uma experiência diferente antes de tentar se aproximar novamente.",
+      },
+      {
+        question: "O protocolo garante que ele vai voltar?",
+        answer:
+          "Ninguém pode garantir a decisão de outra pessoa. O protocolo organiza o que você controla: parar o erro, ler o canal, escolher a próxima ação e medir reciprocidade sem se perder em promessas.",
+      },
+      {
+        question: "Quanto tempo preciso por dia?",
+        answer:
+          "A rota foi criada para decisões breves e executáveis. Você não precisa passar horas estudando; precisa abrir o material do dia, entender a decisão e aplicá-la sem negociar com a ansiedade.",
+      },
+      {
+        question: "Posso seguir o protocolo pelo celular?",
+        answer:
+          "Sim. O material é digital e pode ser consultado pelo celular, tablet ou computador para ficar perto de você justamente quando surgir o impulso de improvisar.",
+      },
+      {
+        question: "O que recebo exatamente ao entrar?",
+        answer:
+          "Você recebe o diagnóstico com seis rotas, o protocolo completo de sete dias, a árvore escrever ou responder ou esperar, o mapa V.I.V.E., a escala R0–R4, mensagens essenciais e a folha final de decisão.",
+      },
+      {
+        question: "Quando recebo o acesso?",
+        answer:
+          "O acesso é liberado após a aprovação do pagamento pelo canal informado no checkout. Não existe envio físico nem espera por entrega.",
+      },
+      {
+        question: "O pagamento é mensal?",
+        answer:
+          "Não. O acesso custa US$7 e não cria uma mensalidade recorrente.",
+      },
+      {
+        question: "Como funciona a garantia de 7 dias?",
+        answer:
+          "Entre, descubra sua rota e aplique as primeiras decisões. Se dentro de sete dias sentir que o protocolo não entregou a clareza esperada, você pode solicitar o reembolso dentro do prazo de garantia.",
       },
     ],
     cta: "COMEÇAR MEU PROTOCOLO DE SETE DIAS",

@@ -2,6 +2,8 @@ import type {
   QuizCopy,
   QuizQuestion,
 } from "@/features/quiz/quiz-contracts";
+import { brandCopyEs } from "@/features/quiz/quiz-brand-copy";
+import { previewCopyEs } from "@/features/quiz/quiz-preview-copy";
 import { resultCopyEs } from "@/features/quiz/quiz-results";
 
 export type {
@@ -25,9 +27,9 @@ const questions: readonly QuizQuestion[] = [
   {
     id: "current_state",
     title:
-      "Para preparar una ruta para tu caso, ¿cómo está la situación entre ustedes hoy?",
+      "Antes de que vuelvas a escribirle, necesito saber qué está pasando entre ustedes hoy.",
     microcopy:
-      "Tus respuestas se usan solo para organizar este diagnóstico. No necesitas subir conversaciones ni contar tu nombre.",
+      "Responde por lo que él hace, no por lo que deseas que todavía sienta.",
     options: [
       {
         label:
@@ -66,7 +68,7 @@ const questions: readonly QuizQuestion[] = [
   },
   {
     context:
-      "Ya detectamos el estado del canal. Ahora vamos a medir cuánto tiempo lleva acumulándose la distancia.",
+      "Ya sé cuánto acceso tienes a él. Ahora necesito medir cuánto tiempo lleva aprendiendo a vivir con tu ausencia.",
     id: "distance_time",
     title: "¿Cuánto tiempo lleva fría, rota o interrumpida la relación?",
     options: [
@@ -133,7 +135,7 @@ const questions: readonly QuizQuestion[] = [
     ].map((option) => ({
       ...option,
       transition:
-        "Esa acción no define tu historia, pero puede estar alimentando el Bucle de Rechazo™ que mantiene el canal frío.",
+        "El alivio de actuar puede durar segundos. La distancia que esa acción refuerza puede durar días: ese es el Bucle de Rechazo™.",
     })),
   },
   {
@@ -142,28 +144,28 @@ const questions: readonly QuizQuestion[] = [
     variant: "cards",
     options: [
       {
-        emoji: "◌",
+        image: "/images/quiz/pain/pain-silence-v1.webp",
         label: "Abrir el WhatsApp, ver su silencio y sentir el vacío que dejó",
         transition:
           "El silencio duele porque deja espacio para que tu mente invente una respuesta diferente cada hora.",
         value: "silence",
       },
       {
-        emoji: "◇",
+        image: "/images/quiz/pain/pain-replacement-v1.webp",
         label: "Imaginarlo feliz con otra mientras yo sigo esperando una señal",
         transition:
           "La comparación hace que cada movimiento de ella parezca más importante que lo que él realmente hace contigo.",
         value: "replacement",
       },
       {
-        emoji: "↯",
+        image: "/images/quiz/pain/pain-guilt-v1.webp",
         label: "Pensar que yo misma arruiné la última oportunidad por ansiedad",
         transition:
           "La culpa te empuja a explicar de más. Y cada explicación nueva puede sonar como más presión.",
         value: "guilt",
       },
       {
-        emoji: "↺",
+        image: "/images/quiz/pain/pain-second-option-v1.webp",
         label: "Que vuelva cuando se siente solo, pero nunca me elija de verdad",
         transition:
           "Que vuelva por nostalgia o soledad no significa que esté dispuesto a reparar la relación.",
@@ -206,29 +208,37 @@ const questions: readonly QuizQuestion[] = [
 ];
 
 export const quizCopyEs: QuizCopy = {
+  brand: brandCopyEs,
+  preview: previewCopyEs,
   intro: {
-    eyebrow: "DIAGNÓSTICO PRIVADO DE RECONEXIÓN · 2 MINUTOS",
-    headline:
-      "Descubre qué está haciendo que él se aleje… y cómo abrir una nueva Ventana de Memoria Afectiva™.",
+    eyebrow: "CADA DÍA QUE IMPROVISAS, ÉL APRENDE A EXTRAÑARTE MENOS",
+    headline: "Él todavía no te olvidó.",
+    headlineAccent:
+      "Pero tu próximo error puede enseñarle a vivir sin ti.",
     subheadline:
-      "Responde cinco preguntas. Verás qué está cerrando la puerta, qué error debes parar hoy y la primera decisión de tu protocolo de 7 días.",
-    cta: "Descubrir qué está pasando",
+      "Responde cinco preguntas y descubre qué está apagando su deseo, qué debes detener hoy y cómo volver a ocupar su mente antes de que la distancia se convierta en indiferencia.",
+    cta: "DESCUBRIR QUÉ HACER ANTES DE PERDERLO",
     privacy:
       "Tus respuestas se usan solo para este diagnóstico. No pedimos nombre, capturas ni conversaciones.",
   },
   questions,
   loaderOne: {
-    title: "Analizando tu caso y el estado real del contacto…",
+    title: "Descubriendo qué lo está alejando y cuánto de tu conexión todavía sigue vivo…",
+    socialProof: {
+      lead: "Más de 5.732 mujeres",
+      middle: "ya cambiaron la ansiedad por una ruta clara para",
+      highlight: "recuperar el control y reabrir la conexión",
+    },
     states: [
-      "Leyendo el estado del canal…",
-      "Identificando el Bucle de Rechazo™ activo…",
-      "Calculando tu Índice de Distancia Emocional…",
-      "Preparando la primera decisión para tu caso…",
+      "Midiendo cuánto acceso emocional todavía tienes…",
+      "Identificando el error que está reforzando su distancia…",
+      "Calculando el riesgo de perder la ventana que aún existe…",
+      "Preparando el movimiento que debes hacer antes de volver al chat…",
     ],
     captions: [
-      "Tu caso no recibe una regla universal. Recibe una ruta.",
-      "Antes del mensaje viene la decisión.",
-      "Siete días, una acción por vez.",
+      "No necesitas otra frase. Necesitas dejar de activar su resistencia.",
+      "Tu próximo movimiento puede despertar curiosidad o confirmar su distancia.",
+      "En siete días, cada decisión debe acercarte a una respuesta diferente.",
     ],
   },
   prediagnosis: {
@@ -245,8 +255,8 @@ export const quizCopyEs: QuizCopy = {
       "repetición",
     ],
     bodyAfterLoop: [
-      "La salida no empieza con una frase mágica. Empieza cuando cambias la experiencia reciente que él asocia contigo dentro de la Ventana de Memoria Afectiva™.",
-      "Este modelo no lee su mente: te ayuda a evitar que una nueva interacción repita la presión que él ya está evitando.",
+      "Él no necesita olvidar toda la historia para alejarse. Solo necesita asociar tu presencia con presión, ansiedad o una conversación que no quiere volver a vivir.",
+      "Si repites el mismo patrón, puedes darle la última confirmación que necesita para cerrar la puerta. Haz Que Vuelva™ cambia la experiencia que él espera de ti antes de que la distancia se convierta en indiferencia, para que tu ausencia vuelva a generar curiosidad, tensión y deseo de acercarse.",
     ],
     needs: [
       "qué debes parar hoy",
@@ -254,42 +264,42 @@ export const quizCopyEs: QuizCopy = {
       "qué señal observar antes del próximo paso",
       "cuándo avanzar y cuándo no hacer nada",
     ],
-    cta: "QUIERO VER CÓMO REABRIR MI VENTANA",
+    cta: "QUIERO IMPEDIR QUE ESTA VENTANA SE CIERRE",
     microcopy:
-      "Tu resultado completo ya está siendo preparado. Primero necesito saber qué cambio quieres provocar.",
+      "Ya identificamos lo que está jugando en tu contra. Ahora necesito saber qué quieres provocar en él.",
   },
   desire: {
     title:
-      "Además de saber qué debes parar hoy, ¿quieres usar los próximos 7 días para dejar de reforzar presión y volver a crear curiosidad y apertura?",
+      "Además de descubrir el error que lo está alejando, ¿quieres usar los próximos 7 días para hacer que tu ausencia le pese, reavivar el deseo y volver sus ganas de regresar cada vez más difíciles de ignorar?",
     options: [
       {
         label:
-          "Sí. Quiero que vuelva a sentir mi ausencia y ganas de acercarse",
+          "Sí. Quiero que sienta mi ausencia y vuelva a buscarme por voluntad propia",
         value: "desire_missing",
       },
       {
         label:
-          "Sí. Quiero una ruta directa para no volver a perderlo por ansiedad",
+          "Sí. Quiero una ruta simple para despertar eso sin tener que perseguirlo",
         value: "desire_control",
       },
     ],
   },
   commitment: {
     title:
-      "Tu protocolo puede decirte que escribas, respondas o esperes. ¿Te comprometes a seguir la ruta durante 7 días, incluso cuando tu ansiedad quiera otra cosa?",
+      "Si un solo impulso puede cerrar la última ventana que todavía existe, ¿te comprometes a seguir tu ruta durante 7 días antes de volver a actuar por ansiedad?",
     options: [
       {
-        label: "Sí. Quiero dejar de improvisar y seguir una decisión por día",
+        label: "Sí. Quiero dejar de perseguir respuestas y hacer que cada movimiento juegue a mi favor",
         value: "commit_route",
       },
       {
-        label: "Sí. Pero necesito que sea simple, directo y aplicable desde hoy",
+        label: "Sí. Quiero saber exactamente qué hacer cuando la ansiedad intente sabotearme",
         value: "commit_simple",
       },
     ],
   },
   loaderTwo: {
-    title: "Creando tu ruta inicial de 7 días…",
+    title: "Construyendo los próximos 7 días para que dejes de empujarlo lejos…",
     states: [
       "Separando señales reales de interpretaciones…",
       "Definiendo qué debes parar hoy…",

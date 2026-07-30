@@ -8,41 +8,41 @@ type ResultCopy = Pick<
 export const resultCopyEn: ResultCopy = {
   demonstration: {
     headline:
-      "You do not need an easy case. You need to stop using the same answer for completely different situations.",
+      "The problem is not that he feels nothing. It is that every anxious move can make staying away from you feel like relief.",
     subheadline:
-      "See why one piece of advice can help one woman and destroy another woman’s opening.",
+      "As that relief repeats, he learns to resist your presence instead of missing it. That is what you must interrupt before opening the chat again.",
     cases: [
       {
-        eyebrow: "CASE · BLOCKED",
+        eyebrow: "WHEN YOU SEEK RELIEF",
         description:
-          "He blocked her after three messages in a row. A fourth explanation does not prove love; it reinforces the pressure he tried to stop.",
+          "A long message, another explanation, or asking for one more chance may calm you for minutes. To him, it can confirm that returning means reliving the same pressure.",
         decision:
-          "Remove pressure, stop looking for shortcuts, and prepare to reopen only if the channel becomes legitimate.",
+          "Result: distance feels like relief, and he learns to protect himself from your next contact.",
         proof: "routes",
       },
       {
-        eyebrow: "CASE · COLD CONTACT",
+        eyebrow: "WHEN YOU TRY TO PROVOKE HIM",
         description:
-          "He still replies, but briefly and never initiates. Disappearing for 30 days by rule can kill the little context that remains. Demanding interest can too.",
+          "Disappearing without a strategy, posting indirect messages, or provoking jealousy does not create desire by itself. If he sees the maneuver, he only sees anxiety disguised as control.",
         decision:
-          "Match intensity, reply without forcing a definition, and watch whether he invests spontaneously.",
+          "Result: his attention stays on defending himself, not wondering why you suddenly feel different.",
         proof: "scale",
       },
       {
-        eyebrow: "CASE · ANOTHER WOMAN",
+        eyebrow: "WHEN YOU CHANGE THE PATTERN",
         description:
-          "There is another woman and every story, comparison, and signal is being monitored. Competing or provoking jealousy lets her run the strategy.",
+          "When you stop reacting the way he expects and make a move proportional to the channel, pressure drops. Your presence stops feeling like a repetition of the past.",
         decision:
-          "Separate facts from suspicion, stop the triangle, and measure only what he offers directly.",
+          "Result: resistance loses strength and curiosity, contrast, and a desire to move closer can begin to return.",
         proof: "decision",
       },
     ],
     dynamicLabels: [
-      "Your initial route",
-      "The mistake most likely to close it",
-      "The first decision we will prepare",
+      "What still exists between you",
+      "The move that can destroy it",
+      "The first step to change the pattern",
     ],
-    cta: "I WANT A ROUTE FOR MY CASE",
+    cta: "I WANT MY NEXT MOVE TO WORK IN MY FAVOR",
   },
   result: {
     confirmation: "YOUR INITIAL DIAGNOSIS IS READY!",
@@ -80,7 +80,7 @@ export const resultCopyEn: ResultCopy = {
     gray: {
       publicName: "Closed door",
       prediagnosisHeadline:
-        "Your case does not need another explanation. It needs less pressure before silence turns into firm rejection.",
+        "You do not need to send another explanation. You need less pressure before silence turns into firm rejection.",
       headline:
         "He is closing the channel. Pushing now can turn distance into rejection.",
       diagnosis: [
@@ -91,6 +91,12 @@ export const resultCopyEn: ResultCopy = {
         "Do not find another channel. Do not send another explanation. Record what triggered your last attempt and prepare a deliberate pause.",
       bridge:
         "Haz Que Vuelva™ shows you how to move through the next seven days without chasing and how to recognize a legitimate opening.",
+      costOfInaction:
+        "If you return to the chat without a rule, every shortcut, explanation, or attempt through another channel can turn temporary distance into firm rejection.",
+      offerHeadline:
+        "Your first win is not a reply. It is stopping the creation of new reasons for him to keep the door closed.",
+      offerLead:
+        "On the Closed Door route, Haz Que Vuelva™ organizes a deliberate pause and shows which signals must exist before any reopening.",
       cta: "GIVE ME THE ROUTE THAT STOPS CLOSING THE DOOR",
     },
     yellow: {
@@ -107,6 +113,12 @@ export const resultCopyEn: ResultCopy = {
         "Reduce your next move to the real size of the channel. If he asked nothing, do not turn a cold reply into another forced conversation.",
       bridge:
         "Haz Que Vuelva™ organizes when to reply, when to close lightly, and which signal must appear before advancing.",
+      costOfInaction:
+        "If you treat every short reply as an opportunity, you will put pressure on a fragile channel that he cannot yet sustain.",
+      offerHeadline:
+        "You still have access to him. Now you must stop anxiety from turning that opening into proof that staying away from you feels better.",
+      offerLead:
+        "Haz Que Vuelva organizes intensity, timing, and every next decision so he stops meeting the same pressure and starts noticing a version of you he did not expect.",
       cta: "HELP ME PROTECT THE CHANNEL THAT STILL EXISTS",
     },
     green: {
@@ -123,6 +135,12 @@ export const resultCopyEn: ResultCopy = {
         "Reply proportionally, do not open the whole history at once, and watch whether he sustains the next move without being pushed.",
       bridge:
         "Haz Que Vuelva™ includes the R0–R4 scale to distinguish openness, investment, and repair.",
+      costOfInaction:
+        "If you demand definition before consistency exists, you can turn curiosity into pressure and a real opening into new distance.",
+      offerHeadline:
+        "You do not need to make him return. You need to stop urgency from destroying the opening he has already started to show.",
+      offerLead:
+        "On the Real Opening route, Haz Que Vuelva™ shows how to reply proportionally, measure investment, and move forward without rushing the relationship.",
       cta: "SHOW ME HOW TO MOVE FORWARD WITHOUT RUSHING HIM",
     },
     third_person: {
@@ -139,6 +157,12 @@ export const resultCopyEn: ResultCopy = {
         "Do not investigate, compete, or post an indirect message. Write down confirmed facts and remove any action driven by comparison.",
       bridge:
         "Haz Que Vuelva™ gives you the initial decision without teaching surveillance, attacks, or interference in another relationship.",
+      costOfInaction:
+        "While you monitor, compare, or try to beat the other woman, she occupies your attention and directs a strategy that should belong to you.",
+      offerHeadline:
+        "Stop competing for a position that only his behavior can confirm.",
+      offerLead:
+        "On the Third-Person Interference route, the protocol separates facts from fear and returns your attention to the only evidence that matters: direct reciprocity.",
       cta: "HELP ME STOP COMPETING AND RECOVER MY POSITION",
     },
     logistics: {
@@ -155,12 +179,18 @@ export const resultCopyEn: ResultCopy = {
         "Separate the functional message from the emotional one. Resolve what is necessary without adding nostalgia, demands, or a relationship talk.",
       bridge:
         "Haz Que Vuelva™ shows you how to preserve the functional channel and which signal must exist before testing emotional openness.",
+      costOfInaction:
+        "If you use children, work, or money to create closeness, every required reply will feed hope without proving interest.",
+      offerHeadline:
+        "Required contact is not emotional openness. Mixing the two keeps you trapped in signals that were never promises.",
+      offerLead:
+        "On the Functional Contact route, Haz Que Vuelva™ separates logistics from reconnection and defines the minimum signal before any emotional move.",
       cta: "HELP ME SEPARATE OBLIGATION FROM REAL INTEREST",
     },
     red: {
       publicName: "Strategic pause",
       prediagnosisHeadline:
-        "Your case requires a no-contact route: regain control first, then evaluate any signal.",
+        "Your situation requires a no-contact route: regain control first, then evaluate any signal.",
       headline:
         "Your next step is not to insist. It is to stop worsening the channel and regain control.",
       diagnosis: [
@@ -171,6 +201,12 @@ export const resultCopyEn: ResultCopy = {
         "Do not contact him or look for another channel. Record what triggered the last impulse and begin a deliberate seven-day pause.",
       bridge:
         "Haz Que Vuelva™ can guide that pause: it shows you what not to do, how to organize the signals, and when a boundary means you must keep your distance.",
+      costOfInaction:
+        "Using another number, account, or intermediary does not reopen the channel. It adds pressure, destroys trust, and can worsen a restriction that must be respected.",
+      offerHeadline:
+        "On this route, winning is not sending the right message. It is regaining control before the impulse decides for you.",
+      offerLead:
+        "On the Strategic Pause route, Haz Que Vuelva™ works as a protocol for containment, fact reading, and decisions without contact.",
       cta: "I WANT A ROUTE TO STOP IMPROVISING",
     },
   },
@@ -178,8 +214,8 @@ export const resultCopyEn: ResultCopy = {
     headline:
       "Your diagnosis showed the problem. Haz Que Vuelva™ guides your next 7 days so you stop improvising.",
     paragraphs: [
-      "Your result has already given you a first decision. The hard part begins when anxiety tries to change the plan, send “just one more thing,” or treat every signal as an opening.",
-      "The Affective Memory Window™ is not a brain diagnosis. It is a model for recognizing when an interaction reinforces pressure and when it can create a lighter, more coherent experience.",
+      "Your result has already given you a first decision. The dangerous part begins when your brain seeks quick relief and tries to renegotiate the plan with “just one more message.”",
+      "Haz Que Vuelva™ interrupts that loop before the chat: identify the channel state, execute one proportional decision, and move only when reciprocity is observable.",
     ],
     bullets: [
       "what to stop today",
@@ -220,46 +256,92 @@ export const resultCopyEn: ResultCopy = {
         description: "only when your route allows contact.",
       },
     ],
-    proofTitle: "This is what exists inside the protocol",
+    proofTitle: "Everything waiting for you inside your protocol",
     caption:
       "You are not buying a promise about what he will do. You are buying clarity about what you do starting today.",
-    price: "Immediate access for US$7 · one-time payment",
+    price: "Immediate access for US$7",
     guarantee:
       "7-day guarantee. If the protocol does not help you understand your route and execute the first decision, request a refund within the checkout period.",
     cta: "GET ACCESS TO HAZ QUE VUELVA™ NOW",
-    microcopy:
-      "Access after approval. Checkout add-ons are optional; the main method is complete.",
+    microcopy: "",
   },
   faq: {
     title: "Before you decide",
     items: [
       {
-        question: "Does this guarantee he will come back?",
+        question: "What if I feel I need to text him today?",
         answer:
-          "No. It organizes what you control: stop the mistake, read the channel, choose the next action, and measure reciprocity.",
+          "That impulse is exactly when you need a route most. Before opening the chat, the protocol helps you separate emotional urgency from a real opening and choose the move that does not add more pressure.",
       },
       {
-        question: "Does it work if I am blocked?",
+        question: "Does this work if he blocked me?",
         answer:
-          "It helps you know what not to do and recognize a legitimate opening. It does not teach bypassing a block or finding another channel.",
+          "Yes. On that route, the first goal is not finding another account or number. It is stopping the block from becoming more pursuit, regaining control, and learning which signals must exist before a legitimate reopening.",
       },
       {
         question: "What if there is another woman?",
         answer:
-          "The protocol gives the initial decision. The deeper third-person playbook is an optional checkout add-on.",
+          "Your route separates facts, suspicion, and direct reciprocity. That stops you from competing with a story fear may be completing and brings your attention back to what can guide a decision: how he behaves with you.",
       },
       {
-        question: "Will I receive ready-made messages?",
+        question: "Does it work if we still talk but he is cold?",
         answer:
-          "It includes essential messages when your route allows contact. No phrase is presented as a guarantee.",
+          "That is one of the protocol's core scenarios. You learn to match the real intensity of the channel, end conversations without dragging them out, and observe whether he invests again without being pushed.",
+      },
+      {
+        question: "What if we only talk about children, work, or money?",
+        answer:
+          "The protocol helps separate required contact from emotional interest. You handle what is necessary without using logistics as a reason to seek closeness and learn which signal must appear outside obligation.",
+      },
+      {
+        question: "Will I receive ready-to-send messages?",
+        answer:
+          "You receive essential messages, but only for moments when your route allows contact. The power is not in a magic sentence. It is using the right sentence, at the right intensity, at the right time.",
+      },
+      {
+        question: "Do I have to disappear for 30 days?",
+        answer:
+          "No. Haz Que Vuelva does not use no contact as a universal rule. Some routes require a pause; others require a proportional reply. The diagnosis exists so you do not apply the same advice to different situations.",
+      },
+      {
+        question: "What if I already made many mistakes and asked for another chance?",
+        answer:
+          "You cannot erase what happened, but you can stop confirming it. The next seven days interrupt the pattern he already expects and build a different experience before you try to move closer again.",
+      },
+      {
+        question: "Does the protocol guarantee he will come back?",
+        answer:
+          "No one can guarantee another person's decision. The protocol organizes what you control: stop the mistake, read the channel, choose the next action, and measure reciprocity without getting lost in promises.",
+      },
+      {
+        question: "How much time do I need each day?",
+        answer:
+          "The route is built around brief, executable decisions. You do not need hours of study. Open the day's material, understand the decision, and apply it without negotiating with anxiety.",
+      },
+      {
+        question: "Can I follow the protocol on my phone?",
+        answer:
+          "Yes. The material is digital and can be viewed on a phone, tablet, or computer, so your route is close when the impulse to improvise appears.",
+      },
+      {
+        question: "What exactly do I receive?",
+        answer:
+          "You receive the six-route diagnosis, the complete seven-day protocol, the write or reply or wait decision tree, the V.I.V.E. map, the R0–R4 scale, essential messages, and the final decision sheet.",
       },
       {
         question: "When do I get access?",
-        answer: "After payment approval, through the checkout channel.",
+        answer:
+          "Access is released after payment approval through the channel shown at checkout. Nothing is shipped and there is no delivery wait.",
       },
       {
-        question: "How much does it cost?",
-        answer: "US$7, one-time, with a seven-day guarantee.",
+        question: "Is the payment monthly?",
+        answer:
+          "No. Access costs US$7 and does not create a recurring subscription.",
+      },
+      {
+        question: "How does the 7-day guarantee work?",
+        answer:
+          "Enter, discover your route, and apply the first decisions. If within seven days you feel the protocol did not give you the clarity you expected, you can request a refund within the guarantee period.",
       },
     ],
     cta: "START MY 7-DAY PROTOCOL",

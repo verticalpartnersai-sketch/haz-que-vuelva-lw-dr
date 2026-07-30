@@ -7,11 +7,13 @@ import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 import type {
   DistanceBand,
+  ProofPreviewStoryId,
   QuizAnswers,
   QuizRoute,
 } from "@/features/quiz/quiz-contracts";
 import { distanceBandLabel, resolvedLastAction } from "@/features/quiz/quiz-engine";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
+import { QuizLogo } from "@/features/quiz/quiz-intro-question";
 import { productProofAssets } from "@/features/quiz/quiz-proof";
 
 export function Prediagnosis({
@@ -34,32 +36,82 @@ export function Prediagnosis({
   const pain = copy.painImpulses[answers.dominant_pain ?? "silence"];
   const routeCopy = copy.routes[route];
   const scorePosition = Math.min(100, Math.round((index / 95) * 100));
-  const decisionLabel = {
-    en: "7 DAYS · 4 DECISIONS",
-    es: "7 DÍAS · 4 DECISIONES",
-    pt: "7 DIAS · 4 DECISÕES",
-  }[locale];
-  const loopLabel = {
-    en: "Rejection Loop™",
-    es: "Bucle de Rechazo™",
-    pt: "Ciclo da Rejeição™",
+  const stageCopy = {
+    en: {
+      alertBody:
+        "The opportunity is not gone. The strategy you are using is reinforcing distance.",
+      alertTitle:
+        "There is still an emotional opening, but one impulsive move can close it.",
+      proofAlt:
+        "A woman hesitating before sending an anxious message at night",
+      proofCaption:
+        "One impulsive message can turn the last opening into even more distance.",
+      storyLead: "Your answers show that",
+      storyLink: "That is why your impulse is to",
+      storyTail:
+        "This is not a lack of feeling. It is the exact pattern that makes your next move decisive.",
+    },
+    es: {
+      alertBody:
+        "No estás sin oportunidad. La estrategia que estás usando refuerza la distancia.",
+      alertTitle:
+        "Todavía existe una ventana emocional, pero un movimiento impulsivo puede cerrarla.",
+      proofAlt:
+        "Una mujer dudando antes de enviar un mensaje ansioso durante la noche",
+      proofCaption:
+        "Un mensaje impulsivo puede convertir la última apertura en más distancia.",
+      storyLead: "Tus respuestas muestran que",
+      storyLink: "Por eso tu impulso es",
+      storyTail:
+        "No es falta de sentimiento. Es el patrón exacto que vuelve decisivo tu próximo movimiento.",
+    },
+    pt: {
+      alertBody:
+        "Você não está sem oportunidade. A estratégia que está usando reforça a distância.",
+      alertTitle:
+        "Ainda existe uma janela emocional, mas um movimento impulsivo pode fechá-la.",
+      proofAlt:
+        "Uma mulher hesitando antes de enviar uma mensagem ansiosa durante a noite",
+      proofCaption:
+        "Uma mensagem impulsiva pode transformar a última abertura em ainda mais distância.",
+      storyLead: "Suas respostas mostram que",
+      storyLink: "Por isso, seu impulso é",
+      storyTail:
+        "Não é falta de sentimento. É o padrão exato que torna decisivo o seu próximo movimento.",
+    },
   }[locale];
 
   return (
     <main className="quiz-prediagnosis quiz-stage" id="quiz-content">
+      <QuizLogo compact />
+      <div className="quiz-prediagnosis__product" aria-hidden="true">
+        <Image
+          alt=""
+          height={1275}
+          priority
+          sizes="92px"
+          src={productProofAssets.cover}
+          width={900}
+        />
+      </div>
+
+      <div className="quiz-prediagnosis__progress" aria-hidden="true">
+        <span />
+      </div>
+
       <header className="quiz-prediagnosis__header">
         <span className="status-badge status-badge--available">
           <Icon name="check" />
           {copy.prediagnosis.alert}
         </span>
-        <h1 ref={headingRef} tabIndex={-1}>
-          {routeCopy.prediagnosisHeadline}
-        </h1>
       </header>
 
       <section className="quiz-score" aria-label={copy.prediagnosis.scoreTitle}>
         <div className="quiz-score__heading">
-          <span>{copy.prediagnosis.scoreTitle}</span>
+          <div>
+            <strong>{copy.prediagnosis.scoreTitle}</strong>
+            <span>{copy.prediagnosis.scoreSubtitle}</span>
+          </div>
           <strong>
             {index}
             <small>/95</small>
@@ -76,61 +128,46 @@ export function Prediagnosis({
             </span>
           ))}
         </div>
-        <p>{copy.prediagnosis.scoreSubtitle}</p>
       </section>
 
-      <div className="quiz-prediagnosis__grid">
-        <article className="quiz-prediagnosis__story">
-          <p>
-            {locale === "pt" ? (
-              <>
-                O que você escolheu mostra que <strong>{pain.sentence}</strong>{" "}
-                está dirigindo suas decisões. Por isso, seu impulso é{" "}
-                {pain.impulse}.
-              </>
-            ) : locale === "en" ? (
-              <>
-                Your answers show that <strong>{pain.sentence}</strong> is
-                driving your decisions. That is why your impulse is to{" "}
-                {pain.impulse}.
-              </>
-            ) : (
-              <>
-                Lo que elegiste muestra que <strong>{pain.sentence}</strong>{" "}
-                está dirigiendo tus decisiones. Por eso tu impulso es{" "}
-                {pain.impulse}.
-              </>
-            )}
-          </p>
-          <div className="quiz-loop">
-            <span className="section-kicker">{loopLabel}</span>
-            <ol>
-              {copy.prediagnosis.loop.map((step, position) => (
-                <li key={step}>
-                  <span>{step}</span>
-                  {position < copy.prediagnosis.loop.length - 1 ? (
-                    <Icon name="arrowDown" />
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-          </div>
-          {copy.prediagnosis.bodyAfterLoop.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </article>
+      <h1
+        className="quiz-prediagnosis__headline"
+        ref={headingRef}
+        tabIndex={-1}
+      >
+        {routeCopy.prediagnosisHeadline}
+      </h1>
 
-        <aside className="quiz-prediagnosis__needs">
-          <span className="section-kicker">{decisionLabel}</span>
-          <ul>
-            {copy.prediagnosis.needs.map((need) => (
-              <li key={need}>
-                <Icon name="check" />
-                <span>{need}</span>
-              </li>
-            ))}
-          </ul>
-        </aside>
+      <p className="quiz-prediagnosis__story">
+        {stageCopy.storyLead} <strong>{pain.sentence}</strong>.{" "}
+        {stageCopy.storyLink} {pain.impulse}. {stageCopy.storyTail}
+      </p>
+
+      <figure className="quiz-prediagnosis__proof">
+        <div>
+          <Image
+            alt={stageCopy.proofAlt}
+            fill
+            loading="lazy"
+            sizes="(max-width: 560px) calc(100vw - 40px), 472px"
+            src={productProofAssets.channelFragile}
+          />
+        </div>
+        <figcaption>{stageCopy.proofCaption}</figcaption>
+      </figure>
+
+      <section className="quiz-prediagnosis__alert">
+        <Icon name="warning" />
+        <div>
+          <strong>{stageCopy.alertTitle}</strong>
+          <p>{stageCopy.alertBody}</p>
+        </div>
+      </section>
+
+      <div className="quiz-prediagnosis__explanation">
+        {copy.prediagnosis.bodyAfterLoop.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </div>
 
       <div className="quiz-stage-cta">
@@ -154,14 +191,22 @@ const proofByCase = {
   scale: productProofAssets.scale,
 } as const;
 
+const testimonialAssets: Record<ProofPreviewStoryId, string> = {
+  camila: "/images/quiz/proof-preview/camila-chat-v3.webp",
+  sofia: "/images/quiz/proof-preview/sofia-chat-v3.webp",
+  valentina: "/images/quiz/proof-preview/valentina-chat-v3.webp",
+};
+
 export function Demonstration({
   answers,
   headingRef,
+  internalPreview,
   onContinue,
   route,
 }: {
   answers: QuizAnswers;
   headingRef: RefObject<HTMLHeadingElement | null>;
+  internalPreview: boolean;
   onContinue: () => void;
   route: QuizRoute;
 }) {
@@ -171,13 +216,76 @@ export function Demonstration({
   const routeCopy = copy.routes[route];
   const action = copy.summaries.action[resolvedLastAction(answers)];
   const demonstrationLabel = {
-    en: "ONE RULE ≠ EVERY CASE",
-    es: "UNA REGLA ≠ TODOS LOS CASOS",
-    pt: "UMA REGRA ≠ TODOS OS CASOS",
+    en: "THE PROBLEM IS NOT FEELING · IT IS ACTING WITHOUT A STRATEGY",
+    es: "EL PROBLEMA NO ES SENTIR · ES ACTUAR SIN ESTRATEGIA",
+    pt: "O PROBLEMA NÃO É SENTIR · É AGIR SEM ESTRATÉGIA",
   }[locale];
+
+  if (internalPreview) {
+    const preview = copy.preview.proof;
+
+    return (
+      <main
+        className="quiz-demonstration quiz-demonstration--proof quiz-stage"
+        id="quiz-content"
+      >
+        <QuizLogo compact />
+        <header className="quiz-demonstration__header">
+          <h1 ref={headingRef} tabIndex={-1}>
+            {preview.headline}
+          </h1>
+          <p className="quiz-demonstration__proof-lead">{preview.body}</p>
+        </header>
+
+        <div className="quiz-demonstration__lead-image">
+          <Image
+            alt={preview.heroAlt}
+            fill
+            loading="lazy"
+            sizes="(max-width: 639px) calc(100vw - 20px), 620px"
+            src="/images/quiz/proof-preview/hero.webp"
+          />
+        </div>
+
+        <div className="quiz-testimonial-list">
+          {preview.stories.map((story) => (
+            <article className="quiz-testimonial" key={story.id}>
+              <p className="quiz-testimonial__intro">{story.intro}</p>
+              <figure className="quiz-testimonial__shot">
+                <Image
+                  alt={story.imageAlt}
+                  height={880}
+                  loading="lazy"
+                  sizes="(max-width: 639px) calc(100vw - 40px), 360px"
+                  src={testimonialAssets[story.id]}
+                  width={672}
+                />
+                <figcaption className="sr-only">
+                  {story.messages.join(" ")}
+                </figcaption>
+              </figure>
+              <p className="quiz-testimonial__outro">{story.conclusion}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="quiz-stage-cta">
+          <button
+            className="button button--primary quiz-button--large"
+            onClick={onContinue}
+            type="button"
+          >
+            {preview.cta}
+            <Icon name="arrowRight" />
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="quiz-demonstration quiz-stage" id="quiz-content">
+      <QuizLogo compact />
       <header className="quiz-demonstration__header">
         <span className="section-kicker">{demonstrationLabel}</span>
         <h1 ref={headingRef} tabIndex={-1}>

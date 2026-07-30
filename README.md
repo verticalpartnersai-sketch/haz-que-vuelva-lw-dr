@@ -33,3 +33,8 @@ cd apps/agent && python3.12 -m venv .venv && .venv/bin/pip install -e '.[dev]'
 
 Copie os arquivos `.env.example` apenas para configuração local. Não preencha
 nem versione segredos até o projeto externo correspondente existir.
+
+No desenvolvimento local, a área de membros usa `http://localhost:3000` e o
+site público/quiz usa `http://127.0.0.1:3001/quiz`. A rota `/quiz` da área de
+membros redireciona para o app público. `MARKETING_APP_URL` permite substituir
+o endereço do site público quando necessário.

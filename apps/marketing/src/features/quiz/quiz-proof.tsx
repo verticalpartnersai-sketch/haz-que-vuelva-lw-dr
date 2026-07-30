@@ -8,25 +8,31 @@ import { useLocale } from "@/features/i18n/locale";
 
 export type ProofSlide = {
   alt: string;
-  caption: string;
+  caption?: string;
   src: string;
 };
 
 export const productProofAssets = {
+  bookMockup: "/images/quiz/offer/product-book-mockup-transparent-v2.webp",
+  bundleMockup: "/images/quiz/offer/product-bundle-mockup-transparent-v2.webp",
   calendar: "/images/quiz/proof/proof-calendar.webp",
+  channelFragile: "/images/quiz/proof/proof-channel-fragile-v3.webp",
   cover: "/images/quiz/proof/front-cover.webp",
   decision: "/images/quiz/proof/proof-decision.webp",
+  guaranteeSeal: "/images/quiz/offer/guarantee-seal-transparent-v2.webp",
   routes: "/images/quiz/proof/proof-routes.webp",
   scale: "/images/quiz/proof/proof-scale.webp",
 } as const;
 
 export function ProofCarousel({
   autoIndex,
+  eager = false,
   label,
   slides,
   title,
 }: {
   autoIndex?: number;
+  eager?: boolean;
   label: string;
   slides: readonly ProofSlide[];
   title?: string;
@@ -57,13 +63,13 @@ export function ProofCarousel({
             <Image
               alt={current.alt}
               height={1275}
-              loading="lazy"
+              loading={eager ? "eager" : "lazy"}
               sizes="(max-width: 639px) 70vw, 420px"
               src={current.src}
               width={900}
             />
           </div>
-          <figcaption>{current.caption}</figcaption>
+          {current.caption ? <figcaption>{current.caption}</figcaption> : null}
         </figure>
       </div>
       <div

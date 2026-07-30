@@ -205,7 +205,11 @@ as $$
     ai_chunks.content,
     ai_documents.scope,
     (
-      0.7 * (1 - (ai_chunks.embedding <=> p_embedding))
+      0.7 * (
+        1 - (
+          ai_chunks.embedding OPERATOR(extensions.<=>) p_embedding
+        )
+      )
       + 0.3 * ts_rank_cd(
         ai_chunks.search_vector,
         websearch_to_tsquery('simple', p_query)
@@ -227,7 +231,7 @@ as $$
         and ai_chunks.owner_id = p_member_id
       )
     )
-  order by score desc
+  order by 5 desc
   limit least(greatest(p_limit, 1), 20);
 $$;
 

@@ -3,7 +3,7 @@
 > Documento vivo e fonte de verdade do progresso.
 >
 > Estado em 30 de julho de 2026: **frontend aprovado; marketing publicado;
-> Gate 5 autorizado e em implementação incremental**.
+> Supabase Cloud inicial aplicado; Gate 5 em implementação incremental**.
 >
 > A área de membros, o agente e as integrações externas reais continuam
 > bloqueados até seus pré-requisitos e gates próprios.
@@ -55,6 +55,7 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 
 - [x] Confirmar `hazquevuelva.site` como domínio público do marketing.
 - [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
+- [x] Confirmar produtos de upsell: `reconquista_30` e `vuelve_ia`.
 - [x] Definir `vuelve_ia` como entitlement canônico da IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
 - [x] Enviar a família final da hero para desktop, ultra-wide, tablet e mobile.
@@ -254,6 +255,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
 - [x] Agendar as outboxes no Custom Worker sem executar flags desligadas.
 - [ ] Validar migration, storage e geração com duas alunas no Supabase cloud.
+- [x] Aplicar as 19 migrações no projeto definitivo e executar 37 asserções
+  pgTAP remotas de segurança, RLS, atomicidade da IA e administração.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
 
@@ -305,16 +308,18 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
 - [x] Arquivos manuscritos novos permanecem abaixo do máximo de 400 linhas.
-- [ ] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
-  aplicar migrações e executar pgTAP/RLS remotamente. O banco local não faz
-  parte do gate. Bloqueado até a criação faturável do projeto ser autorizada.
+- [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
+  aplicar as 19 migrações e executar pgTAP/RLS remotamente.
+- [ ] Configurar Auth do projeto definitivo: fechar cadastro público, cadastrar
+  redirects, habilitar Google OAuth e criar o admin inicial. Bloqueado por
+  acesso de gestão do projeto, credenciais Google e e-mail do admin.
 - [ ] Executar smoke tests reais de Perfect Pay, Resend e Gemini. Bloqueado
   até existirem contas, credenciais, mappings e autorização do gate de
   integração.
 
 ## Gate 6 — integrações futuras
 
-- [ ] Criar projetos Supabase próprios.
+- [x] Criar projeto Supabase próprio.
 - [ ] Aplicar e validar Supabase Storage privado.
 - [ ] Aplicar e validar RAG no PostgreSQL/pgvector.
 - [ ] Criar Resend e verificar subdomínio.
@@ -341,7 +346,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de
   marketing e comprovar a resposta pública.
 - [x] Criar smoke sintético recorrente para a superfície pública do marketing.
-- [ ] Configurar o checkout real no CTA do quiz.
+- [x] Configurar o checkout real no CTA do quiz.
+- [x] Implementar páginas mobile-first `/up1`, `/up2` e `/gracias`, mantendo
+  os links de aceitação desligados até os produtos existirem na Perfect Pay.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
   segredos obrigatórios e domínio exclusivo de produção.

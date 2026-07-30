@@ -1,0 +1,358 @@
+@import "./upsells-sections.css";
+
+.offer-page,
+.thanks-page {
+  --offer-green: #32d475;
+  --offer-green-strong: #18a957;
+  --offer-green-soft: rgba(50, 212, 117, 0.12);
+  --offer-green-border: rgba(74, 222, 128, 0.34);
+  --offer-surface: rgba(255, 255, 255, 0.035);
+  --offer-surface-strong: rgba(255, 255, 255, 0.055);
+  --offer-border: rgba(255, 255, 255, 0.11);
+  width: min(100%, 56rem);
+  margin: 0 auto;
+  padding: 1.25rem 1rem 4rem;
+  overflow: hidden;
+}
+
+.offer-page section,
+.thanks-page {
+  scroll-margin-top: 1rem;
+}
+
+.offer-masthead {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  margin-bottom: 2.75rem;
+  text-align: center;
+}
+
+.offer-masthead > img {
+  width: min(12rem, 48vw);
+  height: auto;
+}
+
+.offer-masthead > span,
+.thanks-page__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.1rem;
+  padding: 0.42rem 0.8rem;
+  border: 1px solid var(--offer-green-border);
+  border-radius: var(--radius-pill);
+  background: var(--offer-green-soft);
+  color: #bdf8d3;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.offer-masthead svg,
+.thanks-page__status svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.offer-hero,
+.offer-prose,
+.offer-steps,
+.offer-proof,
+.offer-details,
+.offer-guarantee,
+.offer-checkout {
+  margin-inline: auto;
+}
+
+.offer-hero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.offer-hero__brand {
+  display: grid;
+  width: min(9rem, 36vw);
+  min-height: 6.5rem;
+  place-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.offer-hero__brand img {
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+  object-fit: contain;
+}
+
+.offer-kicker {
+  color: #bdf8d3;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.offer-hero h1,
+.thanks-page h1 {
+  max-width: 18ch;
+  margin: 0.85rem auto 0;
+  font-size: clamp(1.75rem, 7.7vw, 3.9rem);
+  font-weight: 580;
+  letter-spacing: -0.035em;
+  line-height: 1.03;
+  text-wrap: balance;
+}
+
+.offer-hero > p {
+  max-width: 44rem;
+  margin: 1.25rem auto 0;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 4vw, 1.18rem);
+  line-height: 1.72;
+}
+
+.offer-cta {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  width: 100%;
+  min-height: 3.6rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1.65rem;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid #54ec91;
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, #28ca69 0%, #15964c 100%);
+  box-shadow: 0 14px 38px rgba(20, 150, 75, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: #03150a;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 850;
+  letter-spacing: 0.015em;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-standard), filter var(--duration-normal) var(--ease-standard);
+}
+
+.offer-cta::after {
+  position: absolute;
+  z-index: -1;
+  inset: -0.38rem;
+  border: 1px solid rgba(74, 222, 128, 0.7);
+  border-radius: 1rem;
+  content: "";
+  opacity: 0;
+  animation: offer-cta-pulse 2.15s ease-out infinite;
+}
+
+.offer-cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.offer-cta svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+}
+
+.offer-cta--disabled {
+  border-color: var(--border-strong);
+  background: var(--surface-disabled);
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.offer-cta--disabled::after {
+  display: none;
+}
+
+.offer-hero > small,
+.offer-checkout > small,
+.thanks-page > small {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.offer-hero__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.72;
+  margin: 2rem 0 0;
+  overflow: hidden;
+  border: 1px solid var(--offer-border);
+  border-radius: 1rem;
+  background: var(--surface-default);
+}
+
+.offer-hero__media img {
+  object-fit: cover;
+}
+
+.offer-prose,
+.offer-steps,
+.offer-proof,
+.offer-details,
+.offer-guarantee,
+.offer-checkout {
+  margin-top: 4.25rem;
+}
+
+.offer-prose {
+  max-width: 43rem;
+}
+
+.offer-prose h2,
+.offer-steps h2,
+.offer-proof h2,
+.offer-details h2,
+.offer-guarantee h2,
+.offer-checkout h2,
+.thanks-page h1 {
+  margin: 0;
+  font-size: clamp(1.65rem, 7.3vw, 2.85rem);
+  font-weight: 580;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.offer-prose p,
+.offer-steps header p,
+.offer-proof header p,
+.offer-details header p,
+.offer-guarantee p,
+.offer-checkout p,
+.thanks-page > p {
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.78;
+}
+
+.offer-prose p {
+  margin: 1.25rem 0 0;
+}
+
+.offer-steps > header,
+.offer-proof > header,
+.offer-details > header {
+  max-width: 43rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.offer-steps > header p,
+.offer-proof > header p,
+.offer-details > header p {
+  margin: 1rem 0 0;
+}
+
+.offer-steps ol {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.offer-steps li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.15rem;
+  border: 1px solid var(--offer-border);
+  border-radius: 0.9rem;
+  background: var(--offer-surface);
+}
+
+.offer-steps li > span {
+  padding-top: 0.15rem;
+  color: #8eedb4;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.offer-steps h3,
+.offer-details h3,
+.thanks-page__steps h2 {
+  margin: 0;
+  font-size: 1.06rem;
+  font-weight: 650;
+  letter-spacing: 0.005em;
+  line-height: 1.32;
+}
+
+.offer-steps li p,
+.offer-details article p,
+.thanks-page__steps p {
+  margin: 0.42rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.62;
+}
+
+@keyframes offer-cta-pulse {
+  0% {
+    opacity: 0.75;
+    transform: scale(0.985);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.045);
+  }
+}
+
+@media (min-width: 45rem) {
+  .offer-page,
+  .thanks-page {
+    padding: 2rem 2rem 6rem;
+  }
+
+  .offer-masthead {
+    margin-bottom: 2.75rem;
+  }
+
+  .offer-hero h1 {
+    max-width: 20ch;
+    font-size: clamp(2.8rem, 4vw, 3.35rem);
+  }
+
+  .offer-cta {
+    width: auto;
+    min-width: 26rem;
+  }
+
+  .offer-hero__media {
+    aspect-ratio: 1.75;
+    margin-top: 2.5rem;
+  }
+
+  .offer-prose,
+  .offer-steps,
+  .offer-proof,
+  .offer-details,
+  .offer-guarantee,
+  .offer-checkout {
+    margin-top: 6rem;
+  }
+
+  .offer-steps li {
+    padding: 1.35rem;
+  }
+}

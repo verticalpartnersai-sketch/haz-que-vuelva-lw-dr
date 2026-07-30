@@ -21,6 +21,9 @@ dev = [
   "ruff>=0.12,<1",
 ]
 
+[tool.setuptools]
+packages = ["app"]
+
 [tool.pytest.ini_options]
 addopts = "-q"
 asyncio_mode = "auto"

@@ -4,8 +4,8 @@
 
 O site público e o quiz estão em produção no Worker
 `haz-que-vuelva-marketing`, versão
-`e3fa531d-f1a3-4bdf-a468-3cb317b04709`, publicado a partir do commit
-`1db5c7ee9f6a838348b72277e80e51c053eac695`.
+`74092287-dd30-4e9d-99a2-058797845e8a`, publicado a partir do commit
+`85047fe457fd63b1e0a21e8d3902850e2313ed3e`.
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
 criados pelo Cloudflare. Requisições HTTP são redirecionadas permanentemente
@@ -254,8 +254,9 @@ respectivo serviço estejam aprovados.
   policy e permissions policy;
 - [x] requisições HTTP redirecionam para o mesmo caminho em HTTPS com status
   permanente 308;
-- [x] áudio preserva duração e volume, inicia mudo e foi reduzido de 5,09 MB
-  para 2,04 MB.
+- [x] áudio preserva duração e volume, permanece mudo antes do CTA inicial,
+  começa automaticamente no gesto que inicia o quiz, mantém loop e foi
+  reduzido de 5,09 MB para 2,04 MB.
 
 ### Área de membros
 

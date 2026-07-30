@@ -304,6 +304,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar `haz-que-vuelva-marketing` na conta correta.
 - [x] Conectar DNS/TLS de `hazquevuelva.site`.
 - [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
+- [x] Iniciar o áudio no mesmo gesto do CTA inicial, manter loop e preservar o
+  controle manual no cabeçalho.
 - [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
   quatro jobs verdes.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e

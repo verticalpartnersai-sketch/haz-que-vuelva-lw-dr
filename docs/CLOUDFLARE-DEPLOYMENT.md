@@ -321,6 +321,9 @@ respectivo serviço estejam aprovados.
   cadastrar a URL de callback e revisar os templates de troca/notificação;
 - aplicar e validar `202607300017_admin_mutation_lockdown.sql` antes de conectar
   acessos, compras, catálogo, ofertas ou prompts ao painel administrativo;
+- aplicar e validar `202607300018_member_reading_progress.sql` antes de expor
+  o controle de progresso; confirmar isolamento entre duas alunas e bloqueio
+  de escrita para produto sem entitlement;
 - confirmar plano de Workers com CPU suficiente para `pdf-lib` e medir um PDF
   real antes de ligar `FEATURE_CONTENT`;
 - construir e executar a imagem Docker localmente ou em CI;

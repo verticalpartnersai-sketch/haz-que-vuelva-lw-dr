@@ -65,6 +65,7 @@ export function presentMemberCatalog(items: MemberCatalogItem[]): Product[] {
       accessState: item.entitled ? "available" : "locked",
       kind: presentation.kind,
       coverImage: presentation.coverImage,
+      progress: item.entitled ? item.progressPercent : undefined,
     };
   });
 }

@@ -249,7 +249,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
 - [x] Agendar as outboxes no Custom Worker sem executar flags desligadas.
 - [ ] Validar migration, storage e geração com duas alunas no Supabase cloud.
-- [ ] Implementar progresso de leitura.
+- [x] Implementar progresso de leitura controlado pela aluna, persistido por
+  produto e protegido por entitlement/RLS.
 
 ### Perfect Pay
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 import { DownloadControl } from "@/features/products/download-control";
+import { ReadingProgressControl } from "@/features/products/reading-progress-control";
 import { featureFlags } from "@/mocks/data";
 import type { Product } from "@/mocks/types";
 
@@ -148,6 +149,13 @@ export function ProductDetail({
           </aside>
         ) : null}
       </div>
+
+      {contentEnabled && contentFileId ? (
+        <ReadingProgressControl
+          initialProgress={product.progress ?? 0}
+          productCode={product.id}
+        />
+      ) : null}
 
       {featureFlags.comments ? (
         <section aria-labelledby="comments-title" className="surface-card">

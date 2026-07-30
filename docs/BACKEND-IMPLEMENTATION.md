@@ -22,6 +22,8 @@ Implementado nesta fundação:
   novo, sincronização transacional do perfil e auditoria sem registrar e-mail;
 - entrega de conteúdo com fila idempotente, watermark individual, URL assinada
   curta e auditoria de download;
+- progresso de leitura por produto, controlado pela aluna, persistido via RPC
+  que exige entitlement e exibido novamente no catálogo;
 - publicação administrativa do PDF original em bucket privado, com validação
   de MIME, assinatura, parse, páginas, tamanho, SHA-256, versionamento
   transacional e limpeza compensatória;
@@ -80,6 +82,10 @@ conta. Produto sem entitlement permanece bloqueado, inclusive quando a URL de
 detalhe é digitada diretamente. `vuelve_ia` autorizado encaminha para o chat,
 não para o leitor de PDF. O segmento autenticado é sempre dinâmico para que
 flags e entitlements de runtime não sejam congelados durante o build.
+O progresso não tenta inferir páginas lidas fora do navegador. A própria aluna
+registra de 0 a 100%; a escrita passa por uma RPC `security definer` que exige
+identidade e entitlement, enquanto a tabela permite apenas a leitura da linha
+da própria conta. Catálogo e detalhe reutilizam esse valor real.
 
 O módulo `Contenido` é a primeira operação administrativa conectada. A rota
 exige flags de admin e conteúdo, origem do app, sessão com papel `admin` e RLS.
@@ -151,7 +157,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 39 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 44 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

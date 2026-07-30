@@ -39,4 +39,20 @@ export class SupabaseMemberCatalog implements MemberCatalogGateway {
 
     return (data ?? []).map((record) => record.product_code);
   }
+
+  async listReadingProgress(memberId: string) {
+    const { data, error } = await this.client
+      .from("member_reading_progress")
+      .select("product_code,progress_percent")
+      .eq("member_id", memberId);
+
+    if (error) {
+      throw new Error(`catalog_reading_progress_lookup_failed:${error.code}`);
+    }
+
+    return (data ?? []).map((record) => ({
+      productCode: record.product_code,
+      progressPercent: record.progress_percent,
+    }));
+  }
 }

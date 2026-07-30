@@ -102,7 +102,7 @@ Uma alteração transversal começa nesses contratos antes de qualquer código.
 |---|---|
 | Identidade | `profiles`, convites e papéis |
 | Catálogo | `products`, capas, metadados e checkout |
-| Conteúdo | `content_items`, `content_files`, regras de acesso |
+| Conteúdo | `content_items`, `content_files`, `member_reading_progress`, regras de acesso |
 | Pagamentos | `purchases`, `payment_webhook_events` |
 | Acesso | `entitlements`, `admin_overrides` |
 | IA | `agent_configs`, documentos, conversas, mensagens e sync jobs |

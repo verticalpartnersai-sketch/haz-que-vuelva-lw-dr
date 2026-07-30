@@ -16,11 +16,15 @@ export type MemberCatalogItem = {
   description: string | null;
   sortOrder: number;
   entitled: boolean;
+  progressPercent?: number;
 };
 
 export interface MemberCatalogGateway {
   listActiveProducts(): Promise<CatalogProductRecord[]>;
   listEntitledProductCodes(memberId: string): Promise<string[]>;
+  listReadingProgress(
+    memberId: string,
+  ): Promise<Array<{ productCode: string; progressPercent: number }>>;
 }
 
 export async function listMemberCatalog({
@@ -32,12 +36,24 @@ export async function listMemberCatalog({
 }): Promise<MemberCatalogItem[]> {
   if (!memberId) throw new Error("catalog_member_id_required");
 
-  const [records, entitlementCodes] = await Promise.all([
+  const [records, entitlementCodes, progressRecords] = await Promise.all([
     gateway.listActiveProducts(),
     gateway.listEntitledProductCodes(memberId),
+    gateway.listReadingProgress(memberId),
   ]);
   const entitlements = new Set(
     entitlementCodes.filter(isProductCode),
+  );
+  const progressByProduct = new Map(
+    progressRecords
+      .filter(
+        (record) =>
+          isProductCode(record.productCode) &&
+          Number.isInteger(record.progressPercent) &&
+          record.progressPercent >= 0 &&
+          record.progressPercent <= 100,
+      )
+      .map((record) => [record.productCode, record.progressPercent]),
   );
 
   return records
@@ -49,5 +65,6 @@ export async function listMemberCatalog({
       description: record.description,
       sortOrder: record.sortOrder,
       entitled: entitlements.has(record.code as ProductCode),
+      progressPercent: progressByProduct.get(record.code as ProductCode),
     }));
 }

@@ -40,6 +40,14 @@ class FakeCatalog implements MemberCatalogGateway {
     this.entitlementLookups.push(memberId);
     return ["haz_que_vuelva", "producto_no_soportado"];
   }
+
+  async listReadingProgress(memberId: string) {
+    assert.equal(memberId, "member-1");
+    return [
+      { productCode: "haz_que_vuelva", progressPercent: 40 },
+      { productCode: "producto_no_soportado", progressPercent: 100 },
+    ];
+  }
 }
 
 test("el catálogo real ordena productos y resuelve acceso por entitlement", async () => {
@@ -80,6 +88,7 @@ test("la presentación conserva assets canónicos y usa copy publicada", async (
   assert.equal(products[0].slug, "haz-que-vuelva");
   assert.equal(products[0].description, "Descripción publicada");
   assert.equal(products[0].accessState, "available");
+  assert.equal(products[0].progress, 40);
   assert.equal(
     products[1].coverImage,
     "/images/products/21-mensajes-de-reconexion.webp",

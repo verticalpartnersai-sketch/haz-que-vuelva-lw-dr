@@ -41,18 +41,18 @@ function CardContents({
             <span className="progress-block__label">
               <span>
                 {l(
-                  "Progreso simulado",
-                  "Progresso simulado",
-                  "Simulated progress",
+                  "Progreso de lectura",
+                  "Progresso de leitura",
+                  "Reading progress",
                 )}
               </span>
               <span>{product.progress}%</span>
             </span>
             <span
               aria-label={`${l(
-                "Progreso simulado",
-                "Progresso simulado",
-                "Simulated progress",
+                "Progreso de lectura",
+                "Progresso de leitura",
+                "Reading progress",
               )}: ${product.progress}%`}
               aria-valuemax={100}
               aria-valuemin={0}

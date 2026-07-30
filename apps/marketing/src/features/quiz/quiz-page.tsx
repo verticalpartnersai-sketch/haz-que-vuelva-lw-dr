@@ -76,6 +76,7 @@ export function QuizPage() {
   const advanceTimerRef = useRef<number | null>(null);
   const hydrationStartedRef = useRef(false);
   const trackedViewRef = useRef("");
+  const userStartedQuizRef = useRef(false);
   const route = useMemo(() => resolveRoute(answers), [answers]);
   const distanceIndex = useMemo(
     () => calculateDistanceIndex(answers),
@@ -98,7 +99,7 @@ export function QuizPage() {
       hydrationStartedRef.current = true;
 
       const restored = restoreQuizSessionState();
-      if (restored) {
+      if (restored && !userStartedQuizRef.current) {
         const restoredLocale = restored.locale ?? locale;
         const questionCount = quizContentFor(restoredLocale).questions.length;
         const restoredStage =
@@ -296,6 +297,7 @@ export function QuizPage() {
   }
 
   function startQuiz() {
+    userStartedQuizRef.current = true;
     setAudioStarted(true);
     setAudioMuted(false);
     setAudioNeedsGesture(false);

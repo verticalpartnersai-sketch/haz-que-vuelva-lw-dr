@@ -20,6 +20,7 @@ import {
   routeSoFar,
 } from "@/features/quiz/quiz-engine";
 import { PublicHeader } from "@/features/quiz/quiz-intro-question";
+import { QUIZ_CHECKOUT_URL } from "@/features/quiz/quiz-checkout-config";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import { QuizStageRouter } from "@/features/quiz/quiz-stage-router";
 import {
@@ -441,20 +442,8 @@ export function QuizPage() {
       route,
     });
 
-    const configuredUrl = process.env.NEXT_PUBLIC_CHECKOUT_URL;
-    if (!configuredUrl) {
-      setCheckoutStatus(
-        l(
-          "El checkout todavía no está conectado. Falta configurar NEXT_PUBLIC_CHECKOUT_URL.",
-          "O checkout ainda não está conectado. Falta configurar NEXT_PUBLIC_CHECKOUT_URL.",
-          "Checkout is not connected yet. NEXT_PUBLIC_CHECKOUT_URL still needs to be configured.",
-        ),
-      );
-      return;
-    }
-
     try {
-      const destination = new URL(configuredUrl);
+      const destination = new URL(QUIZ_CHECKOUT_URL);
       const checkoutContext = {
         route,
         channel_state: channelStateForRoute(route),

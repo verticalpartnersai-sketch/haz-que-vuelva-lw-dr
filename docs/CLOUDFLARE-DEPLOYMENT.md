@@ -151,9 +151,8 @@ comentários ou documentação.
 
 ### Marketing
 
-| Nome | Tipo |
-|---|---|
-| `NEXT_PUBLIC_CHECKOUT_URL` | build variable e runtime variable |
+O checkout público aprovado está versionado no módulo de configuração do quiz.
+Ele não depende de variável congelada durante o build do Next.js.
 
 ### Área de membros
 
@@ -314,7 +313,6 @@ respectivo serviço estejam aprovados.
 
 ## Pendências reais
 
-- receber e configurar `NEXT_PUBLIC_CHECKOUT_URL`;
 - conectar Workers Builds ao repositório GitHub;
 - confirmar plano pago e disponibilidade de Containers;
 - cadastrar secrets e variáveis da área de membros e do agente;

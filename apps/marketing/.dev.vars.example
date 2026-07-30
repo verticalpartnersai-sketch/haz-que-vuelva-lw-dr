@@ -1,3 +1,2 @@
 # Copy to .dev.vars for local Workers previews. Never commit real values.
 NEXTJS_ENV=development
-NEXT_PUBLIC_CHECKOUT_URL=https://example.invalid/checkout

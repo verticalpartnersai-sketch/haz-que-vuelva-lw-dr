@@ -13,8 +13,12 @@ const responseHeaders = {
 const worker = {
   async fetch(request: Request, environment: unknown, context: unknown) {
     const requestUrl = new URL(request.url);
+    const forwardedProtocol = request.headers.get("x-forwarded-proto");
 
-    if (requestUrl.protocol === "http:") {
+    if (
+      requestUrl.protocol === "http:" ||
+      forwardedProtocol?.toLowerCase() === "http"
+    ) {
       requestUrl.protocol = "https:";
 
       return new Response(null, {

@@ -3,6 +3,7 @@
 set -euo pipefail
 
 base_url="${HQV_BASE_URL:-https://hazquevuelva.site}"
+checkout_url="${HQV_CHECKOUT_URL:-https://go.centerpag.com/PPU38CQER3J}"
 http_url="${base_url/https:/http:}"
 smoke_dir="$(mktemp -d "${TMPDIR:-/tmp}/hqv-production-smoke.XXXXXX")"
 
@@ -91,6 +92,30 @@ grep -Fq '/audio/ambient-sound.mp3?v=1' "$quiz_body" ||
   fail "ambient audio is missing from the quiz"
 grep -Fq "Él todavía no te olvidó" "$quiz_body" ||
   fail "Spanish quiz headline is missing"
+
+node --input-type=module - "$base_url" "$quiz_body" "$checkout_url" <<'NODE'
+import { readFile } from "node:fs/promises";
+
+const [, , baseUrl, quizBodyPath, checkoutUrl] = process.argv;
+const html = await readFile(quizBodyPath, "utf8");
+const scriptUrls = [
+  ...html.matchAll(/<script[^>]+src="([^"]+)"/g),
+].map((match) => new URL(match[1], baseUrl).href);
+
+const scripts = await Promise.all(
+  scriptUrls.map(async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`${url} returned ${response.status}`);
+    }
+    return response.text();
+  }),
+);
+
+if (!scripts.some((script) => script.includes(checkoutUrl))) {
+  throw new Error(`checkout URL is missing from deployed JavaScript: ${checkoutUrl}`);
+}
+NODE
 
 expect_status "200" "$base_url/robots.txt" "$smoke_dir/robots.txt"
 expect_status "200" "$base_url/sitemap.xml" "$smoke_dir/sitemap.xml"

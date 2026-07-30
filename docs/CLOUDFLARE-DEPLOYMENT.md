@@ -259,7 +259,8 @@ respectivo serviço estejam aprovados.
 - [x] imagens e áudio carregam;
 - [x] seletor de idioma e fluxo completo funcionam;
 - [x] página final aprovada usa CTAs verdes e não exibe badge interno;
-- [ ] CTA usa o checkout aprovado, em nova aba;
+- [x] CTA usa o checkout Centerpag aprovado, em nova aba, preservando UTMs e
+  contexto da rota; o smoke sintético valida a URL no JavaScript publicado;
 - [x] nenhum marcador de preview interno aparece em produção.
 - [x] canonical, Open Graph, Twitter Card, robots, sitemap e manifesto
   respondem em produção;

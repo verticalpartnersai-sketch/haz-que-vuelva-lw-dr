@@ -152,7 +152,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Critérios para o próximo incremento
 
-1. Criar projeto Supabase de desenvolvimento dedicado.
+1. Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud.
 2. Aplicar migrações somente após revisão SQL e backup inicial.
 3. Executar testes negativos RLS com duas alunas, admin e anônimo.
 4. Fazer upload privado de um PDF otimizado de até 12 MiB.
@@ -171,6 +171,6 @@ Uma flag não substitui autorização; ela apenas controla rollout.
   compatível e smoke test antes de receber tráfego.
 - `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - migrações e testes pgTAP foram versionados, mas ainda não executados porque
-  não existe projeto Supabase de desenvolvimento vinculado e esta máquina não
-  possui Docker, OrbStack, Colima ou Podman.
+  o projeto Supabase Cloud definitivo ainda não foi criado nem vinculado; por
+  decisão operacional, o banco local não faz parte do gate de publicação.
 - nenhuma chamada real a Perfect Pay, Resend, Gemini ou Supabase foi feita.

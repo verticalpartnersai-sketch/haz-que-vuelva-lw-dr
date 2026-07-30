@@ -7,6 +7,9 @@ operação foi aplicada em projeto remoto. O projeto Supabase visível com nome
 genérico `App` não deve ser usado sem comprovação explícita de que pertence ao
 HAZ QUE VUELVA.
 
+O gate de banco será executado exclusivamente no Supabase Cloud. Não haverá
+bootstrap, migração ou pgTAP em Docker ou banco local.
+
 ## Dependências externas
 
 Antes da ativação são necessários:
@@ -43,7 +46,8 @@ Antes da ativação são necessários:
 
 - Revisar o diff remoto antes de `db push`.
 - Aplicar todas as migrações na ordem versionada.
-- Executar os quatro arquivos pgTAP em `supabase/tests`.
+- Executar os quatro arquivos pgTAP em `supabase/tests` contra o projeto
+  vinculado com `supabase test db supabase/tests --linked`.
 - Testar com anônimo, dois membros separados e um administrador.
 - Comprovar que membros não leem dados entre si e que admin `aal1` não abre
   dados administrativos nem consome reautenticação.

@@ -305,8 +305,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
 - [x] Arquivos manuscritos novos permanecem abaixo do máximo de 400 linhas.
-- [ ] Aplicar migrações e executar pgTAP/RLS no Supabase cloud de
-  desenvolvimento. Bloqueado até existir projeto dedicado.
+- [ ] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
+  aplicar migrações e executar pgTAP/RLS remotamente. O banco local não faz
+  parte do gate. Bloqueado até a criação faturável do projeto ser autorizada.
 - [ ] Executar smoke tests reais de Perfect Pay, Resend e Gemini. Bloqueado
   até existirem contas, credenciais, mappings e autorização do gate de
   integração.

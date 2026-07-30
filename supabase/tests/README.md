@@ -5,8 +5,22 @@
 - `003_ai_generation_atomicity.sql` prova conclusão idempotente da IA: resposta
   e consumo são confirmados na mesma transação e o replay não duplica crédito.
 
-Todos exigem um banco Supabase descartável ou o projeto cloud dedicado de
-desenvolvimento, sempre com identidades sintéticas. Eles permanecem
-obrigatórios antes de habilitar qualquer flag. Neste checkout ainda não foram
-executados porque não há projeto vinculado e o Docker local não está
-disponível.
+Os testes desta aplicação serão executados no projeto Supabase Cloud dedicado,
+sempre com identidades sintéticas e antes de liberar tráfego para a área de
+membros. O banco local não faz parte do gate de publicação. Neste checkout os
+testes ainda não foram executados porque o projeto Cloud definitivo ainda não
+foi criado nem vinculado.
+
+Depois de confirmar explicitamente nome, organização, região e referência do
+projeto remoto:
+
+```bash
+supabase link --project-ref "$HQV_SUPABASE_PROJECT_REF"
+supabase db push --dry-run --include-all
+supabase db push --include-all
+supabase test db supabase/tests --linked
+```
+
+O `db push` real só pode ocorrer depois do dry-run, do backup inicial e da
+confirmação de que a CLI está vinculada a `haz-que-vuelva-members`, nunca ao
+projeto genérico `App`.

@@ -296,12 +296,10 @@ export function QuizPage() {
   }
 
   function startQuiz() {
-    const ambientAudio = ambientAudioRef.current;
-    ambientAudio?.pause();
-    if (ambientAudio) ambientAudio.muted = true;
-    setAudioStarted(false);
-    setAudioMuted(true);
+    setAudioStarted(true);
+    setAudioMuted(false);
     setAudioNeedsGesture(false);
+    playAmbientAudio(true);
 
     track("quiz_start", utmParameters());
     scrollQuizToTop();

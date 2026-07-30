@@ -433,10 +433,12 @@ verificados. A configuração completa está em
 
 Decisão e prova em 30 de julho de 2026: `hazquevuelva.site` foi vinculado
 diretamente ao Worker `haz-que-vuelva-marketing`. A publicação gerou a versão
-`7eaec229-ace9-4290-b98c-a92477fe09fe`. O DNS público retornou endereços
+`1ce98941-9cd2-4746-9fff-e6b30305914c`. O DNS público retornou endereços
 Cloudflare, `/` respondeu `307` para `/quiz`, `/quiz` respondeu `200`, áudio e
-WebP responderam `200`, e o fluxo completo foi percorrido em navegador real.
-O checkout continua pendente porque a URL comercial ainda não foi fornecida.
+WebP responderam `200`, e o fluxo completo foi percorrido em navegador real. A
+página final aprovada foi confirmada sem badge de preview e com CTA computado em
+`rgb(88, 229, 141)`. O checkout continua pendente porque a URL comercial ainda
+não foi fornecida.
 
 ### Dependência transitiva do OpenNext
 

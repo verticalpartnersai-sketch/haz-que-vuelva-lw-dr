@@ -4,8 +4,8 @@
 
 O site público e o quiz estão em produção no Worker
 `haz-que-vuelva-marketing`, versão
-`7eaec229-ace9-4290-b98c-a92477fe09fe`, publicado a partir do commit
-`1d0186c9a34bd332966fa475d0c9cdbd3b52aff3`.
+`1ce98941-9cd2-4746-9fff-e6b30305914c`, publicado a partir do commit
+`a9a0aad03446774df90b469e1496f5e1a4d96f36`.
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
 criados pelo Cloudflare. A área de membros, o Container do agente e as
@@ -238,6 +238,7 @@ respectivo serviço estejam aprovados.
 - [x] `/quiz` responde 200;
 - [x] imagens e áudio carregam;
 - [x] seletor de idioma e fluxo completo funcionam;
+- [x] página final aprovada usa CTAs verdes e não exibe badge interno;
 - [ ] CTA usa o checkout aprovado, em nova aba;
 - [x] nenhum marcador de preview interno aparece em produção.
 

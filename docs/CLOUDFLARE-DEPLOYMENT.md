@@ -4,8 +4,8 @@
 
 O site público e o quiz estão em produção no Worker
 `haz-que-vuelva-marketing`, versão
-`1ce98941-9cd2-4746-9fff-e6b30305914c`, publicado a partir do commit
-`a9a0aad03446774df90b469e1496f5e1a4d96f36`.
+`b37e945a-70e5-4a2b-b7f8-3d43f3044ec1`, publicado a partir do commit
+`91bea30e2f09c493f0f9ad34b4235362186a48fd`.
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
 criados pelo Cloudflare. A área de membros, o Container do agente e as
@@ -48,6 +48,12 @@ O Worker de marketing não expõe `workers.dev` nem Preview URL. Para os serviç
 restantes, a primeira homologação deve usar uma versão sem tráfego real. O
 agente só poderá ser chamado por Service Binding depois do build e do teste
 real do Container.
+
+O GitHub executa CI em todo push de `main` e pull request. O run
+[`30520303754`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30520303754)
+validou os quatro jobs: marketing, área de membros, Worker do agente e agente
+Python. A promoção do Worker continua deliberadamente separada do CI enquanto
+Workers Builds não estiver conectado com suas permissões próprias.
 
 ## Artefatos versionados
 
@@ -241,6 +247,12 @@ respectivo serviço estejam aprovados.
 - [x] página final aprovada usa CTAs verdes e não exibe badge interno;
 - [ ] CTA usa o checkout aprovado, em nova aba;
 - [x] nenhum marcador de preview interno aparece em produção.
+- [x] canonical, Open Graph, Twitter Card, robots, sitemap e manifesto
+  respondem em produção;
+- [x] respostas HTML entregam HSTS, `nosniff`, negação de frame, referrer
+  policy e permissions policy;
+- [x] áudio preserva duração e volume, inicia mudo e foi reduzido de 5,09 MB
+  para 2,04 MB.
 
 ### Área de membros
 

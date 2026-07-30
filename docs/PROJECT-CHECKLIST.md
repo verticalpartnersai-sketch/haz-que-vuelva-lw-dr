@@ -304,6 +304,10 @@ dados reais e deploy não estão.
 - [x] Publicar `haz-que-vuelva-marketing` na conta correta.
 - [x] Conectar DNS/TLS de `hazquevuelva.site`.
 - [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
+- [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
+  quatro jobs verdes.
+- [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e
+  headers defensivos do marketing.
 - [ ] Configurar o checkout real no CTA do quiz.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [ ] Criar o Worker da área de membros, suas variáveis e seus segredos.

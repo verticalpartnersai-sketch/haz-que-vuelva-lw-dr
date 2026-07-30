@@ -260,7 +260,8 @@ respectivo serviço estejam aprovados.
 - [x] seletor de idioma e fluxo completo funcionam;
 - [x] página final aprovada usa CTAs verdes e não exibe badge interno;
 - [x] CTA usa o checkout Centerpag aprovado, em nova aba, preservando UTMs e
-  contexto da rota; o smoke sintético valida a URL no JavaScript publicado;
+  contexto da rota; o smoke sintético valida a URL no JavaScript publicado, a
+  disponibilidade do redirecionador e a preservação dos parâmetros;
 - [x] nenhum marcador de preview interno aparece em produção.
 - [x] canonical, Open Graph, Twitter Card, robots, sitemap e manifesto
   respondem em produção;

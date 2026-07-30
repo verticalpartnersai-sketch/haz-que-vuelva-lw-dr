@@ -117,6 +117,22 @@ if (!scripts.some((script) => script.includes(checkoutUrl))) {
 }
 NODE
 
+checkout_probe_url="${checkout_url}?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero"
+checkout_headers="$smoke_dir/checkout-headers.txt"
+checkout_status="$(
+  curl "${curl_common[@]}" \
+    --dump-header "$checkout_headers" \
+    --output /dev/null \
+    --write-out "%{http_code}" \
+    "$checkout_probe_url"
+)"
+[[ "$checkout_status" == "302" ]] ||
+  fail "$checkout_probe_url returned $checkout_status; expected 302"
+tr -d "\r" <"$checkout_headers" |
+  grep -Fqi \
+    "location: https://checkout.centerpag.com/pay/PPU38CQER3J?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero" ||
+  fail "checkout redirect did not preserve quiz attribution parameters"
+
 expect_status "200" "$base_url/robots.txt" "$smoke_dir/robots.txt"
 expect_status "200" "$base_url/sitemap.xml" "$smoke_dir/sitemap.xml"
 expect_status "200" "$base_url/manifest.webmanifest" "$smoke_dir/manifest.json"

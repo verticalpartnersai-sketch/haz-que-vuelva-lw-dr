@@ -9,8 +9,9 @@ O site público e o quiz estão em produção no Worker
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
 criados pelo Cloudflare. Requisições HTTP são redirecionadas permanentemente
-para HTTPS no Worker. A área de membros, o Container do agente e as integrações
-reais continuam fechados até seus próprios gates.
+para HTTPS no Worker. O Worker `haz-que-vuelva-members` já possui uma versão
+de homologação enviada, mas ainda não tem segredos nem domínio. O Container do
+agente e as integrações reais continuam fechados até seus próprios gates.
 
 ## Topologia escolhida
 
@@ -42,7 +43,7 @@ flowchart TD
 | Aplicação | Worker | Domínio | Estado |
 |---|---|---|---|
 | Marketing e quiz | `haz-que-vuelva-marketing` | `hazquevuelva.site` | produção |
-| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | não publicado |
+| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | Worker criado; produção bloqueada por configuração |
 | VUELVE IA | `haz-que-vuelva-agent` | sem domínio público | não publicado |
 
 O Worker de marketing não expõe `workers.dev` nem Preview URL. Para os serviços
@@ -129,7 +130,7 @@ Conectar o mesmo repositório três vezes, uma para cada Worker.
 
 - Root directory: `apps/web`
 - Build command: `npm ci && npm run build:cloudflare`
-- Deploy command: `npx wrangler deploy`
+- Deploy command: `npx wrangler deploy --env production`
 - Include paths: `apps/web/*`, `supabase/*`
 
 ### Agente
@@ -158,6 +159,7 @@ comentários ou documentação.
 
 Variáveis:
 
+- `MEMBER_APP_MODE`
 - `FEATURE_AUTH`
 - `FEATURE_CONTENT`
 - `FEATURE_PAYMENTS`
@@ -168,13 +170,15 @@ Variáveis:
 - `MEMBER_APP_URL`
 - `MARKETING_APP_URL`
 - `AGENT_INTERNAL_URL`
-- `RESEND_FROM`
 
 Segredos:
 
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `SUPABASE_SECRET_KEY`
 - `PERFECT_PAY_WEBHOOK_TOKEN`
 - `RESEND_API_KEY`
+- `RESEND_FROM`
 - `AGENT_INTERNAL_SECRET`
 - `WORKER_INTERNAL_SECRET`
 
@@ -202,11 +206,13 @@ janela controlada ou ocorrer em uma publicação coordenada.
 
 ## Sequência segura dos serviços restantes
 
-1. Cadastrar as variáveis e os segredos aprovados diretamente no Cloudflare.
-2. Fazer upload da área de membros sem tráfego de produção.
+1. Criar e validar o projeto Supabase dedicado.
+2. Cadastrar as variáveis e os segredos aprovados diretamente no Cloudflare.
 3. Executar smoke tests remotos de autenticação e autorização.
-4. Promover a área de membros com todas as feature flags de backend desligadas.
-5. Conectar `miembros.hazquevuelva.site`.
+4. Promover a área de membros com `MEMBER_APP_MODE=production`, Auth e
+   conteúdo real obrigatoriamente ativos; produção não aceita mocks.
+5. Conectar o Custom Domain exato `miembros.hazquevuelva.site`. O domínio
+   público `hazquevuelva.site` permanece exclusivo do marketing e do quiz.
 6. Publicar o agente somente após build real da imagem e teste de autenticação.
 7. Conectar BFF e agente por Service Binding, sem URL pública.
 8. Ativar cada integração em uma operação independente, com rollback
@@ -235,12 +241,14 @@ npm run preview
 Criar uma versão para homologação, sem decidir tráfego de produção:
 
 ```bash
-cd apps/marketing
+cd apps/web
 npm run upload
 ```
 
-O deploy de marketing está autorizado e ativo. Não executar `deploy` da área de
-membros ou do agente até que variáveis, segredos, smoke test e rollback do
+O deploy de marketing está autorizado e ativo. O ambiente `production` da área
+de membros declara o Custom Domain, os segredos obrigatórios e falha fechado
+com `503` quando a configuração real estiver incompleta. Não executar seu
+deploy nem o do agente até que variáveis, segredos, smoke test e rollback do
 respectivo serviço estejam aprovados.
 
 ## Smoke test remoto obrigatório

@@ -1,6 +1,10 @@
 import Link from "next/link";
 
 import { LoginForm } from "@/features/auth/login-form";
+import {
+  environment,
+  supabaseBrowserConfiguration,
+} from "@/server/config/environment";
 
 import styles from "@/features/auth/auth-panel.module.css";
 
@@ -9,6 +13,7 @@ type LoginPageProps = {
 };
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const config = environment();
   const requested = (await searchParams).next;
   const nextPath =
     requested?.startsWith("/") && !requested.startsWith("//") ? requested : "/";
@@ -20,7 +25,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           Bienvenida
         </h1>
         <p className={styles.copy}>Entra con el correo usado en tu compra.</p>
-        <LoginForm nextPath={nextPath} />
+        <LoginForm
+          googleEnabled={config.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED}
+          nextPath={nextPath}
+          supabase={supabaseBrowserConfiguration(config)}
+        />
         <Link className={styles.link} href="/auth/recuperar">
           ¿Olvidaste tu contraseña?
         </Link>

@@ -2,7 +2,10 @@ import type { ProductCode } from "@/modules/catalog/domain/product";
 import { requireAdmin } from "@/modules/identity/application/current-identity";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
-import { requireReauthenticationTokenHash } from "./reauthenticated-operation";
+import {
+  requireReauthenticationTokenHash,
+  throwIfAdminReauthenticationError,
+} from "./reauthenticated-operation";
 
 export async function grantManualAccess(input: {
   memberId: string;
@@ -27,6 +30,7 @@ export async function grantManualAccess(input: {
       ),
     },
   );
+  throwIfAdminReauthenticationError(error);
   if (error) throw new Error(`Manual grant failed: ${error.code}`);
   return data as string;
 }

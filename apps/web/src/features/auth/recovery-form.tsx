@@ -2,11 +2,18 @@
 
 import { useState, type FormEvent } from "react";
 
-import { createSupabaseBrowserClient } from "@/server/supabase/browser-client";
+import {
+  createSupabaseBrowserClient,
+  type SupabaseBrowserConfiguration,
+} from "@/server/supabase/browser-client";
 
 import styles from "./auth-panel.module.css";
 
-export function RecoveryForm() {
+export function RecoveryForm({
+  supabase,
+}: {
+  supabase: SupabaseBrowserConfiguration;
+}) {
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
@@ -21,7 +28,7 @@ export function RecoveryForm() {
     redirectTo.searchParams.set("next", "/auth/restablecer");
 
     const { error: recoveryError } =
-      await createSupabaseBrowserClient().auth.resetPasswordForEmail(email, {
+      await createSupabaseBrowserClient(supabase).auth.resetPasswordForEmail(email, {
         redirectTo: redirectTo.toString(),
       });
     if (recoveryError) {

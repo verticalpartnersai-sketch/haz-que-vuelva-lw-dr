@@ -4,9 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Icon } from "@/components/icon";
-import { AdminContentUpload } from "@/features/admin/admin-content-upload";
+import {
+  AdminConnectedSection,
+  type AdminSection,
+} from "@/features/admin/admin-connected-section";
 import { useLocale } from "@/features/i18n/locale";
 import { useMockSession } from "@/features/shell/mock-session";
+import type { AdminWorkspace } from "@/modules/admin/application/load-admin-workspace";
 
 const sections = [
   { title: "Productos", detail: "Catálogo y permisos", icon: "library" },
@@ -17,9 +21,13 @@ const sections = [
   { title: "IA", detail: "Prompts y documentos", icon: "spark" },
 ] as const;
 
-type AdminSection = (typeof sections)[number]["title"];
-
-export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
+export function AdminPage({
+  contentConnected,
+  workspace,
+}: {
+  contentConnected: boolean;
+  workspace: AdminWorkspace | null;
+}) {
   const { role, setRole } = useMockSession();
   const { l, t } = useLocale();
   const [activeSection, setActiveSection] = useState<AdminSection>(
@@ -76,15 +84,15 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
         </div>
         <span
           className={`status-badge status-badge--${
-            contentConnected ? "available" : "locked"
+            workspace ? "available" : "locked"
           }`}
         >
-          <Icon name={contentConnected ? "check" : "settings"} />
-          {contentConnected
+          <Icon name={workspace ? "check" : "settings"} />
+          {workspace
             ? l(
-                "Contenido conectado",
-                "Conteúdo conectado",
-                "Content connected",
+                "Supabase conectado",
+                "Supabase conectado",
+                "Supabase connected",
               )
             : l("Solo mock", "Somente mock", "Mock only")}
         </span>
@@ -96,17 +104,17 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
         </h2>
         <div>
           <span>
-            {contentConnected
-              ? l("Catálogo", "Catálogo", "Catalog")
+            {workspace
+              ? l("Miembros", "Membros", "Members")
               : l("Productos mock", "Produtos mock", "Mock products")}
           </span>
-          <strong>{contentConnected ? "—" : "08"}</strong>
+          <strong>{workspace?.counts.members ?? "08"}</strong>
           <small>
-            {contentConnected
+            {workspace
               ? l(
-                  "Acceso por entitlement",
-                  "Acesso por entitlement",
-                  "Entitlement-based access",
+                  "Perfiles registrados",
+                  "Perfis registrados",
+                  "Registered profiles",
                 )
               : l(
                   "Sin catálogo conectado",
@@ -116,16 +124,34 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
           </small>
         </div>
         <div>
-          <span>{l("Miembros mock", "Membros mock", "Mock members")}</span>
-          <strong>—</strong>
+          <span>
+            {workspace
+              ? l("Accesos vigentes", "Acessos vigentes", "Active access")
+              : l("Miembros mock", "Membros mock", "Mock members")}
+          </span>
+          <strong>{workspace?.counts.activeAccess ?? "—"}</strong>
           <small>
-            {l("Sin base de datos", "Sem banco de dados", "No database")}
+            {workspace
+              ? l("Ledger efectivo", "Ledger efetivo", "Effective ledger")
+              : l("Sin base de datos", "Sem banco de dados", "No database")}
           </small>
         </div>
         <div>
-          <span>{l("Eventos mock", "Eventos mock", "Mock events")}</span>
-          <strong>00</strong>
-          <small>{l("Sin webhooks", "Sem webhooks", "No webhooks")}</small>
+          <span>
+            {workspace
+              ? l("Eventos recibidos", "Eventos recebidos", "Received events")
+              : l("Eventos mock", "Eventos mock", "Mock events")}
+          </span>
+          <strong>{workspace?.counts.events ?? "00"}</strong>
+          <small>
+            {workspace
+              ? l(
+                  `${workspace.counts.purchases} compras proyectadas`,
+                  `${workspace.counts.purchases} compras projetadas`,
+                  `${workspace.counts.purchases} projected purchases`,
+                )
+              : l("Sin webhooks", "Sem webhooks", "No webhooks")}
+          </small>
         </div>
       </section>
 
@@ -146,13 +172,13 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
         </div>
         <nav
           aria-label={l(
-            contentConnected
+            workspace
               ? "Módulos administrativos"
               : "Módulos administrativos simulados",
-            contentConnected
+            workspace
               ? "Módulos administrativos"
               : "Módulos administrativos simulados",
-            contentConnected
+            workspace
               ? "Administration modules"
               : "Simulated administration modules",
           )}
@@ -175,7 +201,7 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
                     <small>{section.detail}</small>
                   </span>
                   <span className="mock-chip">
-                    {contentConnected && section.title === "Contenido"
+                    {workspace
                       ? l("Conectado", "Conectado", "Connected")
                       : l("Estructura", "Estrutura", "Structure")}
                   </span>
@@ -186,10 +212,12 @@ export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
         </nav>
       </section>
 
-      {contentConnected && activeSection === "Contenido" ? (
-        <section className="surface-card">
-          <AdminContentUpload />
-        </section>
+      {workspace ? (
+        <AdminConnectedSection
+          activeSection={activeSection}
+          contentConnected={contentConnected}
+          workspace={workspace}
+        />
       ) : (
         <section aria-labelledby="activity-title" className="surface-card">
           <div className="card-heading">

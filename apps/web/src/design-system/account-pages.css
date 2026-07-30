@@ -222,6 +222,120 @@
   color: var(--error-text);
 }
 
+.admin-data-panel {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.admin-data-panel header h2 {
+  margin: var(--space-1) 0 0;
+}
+
+.admin-data-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.admin-data-row {
+  align-items: center;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  min-height: 70px;
+  padding: var(--space-4);
+}
+
+.admin-data-row > div {
+  display: grid;
+  min-width: 0;
+}
+
+.admin-data-row strong,
+.admin-data-row span,
+.admin-data-row small {
+  overflow-wrap: anywhere;
+}
+
+.admin-data-row small {
+  color: var(--text-muted);
+}
+
+.admin-connected-stack,
+.admin-operation-grid {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.admin-operation-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-operation-form {
+  align-content: start;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.admin-operation-form label:not(.admin-operation-check) {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.admin-operation-form label > span,
+.admin-operation-form > small {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.admin-operation-form input,
+.admin-operation-form select,
+.admin-operation-form textarea {
+  background: var(--surface-base);
+  border: 1px solid var(--border-interactive);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font: inherit;
+  min-height: 44px;
+  padding: var(--space-3);
+  width: 100%;
+}
+
+.admin-operation-form textarea {
+  min-height: 92px;
+  resize: vertical;
+}
+
+.admin-operation-check {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.admin-operation-check input {
+  min-height: auto;
+  width: auto;
+}
+
+.admin-operation-status {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.admin-operation-status--success {
+  color: var(--success-text);
+}
+
+.admin-operation-status--error {
+  color: var(--error-text);
+}
+
 @media (max-width: 767px) {
   .profile-layout,
   .admin-summary,
@@ -253,6 +367,19 @@
 
   .admin-modules li > button .mock-chip {
     grid-column: 2;
+    justify-self: start;
+  }
+
+  .admin-data-row {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-operation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-data-row .status-badge {
     justify-self: start;
   }
 }

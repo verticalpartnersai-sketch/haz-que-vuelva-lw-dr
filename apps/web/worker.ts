@@ -4,12 +4,16 @@
 import openNextWorker from "./.open-next/worker.js";
 
 type MemberWorkerEnvironment = Record<string, unknown> & {
+  MEMBER_APP_MODE?: string;
   FEATURE_AUTH?: string;
   FEATURE_CONTENT?: string;
   FEATURE_PAYMENTS?: string;
   MEMBER_APP_URL?: string;
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
+  NEXT_PUBLIC_SUPABASE_URL?: string;
   RESEND_API_KEY?: string;
   RESEND_FROM?: string;
+  SUPABASE_SECRET_KEY?: string;
   WORKER_INTERNAL_SECRET?: string;
 };
 
@@ -25,8 +29,60 @@ const responseHeaders = {
   "X-Frame-Options": "DENY",
 } as const;
 
+function contentSecurityPolicy(environment: MemberWorkerEnvironment) {
+  const connectSources = ["'self'"];
+  if (environment.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      const supabaseUrl = new URL(environment.NEXT_PUBLIC_SUPABASE_URL);
+      connectSources.push(supabaseUrl.origin);
+      if (supabaseUrl.protocol === "https:") {
+        connectSources.push(`wss://${supabaseUrl.host}`);
+      }
+    } catch {
+      // Environment validation returns 503 before the application is invoked.
+    }
+  }
+  return [
+    "base-uri 'self'",
+    `connect-src ${connectSources.join(" ")}`,
+    "default-src 'self'",
+    "font-src 'self' data:",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "img-src 'self' data: blob: https:",
+    "object-src 'none'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
+
+function hardenedHeaders(environment: MemberWorkerEnvironment) {
+  return {
+    ...responseHeaders,
+    "Content-Security-Policy": contentSecurityPolicy(environment),
+  };
+}
+
 function enabled(value: string | undefined) {
   return value === "true";
+}
+
+function productionConfigurationReady(
+  environment: MemberWorkerEnvironment,
+) {
+  if (environment.MEMBER_APP_MODE !== "production") return true;
+  return Boolean(
+    enabled(environment.FEATURE_AUTH) &&
+      enabled(environment.FEATURE_CONTENT) &&
+      environment.NEXT_PUBLIC_SUPABASE_URL &&
+      environment.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY &&
+      environment.SUPABASE_SECRET_KEY,
+  );
+}
+
+function requestId(request: Request) {
+  return request.headers.get("cf-ray") ?? crypto.randomUUID();
 }
 
 async function invokeInternalRoute(
@@ -97,6 +153,37 @@ const worker = {
     context: WorkerContext,
   ) {
     const requestUrl = new URL(request.url);
+    const currentRequestId = requestId(request);
+    if (requestUrl.pathname === "/healthz") {
+      const ready = productionConfigurationReady(environment);
+      return new Response(
+        JSON.stringify({
+          mode: environment.MEMBER_APP_MODE ?? "preview",
+          status: ready ? "ready" : "not_ready",
+        }),
+        {
+          headers: {
+            ...hardenedHeaders(environment),
+            "Content-Type": "application/json; charset=utf-8",
+            "X-Request-Id": currentRequestId,
+          },
+          status: ready ? 200 : 503,
+        },
+      );
+    }
+    if (!productionConfigurationReady(environment)) {
+      return new Response(
+        JSON.stringify({ code: "member_app_not_configured" }),
+        {
+          headers: {
+            ...hardenedHeaders(environment),
+            "Content-Type": "application/json; charset=utf-8",
+            "X-Request-Id": currentRequestId,
+          },
+          status: 503,
+        },
+      );
+    }
     const forwardedProtocol = request.headers.get("x-forwarded-proto");
     if (
       requestUrl.protocol === "http:" ||
@@ -104,7 +191,11 @@ const worker = {
     ) {
       requestUrl.protocol = "https:";
       return new Response(null, {
-        headers: { ...responseHeaders, Location: requestUrl.toString() },
+        headers: {
+          ...hardenedHeaders(environment),
+          Location: requestUrl.toString(),
+          "X-Request-Id": currentRequestId,
+        },
         status: 308,
       });
     }
@@ -115,9 +206,10 @@ const worker = {
       context,
     );
     const headers = new Headers(response.headers);
-    for (const [name, value] of Object.entries(responseHeaders)) {
+    for (const [name, value] of Object.entries(hardenedHeaders(environment))) {
       headers.set(name, value);
     }
+    headers.set("X-Request-Id", currentRequestId);
     return new Response(response.body, {
       headers,
       status: response.status,

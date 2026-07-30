@@ -14,13 +14,14 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 7. [Especificação frontend](FRONTEND-SPEC.md)
 8. [Implementação do frontend](FRONTEND-IMPLEMENTATION.md)
 9. [Implementação do backend](BACKEND-IMPLEMENTATION.md)
-10. [VUELVE IA](VUELVE-IA-FUTURE.md)
-11. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md)
-12. [Integrações](INTEGRATIONS-FUTURE.md)
-13. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
-14. [Pesquisa e fontes](RESEARCH.md)
-15. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
-16. [Checklist mestre](PROJECT-CHECKLIST.md)
+10. [Ativação do Supabase](SUPABASE-ROLLOUT.md)
+11. [VUELVE IA](VUELVE-IA-FUTURE.md)
+12. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md)
+13. [Integrações](INTEGRATIONS-FUTURE.md)
+14. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
+15. [Pesquisa e fontes](RESEARCH.md)
+16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
+17. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 

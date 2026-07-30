@@ -38,6 +38,117 @@
   margin-top: 28px;
 }
 
+.oauthButton {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+  border: 1px solid #4a474b;
+  border-radius: 12px;
+  color: #f7f4f2;
+  background: #1b1b1e;
+  font: inherit;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.oauthButton:hover {
+  border-color: #777176;
+  background: #232326;
+}
+
+.oauthButton:focus-visible {
+  outline: 2px solid #f02637;
+  outline-offset: 3px;
+}
+
+.oauthButton:disabled {
+  cursor: wait;
+  opacity: 0.58;
+}
+
+.googleMark {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: #141416;
+  background: #f7f4f2;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  color: #8f8a88;
+  font-size: 0.82rem;
+}
+
+.divider::before,
+.divider::after {
+  height: 1px;
+  flex: 1;
+  background: #343438;
+  content: "";
+}
+
+.divider + .form {
+  margin-top: 24px;
+}
+
+.mfaState {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.securityBadge {
+  width: fit-content;
+  padding: 7px 11px;
+  border: 1px solid rgb(80 211 144 / 38%);
+  border-radius: 999px;
+  color: #a8f2ca;
+  background: rgb(31 132 80 / 18%);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.qrCode {
+  width: min(100%, 260px);
+  margin-inline: auto;
+  border: 10px solid #fff;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.mfaSecret {
+  color: #b8b3b1;
+  font-size: 0.86rem;
+}
+
+.mfaSecret summary {
+  cursor: pointer;
+}
+
+.mfaSecret code {
+  display: block;
+  overflow-wrap: anywhere;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #f7f4f2;
+  background: #080809;
+}
+
 .field {
   display: grid;
   gap: 8px;

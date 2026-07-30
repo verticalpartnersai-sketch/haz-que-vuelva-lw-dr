@@ -8,3 +8,13 @@ export function requireReauthenticationTokenHash(value: string) {
   }
   return value;
 }
+
+export function throwIfAdminReauthenticationError(
+  error: { code?: string } | null,
+) {
+  if (error?.code === "42501") {
+    throw new AdminReauthenticationRequiredError(
+      "admin_reauthentication_required",
+    );
+  }
+}

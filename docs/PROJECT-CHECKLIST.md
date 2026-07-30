@@ -221,7 +221,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar recuperação e reset de senha pelo fluxo PKCE.
 - [x] Implementar troca de e-mail segura com prova da senha atual, confirmação
   dupla, sincronização do perfil e auditoria sem registrar os endereços.
-- [x] Registrar decisão de não exigir MFA no primeiro release e o risco aceito.
+- [x] Exigir MFA TOTP `aal2` para administração no BFF, nas políticas
+  restritivas e nas RPCs sensíveis.
+- [x] Implementar Google OAuth por PKCE para contas convidadas, desligado por
+  padrão e sem reabrir cadastro público.
 - [x] Implementar reautenticação administrativa e controles compensatórios em
   todas as mutações críticas.
   - [x] Proteger a publicação de PDF com prova de senha, cookie HttpOnly,
@@ -230,6 +233,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   - [x] Remover escrita direta de catálogo, ofertas e prompts; concessão,
     revogação, transferência e publicação de prompt só executam por RPC que
     consome a mesma credencial curta na transação.
+  - [x] Conectar painel administrativo real para membros, convites, catálogo,
+    ofertas, acessos, compras, conteúdo, prompts e auditoria.
 
 ### Catálogo, conteúdo e acesso
 
@@ -274,7 +279,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Restringir recuperação, persistência e RLS pelo `member_id` autenticado.
 - [x] Tratar RAG como dado sem autoridade no prompt do provider.
 - [x] Versionar, publicar e reverter prompt por RPC administrativa auditada.
-- [ ] Conectar a gestão de prompts ao painel administrativo.
+- [x] Conectar a gestão de prompts ao painel administrativo, com leitura real,
+  rascunho e publicação protegida por admin AAL2 e reautenticação.
 - [ ] Permitir que admin defina e publique limites de uso e custo.
 - [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
 - [ ] Implementar limites, telemetria e falhas seguras.
@@ -294,7 +300,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 39 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 54 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
@@ -336,7 +342,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Criar smoke sintético recorrente para a superfície pública do marketing.
 - [ ] Configurar o checkout real no CTA do quiz.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
-- [ ] Criar o Worker da área de membros, suas variáveis e seus segredos.
+- [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
+  segredos obrigatórios e domínio exclusivo de produção.
+- [ ] Cadastrar os valores reais das variáveis e segredos no Worker da área de
+  membros. O inventário remoto continua vazio.
 - [ ] Executar smoke tests remotos da área de membros sem domínio customizado.
 - [ ] Configurar Service Binding privado entre BFF e agente.
 - [ ] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
@@ -347,6 +356,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Testar espanhol, desktop e celular.
 - [ ] Criar admin inicial pelo comando privado e revisar novamente a decisão
   de MFA antes da abertura pública.
+- [x] Exigir Auth real no modo `production`, impedir catálogo/sessão mock,
+  proteger também `/`, publicar health check sem dados sensíveis, request ID e
+  CSP restrita ao próprio app e ao projeto Supabase configurado.
 
 ## Critérios finais de aceite
 

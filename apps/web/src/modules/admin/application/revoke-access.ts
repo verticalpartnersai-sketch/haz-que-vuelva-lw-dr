@@ -1,7 +1,10 @@
 import { requireAdmin } from "@/modules/identity/application/current-identity";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
-import { requireReauthenticationTokenHash } from "./reauthenticated-operation";
+import {
+  requireReauthenticationTokenHash,
+  throwIfAdminReauthenticationError,
+} from "./reauthenticated-operation";
 
 export async function revokeAccess(input: {
   grantId: string;
@@ -24,6 +27,7 @@ export async function revokeAccess(input: {
       ),
     },
   );
+  throwIfAdminReauthenticationError(error);
   if (error) throw new Error(`Manual revocation failed: ${error.code}`);
   return data as string;
 }

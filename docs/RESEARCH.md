@@ -50,9 +50,9 @@ Pesquisa realizada via Exa MCP em 24 de julho de 2026.
   sustenta sessão SSR por cookies; a página informa que `@supabase/ssr` está em
   beta e pode sofrer breaking changes.
 
-Decisão histórica: Auth SSR + RLS permanecem. MFA como gate obrigatório foi
-posteriormente removido por decisão explícita e está registrado como risco
-aceito no Gate 5.
+Decisão histórica: Auth SSR + RLS permanecem. A dispensa inicial de MFA foi
+substituída em 30 de julho de 2026: contas administrativas agora exigem TOTP e
+sessão `aal2` no BFF, nas políticas restritivas e no consumo da reautenticação.
 
 ### Perfect Pay
 
@@ -592,3 +592,29 @@ a um worker dedicado com mais memória; a entrega jamais deve cair para o PDF
 original sem marca. O Worker customizado da área de membros chama as outboxes a
 cada minuto e não faz chamadas quando a feature ou as credenciais associadas
 estão desligadas.
+
+## Registro de fontes — Gate 5, Auth, OAuth e MFA
+
+Pesquisa realizada em 30 de julho de 2026 via Exa MCP, usando documentação
+oficial do Supabase. O backend gratuito do Agent Reach também foi consultado,
+mas respondeu `HTTP 429`; nenhuma decisão dependeu desse resultado incompleto.
+
+- [Supabase — cliente SSR](https://supabase.com/docs/guides/auth/server-side/creating-a-client):
+  documenta clientes browser/server por cookies e recomenda `getClaims()` para
+  proteger dados no servidor, sem confiar em `getSession()` nesse limite.
+- [Supabase — Google OAuth](https://supabase.com/docs/guides/auth/social-login/auth-google):
+  documenta `signInWithOAuth`, callback autorizado e troca do código PKCE por
+  sessão no servidor.
+- [Supabase — MFA](https://supabase.com/docs/guides/auth/auth-mfa):
+  documenta TOTP, níveis `aal1`/`aal2` e aplicação do nível de garantia também
+  por RLS.
+- [Supabase — vinculação de identidades](https://supabase.com/docs/guides/auth/auth-identity-linking):
+  documenta a vinculação automática de identidades com o mesmo e-mail
+  verificado.
+
+Decisão: cadastro público permanece desabilitado. Google OAuth é opt-in por
+configuração e serve para contas previamente convidadas; o callback preserva
+somente um caminho interno seguro. Administração exige `aal2` sem feature flag.
+Cada mutação sensível ainda exige a senha, recebe uma credencial HttpOnly curta
+e a consome uma única vez dentro da transação PostgreSQL. A função de consumo
+também exige `aal2`, impedindo bypass por chamada direta da Data API.

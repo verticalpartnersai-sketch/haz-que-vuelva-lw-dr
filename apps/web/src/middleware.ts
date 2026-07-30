@@ -8,15 +8,33 @@ const protectedPrefixes = [
   "/administracion",
 ];
 
+function isProtectedPath(pathname: string) {
+  return (
+    pathname === "/" ||
+    protectedPrefixes.some(
+      (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+    )
+  );
+}
+
 export async function middleware(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   const authEnabled = process.env.FEATURE_AUTH === "true";
+  const contentEnabled = process.env.FEATURE_CONTENT === "true";
+  const productionMode = process.env.MEMBER_APP_MODE === "production";
+  if (
+    productionMode &&
+    (!authEnabled || !contentEnabled || !url || !key)
+  ) {
+    return NextResponse.json(
+      { code: "member_app_not_configured" },
+      { status: 503 },
+    );
+  }
   if (!authEnabled) return NextResponse.next({ request });
 
-  const isProtected = protectedPrefixes.some((prefix) =>
-    request.nextUrl.pathname.startsWith(prefix),
-  );
+  const isProtected = isProtectedPath(request.nextUrl.pathname);
   if ((!url || !key) && isProtected) {
     return NextResponse.json(
       { code: "authentication_unavailable" },

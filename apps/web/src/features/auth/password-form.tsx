@@ -3,11 +3,20 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
-import { createSupabaseBrowserClient } from "@/server/supabase/browser-client";
+import {
+  createSupabaseBrowserClient,
+  type SupabaseBrowserConfiguration,
+} from "@/server/supabase/browser-client";
 
 import styles from "./auth-panel.module.css";
 
-export function PasswordForm({ mode = "create" }: { mode?: "create" | "reset" }) {
+export function PasswordForm({
+  mode = "create",
+  supabase,
+}: {
+  mode?: "create" | "reset";
+  supabase: SupabaseBrowserConfiguration;
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
@@ -25,7 +34,7 @@ export function PasswordForm({ mode = "create" }: { mode?: "create" | "reset" })
       return;
     }
     const { error: updateError } =
-      await createSupabaseBrowserClient().auth.updateUser({ password });
+      await createSupabaseBrowserClient(supabase).auth.updateUser({ password });
     if (updateError) {
       setError("No pudimos guardar tu contraseña. Solicita un nuevo enlace.");
       setPending(false);

@@ -7,13 +7,17 @@ const booleanString = z
   .default("false")
   .transform((value) => value === "true");
 
+const runtimeMode = z.enum(["preview", "production"]).default("preview");
+
 const environmentSchema = z
   .object({
+    MEMBER_APP_MODE: runtimeMode,
     FEATURE_AUTH: booleanString,
     FEATURE_CONTENT: booleanString,
     FEATURE_PAYMENTS: booleanString,
     FEATURE_ADMIN: booleanString,
     FEATURE_VUELVE_IA: booleanString,
+    NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: booleanString,
     NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
     SUPABASE_SECRET_KEY: z.string().min(1).optional(),
@@ -56,7 +60,8 @@ const environmentSchema = z
       });
     }
     if (
-      (environment.FEATURE_CONTENT ||
+      (environment.FEATURE_ADMIN ||
+        environment.FEATURE_CONTENT ||
         environment.FEATURE_PAYMENTS ||
         environment.FEATURE_VUELVE_IA) &&
       !environment.SUPABASE_SECRET_KEY
@@ -64,7 +69,16 @@ const environmentSchema = z
       context.addIssue({
         code: "custom",
         message:
-          "Content, payments and VUELVE IA require a server-only SUPABASE_SECRET_KEY",
+          "Admin, content, payments and VUELVE IA require a server-only SUPABASE_SECRET_KEY",
+      });
+    }
+    if (
+      environment.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED &&
+      (!environment.FEATURE_AUTH || !authConfigured)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "Google OAuth requires FEATURE_AUTH and Supabase public keys",
       });
     }
     if (
@@ -90,13 +104,42 @@ const environmentSchema = z
           "Payments require PERFECT_PAY_WEBHOOK_TOKEN, NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SECRET_KEY",
       });
     }
+    if (
+      environment.MEMBER_APP_MODE === "production" &&
+      (!environment.FEATURE_AUTH || !environment.FEATURE_CONTENT)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Production mode requires FEATURE_AUTH=true and FEATURE_CONTENT=true; mock member data is forbidden",
+      });
+    }
   });
 
 export type Environment = z.infer<typeof environmentSchema>;
 
+export function supabaseBrowserConfiguration(config: Environment) {
+  if (
+    !config.NEXT_PUBLIC_SUPABASE_URL ||
+    !config.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  ) {
+    throw new Error("Supabase browser configuration is missing");
+  }
+  return {
+    publishableKey: config.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    url: config.NEXT_PUBLIC_SUPABASE_URL,
+  };
+}
+
+export function parseEnvironment(
+  input: Record<string, string | undefined>,
+): Environment {
+  return environmentSchema.parse(input);
+}
+
 let cachedEnvironment: Environment | undefined;
 
 export function environment() {
-  cachedEnvironment ??= environmentSchema.parse(process.env);
+  cachedEnvironment ??= parseEnvironment(process.env);
   return cachedEnvironment;
 }

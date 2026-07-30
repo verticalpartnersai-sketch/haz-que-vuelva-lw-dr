@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { requireReauthenticationTokenHash } from "../src/modules/admin/application/reauthenticated-operation.ts";
+import {
+  requireReauthenticationTokenHash,
+  throwIfAdminReauthenticationError,
+} from "../src/modules/admin/application/reauthenticated-operation.ts";
 import { AdminReauthenticationRequiredError } from "../src/modules/identity/application/admin-reauthentication.ts";
 
 test("as operações administrativas rejeitam hash ausente ou malformado", () => {
@@ -11,6 +14,13 @@ test("as operações administrativas rejeitam hash ausente ou malformado", () =>
   assert.throws(
     () => requireReauthenticationTokenHash("token-visivel"),
     AdminReauthenticationRequiredError,
+  );
+  assert.throws(
+    () => throwIfAdminReauthenticationError({ code: "42501" }),
+    AdminReauthenticationRequiredError,
+  );
+  assert.doesNotThrow(() =>
+    throwIfAdminReauthenticationError({ code: "23505" }),
   );
 });
 
@@ -82,4 +92,22 @@ test("os casos de uso chamam somente as RPCs protegidas", () => {
     assert.match(source, /_with_reauthentication/);
     assert.match(source, /p_reauth_token_hash/);
   }
+});
+
+test("AAL2 é exigido no banco e não apenas no frontend", () => {
+  const migration = readFileSync(
+    new URL(
+      "../../../supabase/migrations/202607300019_admin_mfa_and_workspace_operations.sql",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(
+    migration,
+    /create or replace function public\.consume_admin_reauthentication/,
+  );
+  assert.match(migration, /auth\.jwt\(\) ->> 'aal'\) <> 'aal2'/);
+  assert.match(migration, /raise exception 'admin_mfa_required'/);
+  assert.match(migration, /as restrictive/g);
 });

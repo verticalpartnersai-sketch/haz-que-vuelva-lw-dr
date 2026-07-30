@@ -1,7 +1,10 @@
 import { requireAdmin } from "@/modules/identity/application/current-identity";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
-import { requireReauthenticationTokenHash } from "./reauthenticated-operation";
+import {
+  requireReauthenticationTokenHash,
+  throwIfAdminReauthenticationError,
+} from "./reauthenticated-operation";
 
 export async function createAiPromptDraft(
   prompt: string,
@@ -23,6 +26,7 @@ export async function createAiPromptDraft(
       ),
     },
   );
+  throwIfAdminReauthenticationError(error);
   if (error) throw new Error(`Prompt draft failed: ${error.code}`);
   return data as string;
 }
@@ -42,5 +46,6 @@ export async function publishAiPrompt(
       ),
     },
   );
+  throwIfAdminReauthenticationError(error);
   if (error) throw new Error(`Prompt publication failed: ${error.code}`);
 }

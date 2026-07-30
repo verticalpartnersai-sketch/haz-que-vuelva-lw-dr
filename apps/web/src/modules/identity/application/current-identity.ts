@@ -9,15 +9,19 @@ export type CurrentIdentity = {
   email: string;
   displayName: string | null;
   role: "member" | "admin";
+  assuranceLevel: "aal1" | "aal2";
 };
 
 export class AuthenticationRequiredError extends Error {}
+export class AdminMfaRequiredError extends Error {}
 export class ProfileUnavailableError extends Error {}
 
 export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
   const client = await createSupabaseServerClient();
   const { data: claimsData, error: claimsError } = await client.auth.getClaims();
-  const subject = claimsData?.claims?.sub;
+  const claims = claimsData?.claims;
+  const subject = claims?.sub;
+  const assuranceLevel = claims?.aal === "aal2" ? "aal2" : "aal1";
   if (claimsError || typeof subject !== "string") {
     throw new AuthenticationRequiredError("Authentication required");
   }
@@ -32,6 +36,7 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
   }
 
   return {
+    assuranceLevel,
     id: profile.id,
     email: profile.email,
     displayName: profile.display_name,
@@ -43,6 +48,9 @@ export async function requireAdmin() {
   const identity = await currentIdentity();
   if (identity.role !== "admin") {
     throw new AuthenticationRequiredError("Admin role required");
+  }
+  if (identity.assuranceLevel !== "aal2") {
+    throw new AdminMfaRequiredError("Admin MFA verification required");
   }
   return identity;
 }

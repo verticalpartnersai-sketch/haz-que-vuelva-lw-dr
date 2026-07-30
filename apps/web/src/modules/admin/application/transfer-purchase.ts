@@ -1,7 +1,10 @@
 import { requireAdmin } from "@/modules/identity/application/current-identity";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
-import { requireReauthenticationTokenHash } from "./reauthenticated-operation";
+import {
+  requireReauthenticationTokenHash,
+  throwIfAdminReauthenticationError,
+} from "./reauthenticated-operation";
 
 export async function transferPurchase(input: {
   purchaseId: string;
@@ -26,5 +29,6 @@ export async function transferPurchase(input: {
       ),
     },
   );
+  throwIfAdminReauthenticationError(error);
   if (error) throw new Error(`Purchase transfer failed: ${error.code}`);
 }

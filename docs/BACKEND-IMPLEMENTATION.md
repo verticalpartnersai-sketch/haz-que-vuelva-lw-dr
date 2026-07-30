@@ -51,7 +51,6 @@ Ainda não implementado ou ativado:
 - projeto Supabase cloud e aplicação das migrações;
 - projeto e remetente reais do Resend;
 - mapping real de ofertas Perfect Pay;
-- painel admin conectado;
 - ingestão/indexação administrativa de documentos;
 - rate limiting distribuído, circuit breaker e telemetria de custo;
 - textos jurídicos, retenção final, deploy e smoke tests externos.
@@ -102,12 +101,19 @@ versão por produto em uma RPC auditada; se a transação de metadados falhar, o
 objeto recém-enviado é removido. Falha dessa compensação sobe como incidente,
 sem ativar a versão incompleta.
 
-As demais operações administrativas críticas seguem o mesmo limite. A sessão
-admin comum pode ler as projeções necessárias, mas não escreve catálogo,
-ofertas ou prompts diretamente. Conceder ou revogar acesso, transferir compra e
-criar ou publicar prompt passa por wrappers que consomem a credencial curta na
-mesma transação. Os módulos ainda não conectados ao painel permanecem, portanto,
-inoperantes sem uma reautenticação emitida pelo BFF.
+As demais operações administrativas críticas seguem o mesmo limite. O painel
+conectado lê projeções reais de catálogo, perfis, ledger, compras, eventos,
+prompts e auditoria. A sessão admin não escreve catálogo, ofertas ou prompts
+diretamente. Convite, concessão, revogação, transferência, atualização de
+produto, mapeamento Perfect Pay e criação/publicação de prompt passam pelo BFF,
+exigem `aal2`, prova da senha e wrappers que consomem a credencial curta na
+mesma transação.
+
+O login aceita senha e, quando habilitado, Google OAuth por PKCE. Cadastro
+público continua fechado; contas entram por convite. A administração exige
+TOTP `aal2` e essa regra existe em três limites: `requireAdmin`, políticas RLS
+restritivas e `consume_admin_reauthentication`. Assim, esconder a interface ou
+interceptar somente a rota não é tratado como autorização.
 
 No perfil conectado, a troca de e-mail passa pelo BFF e exige sessão válida,
 mesma origem, payload limitado e a senha atual. O Supabase envia confirmação
@@ -157,7 +163,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 44 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 54 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de
@@ -165,6 +171,6 @@ Uma flag não substitui autorização; ela apenas controla rollout.
   compatível e smoke test antes de receber tráfego.
 - `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - migrações e testes pgTAP foram versionados, mas ainda não executados porque
-  não existe projeto Supabase de desenvolvimento vinculado e o Docker local
-  não está ativo.
+  não existe projeto Supabase de desenvolvimento vinculado e esta máquina não
+  possui Docker, OrbStack, Colima ou Podman.
 - nenhuma chamada real a Perfect Pay, Resend, Gemini ou Supabase foi feita.

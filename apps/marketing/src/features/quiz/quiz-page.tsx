@@ -493,9 +493,9 @@ export function QuizPage() {
       <audio
         aria-hidden="true"
         loop
-        preload="auto"
+        preload="metadata"
         ref={ambientAudioRef}
-        src="/audio/ambient-sound.mp3"
+        src="/audio/ambient-sound.mp3?v=1"
       />
       <a className="skip-link" href="#quiz-content">
         {l("Ir al diagnóstico", "Ir para o diagnóstico", "Skip to diagnosis")}

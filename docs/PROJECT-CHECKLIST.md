@@ -312,6 +312,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   headers defensivos do marketing.
 - [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de
   marketing e comprovar a resposta pública.
+- [x] Criar smoke sintético recorrente para a superfície pública do marketing.
 - [ ] Configurar o checkout real no CTA do quiz.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [ ] Criar o Worker da área de membros, suas variáveis e seus segredos.

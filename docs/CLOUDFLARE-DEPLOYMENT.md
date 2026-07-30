@@ -56,6 +56,12 @@ validou os quatro jobs: marketing, área de membros, Worker do agente e agente
 Python. A promoção do Worker continua deliberadamente separada do CI enquanto
 Workers Builds não estiver conectado com suas permissões próprias.
 
+O workflow `Production smoke` executa a cada 30 minutos e também sob demanda.
+Ele valida o redirecionamento HTTPS, a página do quiz, headers defensivos,
+idioma padrão, metadata, sitemap, manifesto e assets críticos. Falhas ficam
+registradas no GitHub Actions; canais externos de alerta ainda precisam ser
+configurados antes do lançamento comercial.
+
 ## Artefatos versionados
 
 ### Marketing e área de membros
@@ -257,6 +263,8 @@ respectivo serviço estejam aprovados.
 - [x] áudio preserva duração e volume, permanece mudo antes do CTA inicial,
   começa automaticamente no gesto que inicia o quiz, mantém loop e foi
   reduzido de 5,09 MB para 2,04 MB.
+- [x] smoke sintético versionado cobre a superfície pública e roda a cada
+  30 minutos no GitHub Actions.
 
 ### Área de membros
 

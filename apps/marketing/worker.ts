@@ -12,6 +12,20 @@ const responseHeaders = {
 
 const worker = {
   async fetch(request: Request, environment: unknown, context: unknown) {
+    const requestUrl = new URL(request.url);
+
+    if (requestUrl.protocol === "http:") {
+      requestUrl.protocol = "https:";
+
+      return new Response(null, {
+        headers: {
+          ...responseHeaders,
+          Location: requestUrl.toString(),
+        },
+        status: 308,
+      });
+    }
+
     const response = await openNextWorker.fetch(
       request,
       environment,

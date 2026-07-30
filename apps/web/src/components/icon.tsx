@@ -18,6 +18,7 @@ import {
   PaperPlaneTilt,
   SignOut,
   Sparkle,
+  UploadSimple,
   User,
   X,
 } from "@phosphor-icons/react/dist/ssr";
@@ -45,6 +46,7 @@ export type IconName =
   | "send"
   | "settings"
   | "spark"
+  | "upload"
   | "user";
 
 type IconProps = Omit<PhosphorIconProps, "name"> & {
@@ -72,6 +74,7 @@ const icons: Record<IconName, ComponentType<PhosphorIconProps>> = {
   send: PaperPlaneTilt,
   settings: GearSix,
   spark: Sparkle,
+  upload: UploadSimple,
   user: User,
 };
 

@@ -20,6 +20,9 @@ Implementado nesta fundação:
 - login, confirmação de convite, definição de senha e logout atrás de flag;
 - entrega de conteúdo com fila idempotente, watermark individual, URL assinada
   curta e auditoria de download;
+- publicação administrativa do PDF original em bucket privado, com validação
+  de MIME, assinatura, parse, páginas, tamanho, SHA-256, versionamento
+  transacional e limpeza compensatória;
 - Cron Trigger por minuto para pagamento, convite e cópia individual, sempre
   condicionado às respectivas flags e credenciais;
 - schema inicial de VUELVE IA com pgvector 768;
@@ -40,7 +43,6 @@ Ainda não implementado ou ativado:
 - troca segura de e-mail;
 - projeto e remetente reais do Resend;
 - mapping real de ofertas Perfect Pay;
-- upload administrativo validado dos PDFs reais;
 - painel admin conectado;
 - ingestão/indexação administrativa de documentos;
 - rate limiting distribuído, circuit breaker e telemetria de custo;
@@ -72,6 +74,13 @@ conta. Produto sem entitlement permanece bloqueado, inclusive quando a URL de
 detalhe é digitada diretamente. `vuelve_ia` autorizado encaminha para o chat,
 não para o leitor de PDF. O segmento autenticado é sempre dinâmico para que
 flags e entitlements de runtime não sejam congelados durante o build.
+
+O módulo `Contenido` é a primeira operação administrativa conectada. A rota
+exige flags de admin e conteúdo, origem do app, sessão com papel `admin` e RLS.
+O arquivo é validado antes de tocar o Storage. A publicação cria uma nova
+versão por produto em uma RPC auditada; se a transação de metadados falhar, o
+objeto recém-enviado é removido. Falha dessa compensação sobe como incidente,
+sem ativar a versão incompleta.
 
 ## Módulos Next.js
 
@@ -113,7 +122,7 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 23 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 30 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Icon } from "@/components/icon";
+import { AdminContentUpload } from "@/features/admin/admin-content-upload";
 import { useLocale } from "@/features/i18n/locale";
 import { useMockSession } from "@/features/shell/mock-session";
 
@@ -18,7 +19,7 @@ const sections = [
 
 type AdminSection = (typeof sections)[number]["title"];
 
-export function AdminPage() {
+export function AdminPage({ contentConnected }: { contentConnected: boolean }) {
   const { role, setRole } = useMockSession();
   const { l, t } = useLocale();
   const [activeSection, setActiveSection] = useState<AdminSection>(
@@ -73,9 +74,19 @@ export function AdminPage() {
           </h1>
           <p>{t("admin.description")}</p>
         </div>
-        <span className="status-badge status-badge--locked">
-          <Icon name="settings" />
-          {l("Solo mock", "Somente mock", "Mock only")}
+        <span
+          className={`status-badge status-badge--${
+            contentConnected ? "available" : "locked"
+          }`}
+        >
+          <Icon name={contentConnected ? "check" : "settings"} />
+          {contentConnected
+            ? l(
+                "Contenido conectado",
+                "Conteúdo conectado",
+                "Content connected",
+              )
+            : l("Solo mock", "Somente mock", "Mock only")}
         </span>
       </header>
 
@@ -84,14 +95,24 @@ export function AdminPage() {
           {l("Resumen simulado", "Resumo simulado", "Simulated summary")}
         </h2>
         <div>
-          <span>{l("Productos mock", "Produtos mock", "Mock products")}</span>
-          <strong>08</strong>
+          <span>
+            {contentConnected
+              ? l("Catálogo", "Catálogo", "Catalog")
+              : l("Productos mock", "Produtos mock", "Mock products")}
+          </span>
+          <strong>{contentConnected ? "—" : "08"}</strong>
           <small>
-            {l(
-              "Sin catálogo conectado",
-              "Sem catálogo conectado",
-              "No catalog connected",
-            )}
+            {contentConnected
+              ? l(
+                  "Acceso por entitlement",
+                  "Acesso por entitlement",
+                  "Entitlement-based access",
+                )
+              : l(
+                  "Sin catálogo conectado",
+                  "Sem catálogo conectado",
+                  "No catalog connected",
+                )}
           </small>
         </div>
         <div>
@@ -125,9 +146,15 @@ export function AdminPage() {
         </div>
         <nav
           aria-label={l(
-            "Módulos administrativos simulados",
-            "Módulos administrativos simulados",
-            "Simulated administration modules",
+            contentConnected
+              ? "Módulos administrativos"
+              : "Módulos administrativos simulados",
+            contentConnected
+              ? "Módulos administrativos"
+              : "Módulos administrativos simulados",
+            contentConnected
+              ? "Administration modules"
+              : "Simulated administration modules",
           )}
         >
           <ul>
@@ -148,7 +175,9 @@ export function AdminPage() {
                     <small>{section.detail}</small>
                   </span>
                   <span className="mock-chip">
-                    {l("Estructura", "Estrutura", "Structure")}
+                    {contentConnected && section.title === "Contenido"
+                      ? l("Conectado", "Conectado", "Connected")
+                      : l("Estructura", "Estrutura", "Structure")}
                   </span>
                 </button>
               </li>
@@ -157,36 +186,42 @@ export function AdminPage() {
         </nav>
       </section>
 
-      <section aria-labelledby="activity-title" className="surface-card">
-        <div className="card-heading">
-          <div>
-            <span className="section-kicker">
-              {l("Actividad", "Atividade", "Activity")}
-            </span>
-            <h2 id="activity-title">
-              {activeSection} ·{" "}
-              {l(
-                "sin datos conectados",
-                "sem dados conectados",
-                "no connected data",
-              )}
-            </h2>
+      {contentConnected && activeSection === "Contenido" ? (
+        <section className="surface-card">
+          <AdminContentUpload />
+        </section>
+      ) : (
+        <section aria-labelledby="activity-title" className="surface-card">
+          <div className="card-heading">
+            <div>
+              <span className="section-kicker">
+                {l("Actividad", "Atividade", "Activity")}
+              </span>
+              <h2 id="activity-title">
+                {activeSection} ·{" "}
+                {l(
+                  "sin datos conectados",
+                  "sem dados conectados",
+                  "no connected data",
+                )}
+              </h2>
+            </div>
           </div>
-        </div>
-        <div
-          className="table-skeleton"
-          aria-label={l(
-            "Tabla administrativa simulada",
-            "Tabela administrativa simulada",
-            "Simulated administration table",
-          )}
-        >
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-      </section>
+          <div
+            className="table-skeleton"
+            aria-label={l(
+              "Tabla administrativa simulada",
+              "Tabela administrativa simulada",
+              "Simulated administration table",
+            )}
+          >
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

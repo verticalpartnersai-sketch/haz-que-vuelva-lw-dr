@@ -312,6 +312,8 @@ respectivo serviço estejam aprovados.
 - cadastrar secrets e variáveis da área de membros e do agente;
 - aplicar e validar `202607300013_content_watermark_delivery.sql` em projeto de
   homologação;
+- aplicar e validar `202607300014_admin_content_publish.sql` antes de publicar
+  qualquer PDF pelo painel;
 - confirmar plano de Workers com CPU suficiente para `pdf-lib` e medir um PDF
   real antes de ligar `FEATURE_CONTENT`;
 - construir e executar a imagem Docker localmente ou em CI;

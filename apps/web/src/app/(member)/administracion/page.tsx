@@ -8,12 +8,17 @@ import { environment } from "@/server/config/environment";
 export const metadata: Metadata = { title: "Administración" };
 
 export default async function Page() {
-  if (environment().FEATURE_AUTH) {
+  const config = environment();
+  if (config.FEATURE_AUTH) {
     try {
       await requireAdmin();
     } catch {
       redirect("/");
     }
   }
-  return <AdminPage />;
+  return (
+    <AdminPage
+      contentConnected={config.FEATURE_ADMIN && config.FEATURE_CONTENT}
+    />
+  );
 }

@@ -127,7 +127,10 @@ O entitlement é a decisão canônica de acesso a uma capacidade ou produto.
 ## Arquivos
 
 - Buckets Supabase privados, sem política de leitura direta dos originais.
-- Upload administrativo com tipo e tamanho permitidos.
+- Upload administrativo exige origem do app e papel `admin`; valida MIME,
+  assinatura PDF, parse, criptografia, páginas, tamanho e SHA-256.
+- Cada publicação cria versão transacional auditada. Falha de metadados remove
+  o objeto recém-enviado antes de devolver erro.
 - Download após autorização do objeto e do membro.
 - URL assinada curta e específica.
 - Primeiro acesso enfileira uma cópia individual e responde `202` sem expor o

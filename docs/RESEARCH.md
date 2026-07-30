@@ -517,6 +517,15 @@ apenas uma URL assinada curta depois que a linha de auditoria existe. O fluxo
 rejeita fontes que não sejam PDF e limita o tamanho processado no Worker para
 não transformar uma requisição em consumo de memória sem limite.
 
+Para a publicação administrativa, o navegador envia `multipart/form-data` ao
+BFF autenticado. O BFF rejeita origem divergente, MIME, assinatura, parse,
+criptografia, contagem de páginas e tamanho inválidos antes do upload. A
+chamada padrão grava `ArrayBuffer` com `upsert=false`; a RPC versiona os
+metadados e audita a ação. Se a RPC falhar, o BFF remove o objeto recém-criado.
+O limite operacional de 12 MiB é mais alto que a faixa recomendada de 6 MB
+para upload padrão pelo Supabase; por isso precisa ser medido com o PDF real
+em homologação antes de ativar a feature.
+
 ### Mutação do PDF
 
 - [`pdf-lib` — `PDFDocument`](https://pdf-lib.js.org/docs/api/classes/pdfdocument):

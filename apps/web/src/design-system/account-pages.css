@@ -165,6 +165,38 @@
   height: 48px;
 }
 
+.admin-content-upload .card-heading {
+  align-items: flex-start;
+}
+
+.admin-content-upload__file {
+  grid-column: 1 / -1;
+}
+
+.admin-content-upload input[type="file"] {
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+.admin-content-upload input[type="file"]::file-selector-button {
+  background: var(--surface-hover);
+  border: 1px solid var(--border-interactive);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  margin-right: var(--space-3);
+  min-height: 36px;
+  padding: 0 var(--space-4);
+}
+
+.admin-content-upload .form-status--success {
+  color: var(--success-text);
+}
+
+.admin-content-upload .form-status--error {
+  color: var(--error-text);
+}
+
 @media (max-width: 767px) {
   .profile-layout,
   .admin-summary,

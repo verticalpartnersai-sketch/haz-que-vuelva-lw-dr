@@ -135,6 +135,11 @@ O gate frontend terá apenas estrutura estática para validar arquitetura de
 informação. Operações, formulários conectados, upload e dados reais ficam
 proibidos até o backend ser aprovado.
 
+Após a aprovação do backend, `Contenidos y archivos` passa a permitir
+publicação validada somente quando `FEATURE_AUTH`, `FEATURE_ADMIN` e
+`FEATURE_CONTENT` estão ligadas e a sessão possui papel `admin`. Os demais
+módulos continuam sem mutações até seus gates específicos.
+
 Navegação secundária prevista:
 
 1. `Resumen`

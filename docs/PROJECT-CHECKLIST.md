@@ -232,7 +232,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   modo conectado.
 - [x] Encaminhar `vuelve_ia` autorizado ao chat, sem tratá-lo como PDF.
 - [x] Criar schema inicial de conteúdo e regras de leitura.
-- [ ] Fazer upload privado validado.
+- [x] Fazer upload privado validado com tipo, assinatura, parse, páginas,
+  tamanho, hash, versão e rollback do objeto em falha de metadados.
+- [x] Conectar a publicação do PDF ao módulo `Contenido` do painel
+  administrativo atrás de `FEATURE_ADMIN` e `FEATURE_CONTENT`.
 - [x] Gerar URL temporária somente para cópia marcada após autorização.
 - [x] Implementar fila, geração idempotente e retry da cópia com watermark.
 - [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
@@ -282,7 +285,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 23 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 30 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

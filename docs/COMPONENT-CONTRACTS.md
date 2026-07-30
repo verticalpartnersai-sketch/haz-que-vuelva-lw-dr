@@ -322,11 +322,17 @@ um modal. `unknown` nunca deve piscar como disponível.
 
 ### `AdminScaffold`
 
-- Só existe no cenário mock `admin`.
+- Só existe para o cenário mock `admin` ou para uma sessão real validada como
+  `admin`.
 - Contém navegação secundária para produtos, conteúdos/arquivos, membros,
   acessos, compras/eventos e IA.
-- Tabelas e formulários são esqueletos sem upload, submit, endpoint ou dado
-  real.
+- Com as flags desligadas, tabelas e formulários permanecem esqueletos sem
+  chamadas externas.
+- Com `FEATURE_ADMIN` e `FEATURE_CONTENT` ligadas, o módulo `Contenido` aceita
+  um PDF privado de até 12 MiB e 300 páginas, anuncia sucesso/erro e nunca
+  transforma o estado visual em autorização.
+- Os demais módulos continuam estruturais até seus casos de uso conectados
+  serem implementados.
 - Mobile prioriza lista/resumo; tabela larga pode ter região horizontal
   explicitamente nomeada, sem forçar a página inteira a rolar.
 

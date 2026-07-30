@@ -15,11 +15,14 @@ import "@fontsource/source-sans-3/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hazquevuelva.site"),
+  applicationName: "Haz Que Vuelva",
   title: {
     default: "Haz Que Vuelva",
     template: "%s · Haz Que Vuelva",
   },
   description: "Experiencia pública de Haz Que Vuelva.",
+  manifest: "/manifest.webmanifest",
 };
 
 export default async function RootLayout({

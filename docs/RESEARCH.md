@@ -448,3 +448,41 @@ para 9 ou 10 quebra interfaces consumidas pelo OpenNext. A mitigação compatív
 fixa somente `glob@12.0.0` dentro de `@node-minify/core`. Build OpenNext e audit
 de produção passaram nos dois apps. O audit completo ainda mantém nove
 advisories altos exclusivamente na cadeia de lint já documentada.
+
+### Metadata, descoberta e compartilhamento
+
+- [Next.js — Metadata e imagens Open Graph](https://nextjs.org/docs/app/getting-started/metadata-and-og-images):
+  documenta metadata configurável, arquivos de ícone, Open Graph, robots e
+  sitemap no App Router.
+- [Next.js — `generateMetadata`](https://nextjs.org/docs/app/api-reference/functions/generate-metadata):
+  documenta `metadataBase`, canonical, Open Graph, Twitter e regras para
+  crawlers.
+
+Decisão: o quiz declara canonical absoluto, metadata localizada, Open Graph,
+Twitter Card, robots, sitemap e manifesto. A imagem social é um JPEG progressivo
+1200 × 630 de 47 KB produzido a partir dos assets aprovados do próprio quiz.
+
+### Headers defensivos
+
+- [Next.js — configuração `headers`](https://nextjs.org/docs/app/api-reference/config/next-config-js/headers):
+  documenta headers de resposta associados a padrões de rota.
+- [MDN — cabeçalhos HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers):
+  documenta HSTS, `X-Content-Type-Options`, `Permissions-Policy` e os demais
+  controles de navegador usados.
+
+Decisão: respostas do marketing recebem HSTS, bloqueio de MIME sniffing,
+negação de framing, referrer policy restritiva e desativação de câmera,
+geolocalização e microfone. CSP não foi adicionada sem nonces porque uma policy
+incompleta quebraria scripts inline do Next.js e não seria um controle real.
+
+### Integração contínua no GitHub
+
+- [GitHub — build e teste de Node.js](https://docs.github.com/en/actions/tutorials/build-and-test-code/nodejs):
+  recomenda `setup-node`, instalação determinística com `npm ci` e execução dos
+  scripts reais de build/teste.
+
+Decisão: todo push em `main` e pull request valida marketing, área de membros,
+Worker do agente e serviço Python. O workflow usa Node 22, Python 3.12, caches
+por lockfile, permissões somente de leitura e concorrência cancelável. Deploy
+permanece separado do CI para não conceder credenciais de produção ao GitHub
+antes da conexão deliberada do Workers Builds.

@@ -239,21 +239,21 @@ export function QuestionStep({
 export function CommitmentQuestion({
   disabled,
   headingRef,
-  internalPreview = false,
+  enhancedExperience = false,
   kind,
   onAnswer,
   selectedValue,
 }: {
   disabled: boolean;
   headingRef: RefObject<HTMLHeadingElement | null>;
-  internalPreview?: boolean;
+  enhancedExperience?: boolean;
   kind: "commitment" | "desire";
   onAnswer: (option: QuizOption) => void;
   selectedValue: string | undefined;
 }) {
   const { locale } = useLocale();
   const copy = quizContentFor(locale);
-  const previewCommitment = internalPreview && kind === "commitment";
+  const previewCommitment = enhancedExperience && kind === "commitment";
   const content = previewCommitment ? copy.preview.commitment : copy[kind];
 
   return (

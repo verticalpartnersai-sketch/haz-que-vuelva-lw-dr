@@ -200,13 +200,13 @@ const testimonialAssets: Record<ProofPreviewStoryId, string> = {
 export function Demonstration({
   answers,
   headingRef,
-  internalPreview,
+  enhancedExperience,
   onContinue,
   route,
 }: {
   answers: QuizAnswers;
   headingRef: RefObject<HTMLHeadingElement | null>;
-  internalPreview: boolean;
+  enhancedExperience: boolean;
   onContinue: () => void;
   route: QuizRoute;
 }) {
@@ -221,7 +221,7 @@ export function Demonstration({
     pt: "O PROBLEMA NÃO É SENTIR · É AGIR SEM ESTRATÉGIA",
   }[locale];
 
-  if (internalPreview) {
+  if (enhancedExperience) {
     const preview = copy.preview.proof;
 
     return (
@@ -268,6 +268,15 @@ export function Demonstration({
             </article>
           ))}
         </div>
+        <p className="quiz-testimonial-disclosure">
+          {
+            {
+              es: "Historias recreadas para ilustrar situaciones frecuentes. Los resultados dependen de cada relación.",
+              pt: "Histórias recriadas para ilustrar situações frequentes. Os resultados dependem de cada relação.",
+              en: "Stories recreated to illustrate common situations. Results depend on each relationship.",
+            }[locale]
+          }
+        </p>
 
         <div className="quiz-stage-cta">
           <button

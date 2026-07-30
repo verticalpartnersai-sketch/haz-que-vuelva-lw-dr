@@ -119,19 +119,19 @@ export function OfferSection({
       benefits: "YOUR ROUTE, NOT A MAGIC PHRASE",
       cost: "THE COST OF IMPROVISING AGAIN",
       duration: "7 DAYS",
-      product: "COMPLETE FRONT PRODUCT",
+      product: "EVERYTHING INSIDE YOUR PROTOCOL",
     },
     es: {
       benefits: "TU RUTA, NO UNA FRASE MÁGICA",
       cost: "EL COSTO DE VOLVER A IMPROVISAR",
       duration: "7 DÍAS",
-      product: "PRODUCTO FRONT COMPLETO",
+      product: "TODO LO QUE ENCONTRARÁS EN TU PROTOCOLO",
     },
     pt: {
       benefits: "SUA ROTA, NÃO UMA FRASE MÁGICA",
       cost: "O CUSTO DE VOLTAR A IMPROVISAR",
       duration: "7 DIAS",
-      product: "PRODUTO FRONT COMPLETO",
+      product: "TUDO O QUE VOCÊ VAI ENCONTRAR NO PROTOCOLO",
     },
   }[locale];
   const desireOrder =

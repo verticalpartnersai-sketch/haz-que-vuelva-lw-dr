@@ -53,13 +53,13 @@ function loaderSlides(locale: "en" | "es" | "pt"): readonly ProofSlide[] {
 export function AnalysisLoader({
   copy,
   headingRef,
-  internalPreview = false,
+  enhancedExperience = false,
   mode,
   tick,
 }: {
   copy: LoaderCopy;
   headingRef: RefObject<HTMLHeadingElement | null>;
-  internalPreview?: boolean;
+  enhancedExperience?: boolean;
   mode: "analysis" | "route";
   tick: number;
 }) {
@@ -73,7 +73,7 @@ export function AnalysisLoader({
   const active = Math.min(tick, copy.states.length - 1);
   const progress = Math.min(100, tick * 25);
 
-  if (internalPreview && mode === "route") {
+  if (enhancedExperience && mode === "route") {
     return (
       <main
         className="quiz-loading quiz-loading--minimal quiz-stage"

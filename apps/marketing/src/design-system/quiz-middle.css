@@ -476,6 +476,16 @@
   width: 100%;
 }
 
+.quiz-testimonial-disclosure {
+  color: rgba(245, 242, 236, 0.5);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+  margin: 0 auto;
+  max-width: 34rem;
+  text-align: center;
+}
+
 .quiz-demonstration--proof .quiz-stage-cta {
   margin-top: clamp(3rem, 8vw, 5rem);
   max-width: 100%;

@@ -26,7 +26,7 @@ export function QuizStageRouter({
   distanceBand,
   distanceIndex,
   headingRef,
-  internalPreview,
+  enhancedExperience,
   loaderTick,
   locale,
   locked,
@@ -44,7 +44,7 @@ export function QuizStageRouter({
   distanceBand: DistanceBand;
   distanceIndex: number;
   headingRef: RefObject<HTMLHeadingElement | null>;
-  internalPreview: boolean;
+  enhancedExperience: boolean;
   loaderTick: number;
   locale: Locale;
   locked: boolean;
@@ -81,7 +81,7 @@ export function QuizStageRouter({
       <AnalysisLoader
         copy={first ? copy.loaderOne : copy.loaderTwo}
         headingRef={headingRef}
-        internalPreview={internalPreview}
+        enhancedExperience={enhancedExperience}
         mode={first ? "analysis" : "route"}
         tick={loaderTick}
       />
@@ -107,7 +107,7 @@ export function QuizStageRouter({
       <CommitmentQuestion
         disabled={locked}
         headingRef={headingRef}
-        internalPreview={internalPreview && !desire}
+        enhancedExperience={enhancedExperience && !desire}
         kind={desire ? "desire" : "commitment"}
         onAnswer={onCommitment}
         selectedValue={desire ? answers.desire : answers.commitment}
@@ -120,7 +120,7 @@ export function QuizStageRouter({
       <Demonstration
         answers={answers}
         headingRef={headingRef}
-        internalPreview={internalPreview}
+        enhancedExperience={enhancedExperience}
         onContinue={() => onStage("commitment")}
         route={route}
       />
@@ -134,7 +134,7 @@ export function QuizStageRouter({
       checkoutStatus={checkoutStatus}
       headingRef={headingRef}
       index={distanceIndex}
-      internalPreview={internalPreview}
+      enhancedExperience={enhancedExperience}
       onCheckout={onCheckout}
       route={route}
     />

@@ -40,7 +40,7 @@ function progressForStage(
   questionIndex: number,
   questionCount: number,
   loaderTick: number,
-  internalPreview: boolean,
+  enhancedExperience: boolean,
 ) {
   if (stage === "intro") return 0;
   if (stage === "question") {
@@ -52,7 +52,7 @@ function progressForStage(
   if (stage === "desire") return 68;
   if (stage === "demonstration") return 76;
   if (stage === "commitment") return 84;
-  if (stage === "loader-two" && internalPreview) return 96;
+  if (stage === "loader-two" && enhancedExperience) return 96;
   if (stage === "loader-two") return 88 + (loaderTick / 4) * 10;
   return 100;
 }
@@ -70,9 +70,7 @@ export function QuizPage() {
   const [audioMuted, setAudioMuted] = useState(true);
   const [audioNeedsGesture, setAudioNeedsGesture] = useState(false);
   const [sessionHydrated, setSessionHydrated] = useState(false);
-  const internalPreview =
-    process.env.NODE_ENV === "development" &&
-    process.env.NEXT_PUBLIC_QUIZ_SOCIAL_PROOF_PREVIEW !== "0";
+  const enhancedExperience = true;
   const headingRef = useRef<HTMLHeadingElement>(null);
   const ambientAudioRef = useRef<HTMLAudioElement>(null);
   const advanceTimerRef = useRef<number | null>(null);
@@ -89,10 +87,10 @@ export function QuizPage() {
     questionIndex,
     copy.questions.length,
     loaderTick,
-    internalPreview,
+    enhancedExperience,
   );
   const progressIsLive =
-    stage === "loader-one" || (stage === "loader-two" && !internalPreview);
+    stage === "loader-one" || (stage === "loader-two" && !enhancedExperience);
 
   useEffect(() => {
     const hydrationFrame = window.requestAnimationFrame(() => {
@@ -218,7 +216,7 @@ export function QuizPage() {
     }
     if (stage === "loader-one" || stage === "loader-two") {
       track("quiz_loader_view", {
-        duration: stage === "loader-two" && internalPreview ? 900 : 6000,
+        duration: stage === "loader-two" && enhancedExperience ? 900 : 6000,
         loader_id: stage,
       });
     }
@@ -251,7 +249,7 @@ export function QuizPage() {
     copy.routes,
     distanceBand,
     distanceIndex,
-    internalPreview,
+    enhancedExperience,
     questionIndex,
     route,
     stage,
@@ -260,7 +258,7 @@ export function QuizPage() {
   useEffect(() => {
     if (stage !== "loader-one" && stage !== "loader-two") return;
 
-    if (stage === "loader-two" && internalPreview) {
+    if (stage === "loader-two" && enhancedExperience) {
       const reveal = window.setTimeout(() => setStage("result"), 900);
       return () => window.clearTimeout(reveal);
     }
@@ -282,7 +280,7 @@ export function QuizPage() {
     }, 220);
 
     return () => window.clearTimeout(reveal);
-  }, [internalPreview, loaderTick, route, stage]);
+  }, [enhancedExperience, loaderTick, route, stage]);
 
   function playAmbientAudio(restart = false) {
     const ambientAudio = ambientAudioRef.current;
@@ -502,7 +500,7 @@ export function QuizPage() {
       <a className="skip-link" href="#quiz-content">
         {l("Ir al diagnóstico", "Ir para o diagnóstico", "Skip to diagnosis")}
       </a>
-      {internalPreview ? (
+      {process.env.NODE_ENV === "development" ? (
         <span className="quiz-preview-badge">{copy.preview.internalLabel}</span>
       ) : null}
       {stage !== "intro" &&
@@ -551,7 +549,7 @@ export function QuizPage() {
         distanceIndex={distanceIndex}
         headingRef={headingRef}
         loaderTick={loaderTick}
-        internalPreview={internalPreview}
+        enhancedExperience={enhancedExperience}
         locale={locale}
         locked={locked}
         onAnswer={answerQuestion}

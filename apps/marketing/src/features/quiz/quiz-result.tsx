@@ -98,7 +98,7 @@ export function Result({
   checkoutStatus,
   headingRef,
   index,
-  internalPreview,
+  enhancedExperience,
   onCheckout,
   route,
 }: {
@@ -107,7 +107,7 @@ export function Result({
   checkoutStatus: string;
   headingRef: RefObject<HTMLHeadingElement | null>;
   index: number;
-  internalPreview: boolean;
+  enhancedExperience: boolean;
   onCheckout: (position?: string) => void;
   route: QuizRoute;
 }) {
@@ -115,7 +115,7 @@ export function Result({
   const copy = quizContentFor(locale);
   const routeCopy = copy.routes[route];
 
-  if (internalPreview) {
+  if (enhancedExperience) {
     return (
       <PreviewResult
         answers={answers}

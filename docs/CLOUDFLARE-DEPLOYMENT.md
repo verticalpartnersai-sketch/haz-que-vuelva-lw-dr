@@ -140,7 +140,6 @@ comentários ou documentação.
 | Nome | Tipo |
 |---|---|
 | `NEXT_PUBLIC_CHECKOUT_URL` | build variable e runtime variable |
-| `NEXT_PUBLIC_QUIZ_SOCIAL_PROOF_PREVIEW` | manter `0` |
 
 ### Área de membros
 

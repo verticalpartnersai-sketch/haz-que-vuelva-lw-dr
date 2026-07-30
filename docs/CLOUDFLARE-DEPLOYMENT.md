@@ -4,12 +4,13 @@
 
 O site público e o quiz estão em produção no Worker
 `haz-que-vuelva-marketing`, versão
-`b37e945a-70e5-4a2b-b7f8-3d43f3044ec1`, publicado a partir do commit
-`91bea30e2f09c493f0f9ad34b4235362186a48fd`.
+`e3fa531d-f1a3-4bdf-a468-3cb317b04709`, publicado a partir do commit
+`1db5c7ee9f6a838348b72277e80e51c053eac695`.
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
-criados pelo Cloudflare. A área de membros, o Container do agente e as
-integrações reais continuam fechados até seus próprios gates.
+criados pelo Cloudflare. Requisições HTTP são redirecionadas permanentemente
+para HTTPS no Worker. A área de membros, o Container do agente e as integrações
+reais continuam fechados até seus próprios gates.
 
 ## Topologia escolhida
 
@@ -50,7 +51,7 @@ agente só poderá ser chamado por Service Binding depois do build e do teste
 real do Container.
 
 O GitHub executa CI em todo push de `main` e pull request. O run
-[`30520303754`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30520303754)
+[`30555070298`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30555070298)
 validou os quatro jobs: marketing, área de membros, Worker do agente e agente
 Python. A promoção do Worker continua deliberadamente separada do CI enquanto
 Workers Builds não estiver conectado com suas permissões próprias.
@@ -251,6 +252,8 @@ respectivo serviço estejam aprovados.
   respondem em produção;
 - [x] respostas HTML entregam HSTS, `nosniff`, negação de frame, referrer
   policy e permissions policy;
+- [x] requisições HTTP redirecionam para o mesmo caminho em HTTPS com status
+  permanente 308;
 - [x] áudio preserva duração e volume, inicia mudo e foi reduzido de 5,09 MB
   para 2,04 MB.
 

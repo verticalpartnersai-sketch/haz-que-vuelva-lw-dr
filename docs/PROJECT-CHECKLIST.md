@@ -2,11 +2,11 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 27 de julho de 2026: **frontend aprovado; Gate 5 autorizado e em
-> implementação incremental**.
+> Estado em 30 de julho de 2026: **frontend aprovado; marketing publicado;
+> Gate 5 autorizado e em implementação incremental**.
 >
-> Integrações externas reais, credenciais, dados reais, infraestrutura e deploy
-> continuam bloqueados até seus pré-requisitos e autorizações.
+> A área de membros, o agente e as integrações externas reais continuam
+> bloqueados até seus pré-requisitos e gates próprios.
 
 ## Sequência obrigatória
 
@@ -53,7 +53,7 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 
 ## Pendências do usuário
 
-- [ ] Confirmar domínio definitivo.
+- [x] Confirmar `hazquevuelva.site` como domínio público do marketing.
 - [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
 - [x] Definir `vuelve_ia` como entitlement canônico da IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
@@ -209,8 +209,8 @@ implementação: o Gate 3 depende de nova autorização explícita.
 
 ## Gate 5 — backend autorizado
 
-Código, migrações e testes locais estão autorizados. Ativação de fornecedores,
-dados reais e deploy não estão.
+Código, migrações e testes locais estão autorizados. A ativação de fornecedores,
+dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Identidade e autorização
 
@@ -308,6 +308,8 @@ dados reais e deploy não estão.
   quatro jobs verdes.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e
   headers defensivos do marketing.
+- [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de
+  marketing e comprovar a resposta pública.
 - [ ] Configurar o checkout real no CTA do quiz.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [ ] Criar o Worker da área de membros, suas variáveis e seus segredos.

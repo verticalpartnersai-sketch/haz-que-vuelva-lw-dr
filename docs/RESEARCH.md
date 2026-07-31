@@ -679,6 +679,9 @@ Cloudflare.
   quando a aplicação usa CSP.
 - [Cloudflare Speed — RUM beacon](https://developers.cloudflare.com/speed/observatory/rum-beacon/):
   documenta o beacon RUM associado ao Web Analytics e ao Speed Observatory.
+- [Cloudflare Configuration Rules — settings](https://developers.cloudflare.com/rules/configuration-rules/settings/):
+  oferece a propriedade `disable_rum=true`, com precedência sobre regras do Web
+  Analytics, para desligar a injeção apenas no hostname autenticado.
 
 Decisão recomendada: desativar a injeção automática em
 `miembros.hazquevuelva.site`, preservando a CSP restritiva da área autenticada.
@@ -686,3 +689,7 @@ Não usar `Cache-Control: public, no-transform` como atalho: além de a própria
 Cloudflare explicar que isso impede a injeção, cache público não é adequado
 para respostas autenticadas. A alteração de zona continua pendente no painel
 Cloudflare; o código não relaxará a CSP para acomodar analytics não essenciais.
+O OAuth local do Wrangler conseguiu ler a zona, mas recebeu 403 tanto na API
+de RUM quanto na API de Configuration Rules. A execução exige o painel ou um
+token com permissão mínima de escrita em Configuration Rules; nenhum segredo
+novo deve ser colado no repositório ou nesta conversa.

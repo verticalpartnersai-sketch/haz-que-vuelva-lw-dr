@@ -202,9 +202,10 @@ Aceite:
 - decidir política de comentários e moderação;
 - revisar métricas sem enviar conversa, e-mail ou conteúdo sensível;
 - testar concorrência e retry das três outboxes;
-- decidir se o Browser Insights será desativado na área de membros ou
-  explicitamente autorizado na CSP. Hoje o beacon automático do Cloudflare é
-  bloqueado pela CSP, sem quebrar o login, mas gera erro no console;
+- desativar o Browser Insights somente em `miembros.hazquevuelva.site` por uma
+  Configuration Rule com `disable_rum=true`. A decisão foi aprovada, porém o
+  OAuth atual do Wrangler recebe 403 na API de RUM/Configuration Rules; executar
+  no painel ou com token limitado a Zone Configuration Settings Write;
 - recuperar acesso operacional do Supabase CLI pela conta correta e vincular
   explicitamente o checkout ao projeto. As migrações estão aplicadas e o app
   funciona com suas credenciais, mas o token local atual não enxerga o projeto

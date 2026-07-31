@@ -385,8 +385,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   `/up2` e `/gracias`; o smoke exige linguagem condicional sem contexto de
   transação verificada.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
-- [ ] Definir se o Browser Insights será desativado em membros ou autorizado
-  na CSP após decisão de privacidade; o beacon automático é bloqueado hoje.
+- [ ] Aplicar em Cloudflare uma Configuration Rule com `disable_rum=true` para
+  `miembros.hazquevuelva.site`. A decisão de preservar a CSP e desligar o beacon
+  foi aprovada; o OAuth atual do Wrangler não tem permissão para escrever essa
+  regra e a API respondeu 403.
 - [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
   segredos obrigatórios e domínio exclusivo de produção.
 - [x] Cadastrar variáveis e segredos reais no Worker da área de membros sem

@@ -70,18 +70,18 @@ test("normalizer emits one isolated event per order bump and supports USD", () =
     plan: { code: "MAIN-PLAN", name: "Haz que Vuelva", quantity: 1 },
     plan_itens: [
       {
-        item_code: "BUMP-21",
+        item_code: "PPPBF7EK",
       },
       {
         code: "MAIN-PLAN",
-        item_code: "BUMP-LA-OTRA",
+        item_code: "PPPBF7EL",
         name: "La Otra",
         price: 10,
         quantity: 1,
       },
       {
         code: "MAIN-PLAN",
-        item_code: "BUMP-21",
+        item_code: "PPPBF7EK",
         name: "21 Mensajes duplicate",
         price: 10,
         quantity: 1,
@@ -93,7 +93,7 @@ test("normalizer emits one isolated event per order bump and supports USD", () =
   assert.equal(events.length, 3);
   assert.deepEqual(
     events.map((event) => event.planCode),
-    ["MAIN-PLAN", "item:BUMP-21", "item:BUMP-LA-OTRA"],
+    ["MAIN-PLAN", "item:PPPBF7EK", "item:PPPBF7EL"],
   );
   assert.equal(events.every((event) => event.currency === "USD"), true);
   assert.equal(events.every((event) => event.amountMinor === 2_700), true);

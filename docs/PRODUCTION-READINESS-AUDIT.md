@@ -2,6 +2,7 @@
 
 Data da evidência: 31 de julho de 2026
 Commit da aplicação publicada: `c716d1984809dc9ab63e3076791e2788f293c6d9`
+Commit operacional auditado: `1db611fd2afadb0814ab46f56289802f646dffc7`
 
 ## Veredito
 
@@ -28,6 +29,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
 | CI | quatro jobs do workflow CI verdes no SHA auditado |
 | Smoke | workflow recorrente cobre marketing, autenticação negativa, webhook e agente privado |
+| Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
 | Resend DNS | DKIM publicado; SPF e MX publicados em `send.mail.hazquevuelva.site`; DMARC `p=none` publicado no domínio raiz |
 
 Versões Cloudflare verificadas:
@@ -165,6 +167,11 @@ em três execuções controladas: [criação](https://github.com/verticalpartner
 e [recuperação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666587531).
 Código versionado e Issues não substituem recuperação de dados nem uma escala
 operacional.
+
+O executor `scripts/cloudflare-rollback.sh` já reduz erro operacional e foi
+validado em modo somente leitura contra os três Workers. Isso comprova seleção
+de alvo e versão, mas não substitui o drill que troca tráfego, roda o smoke e
+restaura a versão atual em janela controlada.
 
 Aceite:
 

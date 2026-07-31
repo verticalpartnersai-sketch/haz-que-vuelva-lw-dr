@@ -390,8 +390,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   novamente no FastAPI.
 - [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
 - [ ] Criar backups e testar restauração.
-- [ ] Exercitar criação, atualização e encerramento do incidente persistente no
-  GitHub para o smoke público recorrente.
+- [x] Exercitar criação, atualização e encerramento do incidente persistente no
+  GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
 - [ ] Criar métricas e alertas para fila, webhook, custo e paging externo.
 - [ ] Validar rollback.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.

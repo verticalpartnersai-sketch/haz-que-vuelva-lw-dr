@@ -137,10 +137,13 @@ Aceite antes de habilitar:
 ### 6. Recuperação operacional
 
 Não há prova atual de backup restaurável, rollback executado nem alerta
-externo de paging. O smoke recorrente está configurado para abrir, atualizar e
-encerrar um incidente persistente no GitHub, mas o ciclo ainda não foi
-exercitado. Código versionado e Issues não substituem recuperação de dados nem
-uma escala operacional.
+externo de paging. O smoke recorrente abriu, atualizou sem duplicar e encerrou
+o [incidente operacional](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)
+em três execuções controladas: [criação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666452244),
+[atualização](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666526841)
+e [recuperação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666587531).
+Código versionado e Issues não substituem recuperação de dados nem uma escala
+operacional.
 
 Aceite:
 
@@ -148,8 +151,8 @@ Aceite:
 2. restaurar em ambiente isolado;
 3. executar rollback de cada Worker;
 4. definir runbook de incidente e responsáveis;
-5. exercitar o incidente do smoke e complementá-lo com alertas de fila parada,
-   falha de webhook, custo e um canal de paging fora do GitHub;
+5. complementar o incidente do smoke com alertas de fila parada, falha de
+   webhook, custo e um canal de paging fora do GitHub;
 6. registrar RTO e RPO aceitos.
 
 ## P1 — concluir antes de escalar tráfego

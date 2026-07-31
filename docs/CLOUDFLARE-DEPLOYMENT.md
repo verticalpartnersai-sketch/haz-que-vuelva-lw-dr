@@ -66,10 +66,14 @@ defensivos, metadata, assets críticos, login obrigatório e health da área de
 membros. O teste de credencial Perfect Pay usa o probe
 `x-hqv-auth-probe: 1`: mesmo se a autenticação regredir, a requisição não
 projeta compra, acesso ou e-mail. Falhas ficam registradas no GitHub Actions;
-o workflow está configurado para abrir ou atualizar um incidente persistente
-nas Issues e encerrá-lo automaticamente após a recuperação. O ciclo operacional
-ainda precisa ser exercitado, e um canal de paging fora do GitHub deve ser
-definido antes de escalar tráfego.
+o workflow abre ou atualiza um incidente persistente nas Issues e o encerra
+automaticamente após a recuperação. O ciclo foi exercitado em 31 de julho de
+2026: [criação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666452244),
+[atualização sem duplicata](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666526841)
+e [recuperação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666587531)
+foram registradas na [Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1).
+Um canal de paging fora do GitHub ainda deve ser definido antes de escalar
+tráfego.
 
 O input manual `exercise_incident` força uma falha somente depois que o smoke
 real termina com sucesso. Ele existe para provar criação, atualização e

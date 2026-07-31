@@ -89,6 +89,9 @@ Aceite:
    `upsell=true` conforme a documentação oficial e o redirecionador preserva o
    parâmetro, mas isso não prova que o painel associou as duas ofertas.
 
+A execução e a evidência devem seguir a
+[matriz PP-01 a PP-15](PERFECTPAY-LAUNCH-VALIDATION.md).
+
 ### 2. Publicação do conteúdo real na área de membros
 
 Os quatro PDFs editoriais em espanhol foram localizados no Oracle, otimizados

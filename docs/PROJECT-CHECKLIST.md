@@ -381,6 +381,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   os links de aceitação externos configuráveis.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
+- [x] Remover afirmações de compra confirmada de acessos diretos a `/up1`,
+  `/up2` e `/gracias`; o smoke exige linguagem condicional sem contexto de
+  transação verificada.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [ ] Definir se o Browser Insights será desativado em membros ou autorizado
   na CSP após decisão de privacidade; o beacon automático é bloqueado hoje.

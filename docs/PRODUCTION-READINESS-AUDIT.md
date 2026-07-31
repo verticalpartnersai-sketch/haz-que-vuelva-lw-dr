@@ -1,7 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit da aplicação publicada: `5245057d846aeb8a79caae38f618d0f8b4019753`
+Commit da aplicação publicada: `c716d1984809dc9ab63e3076791e2788f293c6d9`
 
 ## Veredito
 
@@ -24,6 +24,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Supabase | 21 migrações aplicadas; cadastro público e login anônimo desabilitados |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
+| Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
 | CI | quatro jobs do workflow CI verdes no SHA auditado |
 | Smoke | workflow recorrente cobre marketing, autenticação negativa, webhook e agente privado |
@@ -33,7 +34,7 @@ Versões Cloudflare verificadas:
 
 - membros: `a800d459-5287-4505-ac81-faf64032aa13`;
 - agente: `910ee45f-ac17-435b-819c-ee51beb68242`;
-- marketing: `3a5ad1db-2f1d-4d2c-92ee-13265e9daa65`.
+- marketing: `13bfcd86-19f2-4961-a5ca-5de06eaa84ae`.
 
 ## Inventário real do banco
 
@@ -204,9 +205,6 @@ Aceite:
 - decidir se o Browser Insights será desativado na área de membros ou
   explicitamente autorizado na CSP. Hoje o beacon automático do Cloudflare é
   bloqueado pela CSP, sem quebrar o login, mas gera erro no console;
-- impedir que acesso direto a `/up1`, `/up2` e `/gracias` afirme compra
-  confirmada sem contexto de venda verificável. Isso não concede entitlement,
-  porém é incorreto para uma visitante direta;
 - recuperar acesso operacional do Supabase CLI pela conta correta e vincular
   explicitamente o checkout ao projeto. As migrações estão aplicadas e o app
   funciona com suas credenciais, mas o token local atual não enxerga o projeto

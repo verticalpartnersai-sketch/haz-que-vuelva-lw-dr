@@ -173,6 +173,12 @@ validado em modo somente leitura contra os três Workers. Isso comprova seleçã
 de alvo e versão, mas não substitui o drill que troca tráfego, roda o smoke e
 restaura a versão atual em janela controlada.
 
+Backup e restore lógico também possuem executores criptografados e
+fail-closed, documentados em [SUPABASE-RECOVERY.md](SUPABASE-RECOVERY.md).
+Eles ainda não constituem evidência de recuperação: o Docker local está
+indisponível, não há connection string administrativa no ambiente e falta um
+projeto isolado para o primeiro restore cronometrado.
+
 Aceite:
 
 1. criar backup inicial e política de retenção;

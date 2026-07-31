@@ -706,3 +706,18 @@ novo deve ser colado no repositório ou nesta conversa.
 
 Decisão: o repositório fornece um executor fail-closed que é somente leitura
 por padrão, exige confirmação exata para produção e roda o smoke após a troca.
+
+## Registro de fontes — backup e restauração Supabase
+
+- [Supabase — Backup and Restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore):
+  recomenda dumps separados de roles, schema e dados e restauração com
+  `ON_ERROR_STOP`, transação única e triggers desabilitados durante a carga.
+- [Supabase — Database Backups](https://supabase.com/docs/guides/platform/backups):
+  backups do banco não contêm os objetos armazenados pelo Storage API.
+- [Supabase — Restore to a new project](https://supabase.com/docs/guides/platform/clone-project):
+  em planos elegíveis, restauração para projeto novo replica banco e chave de
+  criptografia, mas não Storage, Auth settings, API keys ou Edge Functions.
+
+Decisão: o backup lógico local será cifrado antes de sair do diretório
+temporário; restore automatizado é permitido somente em project ref isolado.
+Objetos do Storage terão manifesto e recuperação próprios antes da publicação.

@@ -404,7 +404,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
   novamente no FastAPI.
 - [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
-- [ ] Criar backups e testar restauração.
+- [ ] Criar o primeiro backup e testar restauração. Os executores lógicos
+  criptografados e o runbook fail-closed foram versionados; a execução real
+  aguarda Docker, connection string operacional e um projeto isolado.
 - [x] Exercitar criação, atualização e encerramento do incidente persistente no
   GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
 - [ ] Criar métricas e alertas para fila, webhook, custo e paging externo.

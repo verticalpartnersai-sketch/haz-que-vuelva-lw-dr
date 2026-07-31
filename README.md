@@ -13,8 +13,11 @@ Monorepo do site público, área de membros e VUELVE IA.
 
 O site público e o quiz estão publicados em
 [hazquevuelva.site](https://hazquevuelva.site/quiz) pelo Worker
-`haz-que-vuelva-marketing`. A área de membros, o agente e as integrações reais
-continuam fechados até seus próprios gates de produção.
+`haz-que-vuelva-marketing`. A área de membros está publicada em
+[miembros.hazquevuelva.site](https://miembros.hazquevuelva.site), exige
+autenticação real e usa o agente VUELVE IA por Service Binding privado. O
+lançamento comercial e a geração da IA permanecem fechados até os gates da
+auditoria de prontidão.
 
 Leia [o índice documental](docs/INDEX.md) e
 [o checklist](docs/PROJECT-CHECKLIST.md) antes de alterar gates.
@@ -40,6 +43,8 @@ nem versione segredos até o projeto externo correspondente existir.
 
 Os builds, a publicação atual e os gates pendentes do Cloudflare estão descritos
 em [Publicação no Cloudflare](docs/CLOUDFLARE-DEPLOYMENT.md).
+Backup e restauração estão descritos em
+[Recuperação do Supabase](docs/SUPABASE-RECOVERY.md).
 
 No desenvolvimento local, a área de membros usa `http://localhost:3000` e o
 site público/quiz usa `http://127.0.0.1:3001/quiz`. A rota `/quiz` da área de

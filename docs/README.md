@@ -20,16 +20,24 @@ leia este índice e o checklist mestre.
    validações e evidências do Gate 3.
 9. [Implementação do backend](BACKEND-IMPLEMENTATION.md): módulos, flags,
    evidências locais e bloqueios externos.
-10. [VUELVE IA](VUELVE-IA-FUTURE.md): experiência, pipeline e limites.
-11. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md): gate de
+10. [Ativação do Supabase](SUPABASE-ROLLOUT.md): aplicação de migrações e
+    verificações do projeto definitivo.
+11. [VUELVE IA](VUELVE-IA-FUTURE.md): experiência, pipeline e limites.
+12. [Privacidade, segurança e auditoria](PRIVACY-SECURITY-AUDIT.md): gate de
     dados reais, isolamento, retenção e exclusão.
-12. [Integrações futuras](INTEGRATIONS-FUTURE.md): fornecedores previstos e
+13. [Integrações futuras](INTEGRATIONS-FUTURE.md): fornecedores previstos e
     contratos ainda pendentes.
-13. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
+14. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
     pendências e conflitos.
-14. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
-15. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
-16. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md): evidência do
+15. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md): Workers, domínios,
+    smoke e rollback.
+17. [Recuperação do Supabase](SUPABASE-RECOVERY.md): backup criptografado e
+    restore somente em projeto isolado.
+18. [Homologação Perfect Pay](PERFECTPAY-LAUNCH-VALIDATION.md): matriz real de
+    compra, acesso e revogação.
+19. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+20. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md): evidência do
     rollout, bloqueios P0–P2 e ordem de liberação comercial.
 
 ## Estado atual
@@ -37,11 +45,13 @@ leia este índice e o checklist mestre.
 - Gate 1: **concluído**.
 - Gate 2: **concluído**.
 - Gates 3 e 4: **frontend aprovado e preservado em commit próprio**.
-- Frontend do produto: rotas e interações estáticas implementadas em
-  `apps/web`, com mocks explícitos e sem serviços externos.
 - Gate 5: **backend autorizado e em implementação incremental**.
-- Integrações externas, dados reais e infraestrutura continuam desligados.
-- Deploy: proibido até autorização explícita.
+- Site público, login, área de membros, Supabase, webhook e Workers estão
+  publicados. Cadastro público permanece fechado e VUELVE IA continua
+  desligada por feature flags.
+- O lançamento comercial permanece bloqueado pelos testes positivos de compra,
+  conteúdo, convite, isolamento, recuperação e rotação de credenciais da
+  auditoria de prontidão.
 
 ## Regras de manutenção
 

@@ -641,3 +641,28 @@ O parser exige `item_code`, mas tolera a ausência dos campos auxiliares que a
 especificação não marca como obrigatórios. O BFF usa um Service Binding para o
 agente, e o agente não publica `workers.dev` nem Preview URL. A credencial
 interna continua obrigatória nas duas camadas como defesa em profundidade.
+
+## Registro de fontes — Perfect Pay One Click
+
+Pesquisa realizada em 31 de julho de 2026 via Agent Reach/Exa e leitura da
+documentação oficial.
+
+- [Perfect Pay — Upsell One Click](https://help.perfectpay.com.br/article/141-upsell-one-click):
+  exige configurar no produto a página da oferta e a página de obrigado; para
+  encadear uma nova oferta, a página de obrigado aponta para o próximo upsell.
+  O checkout principal precisa incluir `upsell=true` para ativar a compra sem
+  redigitar os dados.
+- [Perfect Pay — área externa](https://help.perfectpay.com.br/article/593-como-cadastrar-meu-produto-na-perfect-pay):
+  confirma que a entrega pode usar área de membros externa por webhook.
+- [Perfect Pay — Postback/Webhook](https://help.perfectpay.com.br/article/72-como-integrar-via-postback-webhook-com-a-perfect-pay):
+  documenta seleção de produtos, eventos, delay e formato do postback.
+- [Perfect Pay — API canônica](https://app.perfectpay.com.br/docs/api):
+  expõe a API de integração para consulta, não substitui a configuração do
+  Upsell One Click no painel.
+
+Decisão: o CTA principal usa `?upsell=true` e o smoke exige que o redirecionador
+preserve esse parâmetro e a atribuição. `/up1`, `/up2` e `/gracias` continuam
+dependendo da configuração correspondente no painel e de compra real para
+provar o encadeamento. O webhook e o Resend permanecem necessários: a própria
+Perfect Pay atribui ao produtor a responsabilidade pelo acesso quando a área de
+membros é externa.

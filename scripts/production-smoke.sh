@@ -5,7 +5,7 @@ set -euo pipefail
 base_url="${HQV_BASE_URL:-https://hazquevuelva.site}"
 members_url="${HQV_MEMBERS_URL:-https://miembros.hazquevuelva.site}"
 agent_public_url="${HQV_AGENT_PUBLIC_URL:-https://haz-que-vuelva-agent.verticalpartnersai.workers.dev}"
-checkout_url="${HQV_CHECKOUT_URL:-https://go.centerpag.com/PPU38CQER3J}"
+checkout_url="${HQV_CHECKOUT_URL:-https://go.centerpag.com/PPU38CQER3J?upsell=true}"
 upsell_1_url="${HQV_UPSELL_1_URL:-https://go.centerpag.com/PPU38CQERET}"
 upsell_2_url="${HQV_UPSELL_2_URL:-https://go.centerpag.com/PPU38CQERFF}"
 http_url="${base_url/https:/http:}"
@@ -186,10 +186,10 @@ for (let index = 0; index < pageArguments.length; index += 2) {
 }
 NODE
 
-checkout_probe_url="${checkout_url}?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero"
+checkout_probe_url="${checkout_url}&utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero"
 expect_redirect \
   "302" \
-  "https://checkout.centerpag.com/pay/PPU38CQER3J?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero" \
+  "https://checkout.centerpag.com/pay/PPU38CQER3J?upsell=true&utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero" \
   "$checkout_probe_url" \
   "$smoke_dir/checkout-headers.txt"
 expect_redirect \

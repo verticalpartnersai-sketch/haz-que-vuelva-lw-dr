@@ -46,9 +46,7 @@ async def test_persists_private_provider_usage_without_losing_it():
         provider_usage=usage,
     )
 
-    persisted = await store.complete_generation(
-        uuid4(), uuid4(), uuid4(), answer
-    )
+    persisted = await store.complete_generation(uuid4(), uuid4(), uuid4(), answer)
 
     assert client.function == "complete_ai_generation"
     assert client.payload["p_provider_usage"] == {

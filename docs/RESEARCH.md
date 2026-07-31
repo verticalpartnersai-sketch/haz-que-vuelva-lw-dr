@@ -693,3 +693,16 @@ O OAuth local do Wrangler conseguiu ler a zona, mas recebeu 403 tanto na API
 de RUM quanto na API de Configuration Rules. A execução exige o painel ou um
 token com permissão mínima de escrita em Configuration Rules; nenhum segredo
 novo deve ser colado no repositório ou nesta conversa.
+
+## Registro de fontes — rollback de Workers
+
+- [Cloudflare Workers — Rollbacks](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/):
+  `wrangler rollback <version-id>` cria imediatamente um novo deployment com a
+  versão selecionada. Recursos externos vinculados não são revertidos e podem
+  impedir ou tornar incompatível um rollback de código.
+- [Cloudflare Wrangler — Workers commands](https://developers.cloudflare.com/workers/wrangler/commands/workers/):
+  documenta `deployments list`, o UUID opcional e `--message`, que evita prompts
+  interativos quando a operação já foi confirmada por automação.
+
+Decisão: o repositório fornece um executor fail-closed que é somente leitura
+por padrão, exige confirmação exata para produção e roda o smoke após a troca.

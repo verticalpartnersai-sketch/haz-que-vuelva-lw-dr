@@ -365,6 +365,19 @@ Gemini listados nas pendências.
 - Rollback de código não substitui rollback de migração. Migrações Supabase
   exigem plano próprio e restauração testada.
 
+O executor canônico para reduzir erro operacional é:
+
+```bash
+scripts/cloudflare-rollback.sh <marketing|members|agent> <version-id>
+```
+
+Sem `--execute`, ele apenas valida o alvo e lista deployments. A execução real
+exige `--execute` e `HQV_ROLLBACK_CONFIRM` exatamente no formato
+`<worker-name>:<version-id>`. Depois da promoção, o script executa o smoke de
+produção e falha se marketing, membros, webhook defensivo ou agente privado
+divergirem. O drill real continua obrigatório porque rollback de Worker não
+reverte Supabase, Storage nem outros recursos vinculados.
+
 ## Pendências reais
 
 - criar o primeiro admin, elevar a sessão com TOTP e testar as mutações

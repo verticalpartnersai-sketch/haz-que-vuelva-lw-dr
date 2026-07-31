@@ -408,13 +408,15 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Exercitar criação, atualização e encerramento do incidente persistente no
   GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
 - [ ] Criar métricas e alertas para fila, webhook, custo e paging externo.
-- [ ] Validar rollback.
+- [ ] Executar o drill real de rollback. O executor defensivo foi versionado e
+  validado em modo somente planejamento; falta promover uma versão anterior,
+  passar o smoke e restaurar a versão atual em janela controlada.
 - [ ] Rotacionar antes da venda as credenciais reais compartilhadas durante a
   configuração, atualizar os Workers e comprovar revogação dos valores antigos.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.
 - [ ] Testar espanhol, desktop e celular.
-- [ ] Fazer `/up1`, `/up2` e `/gracias` exigirem contexto verificável antes de
-  afirmar que uma compra foi confirmada.
+- [x] Impedir `/up1`, `/up2` e `/gracias` de afirmar compra confirmada sem
+  contexto verificável; o smoke falha se a linguagem antiga reaparecer.
 - [ ] Religar a Supabase CLI com a conta que enxerga o projeto definitivo; o
   app e as migrações remotas estão ativos, mas o token CLI local atual não tem
   acesso administrativo ao projeto.

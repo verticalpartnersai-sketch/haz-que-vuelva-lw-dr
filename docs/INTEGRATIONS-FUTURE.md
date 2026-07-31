@@ -14,6 +14,14 @@ mapeamento, entitlement, segredo ou feature flag estiver ausente.
 | Gemini | geração e embeddings da VUELVE IA | Container e binding privados configurados; geração bloqueada até smoke real e gate jurídico |
 | Cloudflare Workers/Containers | borda, DNS, TLS e execução | marketing e membros publicados; agente sem rota pública após a publicação de endurecimento |
 
+O catálogo remoto contém os mapeamentos exatos abaixo:
+
+- `PPPBF7CC` → Haz Que Vuelva;
+- `PPPBF7EK` → order bump `21_mensajes` do produto `PPPBF7CC`;
+- `PPPBF7EL` → order bump `la_otra` do produto `PPPBF7CC`;
+- `PPPBF7E4` → Reconquista 30;
+- `PPPBF7E7` → VUELVE IA.
+
 ## Perfect Pay
 
 Quando autorizado, o adaptador deverá:
@@ -53,8 +61,12 @@ código.
 
 - fixture redigida de compra/revogação para cada um dos cinco mapeamentos;
 - aprovação comercial dos produtos no painel Perfect Pay;
+- sequência pós-compra e parâmetros reais de redirecionamento comprovados no
+  painel Perfect Pay;
 - smoke de entrega para um destinatário Resend autorizado;
 - primeiro admin com TOTP;
+- conteúdo editorial publicado no Storage privado pelo fluxo admin;
+- Supabase CLI novamente vinculada pela conta que possui o projeto;
 - backups, observabilidade, alertas e rollback no Cloudflare.
 
 A topologia e a sequência operacional estão em

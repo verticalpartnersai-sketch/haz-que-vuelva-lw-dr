@@ -60,6 +60,10 @@ validou os quatro jobs: marketing, área de membros, Worker do agente e agente
 Python. A promoção do Worker continua deliberadamente separada do CI enquanto
 Workers Builds não estiver conectado com suas permissões próprias.
 
+Os deploys continuam manuais. A área de membros declara o ambiente
+`production` e usa `wrangler deploy --env production`; marketing e agente não
+possuem esse ambiente e devem usar `wrangler deploy` sem `--env production`.
+
 O workflow `Production smoke` executa a cada 30 minutos e também sob demanda.
 Ele valida o redirecionamento HTTPS, quiz, upsells, checkouts, headers
 defensivos, metadata, assets críticos, login obrigatório e health da área de
@@ -74,6 +78,12 @@ e [recuperação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw
 foram registradas na [Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1).
 Um canal de paging fora do GitHub ainda deve ser definido antes de escalar
 tráfego.
+
+O Browser Insights automático da zona tenta carregar o beacon do Cloudflare na
+área de membros, mas a CSP deliberadamente restrita o bloqueia. Isso não quebra
+o login. Antes de alterar a CSP, decidir se a telemetria é necessária e quais
+dados poderão sair; caso contrário, desativar o Browser Insights para esse
+host.
 
 O input manual `exercise_incident` força uma falha somente depois que o smoke
 real termina com sucesso. Ele existe para provar criação, atualização e
@@ -282,9 +292,11 @@ configuração real estiver incompleta.
   policy e permissions policy;
 - [x] requisições HTTP redirecionam para o mesmo caminho em HTTPS com status
   permanente 308;
-- [x] áudio preserva duração e volume, permanece mudo antes do CTA inicial,
-  começa automaticamente no gesto que inicia o quiz, mantém loop e foi
-  reduzido de 5,09 MB para 2,04 MB.
+- [x] áudio preserva duração, loop, controle manual e foi reduzido de 5,09 MB
+  para 2,04 MB;
+- [ ] publicação atual precisa manter o áudio mudo também depois do CTA
+  inicial. O gesto inicia a reprodução, mas hoje troca para `muted=false` e
+  volume 1.
 - [x] smoke sintético versionado cobre a superfície pública e roda a cada
   30 minutos no GitHub Actions.
 - [x] `/up1` e `/up2` carregam os checkouts correspondentes e preservam
@@ -321,7 +333,7 @@ configuração real estiver incompleta.
 
 ### Evidência do rollout de 31 de julho de 2026
 
-- área de membros: versão `5ef94614-f428-4cb9-9765-88e0ab4d42c8` em
+- área de membros: versão `a800d459-5287-4505-ac81-faf64032aa13` em
   `miembros.hazquevuelva.site`;
 - agente privado: versão de borda
   `910ee45f-ac17-435b-819c-ee51beb68242`, com `workers.dev` desativado e

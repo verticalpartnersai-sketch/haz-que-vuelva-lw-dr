@@ -287,6 +287,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Aceitar BRL, USD e EUR conforme o enum documentado pela Perfect Pay.
 - [ ] Validar projeções com fixtures reais redigidas e testes cloud.
 - [ ] Confirmar aprovação comercial dos três produtos no painel Perfect Pay.
+- [ ] Configurar no painel e provar o pós-compra: Haz Que Vuelva → `/up1`,
+  Reconquista 30 → `/up2` e aceite/recusa do VUELVE IA → `/gracias`.
+- [ ] Confirmar se existirão downsells; caso existam, cadastrar códigos,
+  checkouts e mapeamentos para o mesmo entitlement sem duplicar acesso.
 
 ### IA
 
@@ -345,6 +349,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Aplicar e validar RAG no PostgreSQL/pgvector.
 - [x] Criar Resend e publicar DKIM, SPF e MX no subdomínio
   `mail.hazquevuelva.site`.
+- [x] Publicar DMARC no domínio raiz em modo de monitoramento (`p=none`).
 - [x] Criar projeto/chave Gemini próprios.
 - [x] Usar somente credenciais deste projeto.
 
@@ -359,8 +364,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar `haz-que-vuelva-marketing` na conta correta.
 - [x] Conectar DNS/TLS de `hazquevuelva.site`.
 - [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
-- [x] Iniciar o áudio no mesmo gesto do CTA inicial, manter loop e preservar o
-  controle manual no cabeçalho.
+- [ ] Corrigir e provar em produção que o CTA inicia o áudio em loop ainda
+  mudo, preservando o controle manual para a usuária ativá-lo. A publicação
+  atual inicia audível, contrariando a decisão final de mute.
 - [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
   quatro jobs verdes.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e
@@ -374,6 +380,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
+- [ ] Definir se o Browser Insights será desativado em membros ou autorizado
+  na CSP após decisão de privacidade; o beacon automático é bloqueado hoje.
 - [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
   segredos obrigatórios e domínio exclusivo de produção.
 - [x] Cadastrar variáveis e segredos reais no Worker da área de membros sem
@@ -396,6 +404,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Validar rollback.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.
 - [ ] Testar espanhol, desktop e celular.
+- [ ] Fazer `/up1`, `/up2` e `/gracias` exigirem contexto verificável antes de
+  afirmar que uma compra foi confirmada.
+- [ ] Religar a Supabase CLI com a conta que enxerga o projeto definitivo; o
+  app e as migrações remotas estão ativos, mas o token CLI local atual não tem
+  acesso administrativo ao projeto.
 - [ ] Criar admin inicial pelo comando privado e revisar novamente a decisão
   de MFA antes da abertura pública.
 - [x] Exigir Auth real no modo `production`, impedir catálogo/sessão mock,

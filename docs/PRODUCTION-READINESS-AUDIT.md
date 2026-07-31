@@ -1,7 +1,8 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit da aplicação verificada: `693ddf60ca6fbf4d3bb8864427d4ed09964b4238`
+Commit da aplicação publicada: `0858252662a22cc682d010994715553581e794fa`
+Commit da documentação auditada: `9e3d92450b649a82d1da7379a69b27c0b8484de7`
 
 ## Veredito
 
@@ -17,21 +18,21 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Superfície | Estado comprovado |
 | --- | --- |
 | Git | o commit da aplicação está publicado e é ancestral da `main` auditada |
-| Marketing | `https://hazquevuelva.site/quiz`, `/up1` e `/up2` respondem 200 |
+| Marketing | `https://hazquevuelva.site/quiz`, `/up1`, `/up2` e `/gracias` respondem 200 sem overflow em 390x844 e 1440x900 |
 | Checkout | CTAs publicados apontam para os três redirecionadores Centerpag aprovados no código |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
 | Supabase | 21 migrações aplicadas; cadastro público e login anônimo desabilitados |
 | Catálogo | cinco produtos ativos no banco |
-| Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps |
+| Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
 | CI | quatro jobs do workflow CI verdes no SHA auditado |
 | Smoke | workflow recorrente cobre marketing, autenticação negativa, webhook e agente privado |
-| Resend DNS | DKIM publicado; SPF e MX publicados em `send.mail.hazquevuelva.site` |
+| Resend DNS | DKIM publicado; SPF e MX publicados em `send.mail.hazquevuelva.site`; DMARC `p=none` publicado no domínio raiz |
 
 Versões Cloudflare verificadas:
 
-- membros: `5ef94614-f428-4cb9-9765-88e0ab4d42c8`;
+- membros: `a800d459-5287-4505-ac81-faf64032aa13`;
 - agente: `910ee45f-ac17-435b-819c-ee51beb68242`;
 - marketing: `53f05580-111b-4ff5-bdf7-12da94078485`.
 
@@ -55,6 +56,16 @@ Consulta administrativa somente de contagem, sem expor dados pessoais:
 Esse inventário é esperado antes do lançamento, mas prova que nenhum fluxo
 positivo real foi validado ainda.
 
+Mapeamentos observados no catálogo remoto:
+
+| Produto interno | Produto Perfect Pay | Correspondência |
+| --- | --- | --- |
+| `haz_que_vuelva` | `PPPBF7CC` | `*` |
+| `21_mensajes` | `PPPBF7CC` | `item:PPPBF7EK` |
+| `la_otra` | `PPPBF7CC` | `item:PPPBF7EL` |
+| `reconquista_30` | `PPPBF7E4` | `*` |
+| `vuelve_ia` | `PPPBF7E7` | `*` |
+
 ## P0 — bloqueia abrir vendas
 
 ### 1. Aprovação comercial da Perfect Pay
@@ -71,6 +82,12 @@ Aceite:
 4. payloads reais redigidos arquivados como fixtures;
 5. repetição do mesmo webhook comprovadamente idempotente;
 6. cancelamento, reembolso e chargeback revogando apenas o produto correto.
+7. configurar e provar o encadeamento pós-compra no painel: produto principal
+   para `/up1`, Reconquista 30 para `/up2` e aceite ou recusa do VUELVE IA
+   para `/gracias`;
+8. confirmar com payload real quais parâmetros de venda e atribuição a Perfect
+   Pay preserva entre as páginas. Os CTAs atuais abrem checkouts independentes,
+   não uma compra one-click já comprovada.
 
 ### 2. Publicação do conteúdo real na área de membros
 
@@ -100,7 +117,8 @@ Aceite:
 3. definir senha pelo link temporário;
 4. comprovar que o convite não concede produto sem entitlement;
 5. tratar bounce, duplicidade, reenvio e e-mail já cadastrado;
-6. publicar DMARC inicialmente em modo de monitoramento.
+6. acompanhar a reputação do domínio com o DMARC já publicado em `p=none` e
+   definir o critério de avanço para `quarantine` ou `reject`.
 
 ### 4. Administração real e MFA
 
@@ -166,7 +184,20 @@ Aceite:
 - criar suporte e canal de incidente visível para compradoras;
 - decidir política de comentários e moderação;
 - revisar métricas sem enviar conversa, e-mail ou conteúdo sensível;
-- testar concorrência e retry das três outboxes.
+- testar concorrência e retry das três outboxes;
+- corrigir o contrato do áudio: o estado inicial é mudo, mas o CTA atualmente
+  inicia o arquivo audível (`muted=false`, volume 1). A decisão já registrada é
+  começar e manter o loop em mute, deixando a usuária ativar o som;
+- decidir se o Browser Insights será desativado na área de membros ou
+  explicitamente autorizado na CSP. Hoje o beacon automático do Cloudflare é
+  bloqueado pela CSP, sem quebrar o login, mas gera erro no console;
+- impedir que acesso direto a `/up1`, `/up2` e `/gracias` afirme compra
+  confirmada sem contexto de venda verificável. Isso não concede entitlement,
+  porém é incorreto para uma visitante direta;
+- recuperar acesso operacional do Supabase CLI pela conta correta e vincular
+  explicitamente o checkout ao projeto. As migrações estão aplicadas e o app
+  funciona com suas credenciais, mas o token local atual não enxerga o projeto
+  HAZ QUE VUELVA e a Management API retorna 403.
 
 ## P2 — dívida técnica sem bloquear o primeiro teste controlado
 
@@ -193,6 +224,9 @@ Aceite:
 9. liberar Reconquista 30 e order bumps conforme conteúdo;
 10. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
     testes privados.
+
+Downsells não fazem parte da matriz atual. Se continuarem no funil, precisam de
+códigos, checkouts e decisão explícita de mapeamento antes do teste comercial.
 
 ## Critério para declarar 100%
 

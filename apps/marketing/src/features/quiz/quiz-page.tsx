@@ -157,7 +157,7 @@ export function QuizPage() {
     ambientAudio.volume = 1;
     ambientAudio.muted = audioMuted;
 
-    if (!audioStarted || audioMuted) {
+    if (!audioStarted) {
       ambientAudio.pause();
       return;
     }
@@ -284,12 +284,12 @@ export function QuizPage() {
     return () => window.clearTimeout(reveal);
   }, [enhancedExperience, loaderTick, route, stage]);
 
-  function playAmbientAudio(restart = false) {
+  function playAmbientAudio(restart = false, muted = audioMuted) {
     const ambientAudio = ambientAudioRef.current;
     if (!ambientAudio) return;
     if (restart) ambientAudio.currentTime = 0;
     ambientAudio.loop = true;
-    ambientAudio.muted = false;
+    ambientAudio.muted = muted;
     ambientAudio.volume = 1;
     void ambientAudio
       .play()
@@ -300,9 +300,9 @@ export function QuizPage() {
   function startQuiz() {
     userStartedQuizRef.current = true;
     setAudioStarted(true);
-    setAudioMuted(false);
+    setAudioMuted(true);
     setAudioNeedsGesture(false);
-    playAmbientAudio(true);
+    playAmbientAudio(true, true);
 
     track("quiz_start", utmParameters());
     scrollQuizToTop();
@@ -332,7 +332,7 @@ export function QuizPage() {
     if (!audioStarted || audioMuted) {
       setAudioStarted(true);
       setAudioMuted(false);
-      playAmbientAudio();
+      playAmbientAudio(false, false);
       return;
     }
 

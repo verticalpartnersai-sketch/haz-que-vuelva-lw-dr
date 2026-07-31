@@ -7,6 +7,12 @@ as 21 migrações e testes de segurança aplicados. O catálogo possui cinco
 produtos; os três produtos principais e os dois order bumps da Perfect Pay
 estão mapeados.
 
+As migrações foram aplicadas e verificadas por conexão direta ao banco. A CLI
+local não está atualmente vinculada ao projeto por uma conta com acesso: o
+token disponível enxerga apenas outro projeto e a Management API do HAZ QUE
+VUELVA responde 403. Isso não derruba o app, mas precisa ser corrigido antes de
+tratar a CLI como caminho confiável de manutenção, diff e rollback.
+
 O Auth usa `https://miembros.hazquevuelva.site` como Site URL, aceita os
 callbacks de produção e desenvolvimento explicitamente cadastrados e mantém
 cadastro público e login anônimo desabilitados. TOTP está habilitado; Google
@@ -20,6 +26,8 @@ Antes de liberar venda real ainda são necessários:
 4. payloads Perfect Pay redigidos dos cinco produtos/itens;
 5. aprovação comercial dos produtos no painel Perfect Pay;
 6. teste de restauração e orçamento operacional.
+7. recuperar o acesso da conta correta na Supabase CLI e vincular novamente o
+   projeto sem reutilizar token de outra organização.
 
 ## Ordem segura de ativação
 

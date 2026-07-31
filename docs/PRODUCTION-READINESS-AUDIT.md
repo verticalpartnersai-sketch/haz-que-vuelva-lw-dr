@@ -1,6 +1,6 @@
 # Auditoria de prontidão para produção
 
-Data da evidência: 31 de julho de 2026  
+Data da evidência: 31 de julho de 2026
 Commit publicado: `693ddf60ca6fbf4d3bb8864427d4ed09964b4238`
 
 ## Veredito

@@ -172,6 +172,23 @@ Aceite:
    webhook, custo e um canal de paging fora do GitHub;
 6. registrar RTO e RPO aceitos.
 
+### 7. Rotação das credenciais compartilhadas
+
+Os scans do Git e dos bundles não encontraram as credenciais do projeto, mas
+segredos reais foram compartilhados durante a configuração por um canal de
+conversa. Antes de vendas reais, eles devem ser considerados expostos e
+rotacionados em janela coordenada.
+
+Aceite:
+
+1. rotacionar senha do banco e chave secreta do Supabase;
+2. rotacionar token de integração e autenticação do postback Perfect Pay;
+3. rotacionar chaves Resend e Gemini;
+4. substituir cada valor nos secrets dos Workers sem versioná-lo;
+5. executar smoke de webhook, convite, login e agente após a troca;
+6. confirmar que os valores anteriores foram revogados. A publishable key do
+   Supabase é pública por definição e não entra nessa rotação.
+
 ## P1 — concluir antes de escalar tráfego
 
 - executar E2E autenticado em espanhol no celular e desktop;
@@ -216,9 +233,10 @@ Aceite:
 5. executar a matriz de compras e revogações;
 6. provar isolamento e downloads com duas contas;
 7. criar backup, restauração, rollback e alertas;
-8. abrir um lote controlado de vendas;
-9. liberar Reconquista 30 e order bumps conforme conteúdo;
-10. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
+8. rotacionar credenciais e repetir os smokes;
+9. abrir um lote controlado de vendas;
+10. liberar Reconquista 30 e order bumps conforme conteúdo;
+11. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
     testes privados.
 
 Downsells não fazem parte da matriz atual. Se continuarem no funil, precisam de

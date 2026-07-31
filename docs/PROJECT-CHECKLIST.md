@@ -377,6 +377,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   `/productos` para `/login`.
 - [x] Configurar Service Binding privado entre BFF e agente e retirar
   `workers.dev`/Preview URL do agente.
+- [x] Publicar e validar o rollout de 31/07/2026: marketing e login respondem
+  200, health da área de membros responde `ready`, o smoke público passa e o
+  endpoint `workers.dev` antigo do agente responde 404.
 - [x] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
 - [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
   novamente no FastAPI.

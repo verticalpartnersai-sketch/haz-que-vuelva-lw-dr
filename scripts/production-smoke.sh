@@ -231,8 +231,8 @@ expect_redirect \
   "$members_url/quiz" \
   "$smoke_dir/members-quiz-headers.txt"
 
-grep -Fq '"status":"ok"' "$members_health_body" ||
-  fail "members health endpoint did not return an ok status"
+grep -Fq '"status":"ready"' "$members_health_body" ||
+  fail "members health endpoint did not return a ready status"
 
 members_headers="$smoke_dir/members-login-headers.txt"
 curl "${curl_common[@]}" \

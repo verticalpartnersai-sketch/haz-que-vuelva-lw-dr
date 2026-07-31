@@ -302,6 +302,26 @@ configuração real estiver incompleta.
 - a imagem roda como usuário não-root;
 - logs não contêm prompt, conversa, chaves ou dados pessoais.
 
+### Evidência do rollout de 31 de julho de 2026
+
+- área de membros: versão `5ef94614-f428-4cb9-9765-88e0ab4d42c8` em
+  `miembros.hazquevuelva.site`;
+- agente privado: versão de borda
+  `910ee45f-ac17-435b-819c-ee51beb68242`, com `workers.dev` desativado e
+  geração desligada por flag;
+- marketing: versão `53f05580-111b-4ff5-bdf7-12da94078485` em
+  `hazquevuelva.site`;
+- `scripts/production-smoke.sh` passou contra os dois domínios públicos e o
+  endpoint público antigo do agente passou a responder 404;
+- o deploy do agente usou `--containers-rollout=none`, pois o daemon Docker
+  local não estava disponível. A camada Worker foi atualizada, mas a imagem do
+  Container permaneceu na versão já publicada. Antes de habilitar a geração,
+  reconstruir e publicar a imagem deliberadamente e executar o smoke privado.
+
+Essa evidência comprova roteamento e configuração pública do rollout. Ela não
+substitui os testes reais de compra, e-mail, autorização por usuário nem geração
+Gemini listados nas pendências.
+
 ## Rollback
 
 - Preservar a versão anterior de cada Worker.

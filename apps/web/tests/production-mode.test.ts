@@ -35,6 +35,7 @@ test("the edge and worker layers fail closed before rendering mock data", () => 
   assert.match(worker, /frame-ancestors 'none'/);
   assert.match(worker, /connectSources\.push\(supabaseUrl\.origin\)/);
   assert.match(worker, /member_app_not_configured/);
+  assert.match(worker, /\/api\/internal\/operations\/health/);
 });
 
 test("local environment templates declare preview mode explicitly", () => {

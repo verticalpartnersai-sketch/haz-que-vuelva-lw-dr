@@ -144,6 +144,14 @@ async function runScheduledOutboxes(
     );
     throw new Error(codes.join(","));
   }
+
+  if (routes.length > 0) {
+    await invokeInternalRoute(
+      "/api/internal/operations/health",
+      environment,
+      context,
+    );
+  }
 }
 
 const worker = {

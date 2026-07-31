@@ -179,6 +179,11 @@ Eles ainda não constituem evidência de recuperação: o Docker local está
 indisponível, não há connection string administrativa no ambiente e falta um
 projeto isolado para o primeiro restore cronometrado.
 
+O Worker agora avalia as outboxes depois de cada ciclo e falha a invocação do
+Cron diante de job morto, lock preso, job atrasado ou evento Perfect Pay sem
+processamento. Isso cria sinal em Workers Logs e métricas de erro, mas ainda
+falta configurar a notificação desse sinal para um canal externo de paging.
+
 Aceite:
 
 1. criar backup inicial e política de retenção;

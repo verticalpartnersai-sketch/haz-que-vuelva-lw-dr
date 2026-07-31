@@ -721,3 +721,20 @@ por padrão, exige confirmação exata para produção e roda o smoke após a tr
 Decisão: o backup lógico local será cifrado antes de sair do diretório
 temporário; restore automatizado é permitido somente em project ref isolado.
 Objetos do Storage terão manifesto e recuperação próprios antes da publicação.
+
+## Registro de fontes — observabilidade das filas
+
+- [Cloudflare Workers — Observability](https://developers.cloudflare.com/workers/observability/):
+  métricas nativas incluem invocações, erros e duração; logs e traces podem ser
+  exportados por OTLP para um destino externo.
+- [Cloudflare Workers — Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/):
+  mantém histórico das 100 invocações agendadas mais recentes e registra os
+  eventos do Cron em Workers Logs.
+- [Cloudflare Workers — Errors and exceptions](https://developers.cloudflare.com/workers/observability/errors/):
+  exceções não tratadas aparecem como erro de invocação e podem ser filtradas
+  nos logs por outcome ou metadata de erro.
+
+Decisão: depois de processar as outboxes, o Cron consulta uma rota interna com
+service key e lança erro se houver job morto, atrasado, lock preso ou webhook
+sem processamento. Nenhum identificador de cliente entra no erro. O sinal
+nativo não substitui paging; o destino externo ainda precisa ser escolhido.

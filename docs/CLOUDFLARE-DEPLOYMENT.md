@@ -314,6 +314,10 @@ configuração real estiver incompleta.
 - middleware renova sessão, mas DAL/RLS negam acessos indevidos;
 - o Custom Worker executa as outboxes a cada minuto e ignora integrações cuja
   flag ou credencial esteja ausente;
+- depois dos processadores, o mesmo Cron consulta a saúde operacional por rota
+  interna autenticada. Job morto, lock acima de 5 minutos, job disponível ou
+  evento Perfect Pay sem processamento acima de 10 minutos transforma a
+  execução em erro observável, sem expor contagens na superfície pública;
 - primeiro download retorna `202` e enfileira a cópia; após o Cron, a mesma
   ação recebe URL assinada somente do PDF individual em `member-sensitive`;
 - PDF inválido, criptografado, acima de 12 MiB ou 300 páginas falha fechado e
@@ -387,5 +391,6 @@ reverte Supabase, Storage nem outros recursos vinculados.
   de teste autorizadas;
 - validar os cinco mapeamentos Perfect Pay com payloads reais redigidos;
 - conectar Workers Builds ao repositório GitHub;
-- configurar alertas externos e orçamento do Container/Gemini;
+- configurar um canal externo para receber os erros operacionais já detectados
+  pelo Cron e alertas de orçamento do Container/Gemini;
 - testar restauração, observabilidade, alertas e rollback remoto.

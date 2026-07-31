@@ -409,7 +409,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   aguarda Docker, connection string operacional e um projeto isolado.
 - [x] Exercitar criação, atualização e encerramento do incidente persistente no
   GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
-- [ ] Criar métricas e alertas para fila, webhook, custo e paging externo.
+- [ ] Concluir métricas e alertas. A detecção de fila morta/travada e webhook
+  atrasado já roda no Cron e gera erro observável; faltam orçamento da IA e um
+  canal de paging externo configurado e exercitado.
 - [ ] Executar o drill real de rollback. O executor defensivo foi versionado e
   validado em modo somente planejamento; falta promover uma versão anterior,
   passar o smoke e restaurar a versão atual em janela controlada.

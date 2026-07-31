@@ -21,15 +21,19 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 14. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
 15. [Pesquisa e fontes](RESEARCH.md)
 16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
-17. [Checklist mestre](PROJECT-CHECKLIST.md)
+17. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md)
+18. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 
 - Gates 1 e 2: concluídos.
 - Gates 3 e 4: frontend aprovado pelo usuário e preservado em commit próprio.
 - Gate 5: backend autorizado e em implementação incremental.
-- Integrações reais, dados reais, infraestrutura e deploy continuam bloqueados
-  pelos respectivos pré-requisitos.
+- Marketing, login, Supabase Cloud e contratos de integração estão publicados;
+  geração VUELVE IA permanece desligada por flag.
+- A abertura comercial continua bloqueada pelos testes positivos de compra,
+  entrega de conteúdo, primeiro acesso, recuperação e operação listados na
+  auditoria de prontidão.
 - As notas Oracle foram ingeridas como contexto e rastreadas sem liberar gates
   posteriores.
 

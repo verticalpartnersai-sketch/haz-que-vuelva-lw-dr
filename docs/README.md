@@ -29,6 +29,8 @@ leia este índice e o checklist mestre.
     pendências e conflitos.
 14. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
 15. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+16. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md): evidência do
+    rollout, bloqueios P0–P2 e ordem de liberação comercial.
 
 ## Estado atual
 

@@ -2,13 +2,16 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 30 de julho de 2026: **frontend aprovado; marketing e área de
+> Estado em 31 de julho de 2026: **frontend aprovado; marketing e área de
 > membros publicados; 21 migrações no Supabase Cloud; Container da VUELVE IA
 > configurado com geração bloqueada por flag**.
 >
 > Gates 5–7 estão parcialmente executados por autorização explícita, mas
 > continuam abertos até os testes reais, controles operacionais e dependências
 > externas listados abaixo.
+>
+> A fronteira de lançamento e a ordem dos bloqueios estão registradas na
+> [auditoria de prontidão para produção](PRODUCTION-READINESS-AUDIT.md).
 
 ## Sequência obrigatória
 

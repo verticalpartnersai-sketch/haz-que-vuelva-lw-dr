@@ -142,8 +142,8 @@ export function UpsellOfferPage({
           width={1451}
         />
         <span>
-          <Icon name="check" weight="bold" />
-          Tu compra principal está confirmada
+          <Icon name="spark" weight="bold" />
+          Tu siguiente decisión ya está disponible
         </span>
       </header>
 

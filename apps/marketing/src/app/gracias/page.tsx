@@ -4,8 +4,8 @@ import Image from "next/image";
 import { Icon } from "@/components/icon";
 
 export const metadata: Metadata = {
-  title: "Tu acceso está listo",
-  description: "Confirmación de acceso a Haz Que Vuelva.",
+  title: "Instrucciones de acceso",
+  description: "Próximos pasos para acceder a Haz Que Vuelva.",
   robots: { follow: false, index: false },
 };
 
@@ -20,13 +20,14 @@ export default function Page() {
         width={1451}
       />
       <span className="thanks-page__status">
-        <Icon name="check" weight="bold" />
-        Compra confirmada
+        <Icon name="spark" weight="bold" />
+        Verifica el estado de tu pago
       </span>
-      <h1>Tu acceso ya está siendo preparado.</h1>
+      <h1>Si tu pago fue aprobado, tu acceso ya está siendo preparado.</h1>
       <p>
-        Revisa el email usado en la compra. Ahí recibirás la invitación para
-        definir tu contraseña y entrar al área de miembros.
+        Revisa el email usado en el checkout. Cuando la aprobación llegue,
+        recibirás la invitación para definir tu contraseña y entrar al área de
+        miembros.
       </p>
       <div className="thanks-page__steps">
         <article>

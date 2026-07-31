@@ -145,8 +145,24 @@ NODE
 
 upsell_1_body="$smoke_dir/up1.html"
 upsell_2_body="$smoke_dir/up2.html"
+thanks_body="$smoke_dir/gracias.html"
 expect_status "200" "$base_url/up1?utm_source=hqv-smoke" "$upsell_1_body"
 expect_status "200" "$base_url/up2?utm_source=hqv-smoke" "$upsell_2_body"
+expect_status "200" "$base_url/gracias" "$thanks_body"
+
+for upsell_body in "$upsell_1_body" "$upsell_2_body"; do
+  grep -Fq "Tu siguiente decisión ya está disponible" "$upsell_body" ||
+    fail "upsell page is missing the transaction-neutral status"
+  if grep -Fq "Tu compra principal está confirmada" "$upsell_body"; then
+    fail "upsell page claims a confirmed purchase without transaction proof"
+  fi
+done
+
+grep -Fq "Si tu pago fue aprobado, tu acceso ya está siendo preparado." "$thanks_body" ||
+  fail "thank-you page is missing the conditional payment status"
+if grep -Fq "Compra confirmada" "$thanks_body"; then
+  fail "thank-you page claims a confirmed purchase without transaction proof"
+fi
 
 node --input-type=module - \
   "$base_url" \

@@ -9,6 +9,17 @@ const booleanString = z
 
 const runtimeMode = z.enum(["preview", "production"]).default("preview");
 
+const optionalUrl = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.url().optional(),
+);
+
+const optionalString = (minimumLength: number) =>
+  z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().min(minimumLength).optional(),
+  );
+
 const environmentSchema = z
   .object({
     MEMBER_APP_MODE: runtimeMode,
@@ -18,17 +29,18 @@ const environmentSchema = z
     FEATURE_ADMIN: booleanString,
     FEATURE_VUELVE_IA: booleanString,
     NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: booleanString,
-    NEXT_PUBLIC_SUPABASE_URL: z.url().optional(),
-    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
-    SUPABASE_SECRET_KEY: z.string().min(1).optional(),
-    PERFECT_PAY_WEBHOOK_TOKEN: z.string().min(16).optional(),
-    RESEND_API_KEY: z.string().min(1).optional(),
-    RESEND_FROM: z.string().min(3).optional(),
-    MEMBER_APP_URL: z.url().optional(),
-    MARKETING_APP_URL: z.url().optional(),
-    AGENT_INTERNAL_URL: z.url().optional(),
-    AGENT_INTERNAL_SECRET: z.string().min(32).optional(),
-    WORKER_INTERNAL_SECRET: z.string().min(32).optional(),
+    NEXT_PUBLIC_SUPABASE_URL: optionalUrl,
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalString(1),
+    SUPABASE_SECRET_KEY: optionalString(1),
+    PERFECT_PAY_WEBHOOK_TOKEN: optionalString(16),
+    RESEND_API_KEY: optionalString(1),
+    RESEND_FROM: optionalString(3),
+    MEMBER_APP_URL: optionalUrl,
+    MARKETING_APP_URL: optionalUrl,
+    AGENT_SERVICE_BINDING: booleanString,
+    AGENT_INTERNAL_URL: optionalUrl,
+    AGENT_INTERNAL_SECRET: optionalString(32),
+    WORKER_INTERNAL_SECRET: optionalString(32),
   })
   .superRefine((environment, context) => {
     const authConfigured =
@@ -83,13 +95,22 @@ const environmentSchema = z
     }
     if (
       environment.FEATURE_VUELVE_IA &&
-      (!environment.AGENT_INTERNAL_URL ||
-        !environment.AGENT_INTERNAL_SECRET)
+      (!environment.AGENT_SERVICE_BINDING &&
+        !environment.AGENT_INTERNAL_URL)
     ) {
       context.addIssue({
         code: "custom",
         message:
-          "VUELVE IA requires AGENT_INTERNAL_URL and AGENT_INTERNAL_SECRET",
+          "VUELVE IA requires AGENT_SERVICE_BINDING=true or AGENT_INTERNAL_URL",
+      });
+    }
+    if (
+      environment.FEATURE_VUELVE_IA &&
+      !environment.AGENT_INTERNAL_SECRET
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "VUELVE IA requires AGENT_INTERNAL_SECRET",
       });
     }
     if (

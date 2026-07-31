@@ -76,6 +76,10 @@ function json(code: string, status: number): Response {
   );
 }
 
+function generationEnabled(env: WorkerEnv): boolean {
+  return env.FEATURE_GENERATION === "true";
+}
+
 export default {
   async fetch(request: Request, env: WorkerEnv): Promise<Response> {
     const url = new URL(request.url);
@@ -86,13 +90,13 @@ export default {
     if (!isHealthRequest && !isGenerationRequest) {
       return json("not_found", 404);
     }
-    if (
-      isGenerationRequest &&
-      !(await hasValidCredential(request, env.INTERNAL_SECRET))
-    ) {
+    if (!(await hasValidCredential(request, env.INTERNAL_SECRET))) {
       return env.INTERNAL_SECRET
         ? json("unauthorized", 401)
         : json("not_configured", 503);
+    }
+    if (isGenerationRequest && !generationEnabled(env)) {
+      return json("generation_disabled", 503);
     }
 
     return getContainer(env.VUELVE_AGENT, "primary").fetch(request);

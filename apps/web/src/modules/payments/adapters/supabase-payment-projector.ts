@@ -1,22 +1,26 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { isProductCode } from "@/modules/catalog/domain/product";
+import { isProductCode } from "../../catalog/domain/product.ts";
 import type {
   ExternalOfferCatalog,
   PaymentProjection,
-} from "@/modules/payments/application/project-payment-event";
+} from "../application/project-payment-event.ts";
 
 export class SupabasePaymentProjector
   implements ExternalOfferCatalog, PaymentProjection
 {
-  constructor(private readonly client: SupabaseClient) {}
+  private readonly client: SupabaseClient;
+
+  constructor(client: SupabaseClient) {
+    this.client = client;
+  }
 
   async productForOffer(input: {
     provider: "perfect_pay";
     productCode: string;
     planCode: string;
   }) {
-    const { data, error } = await this.client
+    const exact = await this.client
       .from("external_offers")
       .select("product_code")
       .eq("provider", input.provider)
@@ -24,9 +28,30 @@ export class SupabasePaymentProjector
       .eq("external_plan_code", input.planCode)
       .eq("active", true)
       .maybeSingle();
-    if (error) throw new Error(`Offer lookup failed: ${error.code}`);
-    if (!data || !isProductCode(data.product_code)) return null;
-    return data.product_code;
+    if (exact.error) {
+      throw new Error(`Offer lookup failed: ${exact.error.code}`);
+    }
+    if (exact.data && isProductCode(exact.data.product_code)) {
+      return exact.data.product_code;
+    }
+
+    if (input.planCode.startsWith("item:")) return null;
+
+    const wildcard = await this.client
+      .from("external_offers")
+      .select("product_code")
+      .eq("provider", input.provider)
+      .eq("external_product_code", input.productCode)
+      .eq("external_plan_code", "*")
+      .eq("active", true)
+      .maybeSingle();
+    if (wildcard.error) {
+      throw new Error(`Offer lookup failed: ${wildcard.error.code}`);
+    }
+    if (!wildcard.data || !isProductCode(wildcard.data.product_code)) {
+      return null;
+    }
+    return wildcard.data.product_code;
   }
 
   async apply(input: Parameters<PaymentProjection["apply"]>[0]) {

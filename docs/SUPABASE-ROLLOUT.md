@@ -2,25 +2,24 @@
 
 ## Estado atual
 
-O backend e o frontend estão implementados localmente. Nenhuma migração desta
-operação foi aplicada em projeto remoto. O projeto Supabase visível com nome
-genérico `App` não deve ser usado sem comprovação explícita de que pertence ao
-HAZ QUE VUELVA.
+O projeto dedicado `haz-que-vuelva-members` está ativo no Supabase Cloud, com
+as 21 migrações e testes de segurança aplicados. O catálogo possui cinco
+produtos; os três produtos principais e os dois order bumps da Perfect Pay
+estão mapeados.
 
-O gate de banco será executado exclusivamente no Supabase Cloud. Não haverá
-bootstrap, migração ou pgTAP em Docker ou banco local.
+O Auth usa `https://miembros.hazquevuelva.site` como Site URL, aceita os
+callbacks de produção e desenvolvimento explicitamente cadastrados e mantém
+cadastro público e login anônimo desabilitados. TOTP está habilitado; Google
+OAuth permanece desligado até existirem credenciais próprias.
 
-## Dependências externas
+Antes de liberar venda real ainda são necessários:
 
-Antes da ativação são necessários:
-
-1. projeto Supabase dedicado e região escolhida;
-2. senha do banco guardada fora do repositório;
-3. Client ID e Client Secret OAuth do Google;
-4. domínio e remetente Resend verificados;
-5. token e códigos reais da Perfect Pay;
-6. URLs definitivas da área de membros e do marketing;
-7. plano Cloudflare compatível com o processamento de PDF definido.
+1. primeiro admin convidado, promovido e inscrito em TOTP;
+2. Client ID e Client Secret OAuth do Google, caso esse login seja mantido;
+3. teste real de entrega do remetente Resend;
+4. payloads Perfect Pay redigidos dos cinco produtos/itens;
+5. aprovação comercial dos produtos no painel Perfect Pay;
+6. teste de restauração e orçamento operacional.
 
 ## Ordem segura de ativação
 
@@ -69,7 +68,6 @@ Segredos:
 - `SUPABASE_SECRET_KEY`
 - `PERFECT_PAY_WEBHOOK_TOKEN`
 - `RESEND_API_KEY`
-- `RESEND_FROM`
 - `AGENT_INTERNAL_SECRET`
 - `WORKER_INTERNAL_SECRET`
 
@@ -78,17 +76,20 @@ Variáveis não secretas:
 - `MEMBER_APP_MODE=production`
 - `MEMBER_APP_URL`
 - `MARKETING_APP_URL`
-- `AGENT_INTERNAL_URL`
+- `AGENT_SERVICE_BINDING=true`
+- `RESEND_FROM`
 
-Ativar gradualmente `FEATURE_AUTH`, `FEATURE_ADMIN`, `FEATURE_CONTENT`,
-`FEATURE_PAYMENTS`, `FEATURE_VUELVE_IA` e, por último,
-`NEXT_PUBLIC_AUTH_GOOGLE_ENABLED`.
+`FEATURE_AUTH`, `FEATURE_ADMIN`, `FEATURE_CONTENT` e `FEATURE_PAYMENTS` estão
+ativos no Worker de produção. `FEATURE_VUELVE_IA` permanece falso até o smoke
+real e o gate jurídico.
+`NEXT_PUBLIC_AUTH_GOOGLE_ENABLED` permanece falso.
 
 Uma flag nunca substitui RLS, papel, entitlement, MFA ou reautenticação.
 
 ## Critérios de aceite
 
-- login por senha, Google, recuperação e logout funcionam;
+- login por senha, recuperação e logout funcionam;
+- Google funciona somente se for habilitado depois com credenciais próprias;
 - cadastro público continua fechado;
 - MFA TOTP eleva a sessão para `aal2`;
 - painel admin carrega dados reais e audita cada mutação;

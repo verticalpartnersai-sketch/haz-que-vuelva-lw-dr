@@ -2,16 +2,17 @@
 
 ## Estado
 
-Adapters e contratos locais estão autorizados. Nenhuma integração externa está
-ativa; não existem credenciais versionadas nem smoke tests reais autorizados.
+A infraestrutura e os contratos estão em produção sem credenciais versionadas.
+Operações com efeito externo continuam falhando de forma fechada quando
+mapeamento, entitlement, segredo ou feature flag estiver ausente.
 
 | Provedor/direção | Responsabilidade prevista | Estado |
 |---|---|---|
-| Perfect Pay | eventos de compra, cancelamento, reembolso e chargeback | fornecedor definido; contratos e IDs pendentes |
-| Supabase Auth/PostgreSQL/Storage | identidade, banco, arquivos privados, RLS e RAG | schemas locais criados; projeto cloud pendente |
-| Resend | convites e emails transacionais | adapter e outbox implementados; domínio e smoke test pendentes |
-| Gemini | geração e embeddings da VUELVE IA | adapters implementados e desligados; credencial e smoke test pendentes |
-| Cloudflare Workers/Containers | borda, DNS, TLS e execução | marketing publicado; Worker de membros criado sem segredos/domínio; agente em dry-run |
+| Perfect Pay | eventos de compra, cancelamento, reembolso e chargeback | webhook ativo; três produtos e dois order bumps mapeados |
+| Supabase Auth/PostgreSQL/Storage | identidade, banco, arquivos privados, RLS e RAG | projeto cloud e migrações ativos; cadastro público fechado e callbacks de produção configurados |
+| Resend | convites e emails transacionais | chave, outbox e DNS configurados; envio real ainda não exercitado |
+| Gemini | geração e embeddings da VUELVE IA | Container e binding privados configurados; geração bloqueada até smoke real e gate jurídico |
+| Cloudflare Workers/Containers | borda, DNS, TLS e execução | marketing e membros publicados; agente sem rota pública após a publicação de endurecimento |
 
 ## Perfect Pay
 
@@ -26,8 +27,9 @@ Quando autorizado, o adaptador deverá:
   chargeback;
 - registrar falha sem segredo ou payload sensível.
 
-Upsell e downsell equivalentes podem mapear para o mesmo entitlement, mas os
-códigos, preços e IDs finais continuam pendentes.
+Upsell e downsell equivalentes podem mapear para o mesmo entitlement por meio
+do wildcard de plano do produto. Order bumps não usam wildcard: cada
+`plan_itens[].item_code` precisa de uma oferta exata `item:<item_code>`.
 
 ## Demais integrações
 
@@ -49,15 +51,11 @@ código.
 
 ## Pendências
 
-- catálogo final, IDs externos, preços e links de checkout;
-- domínio e subdomínios;
-- projetos próprios e credenciais;
-- payloads e assinatura atuais da Perfect Pay;
-- aplicação e validação cloud do schema, RLS e política de Storage;
-- templates e remetente;
-- contrato jurídico e política de dados do Gemini;
-- conta, domínios, secrets, Containers, backups, observabilidade e rollback no
-  Cloudflare.
+- fixture redigida de compra/revogação para cada um dos cinco mapeamentos;
+- aprovação comercial dos produtos no painel Perfect Pay;
+- smoke de entrega para um destinatário Resend autorizado;
+- primeiro admin com TOTP;
+- backups, observabilidade, alertas e rollback no Cloudflare.
 
 A topologia e a sequência operacional estão em
 [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md).

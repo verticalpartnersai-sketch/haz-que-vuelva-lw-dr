@@ -52,7 +52,16 @@ test("the production Worker owns only the member subdomain and declares required
   assert.match(wrangler, /"MEMBER_APP_URL": "https:\/\/miembros\.hazquevuelva\.site"/);
   assert.doesNotMatch(wrangler, /"pattern": "hazquevuelva\.site"/);
   assert.match(wrangler, /"SUPABASE_SECRET_KEY"/);
+  assert.match(wrangler, /"FEATURE_PAYMENTS": "true"/);
+  assert.match(wrangler, /"FEATURE_VUELVE_IA": "false"/);
+  assert.match(wrangler, /"AGENT_SERVICE_BINDING": "true"/);
+  assert.match(wrangler, /"binding": "VUELVE_AGENT_SERVICE"/);
+  assert.match(wrangler, /"service": "haz-que-vuelva-agent"/);
+  assert.doesNotMatch(wrangler, /haz-que-vuelva-agent\.verticalpartnersai\.workers\.dev/);
   assert.match(wrangler, /"PERFECT_PAY_WEBHOOK_TOKEN"/);
+  assert.match(wrangler, /"RESEND_API_KEY"/);
+  assert.match(wrangler, /"AGENT_INTERNAL_SECRET"/);
+  assert.match(wrangler, /acceso@mail\.hazquevuelva\.site/);
   assert.match(wrangler, /"WORKER_INTERNAL_SECRET"/);
   assert.match(
     packageManifest,
@@ -76,4 +85,37 @@ test("Supabase browser settings come from the runtime server instead of build-ti
   assert.match(browserClient, /SupabaseBrowserConfiguration/);
   assert.match(loginPage, /supabaseBrowserConfiguration\(config\)/);
   assert.match(loginPage, /supabase=\{/);
+});
+
+test("VUELVE IA uses a private service binding and limits request bodies", () => {
+  const route = read("../src/app/api/ai/generations/stream/route.ts");
+  const agentWorker = read("../../agent/worker/index.ts");
+  const agentWrangler = read("../../agent/wrangler.jsonc");
+
+  assert.match(route, /getCloudflareContext/);
+  assert.match(route, /VUELVE_AGENT_SERVICE/);
+  assert.match(route, /MAX_BODY_BYTES = 128 \* 1024/);
+  assert.match(route, /request_too_large/);
+  assert.ok(
+    route.indexOf("currentIdentity()") <
+      route.indexOf("readBoundedJsonBody(request"),
+    "authentication must happen before the request body is parsed",
+  );
+  assert.match(agentWrangler, /"FEATURE_GENERATION": "false"/);
+  assert.match(agentWrangler, /"workers_dev": false/);
+  assert.match(agentWrangler, /"preview_urls": false/);
+  assert.ok(
+    agentWorker.indexOf("hasValidCredential") <
+      agentWorker.indexOf('getContainer(env.VUELVE_AGENT, "primary")'),
+    "the edge credential must be checked before the container is invoked",
+  );
+});
+
+test("the PerfectPay webhook incrementally limits request bodies", () => {
+  const route = read("../src/app/api/webhooks/perfect-pay/route.ts");
+
+  assert.match(route, /MAX_BODY_BYTES = 64 \* 1024/);
+  assert.match(route, /readBoundedJsonBody\(request, MAX_BODY_BYTES\)/);
+  assert.match(route, /body\.reason === "too_large"/);
+  assert.doesNotMatch(route, /request\.text\(\)/);
 });

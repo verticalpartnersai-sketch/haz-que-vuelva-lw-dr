@@ -3,7 +3,10 @@
 set -euo pipefail
 
 base_url="${HQV_BASE_URL:-https://hazquevuelva.site}"
+members_url="${HQV_MEMBERS_URL:-https://miembros.hazquevuelva.site}"
 checkout_url="${HQV_CHECKOUT_URL:-https://go.centerpag.com/PPU38CQER3J}"
+upsell_1_url="${HQV_UPSELL_1_URL:-https://go.centerpag.com/PPU38CQERET}"
+upsell_2_url="${HQV_UPSELL_2_URL:-https://go.centerpag.com/PPU38CQERFF}"
 http_url="${base_url/https:/http:}"
 smoke_dir="$(mktemp -d "${TMPDIR:-/tmp}/hqv-production-smoke.XXXXXX")"
 
@@ -41,6 +44,28 @@ expect_status() {
 
   [[ "$status" == "$expected" ]] ||
     fail "$url returned $status; expected $expected"
+}
+
+expect_redirect() {
+  local expected_status="$1"
+  local expected_location="$2"
+  local url="$3"
+  local output="$4"
+  local status
+
+  status="$(
+    curl "${curl_common[@]}" \
+      --dump-header "$output" \
+      --output /dev/null \
+      --write-out "%{http_code}" \
+      "$url"
+  )"
+
+  [[ "$status" == "$expected_status" ]] ||
+    fail "$url returned $status; expected $expected_status"
+  tr -d "\r" <"$output" |
+    grep -Fqi "location: $expected_location" ||
+    fail "$url did not redirect to $expected_location"
 }
 
 http_headers="$smoke_dir/http-headers.txt"
@@ -117,21 +142,65 @@ if (!scripts.some((script) => script.includes(checkoutUrl))) {
 }
 NODE
 
+upsell_1_body="$smoke_dir/up1.html"
+upsell_2_body="$smoke_dir/up2.html"
+expect_status "200" "$base_url/up1?utm_source=hqv-smoke" "$upsell_1_body"
+expect_status "200" "$base_url/up2?utm_source=hqv-smoke" "$upsell_2_body"
+
+node --input-type=module - \
+  "$base_url" \
+  "$upsell_1_body" \
+  "$upsell_1_url" \
+  "$upsell_2_body" \
+  "$upsell_2_url" <<'NODE'
+import { readFile } from "node:fs/promises";
+
+const [, , baseUrl, ...pageArguments] = process.argv;
+
+for (let index = 0; index < pageArguments.length; index += 2) {
+  const bodyPath = pageArguments[index];
+  const expectedCheckout = pageArguments[index + 1];
+  const html = await readFile(bodyPath, "utf8");
+  const scriptUrls = [
+    ...html.matchAll(/<script[^>]+src="([^"]+)"/g),
+  ].map((match) => new URL(match[1], baseUrl).href);
+  const scripts = await Promise.all(
+    scriptUrls.map(async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`${url} returned ${response.status}`);
+      }
+      return response.text();
+    }),
+  );
+
+  if (
+    !html.includes(expectedCheckout) &&
+    !scripts.some((script) => script.includes(expectedCheckout))
+  ) {
+    throw new Error(
+      `upsell checkout URL is missing from deployed page: ${expectedCheckout}`,
+    );
+  }
+}
+NODE
+
 checkout_probe_url="${checkout_url}?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero"
-checkout_headers="$smoke_dir/checkout-headers.txt"
-checkout_status="$(
-  curl "${curl_common[@]}" \
-    --dump-header "$checkout_headers" \
-    --output /dev/null \
-    --write-out "%{http_code}" \
-    "$checkout_probe_url"
-)"
-[[ "$checkout_status" == "302" ]] ||
-  fail "$checkout_probe_url returned $checkout_status; expected 302"
-tr -d "\r" <"$checkout_headers" |
-  grep -Fqi \
-    "location: https://checkout.centerpag.com/pay/PPU38CQER3J?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero" ||
-  fail "checkout redirect did not preserve quiz attribution parameters"
+expect_redirect \
+  "302" \
+  "https://checkout.centerpag.com/pay/PPU38CQER3J?utm_source=hqv-smoke&utm_medium=quiz&route=canal_fragil&cta_position=hero" \
+  "$checkout_probe_url" \
+  "$smoke_dir/checkout-headers.txt"
+expect_redirect \
+  "302" \
+  "https://checkout.centerpag.com/pay/PPU38CQERET?utm_source=hqv-smoke&utm_medium=upsell" \
+  "${upsell_1_url}?utm_source=hqv-smoke&utm_medium=upsell" \
+  "$smoke_dir/upsell-1-checkout-headers.txt"
+expect_redirect \
+  "302" \
+  "https://checkout.centerpag.com/pay/PPU38CQERFF?utm_source=hqv-smoke&utm_medium=upsell" \
+  "${upsell_2_url}?utm_source=hqv-smoke&utm_medium=upsell" \
+  "$smoke_dir/upsell-2-checkout-headers.txt"
 
 expect_status "200" "$base_url/robots.txt" "$smoke_dir/robots.txt"
 expect_status "200" "$base_url/sitemap.xml" "$smoke_dir/sitemap.xml"
@@ -147,4 +216,40 @@ audio_size="$(wc -c <"$smoke_dir/ambient.mp3" | tr -d " ")"
 [[ "$audio_size" -ge 1900000 && "$audio_size" -le 2200000 ]] ||
   fail "ambient audio has unexpected size: $audio_size bytes"
 
-echo "Production smoke passed for $base_url"
+members_login_body="$smoke_dir/members-login.html"
+members_health_body="$smoke_dir/members-health.json"
+expect_redirect \
+  "307" \
+  "/login?next=%2F" \
+  "$members_url/" \
+  "$smoke_dir/members-root-headers.txt"
+expect_status "200" "$members_url/login" "$members_login_body"
+expect_status "200" "$members_url/healthz" "$members_health_body"
+expect_redirect \
+  "307" \
+  "$base_url/quiz" \
+  "$members_url/quiz" \
+  "$smoke_dir/members-quiz-headers.txt"
+
+grep -Fq '"status":"ok"' "$members_health_body" ||
+  fail "members health endpoint did not return an ok status"
+
+members_headers="$smoke_dir/members-login-headers.txt"
+curl "${curl_common[@]}" \
+  --dump-header "$members_headers" \
+  --output /dev/null \
+  "$members_url/login"
+normalized_members_headers="$smoke_dir/members-login-headers-normalized.txt"
+tr -d "\r" <"$members_headers" |
+  tr "[:upper:]" "[:lower:]" >"$normalized_members_headers"
+for required_header in \
+  "strict-transport-security: max-age=31536000" \
+  "content-security-policy:" \
+  "permissions-policy: camera=(), geolocation=(), microphone=()" \
+  "x-content-type-options: nosniff" \
+  "x-frame-options: deny"; do
+  grep -Fq "$required_header" "$normalized_members_headers" ||
+    fail "members login is missing response header: $required_header"
+done
+
+echo "Production smoke passed for $base_url and $members_url"

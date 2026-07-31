@@ -1,3 +1,4 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -5,7 +6,13 @@ import {
   AuthenticationRequiredError,
   currentIdentity,
 } from "@/modules/identity/application/current-identity";
+import {
+  requestGenerationFromBinding,
+  requestGenerationFromUrl,
+  type AgentServiceBinding,
+} from "@/server/ai/agent-generation-transport";
 import { environment } from "@/server/config/environment";
+import { readBoundedJsonBody } from "@/server/http/read-bounded-json-body";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
 const requestSchema = z.object({
@@ -14,19 +21,39 @@ const requestSchema = z.object({
   requestId: z.uuid().optional(),
 });
 
+const MAX_BODY_BYTES = 128 * 1024;
+
+type AgentRuntimeBindings = {
+  VUELVE_AGENT_SERVICE?: AgentServiceBinding;
+};
+
+async function requestGeneration(
+  config: ReturnType<typeof environment>,
+  body: string,
+  signal: AbortSignal,
+) {
+  const input = {
+    body,
+    internalSecret: config.AGENT_INTERNAL_SECRET!,
+    signal,
+  };
+
+  if (config.AGENT_SERVICE_BINDING) {
+    const context = await getCloudflareContext({ async: true });
+    const bindings = context.env as unknown as AgentRuntimeBindings;
+    return requestGenerationFromBinding(bindings.VUELVE_AGENT_SERVICE, input);
+  }
+
+  return requestGenerationFromUrl(config.AGENT_INTERNAL_URL, input);
+}
+
 export async function POST(request: Request) {
   const config = environment();
   if (
     !config.FEATURE_VUELVE_IA ||
-    !config.AGENT_INTERNAL_URL ||
     !config.AGENT_INTERNAL_SECRET
   ) {
     return NextResponse.json({ code: "feature_unavailable" }, { status: 503 });
-  }
-
-  const parsed = requestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ code: "invalid_request" }, { status: 400 });
   }
 
   let identity: Awaited<ReturnType<typeof currentIdentity>>;
@@ -52,25 +79,26 @@ export async function POST(request: Request) {
     return NextResponse.json({ code: "access_denied" }, { status: 403 });
   }
 
+  const input = await readBoundedJsonBody(request, MAX_BODY_BYTES);
+  if (!input.ok && input.reason === "too_large") {
+    return NextResponse.json({ code: "request_too_large" }, { status: 413 });
+  }
+  const parsed = requestSchema.safeParse(input.ok ? input.value : undefined);
+  if (!parsed.success) {
+    return NextResponse.json({ code: "invalid_request" }, { status: 400 });
+  }
+
   let upstream: Response;
   try {
-    upstream = await fetch(
-      new URL("/v1/generations/stream", config.AGENT_INTERNAL_URL),
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${config.AGENT_INTERNAL_SECRET}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          member_id: identity.id,
-          conversation_id: parsed.data.conversationId,
-          message: parsed.data.message,
-          request_id: parsed.data.requestId ?? crypto.randomUUID(),
-        }),
-        signal: request.signal,
-        cache: "no-store",
-      },
+    upstream = await requestGeneration(
+      config,
+      JSON.stringify({
+        member_id: identity.id,
+        conversation_id: parsed.data.conversationId,
+        message: parsed.data.message,
+        request_id: parsed.data.requestId ?? crypto.randomUUID(),
+      }),
+      request.signal,
     );
   } catch {
     return NextResponse.json(

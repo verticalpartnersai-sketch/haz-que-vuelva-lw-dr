@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   normalizePerfectPayPayload,
+  normalizePerfectPayPayloads,
   secureTokenMatches,
 } from "../src/modules/payments/adapters/perfect-pay-normalizer.ts";
 import { processPaymentEvent } from "../src/modules/payments/application/process-payment-event.ts";
@@ -49,6 +50,54 @@ test("normalizer redacts payload and stores money in minor units", () => {
   assert.equal(event.customerEmail, "member@example.com");
   assert.equal(event.eventKey.startsWith("SALE-1:approved:"), true);
   assert.equal("token" in event, false);
+});
+
+test("normalizer emits one isolated event per order bump and supports USD", () => {
+  const events = normalizePerfectPayPayloads({
+    token: "not-persisted",
+    code: "SALE-WITH-BUMPS",
+    sale_amount: 27,
+    currency_enum: 2,
+    sale_status_enum: 2,
+    sale_status_detail: "approved",
+    date_created: "2026-07-30 10:00:00",
+    date_approved: "2026-07-30 10:01:00",
+    product: {
+      code: "PPPBF7CC",
+      name: "Haz que Vuelva",
+      external_reference: null,
+    },
+    plan: { code: "MAIN-PLAN", name: "Haz que Vuelva", quantity: 1 },
+    plan_itens: [
+      {
+        item_code: "BUMP-21",
+      },
+      {
+        code: "MAIN-PLAN",
+        item_code: "BUMP-LA-OTRA",
+        name: "La Otra",
+        price: 10,
+        quantity: 1,
+      },
+      {
+        code: "MAIN-PLAN",
+        item_code: "BUMP-21",
+        name: "21 Mensajes duplicate",
+        price: 10,
+        quantity: 1,
+      },
+    ],
+    customer: { email: "member@example.com" },
+  });
+
+  assert.equal(events.length, 3);
+  assert.deepEqual(
+    events.map((event) => event.planCode),
+    ["MAIN-PLAN", "item:BUMP-21", "item:BUMP-LA-OTRA"],
+  );
+  assert.equal(events.every((event) => event.currency === "USD"), true);
+  assert.equal(events.every((event) => event.amountMinor === 2_700), true);
+  assert.equal(new Set(events.map((event) => event.eventKey)).size, 3);
 });
 
 test("duplicate events still repair a missing outbox job", async () => {

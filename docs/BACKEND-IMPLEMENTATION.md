@@ -2,9 +2,11 @@
 
 ## Estado em 30 de julho de 2026
 
-O usuário aprovou o frontend e autorizou o backend em fatias. Esta autorização
-permite código, migrações e testes locais, mas não ativa fornecedores, não cria
-dados reais e não autoriza deploy público.
+O usuário aprovou o frontend, o backend e a publicação dos três serviços. O
+marketing e a área de membros estão em produção; Supabase, Perfect Pay, Resend
+e o Container da VUELVE IA possuem contratos e credenciais próprios. Geração
+Gemini permanece deliberadamente desligada até o smoke real e a aprovação do
+gate jurídico.
 
 Implementado nesta fundação:
 
@@ -38,7 +40,7 @@ Implementado nesta fundação:
 - FastAPI privado com portas de geração, recuperação, quota e persistência;
 - prompt da IA com rascunho, publicação, rollback e leitura service-only;
 - streaming SSE e política determinística de segurança;
-- adapters Supabase/Gemini implementados e deliberadamente desativados;
+- adapters Supabase/Gemini implementados atrás de feature flag;
 - reserva e devolução atômicas de créditos no PostgreSQL;
 - conclusão transacional da geração, persistindo resposta e consumo do crédito
   na mesma RPC idempotente;
@@ -46,14 +48,13 @@ Implementado nesta fundação:
 - operações administrativas atômicas de concessão, revogação, transferência e
   promoção inicial.
 
-Ainda não implementado ou ativado:
+Ainda não concluído:
 
-- projeto Supabase cloud e aplicação das migrações;
-- projeto e remetente reais do Resend;
-- mapping real de ofertas Perfect Pay;
 - ingestão/indexação administrativa de documentos;
 - rate limiting distribuído, circuit breaker e telemetria de custo;
-- textos jurídicos, retenção final, deploy e smoke tests externos.
+- textos jurídicos e retenção final;
+- compra/revogação, convite Resend e geração Gemini com identidades de teste;
+- backup/restauração, alertas externos e rollback ensaiado.
 
 ## Topologia
 
@@ -67,8 +68,8 @@ flowchart LR
   Worker --> Supabase
   BFF --> Agent["FastAPI privado VUELVE IA"]
   Agent --> Supabase
-  Agent --> Gemini["Gemini, flag desligada"]
-  Worker --> Resend["Resend, flag desligada"]
+  Agent --> Gemini["Gemini, rollout bloqueado por flag"]
+  Worker --> Resend["Resend"]
 ```
 
 O FastAPI não é um segundo backend generalista. Conta, catálogo, compras,
@@ -119,9 +120,9 @@ No perfil conectado, a troca de e-mail passa pelo BFF e exige sessão válida,
 mesma origem, payload limitado e a senha atual. O Supabase envia confirmação
 para o endereço antigo e para o novo; `profiles.email` só é sincronizado pelo
 trigger depois que o Auth efetiva a mudança. A auditoria registra a ação e o
-ator, mas não copia os endereços para o log. O projeto cloud ainda precisa
-replicar `double_confirm_changes=true`, autorizar o callback da área de membros
-e instalar os templates antes da flag de Auth ser ligada.
+ator, mas não copia os endereços para o log. O projeto cloud mantém
+`double_confirm_changes=true`, autoriza os callbacks explícitos da área de
+membros e mantém cadastro público fechado.
 
 ## Módulos Next.js
 
@@ -163,14 +164,15 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 
 ## Evidência local desta fundação
 
-- `apps/web`: typecheck, 54 testes, lint e build OpenNext/Cloudflare passam.
+- `apps/web`: typecheck, 65 testes, lint e build OpenNext/Cloudflare passam.
 - o audit de dependências de produção da área de membros não encontrou
   vulnerabilidades;
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de
   3 MiB do Workers Free; processamento real de PDF exige plano com CPU
   compatível e smoke test antes de receber tráfego.
 - `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
-- migrações e testes pgTAP foram versionados, mas ainda não executados porque
-  o projeto Supabase Cloud definitivo ainda não foi criado nem vinculado; por
-  decisão operacional, o banco local não faz parte do gate de publicação.
-- nenhuma chamada real a Perfect Pay, Resend, Gemini ou Supabase foi feita.
+- as 21 migrações estão registradas no projeto Supabase Cloud; os cinco
+  mapeamentos Perfect Pay foram conferidos no banco remoto;
+- chamadas reais de compra/revogação Perfect Pay, entrega Resend e geração
+  Gemini ainda aguardam fixtures, destinatário e identidade de teste
+  autorizados.

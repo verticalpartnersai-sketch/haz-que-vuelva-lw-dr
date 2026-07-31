@@ -24,7 +24,11 @@ const statusByEnum: Record<number, string> = {
   16: "in_review",
 };
 
-const currencyByEnum: Record<number, string> = { 1: "BRL" };
+const currencyByEnum: Record<number, string> = {
+  1: "BRL",
+  2: "USD",
+  3: "EUR",
+};
 
 export function secureTokenMatches(received: string, expected: string) {
   const receivedDigest = createHash("sha256").update(received).digest();
@@ -39,8 +43,9 @@ function parsePerfectPayDate(value: string) {
   return parsed;
 }
 
-export function normalizePerfectPayPayload(
+function normalizePerfectPayLine(
   payload: PerfectPayPayload,
+  planCode: string,
 ): NormalizedPaymentEvent {
   const status = statusByEnum[payload.sale_status_enum] ?? "unknown";
   const currency = currencyByEnum[payload.currency_enum] ?? "UNK";
@@ -49,7 +54,7 @@ export function normalizePerfectPayPayload(
     amountMinor,
     currency,
     customerEmail: payload.customer.email.toLowerCase(),
-    planCode: payload.plan.code,
+    planCode,
     productCode: payload.product.code,
     saleCode: payload.code,
     status,
@@ -64,7 +69,7 @@ export function normalizePerfectPayPayload(
     effect: paymentEffectForStatus(status),
     customerEmail: payload.customer.email.toLowerCase(),
     productCode: payload.product.code,
-    planCode: payload.plan.code,
+    planCode,
     amountMinor,
     currency,
     occurredAt: parsePerfectPayDate(
@@ -72,4 +77,25 @@ export function normalizePerfectPayPayload(
     ),
     payloadHash,
   };
+}
+
+export function normalizePerfectPayPayload(
+  payload: PerfectPayPayload,
+): NormalizedPaymentEvent {
+  return normalizePerfectPayLine(payload, payload.plan.code);
+}
+
+export function normalizePerfectPayPayloads(
+  payload: PerfectPayPayload,
+): NormalizedPaymentEvent[] {
+  const events = [normalizePerfectPayPayload(payload)];
+  const seenItemCodes = new Set<string>();
+
+  for (const item of payload.plan_itens) {
+    if (seenItemCodes.has(item.item_code)) continue;
+    seenItemCodes.add(item.item_code);
+    events.push(normalizePerfectPayLine(payload, `item:${item.item_code}`));
+  }
+
+  return events;
 }

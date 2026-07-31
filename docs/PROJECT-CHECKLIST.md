@@ -2,11 +2,13 @@
 
 > Documento vivo e fonte de verdade do progresso.
 >
-> Estado em 30 de julho de 2026: **frontend aprovado; marketing publicado;
-> Supabase Cloud inicial aplicado; Gate 5 em implementação incremental**.
+> Estado em 30 de julho de 2026: **frontend aprovado; marketing e área de
+> membros publicados; 21 migrações no Supabase Cloud; Container da VUELVE IA
+> configurado com geração bloqueada por flag**.
 >
-> A área de membros, o agente e as integrações externas reais continuam
-> bloqueados até seus pré-requisitos e gates próprios.
+> Gates 5–7 estão parcialmente executados por autorização explícita, mas
+> continuam abertos até os testes reais, controles operacionais e dependências
+> externas listados abaixo.
 
 ## Sequência obrigatória
 
@@ -19,7 +21,9 @@
 - [ ] Gate 6: integrar fornecedores.
 - [ ] Gate 7: infraestrutura, segurança operacional e lançamento.
 
-Nenhum gate pode começar antes da conclusão registrada do anterior.
+Esta ordem define dependências, não impede trabalho preparatório explicitamente
+autorizado em gates posteriores. Um gate só pode ser marcado como concluído
+quando todos os seus critérios obrigatórios tiverem evidência.
 
 ## Gate 1 — documentação
 
@@ -54,7 +58,8 @@ Nenhum gate pode começar antes da conclusão registrada do anterior.
 ## Pendências do usuário
 
 - [x] Confirmar `hazquevuelva.site` como domínio público do marketing.
-- [ ] Fornecer códigos, preços, nomes e links Perfect Pay.
+- [x] Fornecer códigos, nomes e links Perfect Pay dos três produtos e códigos
+  dos dois order bumps.
 - [x] Confirmar produtos de upsell: `reconquista_30` e `vuelve_ia`.
 - [x] Definir `vuelve_ia` como entitlement canônico da IA.
 - [ ] Entregar conteúdos, capas e documentos de conhecimento.
@@ -255,7 +260,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
 - [x] Agendar as outboxes no Custom Worker sem executar flags desligadas.
 - [ ] Validar migration, storage e geração com duas alunas no Supabase cloud.
-- [x] Aplicar as 19 migrações no projeto definitivo e executar 37 asserções
+- [x] Aplicar as 21 migrações no projeto definitivo e executar 37 asserções
   pgTAP remotas de segurança, RLS, atomicidade da IA e administração.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
@@ -263,12 +268,20 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 ### Perfect Pay
 
 - [x] Implementar entrada de webhook validada, limitada e idempotente.
-- [ ] Mapear códigos reais para produtos internos após fixtures da conta.
+- [x] Mapear os produtos `PPPBF7CC`, `PPPBF7E4` e `PPPBF7E7` para Haz Que
+  Vuelva, Reconquista 30 e Vuelve IA, aceitando qualquer plano dos três
+  produtos sem duplicar entitlement.
+- [x] Normalizar `plan_itens` como linhas independentes e exigir mapeamento
+  exato `item:<item_code>` para order bumps.
+- [x] Cadastrar `PPPBF7EK` para `21_mensajes` e `PPPBF7EL` para `la_otra`
+  como mapeamentos exatos `item:<item_code>`.
 - [x] Projetar `approved`, `authorized` e `completed` como concessão.
 - [x] Projetar `cancelled`, `refunded` e `charged_back` como revogação.
 - [x] Implementar deduplicação, reparo da outbox e ordem por ocorrência.
 - [x] Implementar retry, dead-letter e reprocessamento idempotente.
+- [x] Aceitar BRL, USD e EUR conforme o enum documentado pela Perfect Pay.
 - [ ] Validar projeções com fixtures reais redigidas e testes cloud.
+- [ ] Confirmar aprovação comercial dos três produtos no painel Perfect Pay.
 
 ### IA
 
@@ -303,28 +316,32 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 54 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 65 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
-- [x] Arquivos manuscritos novos permanecem abaixo do máximo de 400 linhas.
+- [ ] Reduzir os três módulos legados do quiz que ultrapassam 400 linhas sem
+  alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
-  aplicar as 19 migrações e executar pgTAP/RLS remotamente.
-- [ ] Configurar Auth do projeto definitivo: fechar cadastro público, cadastrar
-  redirects, habilitar Google OAuth e criar o admin inicial. Bloqueado por
-  acesso de gestão do projeto, credenciais Google e e-mail do admin.
-- [ ] Executar smoke tests reais de Perfect Pay, Resend e Gemini. Bloqueado
-  até existirem contas, credenciais, mappings e autorização do gate de
-  integração.
+  aplicar as 21 migrações e executar pgTAP/RLS remotamente.
+- [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
+  produção e habilitar TOTP no projeto definitivo.
+- [ ] Criar o admin inicial e validar sua elevação TOTP. Google OAuth permanece
+  opcional e bloqueado até existirem credenciais próprias.
+- [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. O webhook
+  rejeita payload autenticado incorretamente, o agente responde health e nega
+  credencial inválida, mas compra, convite e geração reais aguardam fixtures ou
+  destinatários autorizados.
 
 ## Gate 6 — integrações futuras
 
 - [x] Criar projeto Supabase próprio.
 - [ ] Aplicar e validar Supabase Storage privado.
 - [ ] Aplicar e validar RAG no PostgreSQL/pgvector.
-- [ ] Criar Resend e verificar subdomínio.
-- [ ] Criar projeto/chave Gemini próprios.
-- [ ] Usar somente credenciais deste projeto.
+- [x] Criar Resend e publicar DKIM, SPF e MX no subdomínio
+  `mail.hazquevuelva.site`.
+- [x] Criar projeto/chave Gemini próprios.
+- [x] Usar somente credenciais deste projeto.
 
 ## Gate 7 — infraestrutura e lançamento
 
@@ -332,8 +349,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Validar build, bundle, dry-run e preview local dos dois Workers.
 - [x] Criar Dockerfile não-root e Worker/Container do agente.
 - [x] Validar typecheck e dry-run estático do agente.
-- [ ] Construir e executar a imagem do agente para `linux/amd64`.
-- [ ] Confirmar plano Cloudflare compatível com Containers.
+- [x] Construir e publicar a imagem do agente para `linux/amd64`.
+- [x] Confirmar na prática que a conta Cloudflare cria e executa Containers.
 - [x] Publicar `haz-que-vuelva-marketing` na conta correta.
 - [x] Conectar DNS/TLS de `hazquevuelva.site`.
 - [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
@@ -348,15 +365,22 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Criar smoke sintético recorrente para a superfície pública do marketing.
 - [x] Configurar o checkout real no CTA do quiz.
 - [x] Implementar páginas mobile-first `/up1`, `/up2` e `/gracias`, mantendo
-  os links de aceitação desligados até os produtos existirem na Perfect Pay.
+  os links de aceitação externos configuráveis.
+- [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
+  CTAs de `/up1` e `/up2`.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
   segredos obrigatórios e domínio exclusivo de produção.
-- [ ] Cadastrar os valores reais das variáveis e segredos no Worker da área de
-  membros. O inventário remoto continua vazio.
-- [ ] Executar smoke tests remotos da área de membros sem domínio customizado.
-- [ ] Configurar Service Binding privado entre BFF e agente.
-- [ ] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
+- [x] Cadastrar variáveis e segredos reais no Worker da área de membros sem
+  versionar seus valores.
+- [x] Publicar a área de membros e comprovar redirecionamento anônimo de `/` e
+  `/productos` para `/login`.
+- [x] Configurar Service Binding privado entre BFF e agente e retirar
+  `workers.dev`/Preview URL do agente.
+- [x] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
+- [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
+  novamente no FastAPI.
+- [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
 - [ ] Criar backups e testar restauração.
 - [ ] Criar logs, métricas e alertas.
 - [ ] Validar rollback.

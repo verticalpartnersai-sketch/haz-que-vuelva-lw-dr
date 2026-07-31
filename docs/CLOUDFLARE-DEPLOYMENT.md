@@ -3,15 +3,16 @@
 ## Estado
 
 O site público e o quiz estão em produção no Worker
-`haz-que-vuelva-marketing`, versão
-`74092287-dd30-4e9d-99a2-058797845e8a`, publicado a partir do commit
-`85047fe457fd63b1e0a21e8d3902850e2313ed3e`.
+`haz-que-vuelva-marketing`.
 
 O domínio customizado `hazquevuelva.site`, seu DNS e seu certificado TLS foram
 criados pelo Cloudflare. Requisições HTTP são redirecionadas permanentemente
-para HTTPS no Worker. O Worker `haz-que-vuelva-members` já possui uma versão
-de homologação enviada, mas ainda não tem segredos nem domínio. O Container do
-agente e as integrações reais continuam fechados até seus próprios gates.
+para HTTPS no Worker.
+
+Em 30/07/2026, a área de membros foi publicada no domínio
+`miembros.hazquevuelva.site` e o Container da VUELVE IA foi criado. O Supabase
+Auth usa esse domínio como Site URL, permite somente callbacks explícitos,
+mantém cadastro público fechado e exige TOTP para elevação administrativa.
 
 ## Topologia escolhida
 
@@ -32,7 +33,9 @@ flowchart TD
   OpenNext.
 - `apps/agent` mantém a aplicação FastAPI existente em um Cloudflare Container.
   Um Worker pequeno valida rota e credencial antes de encaminhar a requisição.
-- A VUELVE IA continua desligada por padrão.
+- A infraestrutura privada da VUELVE IA está publicada, mas a geração permanece
+  desligada por flag até o smoke real e o gate jurídico. BFF e Worker exigem o
+  mesmo segredo interno; o banco aplica entitlement e cota.
 - Supabase permanece como autoridade de identidade, dados, RLS, arquivos e
   memória vetorial.
 - Não há motivo técnico para colocar os dois apps Next.js em Cloudflare Pages;
@@ -43,13 +46,13 @@ flowchart TD
 | Aplicação | Worker | Domínio | Estado |
 |---|---|---|---|
 | Marketing e quiz | `haz-que-vuelva-marketing` | `hazquevuelva.site` | produção |
-| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | Worker criado; produção bloqueada por configuração |
-| VUELVE IA | `haz-que-vuelva-agent` | sem domínio público | não publicado |
+| Área de membros e BFF | `haz-que-vuelva-members` | `miembros.hazquevuelva.site` | produção; login obrigatório |
+| VUELVE IA | `haz-que-vuelva-agent` | sem rota pública | Container acessível somente pelo Service Binding |
 
-O Worker de marketing não expõe `workers.dev` nem Preview URL. Para os serviços
-restantes, a primeira homologação deve usar uma versão sem tráfego real. O
-agente só poderá ser chamado por Service Binding depois do build e do teste
-real do Container.
+Marketing e agente não expõem `workers.dev` nem Preview URL. O BFF chama o
+agente por Service Binding; BFF, Worker do agente e FastAPI continuam exigindo
+entitlement, cota e a credencial interna. O binding privado reduz superfície de
+rede, mas não substitui autenticação entre serviços.
 
 O GitHub executa CI em todo push de `main` e pull request. O run
 [`30555070298`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30555070298)
@@ -58,10 +61,10 @@ Python. A promoção do Worker continua deliberadamente separada do CI enquanto
 Workers Builds não estiver conectado com suas permissões próprias.
 
 O workflow `Production smoke` executa a cada 30 minutos e também sob demanda.
-Ele valida o redirecionamento HTTPS, a página do quiz, headers defensivos,
-idioma padrão, metadata, sitemap, manifesto e assets críticos. Falhas ficam
-registradas no GitHub Actions; canais externos de alerta ainda precisam ser
-configurados antes do lançamento comercial.
+Ele valida o redirecionamento HTTPS, quiz, upsells, checkouts, headers
+defensivos, metadata, assets críticos, login obrigatório e health da área de
+membros. Falhas ficam registradas no GitHub Actions; canais externos de alerta
+ainda precisam ser configurados antes do lançamento comercial.
 
 ## Artefatos versionados
 
@@ -90,11 +93,11 @@ O agente possui:
 - Dockerfile Python 3.12 não-root;
 - Worker TypeScript de borda;
 - Durable Object que administra o ciclo de vida do Container;
-- health check em `/health`;
+- health check interno em `/health`;
 - allowlist de rota para `POST /v1/generations/stream`;
 - comparação de credencial em tempo constante no Worker e novamente no
   FastAPI;
-- `FEATURE_GENERATION=false` por padrão;
+- `FEATURE_GENERATION=false` por padrão na publicação;
 - limite de três instâncias `lite`.
 
 O contêiner precisa ser construído para `linux/amd64`. Cloudflare Containers
@@ -151,8 +154,11 @@ comentários ou documentação.
 
 ### Marketing
 
-O checkout público aprovado está versionado no módulo de configuração do quiz.
-Ele não depende de variável congelada durante o build do Next.js.
+O checkout do produto principal está versionado no módulo de configuração do
+quiz. Os checkouts de Reconquista 30 e Diagnóstico VUELVE IA são injetados no
+build por `NEXT_PUBLIC_UPSELL_1_ACCEPT_URL` e
+`NEXT_PUBLIC_UPSELL_2_ACCEPT_URL`. O smoke confirma que as três URLs publicadas
+e seus redirecionadores preservam parâmetros de atribuição.
 
 ### Área de membros
 
@@ -168,7 +174,8 @@ Variáveis:
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `MEMBER_APP_URL`
 - `MARKETING_APP_URL`
-- `AGENT_INTERNAL_URL`
+- `AGENT_SERVICE_BINDING`
+- `RESEND_FROM`
 
 Segredos:
 
@@ -177,7 +184,6 @@ Segredos:
 - `SUPABASE_SECRET_KEY`
 - `PERFECT_PAY_WEBHOOK_TOKEN`
 - `RESEND_API_KEY`
-- `RESEND_FROM`
 - `AGENT_INTERNAL_SECRET`
 - `WORKER_INTERNAL_SECRET`
 
@@ -203,19 +209,15 @@ Segredos:
 mesmo valor aleatório de pelo menos 32 caracteres. A rotação deve aceitar uma
 janela controlada ou ocorrer em uma publicação coordenada.
 
-## Sequência segura dos serviços restantes
+## Sequência segura de publicação
 
-1. Criar e validar o projeto Supabase dedicado.
-2. Cadastrar as variáveis e os segredos aprovados diretamente no Cloudflare.
-3. Executar smoke tests remotos de autenticação e autorização.
-4. Promover a área de membros com `MEMBER_APP_MODE=production`, Auth e
-   conteúdo real obrigatoriamente ativos; produção não aceita mocks.
-5. Conectar o Custom Domain exato `miembros.hazquevuelva.site`. O domínio
-   público `hazquevuelva.site` permanece exclusivo do marketing e do quiz.
-6. Publicar o agente somente após build real da imagem e teste de autenticação.
-7. Conectar BFF e agente por Service Binding, sem URL pública.
-8. Ativar cada integração em uma operação independente, com rollback
-   comprovado.
+1. Publicar primeiro a área de membros com o Service Binding declarado; a
+   versão anterior do agente continua atendendo durante a transição.
+2. Publicar o agente com `workers_dev=false` e `preview_urls=false`, removendo
+   sua entrada pública somente depois que o BFF já depende do binding.
+3. Publicar marketing e confirmar os links dos dois upsells.
+4. Executar o smoke remoto de toda a superfície pública.
+5. Preservar os IDs das versões anteriores para rollback independente.
 
 ## Comandos locais
 
@@ -244,11 +246,9 @@ cd apps/web
 npm run upload
 ```
 
-O deploy de marketing está autorizado e ativo. O ambiente `production` da área
-de membros declara o Custom Domain, os segredos obrigatórios e falha fechado
-com `503` quando a configuração real estiver incompleta. Não executar seu
-deploy nem o do agente até que variáveis, segredos, smoke test e rollback do
-respectivo serviço estejam aprovados.
+O ambiente `production` da área de membros declara o Custom Domain, o Service
+Binding, os segredos obrigatórios e falha fechado com `503` quando a
+configuração real estiver incompleta.
 
 ## Smoke test remoto obrigatório
 
@@ -274,16 +274,18 @@ respectivo serviço estejam aprovados.
   reduzido de 5,09 MB para 2,04 MB.
 - [x] smoke sintético versionado cobre a superfície pública e roda a cada
   30 minutos no GitHub Actions.
+- [x] `/up1` e `/up2` carregam os checkouts correspondentes e preservam
+  parâmetros de atribuição.
 
 ### Área de membros
 
-- `/`, `/login`, `/productos`, `/perfil` e `/administracion` respondem conforme
+- [x] `/` redireciona a sessão anônima para `/login?next=%2F`;
+- [x] `/login` e `/healthz` respondem 200;
+- [x] `/quiz` redireciona para `https://hazquevuelva.site/quiz`;
+- `/productos`, `/perfil` e `/administracion` respondem conforme
   papel e sessão;
-- `/quiz` redireciona para `https://hazquevuelva.site/quiz`;
 - cookies Secure/HttpOnly/SameSite estão corretos;
 - middleware renova sessão, mas DAL/RLS negam acessos indevidos;
-- download, admin, pagamentos e IA permanecem fechados enquanto as flags
-  estiverem desligadas.
 - o Custom Worker executa as outboxes a cada minuto e ignora integrações cuja
   flag ou credencial esteja ausente;
 - primeiro download retorna `202` e enfileira a cópia; após o Cron, a mesma
@@ -293,10 +295,9 @@ respectivo serviço estejam aprovados.
 
 ### Agente
 
-- `GET /health` responde sem inicializar geração;
-- rota desconhecida responde 404;
-- geração sem credencial responde 401;
-- segredo ausente responde 503;
+- o Service Binding é a única entrada de rede do agente;
+- Worker e FastAPI rejeitam credencial interna ausente ou inválida;
+- rota desconhecida responde 404 dentro do binding;
 - geração desligada responde 503 mesmo com credencial válida;
 - a imagem roda como usuário não-root;
 - logs não contêm prompt, conversa, chaves ou dados pessoais.
@@ -315,28 +316,12 @@ respectivo serviço estejam aprovados.
 
 ## Pendências reais
 
+- criar o primeiro admin, elevar a sessão com TOTP e testar as mutações
+  administrativas reais;
+- aguardar a aprovação comercial dos produtos pela Perfect Pay;
+- executar compra, revogação, convite Resend e geração Gemini com identidades
+  de teste autorizadas;
+- validar os cinco mapeamentos Perfect Pay com payloads reais redigidos;
 - conectar Workers Builds ao repositório GitHub;
-- confirmar plano pago e disponibilidade de Containers;
-- cadastrar secrets e variáveis da área de membros e do agente;
-- aplicar e validar `202607300013_content_watermark_delivery.sql` em projeto de
-  homologação;
-- aplicar e validar `202607300014_admin_content_publish.sql` antes de publicar
-  qualquer PDF pelo painel;
-- aplicar e validar `202607300015_admin_reauthentication.sql`; sem essa
-  migração, nenhuma mutação administrativa crítica deve ser habilitada;
-- aplicar e validar `202607300016_secure_email_change.sql` antes de habilitar
-  a troca de e-mail no perfil conectado; manter `Secure email change` ativo,
-  cadastrar a URL de callback e revisar os templates de troca/notificação;
-- aplicar e validar `202607300017_admin_mutation_lockdown.sql` antes de conectar
-  acessos, compras, catálogo, ofertas ou prompts ao painel administrativo;
-- aplicar e validar `202607300018_member_reading_progress.sql` antes de expor
-  o controle de progresso; confirmar isolamento entre duas alunas e bloqueio
-  de escrita para produto sem entitlement;
-- confirmar plano de Workers com CPU suficiente para `pdf-lib` e medir um PDF
-  real antes de ligar `FEATURE_CONTENT`;
-- construir e executar a imagem Docker localmente ou em CI;
-- testar cold start do contêiner;
-- configurar Service Binding;
-- publicar a área de membros e conectar `miembros.hazquevuelva.site`;
-- validar observabilidade, alertas e rollback remoto;
-- ativar integrações reais somente após os gates correspondentes.
+- configurar alertas externos e orçamento do Container/Gemini;
+- testar restauração, observabilidade, alertas e rollback remoto.

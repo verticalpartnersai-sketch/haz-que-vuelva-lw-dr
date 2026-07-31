@@ -21,7 +21,17 @@ export const perfectPayPayloadSchema = z.object({
     name: z.string().max(255).optional(),
     quantity: z.coerce.number().int().positive().optional(),
   }),
-  plan_itens: z.array(z.unknown()).default([]),
+  plan_itens: z
+    .array(
+      z.object({
+        code: z.string().min(1).max(255).optional(),
+        item_code: z.string().min(1).max(255),
+        name: z.string().min(1).max(255).optional(),
+        price: z.coerce.number().nonnegative().finite().optional(),
+        quantity: z.coerce.number().int().positive().optional(),
+      }),
+    )
+    .default([]),
   customer: z.object({
     email: z.email(),
   }),

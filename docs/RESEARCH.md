@@ -618,3 +618,26 @@ somente um caminho interno seguro. Administração exige `aal2` sem feature flag
 Cada mutação sensível ainda exige a senha, recebe uma credencial HttpOnly curta
 e a consome uma única vez dentro da transação PostgreSQL. A função de consumo
 também exige `aal2`, impedindo bypass por chamada direta da Data API.
+
+## Registro de fontes — Perfect Pay e Service Binding
+
+Pesquisa realizada em 30 de julho de 2026 nas especificações oficiais
+machine-readable dos fornecedores.
+
+- [Perfect Pay — OpenAPI canônico](https://app.perfectpay.com.br/docs/api.json):
+  documenta moedas BRL, USD e EUR, os estados do PostBack e `plan_itens` como a
+  lista consolidada de itens/order bumps. Cada item possui `item_code`; os
+  metadados auxiliares do item não são declarados obrigatórios.
+- [Cloudflare — HTTP Service Bindings](https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/http/):
+  documenta a chamada privada entre Workers por `env.BINDING.fetch()`, sem
+  resolver uma URL pública.
+- [Cloudflare — configuração Wrangler](https://developers.cloudflare.com/workers/wrangler/configuration/):
+  documenta `services`, `workers_dev` e `preview_urls`.
+
+Decisão: cada `plan_itens[].item_code` vira um evento isolado com plano
+`item:<código>`. Produtos de topo podem usar wildcard de plano; order bumps
+exigem correspondência exata para impedir concessão pelo nome ou pela posição.
+O parser exige `item_code`, mas tolera a ausência dos campos auxiliares que a
+especificação não marca como obrigatórios. O BFF usa um Service Binding para o
+agente, e o agente não publica `workers.dev` nem Preview URL. A credencial
+interna continua obrigatória nas duas camadas como defesa em profundidade.

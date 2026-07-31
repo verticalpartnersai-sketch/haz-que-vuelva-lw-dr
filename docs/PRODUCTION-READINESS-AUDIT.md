@@ -1,7 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit da aplicação publicada: `8d917b51e688c90ca9aeac7120d3d66a99d84cc9`
+Commit da aplicação publicada: `5245057d846aeb8a79caae38f618d0f8b4019753`
 
 ## Veredito
 
@@ -18,7 +18,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | --- | --- |
 | Git | o commit da aplicação está publicado e é ancestral da `main` auditada |
 | Marketing | `https://hazquevuelva.site/quiz`, `/up1`, `/up2` e `/gracias` respondem 200 sem overflow em 390x844 e 1440x900 |
-| Checkout | CTAs publicados apontam para os três redirecionadores Centerpag aprovados no código |
+| Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
 | Supabase | 21 migrações aplicadas; cadastro público e login anônimo desabilitados |
@@ -33,7 +33,7 @@ Versões Cloudflare verificadas:
 
 - membros: `a800d459-5287-4505-ac81-faf64032aa13`;
 - agente: `910ee45f-ac17-435b-819c-ee51beb68242`;
-- marketing: `cdc68763-f938-43b5-83c1-7bd44109e92b`.
+- marketing: `3a5ad1db-2f1d-4d2c-92ee-13265e9daa65`.
 
 ## Inventário real do banco
 
@@ -84,9 +84,9 @@ Aceite:
 7. configurar e provar o encadeamento pós-compra no painel: produto principal
    para `/up1`, Reconquista 30 para `/up2` e aceite ou recusa do VUELVE IA
    para `/gracias`;
-8. confirmar com payload real quais parâmetros de venda e atribuição a Perfect
-   Pay preserva entre as páginas. Os CTAs atuais abrem checkouts independentes,
-   não uma compra one-click já comprovada.
+8. confirmar com compra real o encadeamento One Click. O CTA principal já usa
+   `upsell=true` conforme a documentação oficial e o redirecionador preserva o
+   parâmetro, mas isso não prova que o painel associou as duas ofertas.
 
 ### 2. Publicação do conteúdo real na área de membros
 

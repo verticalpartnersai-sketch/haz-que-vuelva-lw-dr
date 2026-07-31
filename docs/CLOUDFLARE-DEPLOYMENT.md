@@ -337,7 +337,7 @@ configuração real estiver incompleta.
 - agente privado: versão de borda
   `910ee45f-ac17-435b-819c-ee51beb68242`, com `workers.dev` desativado e
   geração desligada por flag;
-- marketing: versão `cdc68763-f938-43b5-83c1-7bd44109e92b` em
+- marketing: versão `3a5ad1db-2f1d-4d2c-92ee-13265e9daa65` em
   `hazquevuelva.site`;
 - `scripts/production-smoke.sh` passou contra os dois domínios públicos e o
   endpoint público antigo do agente passou a responder 404. O mesmo smoke

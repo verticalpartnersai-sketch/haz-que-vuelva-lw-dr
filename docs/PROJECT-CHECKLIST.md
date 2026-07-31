@@ -375,6 +375,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   marketing e comprovar a resposta pública.
 - [x] Criar smoke sintético recorrente para a superfície pública do marketing.
 - [x] Configurar o checkout real no CTA do quiz.
+- [x] Ativar `upsell=true` no checkout principal e comprovar que o
+  redirecionador preserva o parâmetro e a atribuição.
 - [x] Implementar páginas mobile-first `/up1`, `/up2` e `/gracias`, mantendo
   os links de aceitação externos configuráveis.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos

@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "*/30 * * * *"
   workflow_dispatch:
+    inputs:
+      exercise_incident:
+        description: "Force failure after the real smoke to exercise incident handling"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -23,4 +29,59 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Verify public production
-        run: bash scripts/production-smoke.sh
+        env:
+          EXERCISE_INCIDENT: ${{ inputs.exercise_incident }}
+        run: |
+          bash scripts/production-smoke.sh
+          if [[ "$EXERCISE_INCIDENT" == "true" ]]; then
+            echo "Forced incident exercise after successful production verification" >&2
+            exit 1
+          fi
+
+  incident:
+    name: Production incident
+    needs: marketing
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      issues: write
+
+    steps:
+      - name: Open, update or resolve the production incident
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          RESULT: ${{ needs.marketing.result }}
+          RUN_ID: ${{ github.run_id }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          title="[production] Production smoke failing"
+          run_url="https://github.com/${REPOSITORY}/actions/runs/${RUN_ID}"
+          issue_number="$(
+            gh issue list \
+              --repo "$REPOSITORY" \
+              --state open \
+              --search '"[production] Production smoke failing" in:title' \
+              --json number,title \
+              --jq '.[] | select(.title == "[production] Production smoke failing") | .number' \
+              | head -n 1
+          )"
+
+          if [[ "$RESULT" != "success" ]]; then
+            body="Production smoke failed for commit ${SHA}. Investigate: ${run_url}"
+            if [[ -n "$issue_number" ]]; then
+              gh issue comment "$issue_number" --repo "$REPOSITORY" --body "$body"
+            else
+              gh issue create --repo "$REPOSITORY" --title "$title" --body "$body"
+            fi
+            exit 0
+          fi
+
+          if [[ -n "$issue_number" ]]; then
+            gh issue comment "$issue_number" \
+              --repo "$REPOSITORY" \
+              --body "Production recovered on commit ${SHA}. Verified by ${run_url}."
+            gh issue close "$issue_number" --repo "$REPOSITORY" --reason completed
+          fi

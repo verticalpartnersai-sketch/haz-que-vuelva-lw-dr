@@ -65,7 +65,9 @@ quando todos os seus critérios obrigatórios tiverem evidência.
   dos dois order bumps.
 - [x] Confirmar produtos de upsell: `reconquista_30` e `vuelve_ia`.
 - [x] Definir `vuelve_ia` como entitlement canônico da IA.
-- [ ] Entregar conteúdos, capas e documentos de conhecimento.
+- [x] Entregar os quatro PDFs editoriais finais em espanhol e preparar versões
+  web validadas abaixo do limite de upload.
+- [ ] Entregar documentos de conhecimento e prompt final da VUELVE IA.
 - [x] Enviar a família final da hero para desktop, ultra-wide, tablet e mobile.
 - [ ] Enviar os demais arquivos oficiais da marca.
 - [x] Definir baseline tipográfica aberta e licenças.
@@ -388,7 +390,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   novamente no FastAPI.
 - [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
 - [ ] Criar backups e testar restauração.
-- [ ] Criar logs, métricas e alertas.
+- [ ] Exercitar criação, atualização e encerramento do incidente persistente no
+  GitHub para o smoke público recorrente.
+- [ ] Criar métricas e alertas para fila, webhook, custo e paging externo.
 - [ ] Validar rollback.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.
 - [ ] Testar espanhol, desktop e celular.

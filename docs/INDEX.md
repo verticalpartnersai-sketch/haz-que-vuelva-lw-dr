@@ -22,7 +22,8 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 15. [Pesquisa e fontes](RESEARCH.md)
 16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
 17. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md)
-18. [Checklist mestre](PROJECT-CHECKLIST.md)
+18. [Manifesto dos conteúdos editoriais](evidence/content-release-manifest.md)
+19. [Checklist mestre](PROJECT-CHECKLIST.md)
 
 ## Estado
 

@@ -45,8 +45,8 @@ Consulta administrativa somente de contagem, sem expor dados pessoais:
 | compras | 0 |
 | itens de compra | 0 |
 | concessões de acesso | 0 |
-| itens de conteúdo | 0 |
-| arquivos de conteúdo | 0 |
+| itens de conteúdo no Supabase | 0 |
+| arquivos de conteúdo no Supabase | 0 |
 | documentos da IA | 0 |
 | versões de prompt da IA | 0 |
 | conversas da IA | 0 |
@@ -72,16 +72,18 @@ Aceite:
 5. repetição do mesmo webhook comprovadamente idempotente;
 6. cancelamento, reembolso e chargeback revogando apenas o produto correto.
 
-### 2. Conteúdo real da área de membros
+### 2. Publicação do conteúdo real na área de membros
 
-O catálogo tem cinco produtos, mas `content_items` e `content_files` estão
-vazios. Uma compradora poderia receber acesso ao produto e encontrar uma
-biblioteca sem material.
+Os quatro PDFs editoriais em espanhol foram localizados no Oracle, otimizados
+para web, validados e registrados no
+[manifesto de conteúdo](evidence/content-release-manifest.md). O catálogo no
+Supabase ainda tem `content_items` e `content_files` vazios. Uma compradora
+poderia receber acesso ao produto e encontrar uma biblioteca sem material.
 
 Aceite:
 
-1. enviar arquivos oficiais, capas e metadados em espanhol;
-2. publicar cada item pelo fluxo administrativo;
+1. publicar os quatro PDFs do manifesto pelo fluxo administrativo;
+2. confirmar títulos, capas e metadados em espanhol;
 3. validar armazenamento privado, assinatura curta e watermark;
 4. provar download de uma aluna autorizada e negação para outra conta;
 5. testar arquivo inválido, expirado, removido e versão substituída.
@@ -135,7 +137,10 @@ Aceite antes de habilitar:
 ### 6. Recuperação operacional
 
 Não há prova atual de backup restaurável, rollback executado nem alerta
-externo. Código versionado não substitui recuperação de dados.
+externo de paging. O smoke recorrente está configurado para abrir, atualizar e
+encerrar um incidente persistente no GitHub, mas o ciclo ainda não foi
+exercitado. Código versionado e Issues não substituem recuperação de dados nem
+uma escala operacional.
 
 Aceite:
 
@@ -143,7 +148,8 @@ Aceite:
 2. restaurar em ambiente isolado;
 3. executar rollback de cada Worker;
 4. definir runbook de incidente e responsáveis;
-5. criar alertas de erro, fila parada, falha de webhook e custo;
+5. exercitar o incidente do smoke e complementá-lo com alertas de fila parada,
+   falha de webhook, custo e um canal de paging fora do GitHub;
 6. registrar RTO e RPO aceitos.
 
 ## P1 — concluir antes de escalar tráfego

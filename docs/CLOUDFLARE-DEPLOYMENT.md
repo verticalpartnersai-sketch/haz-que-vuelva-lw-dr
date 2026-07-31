@@ -66,8 +66,14 @@ defensivos, metadata, assets críticos, login obrigatório e health da área de
 membros. O teste de credencial Perfect Pay usa o probe
 `x-hqv-auth-probe: 1`: mesmo se a autenticação regredir, a requisição não
 projeta compra, acesso ou e-mail. Falhas ficam registradas no GitHub Actions;
-canais externos de alerta ainda precisam ser configurados antes do lançamento
-comercial.
+o workflow está configurado para abrir ou atualizar um incidente persistente
+nas Issues e encerrá-lo automaticamente após a recuperação. O ciclo operacional
+ainda precisa ser exercitado, e um canal de paging fora do GitHub deve ser
+definido antes de escalar tráfego.
+
+O input manual `exercise_incident` força uma falha somente depois que o smoke
+real termina com sucesso. Ele existe para provar criação, atualização e
+encerramento do incidente sem falsificar indisponibilidade da aplicação.
 
 ## Artefatos versionados
 

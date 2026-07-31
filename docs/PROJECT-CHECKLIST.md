@@ -368,7 +368,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   manual para a usuária ativá-lo; comprovado em produção com reprodução ativa,
   `muted=true` e zero erro no console.
 - [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
-  quatro jobs verdes.
+  cinco jobs verdes, incluindo recuperação sintética fail-closed.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e
   headers defensivos do marketing.
 - [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de
@@ -400,6 +400,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar e validar o rollout de 31/07/2026: marketing e login respondem
   200, health da área de membros responde `ready`, o smoke público passa e o
   endpoint `workers.dev` antigo do agente responde 404.
+- [x] Publicar a detecção operacional das outboxes e do webhook, comprovar 401
+  sem credencial na rota interna e observar o Cron de produção concluir com
+  status `Ok` na versão `637aef83-8f4a-4132-bde3-5cb4c1592302`.
 - [x] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
 - [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
   novamente no FastAPI.

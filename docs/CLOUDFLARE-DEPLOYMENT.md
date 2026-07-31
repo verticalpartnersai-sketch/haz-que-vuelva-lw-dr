@@ -336,7 +336,7 @@ configuração real estiver incompleta.
 
 ### Evidência do rollout de 31 de julho de 2026
 
-- área de membros: versão `a800d459-5287-4505-ac81-faf64032aa13` em
+- área de membros: versão `637aef83-8f4a-4132-bde3-5cb4c1592302` em
   `miembros.hazquevuelva.site`;
 - agente privado: versão de borda
   `910ee45f-ac17-435b-819c-ee51beb68242`, com `workers.dev` desativado e
@@ -348,6 +348,9 @@ configuração real estiver incompleta.
   comprova os redirects protegidos, token Perfect Pay inválido com 401 por um
   probe intrinsecamente não mutável, stream acima de 64 KiB com 413 e geração
   desligada com 503;
+- a rota `/api/internal/operations/health` rejeitou a chamada sem credencial
+  com 401, e o Cron `* * * * *` da versão publicada executou o ciclo completo
+  com status `Ok` nos Workers Logs;
 - o deploy do agente usou `--containers-rollout=none`, pois o daemon Docker
   local não estava disponível. A camada Worker foi atualizada, mas a imagem do
   Container permaneceu na versão já publicada. Antes de habilitar a geração,

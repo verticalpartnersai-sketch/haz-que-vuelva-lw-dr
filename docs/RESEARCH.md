@@ -754,3 +754,21 @@ Decisão: depois de processar as outboxes, o Cron consulta uma rota interna com
 service key e lança erro se houver job morto, atrasado, lock preso ou webhook
 sem processamento. Nenhum identificador de cliente entra no erro. O sinal
 nativo não substitui paging; o destino externo ainda precisa ser escolhido.
+
+## Registro de fontes — limites e telemetria do Gemini
+
+Pesquisa atualizada em 31 de julho de 2026 na documentação oficial do Google.
+
+- [Gemini API — GenerateContent](https://ai.google.dev/api/generate-content):
+  documenta `generationConfig.maxOutputTokens` como limite máximo de tokens da
+  resposta candidata e `usageMetadata` na resposta do provedor.
+- [Gemini API — Tokens](https://ai.google.dev/api/tokens): documenta os campos
+  de consumo do prompt, candidatos, cache, ferramentas, pensamento e total.
+
+Decisão: limitar cada geração a 2.048 tokens de saída e validar o intervalo
+configurável entre 256 e 4.096. Uma resposta com telemetria ausente, incompleta
+ou negativa falha antes da conclusão transacional, liberando a reserva em vez
+de consumir crédito sem contabilização. Os contadores e o modelo são
+persistidos em `ai_generations.provider_usage`, mas não são enviados à aluna
+no SSE. O cálculo monetário ficará fora do provider e dependerá de preço
+versionado, orçamento e alerta ainda pendentes.

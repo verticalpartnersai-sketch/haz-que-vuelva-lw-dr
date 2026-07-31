@@ -311,6 +311,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Permitir que admin defina e publique limites de uso e custo.
 - [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
 - [ ] Implementar limites, telemetria e falhas seguras.
+  - [x] Aplicar cota diária atômica e teto de 2.048 tokens de saída por geração.
+  - [x] Persistir uso real de entrada, saída, cache, pensamento, ferramenta e
+    total por geração, sem expor a telemetria privada no SSE.
+  - [ ] Publicar orçamento, alerta externo e limites administráveis antes de
+    ativar as flags.
 - [ ] Implementar ciclo de caso, importação, fatos, política, análise,
   validação, retenção e exclusão somente em gates autorizados.
 - [ ] Manter controles críticos de acesso, segurança, limite e exclusão fora do

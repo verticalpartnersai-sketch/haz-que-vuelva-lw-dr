@@ -43,7 +43,12 @@ class SupabaseConversationStore:
                 "p_source_refs": [
                     source.model_dump(mode="json") for source in answer.sources
                 ],
-                "p_provider_usage": {"safety_mode": answer.safety_mode},
+                "p_provider_usage": {
+                    **answer.provider_usage.model_dump(mode="json"),
+                    "safety_mode": answer.safety_mode,
+                },
             },
         )
-        return GeneratedAnswer.model_validate(persisted)
+        return GeneratedAnswer.model_validate(
+            {**persisted, "provider_usage": answer.provider_usage}
+        )

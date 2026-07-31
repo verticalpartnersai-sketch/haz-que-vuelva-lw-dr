@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 
 from app.generation.ports import RetrievedChunk
-from app.generation.schemas import GeneratedAnswer, GenerateRequest
+from app.generation.schemas import GeneratedAnswer, GenerateRequest, ProviderUsage
 from app.generation.service import GenerationService
 
 
@@ -67,7 +67,15 @@ class FakeProvider:
         assert kwargs["member_memory"][0].scope == "member"
         if self.fail:
             raise RuntimeError("provider unavailable")
-        return GeneratedAnswer(answer="Respuesta sustantiva.")
+        return GeneratedAnswer(
+            answer="Respuesta sustantiva.",
+            provider_usage=ProviderUsage(
+                model="synthetic-model",
+                prompt_tokens=20,
+                output_tokens=4,
+                total_tokens=24,
+            ),
+        )
 
 
 def request():
@@ -96,6 +104,8 @@ async def test_consumes_only_after_persisted_answer():
     assert ledger.reserved
     assert not ledger.released
     assert any("event: answer" in event for event in events)
+    answer_event = next(event for event in events if "event: answer" in event)
+    assert "provider_usage" not in answer_event
 
 
 @pytest.mark.asyncio

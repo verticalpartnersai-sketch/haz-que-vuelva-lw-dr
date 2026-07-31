@@ -21,7 +21,8 @@ class Settings(BaseSettings):
     gemini_model: str = "gemini-3.6-flash"
     embedding_model: str = "gemini-embedding-2"
     embedding_dimensions: int = 768
-    daily_response_limit: int = 5
+    daily_response_limit: int = Field(default=5, ge=1, le=20)
+    max_output_tokens: int = Field(default=2_048, ge=256, le=4_096)
 
     @model_validator(mode="after")
     def validate_generation_configuration(self) -> "Settings":

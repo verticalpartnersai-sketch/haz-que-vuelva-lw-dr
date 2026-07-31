@@ -13,6 +13,7 @@ interface WorkerEnv {
   EMBEDDING_MODEL?: string;
   EMBEDDING_DIMENSIONS?: string;
   DAILY_RESPONSE_LIMIT?: string;
+  MAX_OUTPUT_TOKENS?: string;
 }
 
 const bindings = runtimeBindings as unknown as WorkerEnv;
@@ -34,6 +35,7 @@ export class VuelveAgentContainer extends Container {
     EMBEDDING_MODEL: bindings.EMBEDDING_MODEL ?? "gemini-embedding-2",
     EMBEDDING_DIMENSIONS: bindings.EMBEDDING_DIMENSIONS ?? "768",
     DAILY_RESPONSE_LIMIT: bindings.DAILY_RESPONSE_LIMIT ?? "5",
+    MAX_OUTPUT_TOKENS: bindings.MAX_OUTPUT_TOKENS ?? "2048",
   };
 }
 

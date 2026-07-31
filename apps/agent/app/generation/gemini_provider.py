@@ -4,13 +4,14 @@ import httpx
 
 from app.core.config import Settings
 from app.generation.ports import RetrievedChunk
-from app.generation.schemas import GeneratedAnswer, SourceReference
+from app.generation.schemas import GeneratedAnswer, ProviderUsage, SourceReference
 
 
 class GeminiGenerationProvider:
     def __init__(self, settings: Settings) -> None:
         self._api_key = settings.gemini_api_key
         self._model = settings.gemini_model
+        self._max_output_tokens = settings.max_output_tokens
         self._client = httpx.AsyncClient(
             base_url="https://generativelanguage.googleapis.com/v1beta",
             timeout=httpx.Timeout(90),
@@ -78,9 +79,25 @@ class GeminiGenerationProvider:
                 "generationConfig": {
                     "responseMimeType": "application/json",
                     "responseSchema": schema,
+                    "maxOutputTokens": self._max_output_tokens,
                 },
             }
         )
+        metadata = data.get("usageMetadata")
+        if not isinstance(metadata, dict):
+            raise TypeError("gemini_usage_metadata_missing")
+        try:
+            provider_usage = ProviderUsage(
+                model=self._model,
+                prompt_tokens=metadata["promptTokenCount"],
+                output_tokens=metadata["candidatesTokenCount"],
+                total_tokens=metadata["totalTokenCount"],
+                cached_tokens=metadata.get("cachedContentTokenCount", 0),
+                thoughts_tokens=metadata.get("thoughtsTokenCount", 0),
+                tool_tokens=metadata.get("toolUsePromptTokenCount", 0),
+            )
+        except (KeyError, TypeError, ValueError) as error:
+            raise ValueError("gemini_usage_metadata_invalid") from error
         text = data["candidates"][0]["content"]["parts"][0]["text"]
         parsed = json.loads(text)
         sources = [
@@ -95,4 +112,5 @@ class GeminiGenerationProvider:
             answer=parsed["answer"],
             safety_mode=safety_mode,
             sources=sources,
+            provider_usage=provider_usage,
         )

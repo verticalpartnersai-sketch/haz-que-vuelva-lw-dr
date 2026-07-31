@@ -146,6 +146,12 @@ documentos, prompt publicado nem conversa no banco. O último rollout atualizou
 a borda do agente sem reconstruir a imagem do Container porque o Docker local
 não estava disponível.
 
+O agente agora impõe cota diária entre 1 e 20 respostas, teto configurado de
+2.048 tokens de saída e rejeita respostas do Gemini sem telemetria válida. O
+uso real de tokens é persistido junto à geração, mas não sai no contrato SSE.
+Isso cria o dado necessário para medir custo; ainda não configura orçamento,
+alerta externo nem prova uma geração real no Container publicado.
+
 Aceite antes de habilitar:
 
 1. aprovar base legal, consentimento, retenção e exclusão;

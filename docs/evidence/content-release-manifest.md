@@ -81,10 +81,11 @@ Foram obtidas as médias globais 5,858 (Haz Que Vuelva), 4,299 (21 Mensajes),
 páginas das duas famílias renderizaram sem erro.
 
 O aceite pelo mesmo inspetor da aplicação pode ser repetido na raiz do
-repositório, depois de `npm ci` em `apps/web`, importando
-`apps/web/src/modules/content/adapters/pdf-lib-content-inspector.ts` com Node
-`--experimental-strip-types` e chamando `inspect(new Uint8Array(bytes))` para
-cada arquivo. O resultado observado foi 43, 29, 22 e 50 páginas, sem rejeição.
+repositório com `npm --prefix apps/web run content:preflight`. O comando
+fail-closed confere caminho, bytes, SHA-256 e páginas dos quatro PDFs com o
+mesmo inspetor da aplicação. Com `--remote`, ele também confirma que os quatro
+produtos estão ativos no projeto Supabase definitivo e informa quantos itens
+já foram publicados, sem modificar arquivos nem banco.
 
 ## Próximo gate
 

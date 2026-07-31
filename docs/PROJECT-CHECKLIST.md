@@ -67,6 +67,8 @@ quando todos os seus critérios obrigatórios tiverem evidência.
 - [x] Definir `vuelve_ia` como entitlement canônico da IA.
 - [x] Entregar os quatro PDFs editoriais finais em espanhol e preparar versões
   web validadas abaixo do limite de upload.
+- [x] Automatizar o preflight dos quatro PDFs contra bytes, hash, páginas,
+  catálogo remoto e manifesto aprovado, sem publicar ou alterar o banco.
 - [ ] Entregar documentos de conhecimento e prompt final da VUELVE IA.
 - [x] Enviar a família final da hero para desktop, ultra-wide, tablet e mobile.
 - [ ] Enviar os demais arquivos oficiais da marca.

@@ -336,7 +336,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
   produção e habilitar TOTP no projeto definitivo.
 - [ ] Criar o admin inicial e validar sua elevação TOTP. Google OAuth permanece
-  opcional e bloqueado até existirem credenciais próprias.
+  opcional e bloqueado até existirem credenciais próprias. O bootstrap do
+  primeiro admin está automatizado, fail-closed e reutiliza a outbox Resend;
+  falta o e-mail autorizado e a inscrição TOTP feita pela pessoa.
 - [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. O webhook
   rejeita payload autenticado incorretamente, o agente responde health e nega
   credencial inválida, mas compra, convite e geração reais aguardam fixtures ou

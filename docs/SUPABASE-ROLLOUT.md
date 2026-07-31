@@ -61,8 +61,14 @@ Antes de liberar venda real ainda são necessários:
 
 ### 4. Bootstrap administrativo
 
-- Criar a primeira conta por convite.
-- Promover a conta com `apps/web/scripts/promote-admin.mjs`.
+- Carregar `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SECRET_KEY` somente no shell
+  confiável, sem registrar os valores no histórico.
+- Validar o plano com `npm --prefix apps/web run admin:bootstrap --
+  admin@example.com`.
+- Para executar, definir `HQV_ADMIN_BOOTSTRAP_CONFIRM` exatamente como
+  `BOOTSTRAP_ADMIN:admin@example.com` e repetir com `--execute`. O comando
+  recusa outro projeto, recusa criar um segundo admin e enfileira o convite na
+  outbox Resend canônica.
 - Configurar TOTP em `/auth/mfa`.
 - Confirmar que `/administracion` redireciona admin `aal1` para MFA.
 - Executar convite, concessão e revogação com motivo e senha novamente.

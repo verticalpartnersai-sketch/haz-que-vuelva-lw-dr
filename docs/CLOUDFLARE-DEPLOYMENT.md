@@ -294,9 +294,8 @@ configuração real estiver incompleta.
   permanente 308;
 - [x] áudio preserva duração, loop, controle manual e foi reduzido de 5,09 MB
   para 2,04 MB;
-- [ ] publicação atual precisa manter o áudio mudo também depois do CTA
-  inicial. O gesto inicia a reprodução, mas hoje troca para `muted=false` e
-  volume 1.
+- [x] o CTA inicia a reprodução ainda muda (`muted=true`, `paused=false`) e a
+  usuária pode ativar o som pelo controle do cabeçalho;
 - [x] smoke sintético versionado cobre a superfície pública e roda a cada
   30 minutos no GitHub Actions.
 - [x] `/up1` e `/up2` carregam os checkouts correspondentes e preservam
@@ -338,7 +337,7 @@ configuração real estiver incompleta.
 - agente privado: versão de borda
   `910ee45f-ac17-435b-819c-ee51beb68242`, com `workers.dev` desativado e
   geração desligada por flag;
-- marketing: versão `53f05580-111b-4ff5-bdf7-12da94078485` em
+- marketing: versão `cdc68763-f938-43b5-83c1-7bd44109e92b` em
   `hazquevuelva.site`;
 - `scripts/production-smoke.sh` passou contra os dois domínios públicos e o
   endpoint público antigo do agente passou a responder 404. O mesmo smoke

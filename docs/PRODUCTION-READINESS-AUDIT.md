@@ -1,8 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit da aplicação publicada: `0858252662a22cc682d010994715553581e794fa`
-Commit da documentação auditada: `9e3d92450b649a82d1da7379a69b27c0b8484de7`
+Commit da aplicação publicada: `8d917b51e688c90ca9aeac7120d3d66a99d84cc9`
 
 ## Veredito
 
@@ -34,7 +33,7 @@ Versões Cloudflare verificadas:
 
 - membros: `a800d459-5287-4505-ac81-faf64032aa13`;
 - agente: `910ee45f-ac17-435b-819c-ee51beb68242`;
-- marketing: `53f05580-111b-4ff5-bdf7-12da94078485`.
+- marketing: `cdc68763-f938-43b5-83c1-7bd44109e92b`.
 
 ## Inventário real do banco
 
@@ -185,9 +184,6 @@ Aceite:
 - decidir política de comentários e moderação;
 - revisar métricas sem enviar conversa, e-mail ou conteúdo sensível;
 - testar concorrência e retry das três outboxes;
-- corrigir o contrato do áudio: o estado inicial é mudo, mas o CTA atualmente
-  inicia o arquivo audível (`muted=false`, volume 1). A decisão já registrada é
-  começar e manter o loop em mute, deixando a usuária ativar o som;
 - decidir se o Browser Insights será desativado na área de membros ou
   explicitamente autorizado na CSP. Hoje o beacon automático do Cloudflare é
   bloqueado pela CSP, sem quebrar o login, mas gera erro no console;

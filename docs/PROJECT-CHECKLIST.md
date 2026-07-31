@@ -364,9 +364,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar `haz-que-vuelva-marketing` na conta correta.
 - [x] Conectar DNS/TLS de `hazquevuelva.site`.
 - [x] Validar em produção `/`, `/quiz`, imagens, áudio, idiomas e fluxo completo.
-- [ ] Corrigir e provar em produção que o CTA inicia o áudio em loop ainda
-  mudo, preservando o controle manual para a usuária ativá-lo. A publicação
-  atual inicia audível, contrariando a decisão final de mute.
+- [x] Iniciar no CTA o áudio em loop e ainda mudo, preservando o controle
+  manual para a usuária ativá-lo; comprovado em produção com reprodução ativa,
+  `muted=true` e zero erro no console.
 - [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
   quatro jobs verdes.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e

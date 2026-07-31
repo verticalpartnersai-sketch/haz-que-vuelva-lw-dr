@@ -356,6 +356,16 @@ if (disabledGeneration.status !== 503) {
   );
 }
 
+const operationalHealth = await fetch(
+  `${membersUrl}/api/internal/operations/health`,
+  { method: "POST" },
+);
+if (operationalHealth.status !== 401) {
+  throw new Error(
+    `operational health without credential returned ${operationalHealth.status}; expected 401`,
+  );
+}
+
 const publicAgent = await fetch(`${agentPublicUrl}/health`, {
   redirect: "manual",
 });

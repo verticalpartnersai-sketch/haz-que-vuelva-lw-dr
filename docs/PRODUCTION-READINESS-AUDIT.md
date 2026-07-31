@@ -1,7 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit publicado: `693ddf60ca6fbf4d3bb8864427d4ed09964b4238`
+Commit da aplicação verificada: `693ddf60ca6fbf4d3bb8864427d4ed09964b4238`
 
 ## Veredito
 
@@ -16,7 +16,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 
 | Superfície | Estado comprovado |
 | --- | --- |
-| Git | `main`, checkout local e `origin/main` sincronizados no SHA acima |
+| Git | o commit da aplicação está publicado e é ancestral da `main` auditada |
 | Marketing | `https://hazquevuelva.site/quiz`, `/up1` e `/up2` respondem 200 |
 | Checkout | CTAs publicados apontam para os três redirecionadores Centerpag aprovados no código |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
@@ -24,9 +24,9 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Supabase | 21 migrações aplicadas; cadastro público e login anônimo desabilitados |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps |
-| Webhook | credencial inválida retorna 401; stream acima de 64 KiB retorna 413 |
+| Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
 | CI | quatro jobs do workflow CI verdes no SHA auditado |
-| Smoke | workflow `Production smoke` verde no SHA auditado |
+| Smoke | workflow recorrente cobre marketing, autenticação negativa, webhook e agente privado |
 | Resend DNS | DKIM publicado; SPF e MX publicados em `send.mail.hazquevuelva.site` |
 
 Versões Cloudflare verificadas:

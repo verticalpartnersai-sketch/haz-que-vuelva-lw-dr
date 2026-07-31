@@ -14,6 +14,7 @@ import { createSupabaseServiceClient } from "@/server/supabase/service-client";
 export const runtime = "nodejs";
 
 const MAX_BODY_BYTES = 64 * 1024;
+const AUTH_PROBE_HEADER = "x-hqv-auth-probe";
 
 export async function POST(request: Request) {
   const config = environment();
@@ -37,6 +38,9 @@ export async function POST(request: Request) {
     !secureTokenMatches(parsed.data.token, config.PERFECT_PAY_WEBHOOK_TOKEN)
   ) {
     return NextResponse.json({ accepted: false }, { status: 401 });
+  }
+  if (request.headers.get(AUTH_PROBE_HEADER) === "1") {
+    return new NextResponse(null, { status: 204 });
   }
 
   let events: ReturnType<typeof normalizePerfectPayPayloads>;

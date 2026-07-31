@@ -4,6 +4,7 @@ set -euo pipefail
 
 base_url="${HQV_BASE_URL:-https://hazquevuelva.site}"
 members_url="${HQV_MEMBERS_URL:-https://miembros.hazquevuelva.site}"
+agent_public_url="${HQV_AGENT_PUBLIC_URL:-https://haz-que-vuelva-agent.verticalpartnersai.workers.dev}"
 checkout_url="${HQV_CHECKOUT_URL:-https://go.centerpag.com/PPU38CQER3J}"
 upsell_1_url="${HQV_UPSELL_1_URL:-https://go.centerpag.com/PPU38CQERET}"
 upsell_2_url="${HQV_UPSELL_2_URL:-https://go.centerpag.com/PPU38CQERFF}"
@@ -223,6 +224,15 @@ expect_redirect \
   "/login?next=%2F" \
   "$members_url/" \
   "$smoke_dir/members-root-headers.txt"
+
+for protected_path in productos perfil administracion ia; do
+  expect_redirect \
+    "307" \
+    "/login?next=%2F${protected_path}" \
+    "$members_url/$protected_path" \
+    "$smoke_dir/members-${protected_path}-headers.txt"
+done
+
 expect_status "200" "$members_url/login" "$members_login_body"
 expect_status "200" "$members_url/healthz" "$members_health_body"
 expect_redirect \
@@ -251,5 +261,93 @@ for required_header in \
   grep -Fq "$required_header" "$normalized_members_headers" ||
     fail "members login is missing response header: $required_header"
 done
+
+node --input-type=module - "$members_url" "$agent_public_url" <<'NODE'
+const [, , membersUrl, agentPublicUrl] = process.argv;
+const webhookEndpoint = `${membersUrl}/api/webhooks/perfect-pay`;
+const invalidCredentialPayload = {
+  token: `hqv-negative-smoke-${crypto.randomUUID()}`,
+  code: "HQV-NEGATIVE-SMOKE",
+  sale_amount: 7,
+  currency_enum: 2,
+  sale_status_enum: 2,
+  sale_status_detail: "approved",
+  date_created: "2026-07-31 00:00:00",
+  date_approved: "2026-07-31 00:00:01",
+  product: {
+    code: "PPPBF7CC",
+    name: "Haz Que Vuelva",
+    external_reference: null,
+  },
+  plan: {
+    code: "HQV-NEGATIVE-SMOKE",
+    name: "Safe negative smoke",
+    quantity: 1,
+  },
+  plan_itens: [],
+  customer: { email: "safe-negative@example.invalid" },
+};
+
+const invalidCredential = await fetch(webhookEndpoint, {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    "x-hqv-auth-probe": "1",
+  },
+  body: JSON.stringify(invalidCredentialPayload),
+});
+if (invalidCredential.status !== 401) {
+  throw new Error(
+    `Perfect Pay invalid credential returned ${invalidCredential.status}; expected 401`,
+  );
+}
+
+const encoder = new TextEncoder();
+const oversizedChunks = [encoder.encode("{")];
+for (let index = 0; index < 70; index += 1) {
+  oversizedChunks.push(encoder.encode("x".repeat(1024)));
+}
+const oversizedBody = new ReadableStream({
+  pull(controller) {
+    const chunk = oversizedChunks.shift();
+    if (chunk) controller.enqueue(chunk);
+    else controller.close();
+  },
+});
+const oversized = await fetch(webhookEndpoint, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: oversizedBody,
+  duplex: "half",
+});
+if (oversized.status !== 413) {
+  throw new Error(
+    `Perfect Pay oversized stream returned ${oversized.status}; expected 413`,
+  );
+}
+
+const disabledGeneration = await fetch(
+  `${membersUrl}/api/ai/generations/stream`,
+  {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: "{}",
+  },
+);
+if (disabledGeneration.status !== 503) {
+  throw new Error(
+    `disabled AI generation returned ${disabledGeneration.status}; expected 503`,
+  );
+}
+
+const publicAgent = await fetch(`${agentPublicUrl}/health`, {
+  redirect: "manual",
+});
+if (publicAgent.status !== 404) {
+  throw new Error(
+    `public agent endpoint returned ${publicAgent.status}; expected 404`,
+  );
+}
+NODE
 
 echo "Production smoke passed for $base_url and $members_url"

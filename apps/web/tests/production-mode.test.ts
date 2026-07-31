@@ -42,6 +42,16 @@ test("local environment templates declare preview mode explicitly", () => {
   assert.match(read("../.dev.vars.example"), /^MEMBER_APP_MODE=preview/m);
 });
 
+test("the Perfect Pay authentication probe cannot project payment state", () => {
+  const route = read("../src/app/api/webhooks/perfect-pay/route.ts");
+
+  assert.match(route, /AUTH_PROBE_HEADER = "x-hqv-auth-probe"/);
+  assert.match(
+    route,
+    /secureTokenMatches[\s\S]*request\.headers\.get\(AUTH_PROBE_HEADER\)[\s\S]*status: 204[\s\S]*normalizePerfectPayPayloads/,
+  );
+});
+
 test("the production Worker owns only the member subdomain and declares required secrets", () => {
   const wrangler = read("../wrangler.jsonc");
   const packageManifest = read("../package.json");

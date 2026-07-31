@@ -63,8 +63,11 @@ Workers Builds não estiver conectado com suas permissões próprias.
 O workflow `Production smoke` executa a cada 30 minutos e também sob demanda.
 Ele valida o redirecionamento HTTPS, quiz, upsells, checkouts, headers
 defensivos, metadata, assets críticos, login obrigatório e health da área de
-membros. Falhas ficam registradas no GitHub Actions; canais externos de alerta
-ainda precisam ser configurados antes do lançamento comercial.
+membros. O teste de credencial Perfect Pay usa o probe
+`x-hqv-auth-probe: 1`: mesmo se a autenticação regredir, a requisição não
+projeta compra, acesso ou e-mail. Falhas ficam registradas no GitHub Actions;
+canais externos de alerta ainda precisam ser configurados antes do lançamento
+comercial.
 
 ## Artefatos versionados
 
@@ -280,6 +283,8 @@ configuração real estiver incompleta.
 ### Área de membros
 
 - [x] `/` redireciona a sessão anônima para `/login?next=%2F`;
+- [x] `/productos`, `/perfil`, `/administracion` e `/ia` também redirecionam
+  sessões anônimas para o login preservando o destino;
 - [x] `/login` e `/healthz` respondem 200;
 - [x] `/quiz` redireciona para `https://hazquevuelva.site/quiz`;
 - `/productos`, `/perfil` e `/administracion` respondem conforme
@@ -295,6 +300,8 @@ configuração real estiver incompleta.
 
 ### Agente
 
+- [x] o smoke comprova que o endpoint público antigo responde 404 e que a
+  geração permanece indisponível por flag;
 - o Service Binding é a única entrada de rede do agente;
 - Worker e FastAPI rejeitam credencial interna ausente ou inválida;
 - rota desconhecida responde 404 dentro do binding;
@@ -312,7 +319,10 @@ configuração real estiver incompleta.
 - marketing: versão `53f05580-111b-4ff5-bdf7-12da94078485` em
   `hazquevuelva.site`;
 - `scripts/production-smoke.sh` passou contra os dois domínios públicos e o
-  endpoint público antigo do agente passou a responder 404;
+  endpoint público antigo do agente passou a responder 404. O mesmo smoke
+  comprova os redirects protegidos, token Perfect Pay inválido com 401 por um
+  probe intrinsecamente não mutável, stream acima de 64 KiB com 413 e geração
+  desligada com 503;
 - o deploy do agente usou `--containers-rollout=none`, pois o daemon Docker
   local não estava disponível. A camada Worker foi atualizada, mas a imagem do
   Container permaneceu na versão já publicada. Antes de habilitar a geração,

@@ -24,6 +24,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
       - name: Validate operational scripts
         run: |
           bash -n scripts/cloudflare-rollback.sh
@@ -31,6 +34,7 @@ jobs:
           bash -n scripts/supabase-restore.sh
           bash -n scripts/test-supabase-recovery.sh
           scripts/test-supabase-recovery.sh
+          node scripts/configure-cloudflare-rum.mjs --help
 
   marketing:
     name: Marketing

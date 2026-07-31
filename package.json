@@ -15,6 +15,7 @@
     "check:cloudflare:web": "npm --prefix apps/web run check:cloudflare",
     "check:cloudflare:marketing": "npm --prefix apps/marketing run check:cloudflare",
     "check:cloudflare:agent": "npm --prefix apps/agent run check",
+    "cloudflare:rum": "node scripts/configure-cloudflare-rum.mjs",
     "check:web": "npm --prefix apps/web run typecheck && npm --prefix apps/web run lint && npm --prefix apps/web test",
     "check:marketing": "npm --prefix apps/marketing run typecheck"
   }

@@ -694,6 +694,22 @@ de RUM quanto na API de Configuration Rules. A execução exige o painel ou um
 token com permissão mínima de escrita em Configuration Rules; nenhum segredo
 novo deve ser colado no repositório ou nesta conversa.
 
+Atualização operacional em 31 de julho de 2026:
+
+- [Cloudflare Rulesets API — regras](https://developers.cloudflare.com/api/resources/rulesets/subresources/rules/):
+  permite criar uma regra individual com `POST` e atualizar somente a regra
+  alvo com `PATCH`, evitando substituir regras paralelas da zona.
+- [Cloudflare Configuration Rules — criação via API](https://developers.cloudflare.com/rules/configuration-rules/create-api/):
+  confirma o ruleset de zona na fase `http_config_settings`, ação
+  `set_config` e a necessidade de consultar o entry point antes da mutação.
+
+Decisão: o executor versionado é somente leitura por padrão, valida que o ID
+pertence exatamente a `hazquevuelva.site`, exige confirmação vinculada ao
+hostname e ao ID da zona e usa operações por regra quando o entry point já
+existe. Assim ele não sobrescreve regras existentes. A execução real requer um
+API token temporário com `Zone:Read` e `Select Configuration:Write` limitado à
+zona HAZ QUE VUELVA; o valor deve existir apenas no ambiente local.
+
 ## Registro de fontes — rollback de Workers
 
 - [Cloudflare Workers — Rollbacks](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/):

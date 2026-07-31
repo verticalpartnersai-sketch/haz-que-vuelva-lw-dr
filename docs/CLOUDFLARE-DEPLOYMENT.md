@@ -85,6 +85,21 @@ o login. Antes de alterar a CSP, decidir se a telemetria é necessária e quais
 dados poderão sair; caso contrário, desativar o Browser Insights para esse
 host.
 
+O executor canônico para a decisão aprovada é:
+
+```bash
+CLOUDFLARE_API_TOKEN='definido somente no shell local' \
+CLOUDFLARE_ZONE_ID='<zone-id>' \
+npm run cloudflare:rum
+```
+
+O comando é somente leitura por padrão. Ele valida o nome exato da zona e
+mostra se criará, anexará ou reparará exclusivamente a regra com ref estável
+`hqv_disable_members_rum`. Para executar, usar um token temporário limitado à
+zona com leitura da zona e escrita de Select Configuration, definir a
+confirmação exata exibida pelo plano e acrescentar `-- --execute`. Nunca colar
+o token em chat, documentação, `.env` versionado ou histórico do shell.
+
 O input manual `exercise_incident` força uma falha somente depois que o smoke
 real termina com sucesso. Ele existe para provar criação, atualização e
 encerramento do incidente sem falsificar indisponibilidade da aplicação.

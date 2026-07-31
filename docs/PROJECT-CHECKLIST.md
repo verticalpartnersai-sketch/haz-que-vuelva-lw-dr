@@ -327,7 +327,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 65 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 80 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
@@ -392,7 +392,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Aplicar em Cloudflare uma Configuration Rule com `disable_rum=true` para
   `miembros.hazquevuelva.site`. A decisão de preservar a CSP e desligar o beacon
   foi aprovada; o OAuth atual do Wrangler não tem permissão para escrever essa
-  regra e a API respondeu 403.
+  regra e a API respondeu 403. Um executor fail-closed agora valida a zona,
+  preserva regras existentes e exige token temporário de privilégio mínimo;
+  falta executar e comprovar a regra no edge.
 - [x] Criar o Worker da área de membros e versionar o contrato de variáveis,
   segredos obrigatórios e domínio exclusivo de produção.
 - [x] Cadastrar variáveis e segredos reais no Worker da área de membros sem

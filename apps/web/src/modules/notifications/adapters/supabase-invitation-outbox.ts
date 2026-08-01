@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { createHash } from "node:crypto";
 
 export type InvitationJob = {
   id: string;
@@ -8,6 +9,20 @@ export type InvitationJob = {
 
 export class SupabaseInvitationOutbox {
   constructor(private readonly client: SupabaseClient) {}
+
+  async isSuppressed(email: string) {
+    const recipientHash = createHash("sha256")
+      .update(email.trim().toLowerCase())
+      .digest("hex");
+    const { data, error } = await this.client
+      .from("email_suppressions")
+      .select("recipient_sha256")
+      .eq("recipient_sha256", recipientHash)
+      .is("lifted_at", null)
+      .maybeSingle();
+    if (error) throw new Error(`Email suppression lookup failed: ${error.code}`);
+    return data !== null;
+  }
 
   async claim(limit = 10): Promise<InvitationJob[]> {
     const { data, error } = await this.client.rpc("claim_outbox_jobs", {
@@ -50,5 +65,17 @@ export class SupabaseInvitationOutbox {
       })
       .eq("id", job.id);
     if (error) throw new Error(`Invitation retry failed: ${error.code}`);
+  }
+
+  async suppress(job: InvitationJob) {
+    const { error } = await this.client
+      .from("outbox_jobs")
+      .update({
+        failed_at: new Date().toISOString(),
+        last_error: "email_suppressed",
+        locked_at: null,
+      })
+      .eq("id", job.id);
+    if (error) throw new Error(`Invitation suppression failed: ${error.code}`);
   }
 }

@@ -46,11 +46,18 @@ async function generateAccessLink({
 export async function runInvitationWorker(dependencies: Dependencies) {
   const jobs = await dependencies.outbox.claim();
   let completed = 0;
+  let suppressed = 0;
 
   for (const job of jobs) {
     try {
       const { member_id: memberId, email } = job.payload;
       if (!memberId || !email) throw new Error("invalid_invitation_job");
+
+      if (await dependencies.outbox.isSuppressed(email)) {
+        await dependencies.outbox.suppress(job);
+        suppressed += 1;
+        continue;
+      }
 
       const actionUrl = await generateAccessLink({
         auth: dependencies.auth,
@@ -71,5 +78,5 @@ export async function runInvitationWorker(dependencies: Dependencies) {
     }
   }
 
-  return { claimed: jobs.length, completed };
+  return { claimed: jobs.length, completed, suppressed };
 }

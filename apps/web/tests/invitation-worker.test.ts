@@ -23,7 +23,11 @@ function dependencies(generateLink: SupabaseClient["auth"]["admin"]["generateLin
         complete: async () => {
           completed += 1;
         },
+        isSuppressed: async () => false,
         retry: async () => assert.fail("invitation should not be retried"),
+        suppress: async (): Promise<void> => {
+          assert.fail("invitation should not be suppressed");
+        },
       },
       redirectTo: "https://miembros.hazquevuelva.site/auth/confirm",
       sender: {
@@ -63,6 +67,23 @@ test("invitation worker sends a server-verifiable token hash callback", async ()
   assert.equal(callback.searchParams.get("type"), "invite");
   assert.equal(callback.searchParams.get("next"), "/auth/definir-contrasena");
   assert.equal(callback.hash, "");
+});
+
+test("invitation worker does not send to a suppressed recipient", async () => {
+  let suppressed = 0;
+  const fixture = dependencies(async () =>
+    assert.fail("link must not be generated"),
+  );
+  fixture.input.outbox.isSuppressed = async () => true;
+  fixture.input.outbox.suppress = async () => {
+    suppressed += 1;
+  };
+
+  const result = await runInvitationWorker(fixture.input as never);
+
+  assert.deepEqual(result, { claimed: 1, completed: 0, suppressed: 1 });
+  assert.equal(suppressed, 1);
+  assert.equal(fixture.sent.length, 0);
 });
 
 test("invitation worker falls back to recovery for an already confirmed account", async () => {

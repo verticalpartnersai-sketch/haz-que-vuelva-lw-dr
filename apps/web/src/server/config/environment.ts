@@ -40,6 +40,7 @@ const environmentSchema = z
     PERFECT_PAY_WEBHOOK_TOKEN: optionalString(16),
     RESEND_API_KEY: optionalString(1),
     RESEND_FROM: optionalString(3),
+    RESEND_WEBHOOK_SECRET: optionalString(16),
     MEMBER_APP_URL: optionalUrl,
     MARKETING_APP_URL: optionalUrl,
     AGENT_SERVICE_BINDING: booleanString,

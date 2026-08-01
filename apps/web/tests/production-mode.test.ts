@@ -71,6 +71,7 @@ test("the production Worker owns only the member subdomain and declares required
   assert.doesNotMatch(wrangler, /haz-que-vuelva-agent\.verticalpartnersai\.workers\.dev/);
   assert.match(wrangler, /"PERFECT_PAY_WEBHOOK_TOKEN"/);
   assert.match(wrangler, /"RESEND_API_KEY"/);
+  assert.match(wrangler, /"RESEND_WEBHOOK_SECRET"/);
   assert.match(wrangler, /"AGENT_INTERNAL_SECRET"/);
   assert.match(wrangler, /acceso@mail\.hazquevuelva\.site/);
   assert.match(wrangler, /"WORKER_INTERNAL_SECRET"/);
@@ -86,6 +87,27 @@ test("the production Worker owns only the member subdomain and declares required
     packageManifest,
     /"check:cloudflare": "opennextjs-cloudflare build && wrangler deploy --dry-run --env production"/,
   );
+});
+
+test("the Resend webhook verifies the raw bounded body before persistence", () => {
+  const route = read("../src/app/api/webhooks/resend/route.ts");
+  const migration = read(
+    "../../../supabase/migrations/202607310024_resend_delivery_events.sql",
+  );
+
+  assert.match(route, /MAX_BODY_BYTES = 64 \* 1024/);
+  assert.match(route, /readBoundedTextBody\(request, MAX_BODY_BYTES\)/);
+  assert.ok(
+    route.indexOf(".verify(body.value, headers)") <
+      route.indexOf("recorder.record"),
+  );
+  assert.match(migration, /unique \(provider_event_id, recipient_sha256\)/);
+  assert.match(migration, /notification\.email_suppressed/);
+  assert.match(
+    migration,
+    /revoke all on function public\.record_resend_email_event[\s\S]*authenticated/,
+  );
+  assert.doesNotMatch(migration, /customer_email|recipient_email text not null/);
 });
 
 test("Supabase browser settings come from the runtime server instead of build-time substitution", () => {

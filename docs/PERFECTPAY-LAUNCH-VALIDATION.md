@@ -83,6 +83,21 @@ Para cada ID, guardar em `docs/evidence/launch/` apenas material redigido:
 Fixtures derivadas do provedor devem substituir PII por valores `.invalid`,
 preservar estrutura e enums, e nunca conter token, assinatura ou URL secreta.
 
+Após cada evento real chegar e o Cron processar as filas, validar a venda sem
+expor PII:
+
+```bash
+node --env-file=apps/web/.env.local apps/web/scripts/verify-perfectpay-sale.mjs \
+  --sale '<codigo-da-venda>' \
+  --expect 'haz_que_vuelva,21_mensajes'
+```
+
+Para uma venda terminal que deve ficar sem acesso, usar `--expect-none`. O
+verificador é somente leitura, fixa o projeto de produção esperado, compara
+itens e grants ativos da própria venda, confere eventos processados e confirma
+que o convite não falhou. A saída usa somente fingerprint parcial da venda e
+metadados operacionais, nunca e-mail ou identificador do membro.
+
 ## Sequência de execução
 
 1. confirmar aprovação e URLs no painel;

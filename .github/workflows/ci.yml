@@ -34,6 +34,7 @@ jobs:
           bash -n scripts/supabase-restore.sh
           bash -n scripts/test-supabase-recovery.sh
           scripts/test-supabase-recovery.sh
+          npm run check:supabase:migrations
           node scripts/configure-cloudflare-rum.mjs --help
 
   marketing:

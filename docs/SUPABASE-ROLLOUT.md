@@ -14,6 +14,11 @@ a atualização da coluna `display_name` e as RPCs explícitas da aplicação.
 Também foram endurecidos os privilégios padrão dos próximos objetos criados
 por `postgres`.
 
+O job de operações executa `npm run check:supabase:migrations` antes de aceitar
+novas mudanças. O verificador não depende de Docker e bloqueia migrations que
+criem tabela pública sem RLS, função `SECURITY DEFINER` sem `search_path` fixo,
+execução pública implícita ou novos privilégios para `anon` após o baseline.
+
 Um teste cloud com duas contas sintéticas comprovou isolamento de perfil e
 entitlement, negação da RPC administrativa e negação de leitura cruzada. Outro
 teste confirmou que os três buckets são privados e que duas contas sem
@@ -77,6 +82,7 @@ validada com execução exclusiva por `service_role`.
 
 ### 3. Aplicar e testar o banco
 
+- Executar `npm run check:supabase:migrations` antes de abrir o pull request.
 - Revisar o diff remoto antes de `db push`.
 - Aplicar todas as migrações na ordem versionada.
 - Executar os seis arquivos pgTAP em `supabase/tests` contra o projeto

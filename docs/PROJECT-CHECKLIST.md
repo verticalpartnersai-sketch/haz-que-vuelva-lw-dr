@@ -361,6 +361,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Remover privilégios padrão amplos de `anon`, reduzir `authenticated` às
   operações previstas e fixar defaults de privilégio mínimo para novas
   tabelas, sequências e funções criadas por `postgres`.
+- [x] Bloquear regressões de segurança nas migrations pelo CI, sem Docker,
+  exigindo RLS, `search_path` fixo, revogação de execução pública e ausência de
+  novos grants para `anon`; quatro cenários sintéticos validam o verificador.
 - [x] Aplicar a migration 22 de health da IA depois do primeiro backup. A
   função foi registrada no histórico remoto, `anon` e `authenticated` não
   executam, `service_role` executa e o agregado retornou JSON válido sem uso.

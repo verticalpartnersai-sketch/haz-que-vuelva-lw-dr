@@ -6,6 +6,7 @@ import type {
   InvitationMessage,
   InvitationSender,
 } from "@/modules/notifications/application/invitation-sender";
+import { buildInvitationEmail } from "@/modules/notifications/application/invitation-email";
 
 export class ResendInvitationSender implements InvitationSender {
   private readonly client: Resend;
@@ -18,17 +19,14 @@ export class ResendInvitationSender implements InvitationSender {
   }
 
   async send(message: InvitationMessage) {
+    const email = buildInvitationEmail(message.actionUrl);
     const { error } = await this.client.emails.send(
       {
         from: this.from,
         to: message.recipient,
-        subject: "Configura tu acceso a Haz Que Vuelva",
-        text: [
-          "Tu compra fue aprobada.",
-          "Usa este enlace único para verificar tu correo y crear tu contraseña:",
-          message.actionUrl,
-          "Si no reconoces esta compra, contacta al soporte.",
-        ].join("\n\n"),
+        subject: email.subject,
+        html: email.html,
+        text: email.text,
       },
       { idempotencyKey: message.idempotencyKey },
     );

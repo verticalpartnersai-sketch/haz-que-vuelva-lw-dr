@@ -17,6 +17,8 @@ test("Google OAuth uses the Supabase PKCE callback and preserves a safe next pat
   assert.match(loginForm, /new URL\("\/auth\/confirm", window\.location\.origin\)/);
   assert.match(loginForm, /callback\.searchParams\.set\("next", nextPath\)/);
   assert.match(callback, /exchangeCodeForSession/);
+  assert.match(callback, /verifyOtp/);
+  assert.match(callback, /token_hash/);
   assert.match(callback, /!value\.startsWith\("\/\/"\)/);
 });
 

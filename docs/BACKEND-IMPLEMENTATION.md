@@ -32,6 +32,9 @@ Implementado nesta fundação:
 - reautenticação por senha na publicação administrativa de PDF, com credencial
   aleatória de uso único, armazenada somente como SHA-256, expiração curta e
   cookie HttpOnly;
+- limite atômico owner-only de cinco provas de senha administrativa por 15
+  minutos, com bloqueio temporário, `Retry-After`, corpo incrementalmente
+  limitado e limpeza transacional depois do sucesso;
 - reautenticação transacional nas concessões, revogações, transferências e
 versões de prompt; escrita direta de catálogo, ofertas e prompts removida;
 - autorização administrativa owner-only por allowlist privada, sem MFA

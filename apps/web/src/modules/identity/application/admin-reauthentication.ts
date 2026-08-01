@@ -5,9 +5,34 @@ export const ADMIN_REAUTH_TTL_SECONDS = 5 * 60;
 
 export class AdminReauthenticationError extends Error {}
 export class AdminReauthenticationRequiredError extends Error {}
+export class AdminReauthenticationRateLimitedError extends Error {
+  readonly retryAfterSeconds: number;
+
+  constructor(retryAfterSeconds: number) {
+    super("admin_reauthentication_rate_limited");
+    this.retryAfterSeconds = retryAfterSeconds;
+  }
+}
+
+export interface AdminReauthenticationAttemptLimiter {
+  reserve(actorId: string): Promise<number>;
+}
 
 export interface PasswordVerifier {
   verify(email: string, password: string): Promise<boolean>;
+}
+
+export async function reserveAdminReauthenticationAttempt({
+  actorId,
+  limiter,
+}: {
+  actorId: string;
+  limiter: AdminReauthenticationAttemptLimiter;
+}) {
+  const retryAfterSeconds = await limiter.reserve(actorId);
+  if (retryAfterSeconds > 0) {
+    throw new AdminReauthenticationRateLimitedError(retryAfterSeconds);
+  }
 }
 
 export function createAdminReauthenticationToken() {

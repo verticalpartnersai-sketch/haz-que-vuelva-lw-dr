@@ -47,6 +47,9 @@ exclusão, limitações e proibição de material obtido por acesso indevido.
 - ocultar botão não é autorização.
 - ownership é validado em toda operação de objeto.
 - exclusão total e mudanças críticas exigem reautenticação.
+- a reautenticação administrativa aceita cinco provas de senha por janela de
+  15 minutos; a sexta é bloqueada atomicamente no banco e o limite não é
+  acessível a `anon`, `authenticated` nem diretamente a `service_role`.
 
 ## Arquivos, banco e backups
 

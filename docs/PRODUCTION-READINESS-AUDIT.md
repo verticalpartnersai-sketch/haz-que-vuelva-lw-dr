@@ -1,6 +1,6 @@
 # Auditoria de prontidão para produção
 
-Data da evidência: 31 de julho de 2026
+Data da evidência: 1 de agosto de 2026
 Commit da aplicação e operação publicada: `354fce85f221c9230a5004b6a8f3260af3d2eec5`
 
 ## Veredito
@@ -21,7 +21,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
-| Supabase | 28 migrações aplicadas; cadastro público e login anônimo desabilitados |
+| Supabase | 29 migrações aplicadas; cadastro público e login anônimo desabilitados; reautenticação owner-only limitada a cinco tentativas por 15 minutos |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
@@ -138,6 +138,9 @@ outbox e concluiu definição e recuperação de senha. A autorização efetiva 
 restrita ao proprietário canônico em allowlist privada. MFA obrigatório foi
 removido por decisão explícita; mutações críticas continuam exigindo
 reautenticação por senha com credencial curta, hasheada e de uso único.
+O endpoint agora lê o corpo de forma incremental, bloqueia a sexta prova de
+senha em 15 minutos e só limpa o limite quando a credencial curta é persistida
+com sucesso no banco.
 
 Aceite:
 

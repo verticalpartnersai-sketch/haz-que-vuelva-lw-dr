@@ -3,7 +3,7 @@
 ## Estado atual
 
 O projeto dedicado `haz-que-vuelva-members` está ativo no Supabase Cloud, com
-as 28 migrações e testes de segurança aplicados. O catálogo possui cinco
+as 29 migrações e testes de segurança aplicados. O catálogo possui cinco
 produtos; os três produtos principais e os dois order bumps da Perfect Pay
 estão mapeados.
 
@@ -24,6 +24,11 @@ callbacks de produção e desenvolvimento explicitamente cadastrados e mantém
 cadastro público e login anônimo desabilitados. A administração é restrita ao
 proprietário canônico em allowlist privada e não exige MFA. Google OAuth
 permanece desligado até existirem credenciais próprias.
+
+A prova de senha administrativa aceita no máximo cinco tentativas em uma
+janela de 15 minutos. A sexta tentativa inicia bloqueio temporário, a RPC de
+reserva é executável somente por `service_role`, o contador vive no schema
+privado e é removido na mesma transação que cria a credencial curta de sucesso.
 
 Antes de liberar venda real ainda são necessários:
 

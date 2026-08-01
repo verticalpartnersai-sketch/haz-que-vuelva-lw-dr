@@ -6,7 +6,12 @@ import {
   requireReauthenticationTokenHash,
   throwIfAdminReauthenticationError,
 } from "../src/modules/admin/application/reauthenticated-operation.ts";
-import { AdminReauthenticationRequiredError } from "../src/modules/identity/application/admin-reauthentication.ts";
+import {
+  AdminReauthenticationRateLimitedError,
+  AdminReauthenticationRequiredError,
+  type AdminReauthenticationAttemptLimiter,
+  reserveAdminReauthenticationAttempt,
+} from "../src/modules/identity/application/admin-reauthentication.ts";
 
 test("as operações administrativas rejeitam hash ausente ou malformado", () => {
   const validHash = "a".repeat(64);
@@ -114,5 +119,82 @@ test("a remoção do MFA mantém proprietário único e reautenticação por sen
   assert.equal(
     migration.match(/drop policy if exists .*aal2/g)?.length,
     13,
+  );
+});
+
+test("a limitação de reautenticação bloqueia antes de testar outra senha", async () => {
+  class FakeAttemptLimiter implements AdminReauthenticationAttemptLimiter {
+    private readonly retryAfterSeconds: number;
+
+    constructor(retryAfterSeconds: number) {
+      this.retryAfterSeconds = retryAfterSeconds;
+    }
+
+    async reserve() {
+      return this.retryAfterSeconds;
+    }
+  }
+
+  await reserveAdminReauthenticationAttempt({
+    actorId: "9dbbf52d-b868-47e3-a7bc-246d8cbef07e",
+    limiter: new FakeAttemptLimiter(0),
+  });
+  await assert.rejects(
+    reserveAdminReauthenticationAttempt({
+      actorId: "9dbbf52d-b868-47e3-a7bc-246d8cbef07e",
+      limiter: new FakeAttemptLimiter(417),
+    }),
+    (error: unknown) =>
+      error instanceof AdminReauthenticationRateLimitedError &&
+      error.retryAfterSeconds === 417,
+  );
+});
+
+test("a reautenticação limita corpo e tentativas por proprietário", () => {
+  const route = readFileSync(
+    new URL(
+      "../src/app/api/admin/reauthenticate/route.ts",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  const migration = readFileSync(
+    new URL(
+      "../../../supabase/migrations/202608010029_admin_reauthentication_rate_limits.sql",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(route, /readBoundedJsonBody\(request, MAX_BODY_BYTES\)/);
+  assert.match(route, /reserveAdminReauthenticationAttempt/);
+  assert.match(route, /"Retry-After"/);
+  assert.match(route, /status: 429/);
+  assert.ok(
+    route.indexOf("requireAdmin()") <
+      route.indexOf("readBoundedJsonBody(request, MAX_BODY_BYTES)"),
+  );
+  assert.ok(
+    route.lastIndexOf("reserveAdminReauthenticationAttempt") <
+      route.lastIndexOf("verifyAdminPassword({"),
+  );
+
+  assert.match(migration, /app_private\.admin_reauthentication_rate_limits/);
+  assert.match(migration, /attempts between 1 and 5/);
+  assert.match(migration, /interval '15 minutes'/);
+  assert.match(migration, /pg_advisory_xact_lock/);
+  assert.match(migration, /join app_private\.admin_principals/);
+  assert.match(migration, /auth\.role\(\) <> 'service_role'/);
+  assert.match(
+    migration,
+    /revoke all on table app_private\.admin_reauthentication_rate_limits[\s\S]*service_role/,
+  );
+  assert.match(
+    migration,
+    /revoke all on function public\.reserve_admin_reauthentication_attempt\(uuid\)[\s\S]*from public, anon, authenticated/,
+  );
+  assert.match(
+    migration,
+    /delete from app_private\.admin_reauthentication_rate_limits[\s\S]*where actor_id = p_actor_id/,
   );
 });

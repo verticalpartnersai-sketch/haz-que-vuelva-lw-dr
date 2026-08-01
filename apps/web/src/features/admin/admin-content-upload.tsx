@@ -116,7 +116,13 @@ export function AdminContentUpload() {
       const code =
         error instanceof Error ? error.message : "content_pdf_publish_failed";
       setStatus(
-        code.startsWith("admin_reauthentication")
+        code === "admin_reauthentication_rate_limited"
+          ? l(
+              "Demasiados intentos. Espera 15 minutos antes de confirmar la contraseña nuevamente.",
+              "Muitas tentativas. Aguarde 15 minutos antes de confirmar a senha novamente.",
+              "Too many attempts. Wait 15 minutes before confirming the password again.",
+            )
+          : code.startsWith("admin_reauthentication")
           ? l(
               "No pudimos confirmar tu contraseña. Revisa los datos e inténtalo de nuevo.",
               "Não foi possível confirmar sua senha. Revise os dados e tente novamente.",

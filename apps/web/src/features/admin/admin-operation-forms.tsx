@@ -64,10 +64,13 @@ function OperationForm({
       router.refresh();
     } catch (error) {
       setStatus("error");
+      const code = error instanceof Error ? error.message : "";
       setMessage(
-        error instanceof Error
-          ? error.message.replaceAll("_", " ")
-          : "No fue posible completar la operación.",
+        code === "admin_reauthentication_rate_limited"
+          ? "Demasiados intentos. Espera 15 minutos antes de confirmar la contraseña nuevamente."
+          : code
+            ? code.replaceAll("_", " ")
+            : "No fue posible completar la operación.",
       );
     }
   }

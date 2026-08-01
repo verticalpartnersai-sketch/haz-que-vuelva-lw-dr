@@ -26,7 +26,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
-| CI | [cinco jobs verdes no SHA `3e725d4`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30718577444), incluindo recuperação sintética fail-closed, `npm audit` nos três apps e `pip-audit` no agente Python; a próxima execução também passa a rejeitar migrations sem RLS, `search_path` fixo ou privilégio mínimo |
+| CI | [cinco jobs verdes no SHA `5fbe28e`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30718912200), incluindo recuperação sintética fail-closed, auditoria de dependências e rejeição automática de migrations sem RLS, `search_path` fixo ou privilégio mínimo |
 | Smoke | [execução manual de 01/08](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30717223740) no SHA `011d395` cobre marketing, checkouts, rotas protegidas, reautenticação e mutação administrativa anônimas, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |

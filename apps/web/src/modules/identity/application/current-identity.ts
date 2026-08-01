@@ -35,12 +35,22 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
     throw new ProfileUnavailableError("Authenticated profile is unavailable");
   }
 
+  let role: CurrentIdentity["role"] = "member";
+  if (profile.role === "admin") {
+    const { data: isAuthorizedAdmin, error: adminError } =
+      await client.rpc("is_admin");
+    if (adminError) {
+      throw new ProfileUnavailableError("Admin authorization is unavailable");
+    }
+    role = isAuthorizedAdmin === true ? "admin" : "member";
+  }
+
   return {
     assuranceLevel,
     id: profile.id,
     email: profile.email,
     displayName: profile.display_name,
-    role: profile.role,
+    role,
   };
 });
 

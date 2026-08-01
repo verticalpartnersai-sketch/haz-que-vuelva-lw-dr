@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -6,6 +7,7 @@ import {
   normalizePerfectPayPayloads,
   secureTokenMatches,
 } from "../src/modules/payments/adapters/perfect-pay-normalizer.ts";
+import { SupabasePaymentIngress } from "../src/modules/payments/adapters/supabase-payment-ingress.ts";
 import { processPaymentEvent } from "../src/modules/payments/application/process-payment-event.ts";
 import { paymentEffectForStatus } from "../src/modules/payments/domain/payment-event.ts";
 
@@ -128,4 +130,63 @@ test("duplicate events still repair a missing outbox job", async () => {
 
   assert.equal(result, "duplicate");
   assert.equal(enqueued, 1);
+});
+
+test("ignored payment events are archived as processed without queue work", async () => {
+  const inserted: Record<string, unknown>[] = [];
+  const client = {
+    from(table: string) {
+      assert.equal(table, "incoming_events");
+      return {
+        insert(row: Record<string, unknown>) {
+          inserted.push(row);
+          return Promise.resolve({ error: null });
+        },
+      };
+    },
+  };
+  const ingress = new SupabasePaymentIngress(client as never);
+  const pending = normalizePerfectPayPayload({
+    token: "not-persisted",
+    code: "SALE-PENDING",
+    sale_amount: 7,
+    currency_enum: 1,
+    sale_status_enum: 1,
+    sale_status_detail: "pending",
+    date_created: "2026-08-01 00:00:00",
+    date_approved: null,
+    product: {
+      code: "PPPBF7CC",
+      name: "Haz Que Vuelva",
+      external_reference: null,
+    },
+    plan: { code: "PLAN-X", name: "Haz Que Vuelva", quantity: 1 },
+    plan_itens: [],
+    customer: { email: "member@example.com" },
+  });
+
+  await ingress.store(pending);
+
+  assert.equal(inserted.length, 1);
+  assert.equal(typeof inserted[0]?.processed_at, "string");
+});
+
+test("terminal payment states cannot be reopened by a late grant event", () => {
+  const migration = readFileSync(
+    new URL(
+      "../../../supabase/migrations/202608010028_payment_terminal_state_guards.sql",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(
+    migration,
+    /purchase_row\.status in \('cancelled', 'refunded', 'charged_back'\)/,
+  );
+  assert.match(migration, /and p_effect = 'grant'/);
+  assert.ok(
+    migration.indexOf("purchase_row.status in") <
+      migration.indexOf("revoked_at = null"),
+  );
 });

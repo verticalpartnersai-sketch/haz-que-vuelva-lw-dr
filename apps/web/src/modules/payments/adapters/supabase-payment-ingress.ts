@@ -10,7 +10,11 @@ import type { PaymentWorkQueue } from "@/modules/payments/application/process-pa
 export class SupabasePaymentIngress
   implements PaymentEventRepository, PaymentWorkQueue
 {
-  constructor(private readonly client: SupabaseClient) {}
+  private readonly client: SupabaseClient;
+
+  constructor(client: SupabaseClient) {
+    this.client = client;
+  }
 
   async store(event: NormalizedPaymentEvent): Promise<StoreEventResult> {
     const { error } = await this.client.from("incoming_events").insert({
@@ -31,6 +35,8 @@ export class SupabasePaymentIngress
         status: event.status,
       },
       occurred_at: event.occurredAt.toISOString(),
+      processed_at:
+        event.effect === "ignore" ? new Date().toISOString() : null,
     });
 
     if (!error) return "stored";

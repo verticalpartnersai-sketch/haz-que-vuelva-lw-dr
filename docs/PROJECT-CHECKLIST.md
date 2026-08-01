@@ -280,7 +280,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Validar uma geração da VUELVE IA com duas alunas depois da aprovação dos
   gates jurídico, editorial, de orçamento e paging.
 - [x] Aplicar as 29 migrações no projeto definitivo e executar as asserções
-  pgTAP remotas de segurança, RLS, atomicidade da IA e administração.
+  pgTAP remotas de segurança, RLS, atomicidade da IA e administração. Os seis
+  contratos passaram com 54/54 asserções e rollback comprovado.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
 

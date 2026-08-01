@@ -21,7 +21,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
-| Supabase | 29 migrações aplicadas; cadastro público e login anônimo desabilitados; reautenticação owner-only limitada a cinco tentativas por 15 minutos |
+| Supabase | 29 migrações aplicadas; seis contratos pgTAP passaram com 54/54 asserções; cadastro público e login anônimo desabilitados; reautenticação owner-only limitada a cinco tentativas por 15 minutos |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
@@ -30,7 +30,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Smoke | workflow recorrente e nova execução manual em 31/07 cobrem marketing, checkouts, autenticação negativa, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
-| Auth/RLS | testes Cloud comprovaram isolamento entre membros, mutação crítica pelo proprietário, consumo único da reautenticação e negação de um `role=admin` sintético fora da allowlist; limpeza terminou sem usuários, sessões ou concessões sintéticas |
+| Auth/RLS | testes Cloud comprovaram isolamento entre membros, mutação crítica pelo proprietário, consumo único da reautenticação e negação de um `role=admin` sintético fora da allowlist; limpeza terminou sem usuários, sessões, limites ou concessões sintéticas e sem manter pgTAP instalado |
 | Storage | os três buckets estão privados; duas contas sem entitlement foram impedidas de baixar objeto e criar URL assinada; limpeza terminou sem usuários ou objetos sintéticos |
 | Resend DNS | `mail.hazquevuelva.site` aparece como `Verified` no painel Resend; DKIM, SPF e MX estão publicados e o DMARC `p=none` existe no domínio raiz |
 | Resend Worker | segredo `RESEND_API_KEY` está vinculado ao Worker e o remetente de produção é `Haz Que Vuelva <acceso@mail.hazquevuelva.site>` |

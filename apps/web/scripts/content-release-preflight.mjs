@@ -5,6 +5,7 @@ import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
 import { PdfLibContentInspector } from "../src/modules/content/adapters/pdf-lib-content-inspector.ts";
+import { resolveUnicodePath } from "./resolve-unicode-path.mjs";
 
 const PRODUCTION_PROJECT_REF = "euaurfmlxornllntwmmh";
 const DEFAULT_ROOT = path.join(
@@ -59,10 +60,11 @@ const inspector = new PdfLibContentInspector();
 const local = [];
 
 for (const entry of entries) {
-  const filePath = path.join(root, entry.file);
+  let filePath;
   let metadata;
   let buffer;
   try {
+    filePath = await resolveUnicodePath(root, entry.file);
     [metadata, buffer] = await Promise.all([stat(filePath), readFile(filePath)]);
   } catch {
     console.error(`Content preflight failed: ${entry.code} file is unavailable`);

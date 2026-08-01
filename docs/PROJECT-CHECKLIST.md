@@ -351,7 +351,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 105 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 106 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 20 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

@@ -83,9 +83,11 @@ páginas das duas famílias renderizaram sem erro.
 O aceite pelo mesmo inspetor da aplicação pode ser repetido na raiz do
 repositório com `npm --prefix apps/web run content:preflight`. O comando
 fail-closed confere caminho, bytes, SHA-256 e páginas dos quatro PDFs com o
-mesmo inspetor da aplicação. Com `--remote`, ele também confirma que os quatro
-produtos estão ativos no projeto Supabase definitivo e informa quantos itens
-já foram publicados, sem modificar arquivos nem banco.
+mesmo inspetor da aplicação. O resolvedor aceita as formas Unicode NFC e NFD
+usadas respectivamente pelo manifesto e pelo filesystem do macOS. Com
+`--remote`, ele também confirma que os quatro produtos estão ativos no projeto
+Supabase definitivo e informa quantos itens já foram publicados, sem modificar
+arquivos nem banco.
 
 ## Próximo gate
 

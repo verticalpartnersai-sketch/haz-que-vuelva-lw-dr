@@ -47,7 +47,7 @@ Consulta administrativa somente de contagem, sem expor dados pessoais:
 
 | Recurso | Registros |
 | --- | ---: |
-| perfis | 0 |
+| perfis | 1 (admin nominal convidado) |
 | compras | 0 |
 | itens de compra | 0 |
 | concessões de acesso | 0 |
@@ -117,13 +117,14 @@ Aceite:
 
 O segredo Resend e a outbox estão configurados, os registros DNS essenciais
 existem e o painel Resend confirma `mail.hazquevuelva.site` como `Verified`.
-Isso autoriza o envio pelo domínio; não cria uma caixa postal e ainda não prova
-entrega real, criação de senha ou primeiro login.
+O primeiro convite nominal foi aceito pelo Resend e concluído pela outbox em
+uma tentativa, sem erro e sem conceder produto. Ainda falta a confirmação
+humana de recebimento, criação de senha e primeiro login.
 
 Aceite:
 
-1. enviar convite a um destinatário autorizado;
-2. confirmar entrega, idioma espanhol, links e expiração;
+1. [concluído] enviar convite a um destinatário autorizado;
+2. confirmar recebimento, idioma espanhol, links e expiração;
 3. definir senha pelo link temporário;
 4. comprovar que o convite não concede produto sem entitlement;
 5. tratar bounce, duplicidade, reenvio e e-mail já cadastrado;
@@ -132,13 +133,14 @@ Aceite:
 
 ### 4. Administração real e MFA
 
-Não existe usuária nem perfil no projeto. As proteções AAL2/TOTP foram
-implementadas, mas nenhum primeiro admin completou o fluxo real.
+O primeiro perfil nominal existe, tem papel `admin` e recebeu o convite pela
+outbox. As proteções AAL2/TOTP foram implementadas, mas a pessoa ainda precisa
+definir a senha, entrar e inscrever o segundo fator.
 
 Aceite:
 
-1. convidar a conta administrativa nominal;
-2. promovê-la pelo comando privado;
+1. [concluído] convidar a conta administrativa nominal;
+2. [concluído] promovê-la pelo comando privado;
 3. cadastrar TOTP e elevar a sessão a AAL2;
 4. validar mutações administrativas autorizadas;
 5. comprovar negação em AAL1 e para uma conta membro comum;

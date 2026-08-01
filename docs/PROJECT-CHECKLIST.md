@@ -355,10 +355,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   executam, `service_role` executa e o agregado retornou JSON válido sem uso.
 - [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
   produção e habilitar TOTP no projeto definitivo.
-- [ ] Criar o admin inicial e validar sua elevação TOTP. Google OAuth permanece
-  opcional e bloqueado até existirem credenciais próprias. O bootstrap do
-  primeiro admin está automatizado, fail-closed e reutiliza a outbox Resend;
-  falta o e-mail autorizado e a inscrição TOTP feita pela pessoa.
+- [x] Criar, promover e convidar o admin inicial pelo comando privado. A outbox
+  concluiu o envio via Resend em uma tentativa, sem erro e sem entitlement.
+- [ ] Validar definição de senha, primeiro login e elevação TOTP do admin.
+  Google OAuth permanece opcional e bloqueado até existirem credenciais
+  próprias; esta etapa exige a ação da pessoa convidada.
 - [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. O webhook
   rejeita payload autenticado incorretamente, o agente responde health e nega
   credencial inválida, mas compra, convite e geração reais aguardam fixtures ou
@@ -459,8 +460,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Religar a Supabase CLI com a conta que enxerga o projeto definitivo; o
   app e as migrações remotas estão ativos, mas o token CLI local atual não tem
   acesso administrativo ao projeto.
-- [ ] Criar admin inicial pelo comando privado e revisar novamente a decisão
-  de MFA antes da abertura pública.
+- [x] Criar, promover e convidar o admin inicial pelo comando privado.
+- [ ] Concluir senha e TOTP do admin antes da abertura pública.
 - [x] Exigir Auth real no modo `production`, impedir catálogo/sessão mock,
   proteger também `/`, publicar health check sem dados sensíveis, request ID e
   CSP restrita ao próprio app e ao projeto Supabase configurado.

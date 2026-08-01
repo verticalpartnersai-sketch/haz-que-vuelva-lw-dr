@@ -26,11 +26,12 @@ OAuth permanece desligado até existirem credenciais próprias.
 
 Antes de liberar venda real ainda são necessários:
 
-1. primeiro admin convidado, promovido e inscrito em TOTP;
+1. primeiro admin já convidado e promovido; falta definir senha e inscrever
+   TOTP;
 2. Client ID e Client Secret OAuth do Google, caso esse login seja mantido;
-3. teste real de entrega do remetente Resend; o domínio
+3. confirmar recebimento do convite real; o domínio
    `mail.hazquevuelva.site` já está `Verified` e o Worker usa
-   `acceso@mail.hazquevuelva.site`, mas ainda falta um destinatário autorizado;
+   `acceso@mail.hazquevuelva.site`; a outbox concluiu o primeiro envio sem erro;
 4. payloads Perfect Pay redigidos dos cinco produtos/itens;
 5. aprovação comercial dos produtos no painel Perfect Pay;
 6. teste de restauração e orçamento operacional.

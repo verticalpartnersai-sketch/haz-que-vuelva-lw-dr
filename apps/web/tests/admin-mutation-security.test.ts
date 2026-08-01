@@ -94,10 +94,10 @@ test("os casos de uso chamam somente as RPCs protegidas", () => {
   }
 });
 
-test("AAL2 é exigido no banco e não apenas no frontend", () => {
+test("a remoção do MFA mantém proprietário único e reautenticação por senha", () => {
   const migration = readFileSync(
     new URL(
-      "../../../supabase/migrations/202607300019_admin_mfa_and_workspace_operations.sql",
+      "../../../supabase/migrations/202608010027_remove_mandatory_admin_mfa.sql",
       import.meta.url,
     ),
     "utf8",
@@ -107,7 +107,12 @@ test("AAL2 é exigido no banco e não apenas no frontend", () => {
     migration,
     /create or replace function public\.consume_admin_reauthentication/,
   );
-  assert.match(migration, /auth\.jwt\(\) ->> 'aal'\) <> 'aal2'/);
-  assert.match(migration, /raise exception 'admin_mfa_required'/);
-  assert.match(migration, /as restrictive/g);
+  assert.match(migration, /if not public\.is_admin\(\)/);
+  assert.match(migration, /admin_reauthentication_required/);
+  assert.match(migration, /admin_reauthentication_sessions/);
+  assert.doesNotMatch(migration, /auth\.jwt\(\) ->> 'aal'/);
+  assert.equal(
+    migration.match(/drop policy if exists .*aal2/g)?.length,
+    13,
+  );
 });

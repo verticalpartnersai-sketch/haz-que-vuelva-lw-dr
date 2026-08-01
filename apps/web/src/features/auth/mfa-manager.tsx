@@ -45,12 +45,8 @@ async function readMfaState(configuration: SupabaseBrowserConfiguration) {
 }
 
 export function MfaManager({
-  adminRequired = false,
-  nextPath = "/",
   supabase,
 }: {
-  adminRequired?: boolean;
-  nextPath?: string;
   supabase: SupabaseBrowserConfiguration;
 }) {
   const router = useRouter();
@@ -167,15 +163,6 @@ export function MfaManager({
         <p className={styles.message}>
           Tu sesión está protegida con un segundo factor.
         </p>
-        {adminRequired ? (
-          <button
-            className={styles.button}
-            onClick={() => router.replace(nextPath)}
-            type="button"
-          >
-            Continuar
-          </button>
-        ) : null}
       </div>
     );
   }

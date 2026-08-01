@@ -11,21 +11,12 @@ import {
   supabaseBrowserConfiguration,
 } from "@/server/config/environment";
 
-type MfaPageProps = {
-  searchParams: Promise<{ next?: string }>;
-};
-
-export default async function MfaPage({ searchParams }: MfaPageProps) {
-  const requested = (await searchParams).next;
-  const nextPath =
-    requested?.startsWith("/") && !requested.startsWith("//") ? requested : "/";
-  let identity;
+export default async function MfaPage() {
   try {
-    identity = await currentIdentity();
+    await currentIdentity();
   } catch (error) {
     if (error instanceof AuthenticationRequiredError) {
-      const mfaPath = `/auth/mfa?next=${encodeURIComponent(nextPath)}`;
-      redirect(`/login?next=${encodeURIComponent(mfaPath)}`);
+      redirect("/login?next=/auth/mfa");
     }
     throw error;
   }
@@ -37,15 +28,10 @@ export default async function MfaPage({ searchParams }: MfaPageProps) {
           Protege tu cuenta
         </h1>
         <p className={styles.copy}>
-          {identity.role === "admin"
-            ? "La administración exige un segundo factor antes de abrir datos o ejecutar cambios sensibles."
-            : "Añade una segunda verificación para impedir accesos aunque tu contraseña sea expuesta."}
+          Añade una segunda verificación opcional para impedir accesos aunque tu
+          contraseña sea expuesta.
         </p>
-        <MfaManager
-          adminRequired={identity.role === "admin"}
-          nextPath={nextPath}
-          supabase={supabaseBrowserConfiguration(environment())}
-        />
+        <MfaManager supabase={supabaseBrowserConfiguration(environment())} />
       </section>
     </main>
   );

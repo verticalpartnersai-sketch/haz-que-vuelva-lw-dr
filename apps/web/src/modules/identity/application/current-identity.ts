@@ -13,7 +13,6 @@ export type CurrentIdentity = {
 };
 
 export class AuthenticationRequiredError extends Error {}
-export class AdminMfaRequiredError extends Error {}
 export class ProfileUnavailableError extends Error {}
 
 export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
@@ -58,9 +57,6 @@ export async function requireAdmin() {
   const identity = await currentIdentity();
   if (identity.role !== "admin") {
     throw new AuthenticationRequiredError("Admin role required");
-  }
-  if (identity.assuranceLevel !== "aal2") {
-    throw new AdminMfaRequiredError("Admin MFA verification required");
   }
   return identity;
 }

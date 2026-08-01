@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import {
-  AdminMfaRequiredError,
   AuthenticationRequiredError,
   requireAdmin,
 } from "@/modules/identity/application/current-identity";
@@ -30,9 +29,6 @@ export async function authorizeAdminMutation(
     await requireAdmin();
     return null;
   } catch (error) {
-    if (error instanceof AdminMfaRequiredError) {
-      return NextResponse.json({ code: "mfa_required" }, { status: 403 });
-    }
     const status = error instanceof AuthenticationRequiredError ? 403 : 500;
     return NextResponse.json(
       { code: status === 403 ? "admin_required" : "identity_unavailable" },

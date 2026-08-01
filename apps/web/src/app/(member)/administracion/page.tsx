@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { AdminPage } from "@/features/admin/admin-page";
 import { loadAdminWorkspace } from "@/modules/admin/application/load-admin-workspace";
 import {
-  AdminMfaRequiredError,
   AuthenticationRequiredError,
   requireAdmin,
 } from "@/modules/identity/application/current-identity";
@@ -22,9 +21,6 @@ export default async function Page() {
         workspace = await loadAdminWorkspace();
       }
     } catch (error) {
-      if (error instanceof AdminMfaRequiredError) {
-        redirect("/auth/mfa?next=/administracion");
-      }
       if (error instanceof AuthenticationRequiredError) {
         redirect("/");
       }

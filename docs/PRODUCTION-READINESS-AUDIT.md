@@ -151,9 +151,10 @@ O agente agora impõe cota diária entre 1 e 20 respostas, teto configurado de
 uso real de tokens é persistido junto à geração, mas não sai no contrato SSE.
 O BFF também recusa ativação sem orçamento diário de tokens e o health interno
 sinaliza teto atingido ou geração concluída sem uso válido. Isso cria o dado e
-o detector necessários para medir custo; ainda falta escolher o valor real do
-orçamento, configurar paging externo e provar uma geração no Container
-publicado. A migration desse agregado também aguarda backup e rollout cloud.
+o detector necessários para medir custo. A migration 22 foi aplicada depois do
+primeiro backup, registrada no histórico remoto e validada com execução somente
+por `service_role`; ainda falta escolher o valor real do orçamento, configurar
+paging externo e provar uma geração no Container publicado.
 
 Aceite antes de habilitar:
 
@@ -168,8 +169,9 @@ Aceite antes de habilitar:
 
 ### 6. Recuperação operacional
 
-Não há prova atual de backup restaurável, rollback executado nem alerta
-externo de paging. O smoke recorrente abriu, atualizou sem duplicar e encerrou
+Há um primeiro backup lógico cifrado e validado, mas ainda não há prova de
+restauração em projeto isolado, rollback executado nem alerta externo de
+paging. O smoke recorrente abriu, atualizou sem duplicar e encerrou
 o [incidente operacional](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)
 em três execuções controladas: [criação](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666452244),
 [atualização](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30666526841)
@@ -183,10 +185,13 @@ de alvo e versão, mas não substitui o drill que troca tráfego, roda o smoke e
 restaura a versão atual em janela controlada.
 
 Backup e restore lógico também possuem executores criptografados e
-fail-closed, documentados em [SUPABASE-RECOVERY.md](SUPABASE-RECOVERY.md).
-Eles ainda não constituem evidência de recuperação: o Docker local está
-indisponível, não há connection string administrativa no ambiente e falta um
-projeto isolado para o primeiro restore cronometrado.
+fail-closed, documentados em [SUPABASE-RECOVERY.md](SUPABASE-RECOVERY.md). Em
+01/08/2026 o backup nativo foi concluído no SHA-256
+`43d33744da64091eae85d19a5808b66cb4576e58d72b3bb88f17e6e14a4908ac`, com
+arquivo `600`, manifesto do commit `3cafb818` e validação integral do pacote.
+O Storage tinha zero objetos nessa leitura, mas os binários continuam fora do
+formato lógico. Ainda falta um projeto isolado para o primeiro restore
+cronometrado; portanto o pacote não é, sozinho, prova de recuperação completa.
 
 O Worker agora avalia as outboxes depois de cada ciclo e falha a invocação do
 Cron diante de job morto, lock preso, job atrasado ou evento Perfect Pay sem

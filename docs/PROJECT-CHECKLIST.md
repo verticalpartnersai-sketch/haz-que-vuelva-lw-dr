@@ -342,8 +342,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
   aplicar as 21 migrações e executar pgTAP/RLS remotamente.
-- [ ] Aplicar a migration 22 de health da IA depois do primeiro backup; o SQL,
-  os privilégios mínimos e o pgTAP correspondente já estão versionados.
+- [x] Aplicar a migration 22 de health da IA depois do primeiro backup. A
+  função foi registrada no histórico remoto, `anon` e `authenticated` não
+  executam, `service_role` executa e o agregado retornou JSON válido sem uso.
 - [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
   produção e habilitar TOTP no projeto definitivo.
 - [ ] Criar o admin inicial e validar sua elevação TOTP. Google OAuth permanece
@@ -423,9 +424,12 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
   novamente no FastAPI.
 - [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
-- [ ] Criar o primeiro backup e testar restauração. Os executores lógicos
-  criptografados e o runbook fail-closed foram versionados; a execução real
-  aguarda Docker, connection string operacional e um projeto isolado.
+- [x] Criar e validar o primeiro backup lógico criptografado. O pacote de
+  01/08/2026 foi gerado por clientes PostgreSQL nativos, validado sem abrir
+  conexão de restauração e registrado pelo SHA-256
+  `43d33744da64091eae85d19a5808b66cb4576e58d72b3bb88f17e6e14a4908ac`.
+- [ ] Testar a restauração em projeto isolado e cronometrar o drill. O projeto
+  de produção permanece explicitamente proibido pelo executor.
 - [x] Exercitar criação, atualização e encerramento do incidente persistente no
   GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
 - [ ] Concluir métricas e alertas. Fila morta/travada, webhook atrasado,

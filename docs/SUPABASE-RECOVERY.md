@@ -5,9 +5,10 @@ isolado. Ele não autoriza restauração destrutiva sobre produção.
 
 ## Limites do backup
 
-O backup lógico oficial separa roles, schema e dados. Ele preserva tabelas,
-funções, políticas, triggers e registros de autenticação incluídos pelo fluxo
-do Supabase CLI, mas não copia os objetos binários do Storage. Configurações de
+O backup lógico separa roles, schema e dados com os filtros oficiais do
+`supabase db dump`, executados diretamente por clientes PostgreSQL nativos. Ele
+preserva tabelas, funções, políticas, triggers e registros de autenticação, mas
+não copia os objetos binários do Storage. Configurações de
 Auth, chaves, DNS, Edge Functions e secrets também precisam de inventário e
 recriação separados.
 
@@ -19,7 +20,8 @@ reconfiguração manual e cópia dos objetos do Storage.
 
 Pré-condições:
 
-- Docker ativo, porque `supabase db dump` usa uma imagem Postgres;
+- `pg_dump`, `pg_dumpall` e `psql` nativos em versão igual ou superior ao
+  PostgreSQL do projeto;
 - connection string direta ou Session pooler contendo o project ref;
 - passphrase guardada fora do repositório;
 - destino absoluto fora do checkout e em volume criptografado.
@@ -33,7 +35,8 @@ scripts/supabase-backup.sh /volume-seguro/hqv-2026-07-31.tar.gz.gpg
 O script:
 
 1. recusa URL de outro projeto, destino dentro do Git e sobrescrita;
-2. gera `roles.sql`, `schema.sql` e `data.sql` pelo Supabase CLI fixado;
+2. gera `roles.sql`, `schema.sql` e `data.sql` com os clientes PostgreSQL
+   nativos e os mesmos filtros de schemas internos usados pelo Supabase CLI;
 3. gera manifesto e checksums;
 4. cifra e autentica o pacote com GnuPG/AES-256 antes de movê-lo ao destino;
 5. imprime somente caminho e SHA-256, nunca a connection string.

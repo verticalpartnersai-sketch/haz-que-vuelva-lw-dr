@@ -19,24 +19,20 @@ cleanup() {
 trap cleanup EXIT
 mkdir -p "$fake_bin"
 
-cat >"$fake_bin/docker" <<'EOF'
-#!/usr/bin/env bash
-[[ "${1:-}" == "info" ]]
-EOF
-
-cat >"$fake_bin/npx" <<'EOF'
+cat >"$fake_bin/pg_dump" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-output_file=""
-while [[ $# -gt 0 ]]; do
-  if [[ "$1" == "-f" ]]; then
-    output_file="$2"
-    break
-  fi
-  shift
-done
-[[ -n "$output_file" ]]
-printf '%s\n' '-- synthetic Supabase recovery fixture' >"$output_file"
+if [[ "${1:-}" == "--version" ]]; then
+  printf 'pg_dump (PostgreSQL) 17.6\n'
+  exit 0
+fi
+printf '%s\n' '-- synthetic pg_dump recovery fixture'
+EOF
+
+cat >"$fake_bin/pg_dumpall" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\n' '-- synthetic pg_dumpall recovery fixture'
 EOF
 
 cat >"$fake_bin/psql" <<'EOF'
@@ -49,7 +45,7 @@ case "$arguments" in
   *) exit 0 ;;
 esac
 EOF
-chmod +x "$fake_bin/docker" "$fake_bin/npx" "$fake_bin/psql"
+chmod +x "$fake_bin/pg_dump" "$fake_bin/pg_dumpall" "$fake_bin/psql"
 
 export PATH="$fake_bin:$PATH"
 export HQV_PRODUCTION_PROJECT_REF="$source_ref"

@@ -21,6 +21,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <main className={styles.page}>
       <section className={styles.panel} aria-labelledby="login-title">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="Haz Que Vuelva"
+          className={styles.brandLogo}
+          height="65"
+          src="https://hazquevuelva.site/images/brand/haz-que-vuelva-logo-heart-primary-v1.png"
+          width="240"
+        />
         <h1 className={styles.title} id="login-title">
           Bienvenida
         </h1>

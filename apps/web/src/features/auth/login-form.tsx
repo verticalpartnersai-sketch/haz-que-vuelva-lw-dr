@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -22,6 +23,7 @@ export function LoginForm({
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -91,21 +93,40 @@ export function LoginForm({
             className={styles.input}
             maxLength={254}
             name="email"
+            placeholder="tu@email.com"
             type="email"
             required
           />
         </label>
         <label className={styles.field}>
           Contraseña
-          <input
-            autoComplete="current-password"
-            className={styles.input}
-            maxLength={256}
-            minLength={12}
-            name="password"
-            type="password"
-            required
-          />
+          <span className={styles.passwordControl}>
+            <input
+              autoComplete="current-password"
+              className={styles.input}
+              maxLength={256}
+              minLength={12}
+              name="password"
+              placeholder="Ingresa tu contraseña"
+              type={passwordVisible ? "text" : "password"}
+              required
+            />
+            <button
+              aria-label={
+                passwordVisible ? "Ocultar contraseña" : "Mostrar contraseña"
+              }
+              aria-pressed={passwordVisible}
+              className={styles.passwordToggle}
+              onClick={() => setPasswordVisible((visible) => !visible)}
+              type="button"
+            >
+              {passwordVisible ? (
+                <EyeSlash aria-hidden="true" />
+              ) : (
+                <Eye aria-hidden="true" />
+              )}
+            </button>
+          </span>
         </label>
         {error ? (
           <p className={styles.error} role="alert">

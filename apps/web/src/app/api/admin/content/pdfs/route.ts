@@ -106,6 +106,11 @@ export async function POST(request: NextRequest) {
     typeof productCode !== "string" ||
     typeof title !== "string"
   ) {
+    console.error("content_pdf_invalid_upload_fields", {
+      fileIsFile: file instanceof File,
+      productCodeIsString: typeof productCode === "string",
+      titleIsString: typeof title === "string",
+    });
     return NextResponse.json(
       { code: "invalid_upload_fields" },
       { status: 400 },
@@ -137,6 +142,10 @@ export async function POST(request: NextRequest) {
     });
     return response;
   } catch (error) {
+    console.error(
+      "content_pdf_publish_failed",
+      error instanceof Error ? error.message : "unknown_error",
+    );
     if (error instanceof ContentPdfValidationError) {
       return NextResponse.json(
         { code: error.message },

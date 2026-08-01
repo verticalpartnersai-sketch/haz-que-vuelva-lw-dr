@@ -334,14 +334,16 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 80 testes e build de produção passam.
-- [x] `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
+- [x] `apps/web`: typecheck, lint, 82 testes e build de produção passam.
+- [x] `apps/agent`: Ruff format/check e 20 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.
 - [ ] Reduzir os três módulos legados do quiz que ultrapassam 400 linhas sem
   alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
   aplicar as 21 migrações e executar pgTAP/RLS remotamente.
+- [ ] Aplicar a migration 22 de health da IA depois do primeiro backup; o SQL,
+  os privilégios mínimos e o pgTAP correspondente já estão versionados.
 - [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
   produção e habilitar TOTP no projeto definitivo.
 - [ ] Criar o admin inicial e validar sua elevação TOTP. Google OAuth permanece
@@ -412,7 +414,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   `workers.dev`/Preview URL do agente.
 - [x] Publicar e validar o rollout de 31/07/2026: marketing e login respondem
   200, health da área de membros responde `ready`, o smoke público passa e o
-  endpoint `workers.dev` antigo do agente responde 404.
+  endpoint `workers.dev` antigo do agente responde 404. O smoke completo foi
+  reexecutado com sucesso após os controles de telemetria e orçamento da IA.
 - [x] Publicar a detecção operacional das outboxes e do webhook, comprovar 401
   sem credencial na rota interna e observar o Cron de produção concluir com
   status `Ok` na versão `637aef83-8f4a-4132-bde3-5cb4c1592302`.
@@ -425,9 +428,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   aguarda Docker, connection string operacional e um projeto isolado.
 - [x] Exercitar criação, atualização e encerramento do incidente persistente no
   GitHub para o smoke público recorrente ([Issue 1](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/issues/1)).
-- [ ] Concluir métricas e alertas. A detecção de fila morta/travada e webhook
-  atrasado já roda no Cron e gera erro observável; faltam orçamento da IA e um
-  canal de paging externo configurado e exercitado.
+- [ ] Concluir métricas e alertas. Fila morta/travada, webhook atrasado,
+  telemetria inválida e teto diário da IA já geram erro observável; faltam
+  aprovar o valor do orçamento e configurar/exercitar um canal de paging.
 - [ ] Executar o drill real de rollback. O executor defensivo foi versionado e
   validado em modo somente planejamento; falta promover uma versão anterior,
   passar o smoke e restaurar a versão atual em janela controlada.

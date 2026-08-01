@@ -252,6 +252,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
     consome a mesma credencial curta na transação.
   - [x] Conectar painel administrativo real para membros, convites, catálogo,
     ofertas, acessos, compras, conteúdo, prompts e auditoria.
+  - [x] Provar no Supabase Cloud que o proprietário allowlisted executa uma
+    mutação crítica, que a credencial é de uso único e que um perfil sintético
+    com `role=admin` fora da allowlist é negado. A transação foi revertida.
 
 ### Catálogo, conteúdo e acesso
 

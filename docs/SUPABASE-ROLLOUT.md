@@ -72,7 +72,7 @@ validada com execução exclusiva por `service_role`.
 
 - Revisar o diff remoto antes de `db push`.
 - Aplicar todas as migrações na ordem versionada.
-- Executar os quatro arquivos pgTAP em `supabase/tests` contra o projeto
+- Executar os seis arquivos pgTAP em `supabase/tests` contra o projeto
   vinculado com `supabase test db supabase/tests --linked`.
 - Testar com anônimo, dois membros separados e um administrador.
 - Comprovar que membros não leem dados entre si e que somente o proprietário

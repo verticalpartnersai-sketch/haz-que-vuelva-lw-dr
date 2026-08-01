@@ -1,7 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 1 de agosto de 2026
-Commit da aplicação e operação publicada: `354fce85f221c9230a5004b6a8f3260af3d2eec5`
+Commit da aplicação e operação publicada: `7783d31c4b13987042f4ee4625347abfe6096857`
 
 ## Veredito
 
@@ -30,14 +30,14 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Smoke | workflow recorrente e nova execução manual em 31/07 cobrem marketing, checkouts, autenticação negativa, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
-| Auth/RLS | teste cloud com duas contas comprovou leitura somente do próprio perfil e entitlement, negação de leitura cruzada e negação da RPC administrativa; limpeza terminou sem usuários ou concessões sintéticas |
+| Auth/RLS | testes Cloud comprovaram isolamento entre membros, mutação crítica pelo proprietário, consumo único da reautenticação e negação de um `role=admin` sintético fora da allowlist; limpeza terminou sem usuários, sessões ou concessões sintéticas |
 | Storage | os três buckets estão privados; duas contas sem entitlement foram impedidas de baixar objeto e criar URL assinada; limpeza terminou sem usuários ou objetos sintéticos |
 | Resend DNS | `mail.hazquevuelva.site` aparece como `Verified` no painel Resend; DKIM, SPF e MX estão publicados e o DMARC `p=none` existe no domínio raiz |
 | Resend Worker | segredo `RESEND_API_KEY` está vinculado ao Worker e o remetente de produção é `Haz Que Vuelva <acceso@mail.hazquevuelva.site>` |
 
 Versões Cloudflare verificadas:
 
-- membros: `637aef83-8f4a-4132-bde3-5cb4c1592302`;
+- membros: `63290bf2-3f6d-415d-9b86-5a3f5094ee89`;
 - agente: `910ee45f-ac17-435b-819c-ee51beb68242`;
 - marketing: `13bfcd86-19f2-4961-a5ca-5de06eaa84ae`.
 
@@ -147,9 +147,11 @@ Aceite:
 1. [concluído] convidar a conta administrativa nominal;
 2. [concluído] promovê-la pelo comando privado;
 3. [concluído] definir senha e validar o primeiro login;
-4. validar mutações administrativas autorizadas;
-5. comprovar negação para uma conta membro comum e para um `role=admin` fora da
-   allowlist;
+4. [concluído] validar mutação administrativa autorizada com consumo único da
+   reautenticação;
+5. [concluído] comprovar negação para uma conta membro comum e para um
+   `role=admin` sintético fora da allowlist. A prova Cloud foi executada em
+   transação revertida, sem deixar identidade, sessão ou alteração de catálogo;
 
 ### 5. VUELVE IA
 

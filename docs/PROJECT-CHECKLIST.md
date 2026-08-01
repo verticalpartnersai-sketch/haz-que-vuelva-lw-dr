@@ -410,6 +410,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de
   marketing e comprovar a resposta pública.
 - [x] Criar smoke sintético recorrente para a superfície pública do marketing.
+- [x] Incluir no smoke negativo recorrente a negação de reautenticação e mutação
+  administrativa para sessão anônima, sem executar escrita.
 - [x] Configurar o checkout real no CTA do quiz.
 - [x] Ativar `upsell=true` no checkout principal e comprovar que o
   redirecionador preserva o parâmetro e a atribuição.

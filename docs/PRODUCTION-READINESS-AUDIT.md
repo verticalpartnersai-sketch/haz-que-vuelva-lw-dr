@@ -27,7 +27,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
 | CI | cinco jobs do workflow CI verdes no SHA auditado, incluindo recuperação sintética fail-closed |
-| Smoke | workflow recorrente e nova execução manual em 31/07 cobrem marketing, checkouts, autenticação negativa, webhook e agente privado |
+| Smoke | workflow recorrente e execução manual em 01/08 cobrem marketing, checkouts, rotas protegidas, reautenticação e mutação administrativa anônimas, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
 | Auth/RLS | testes Cloud comprovaram isolamento entre membros, mutação crítica pelo proprietário, consumo único da reautenticação e negação de um `role=admin` sintético fora da allowlist; limpeza terminou sem usuários, sessões, limites ou concessões sintéticas e sem manter pgTAP instalado |

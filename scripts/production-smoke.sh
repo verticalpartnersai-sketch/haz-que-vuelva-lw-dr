@@ -342,6 +342,40 @@ if (oversized.status !== 413) {
   );
 }
 
+const anonymousAdminReauthentication = await fetch(
+  `${membersUrl}/api/admin/reauthenticate`,
+  {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      origin: membersUrl,
+    },
+    body: JSON.stringify({ password: "negative-smoke-only" }),
+  },
+);
+if (anonymousAdminReauthentication.status !== 403) {
+  throw new Error(
+    `anonymous admin reauthentication returned ${anonymousAdminReauthentication.status}; expected 403`,
+  );
+}
+
+const anonymousAdminMutation = await fetch(
+  `${membersUrl}/api/admin/catalog/offers`,
+  {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      origin: membersUrl,
+    },
+    body: "{}",
+  },
+);
+if (anonymousAdminMutation.status !== 403) {
+  throw new Error(
+    `anonymous admin mutation returned ${anonymousAdminMutation.status}; expected 403`,
+  );
+}
+
 const disabledGeneration = await fetch(
   `${membersUrl}/api/ai/generations/stream`,
   {

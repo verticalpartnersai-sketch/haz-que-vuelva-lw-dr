@@ -17,9 +17,9 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Superfície | Estado comprovado |
 | --- | --- |
 | Git | o commit da aplicação está publicado e é ancestral da `main` auditada |
-| Marketing | `https://hazquevuelva.site/quiz`, `/up1`, `/up2` e `/gracias` respondem 200 sem overflow em 390x844 e 1440x900 |
+| Marketing | `https://hazquevuelva.site/quiz`, `/up1`, `/up2` e `/gracias` respondem 200 sem overflow em 390x844 e 1440x900; o quiz foi percorrido até o checkout com scroll ao topo, progresso condicional e áudio em loop mudo preservados |
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
-| Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
+| Membros | sessão anônima em `/` e `/administracion` é redirecionada para `/login`; login e recuperação foram inspecionados em espanhol, sem overflow em 390x844 e 1440x900; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
 | Supabase | 29 migrações aplicadas; seis contratos pgTAP passaram com 54/54 asserções; cadastro público e login anônimo desabilitados; reautenticação owner-only limitada a cinco tentativas por 15 minutos |
 | Catálogo | cinco produtos ativos no banco |
@@ -118,16 +118,21 @@ Aceite:
 O segredo Resend e a outbox estão configurados, os registros DNS essenciais
 existem e o painel Resend confirma `mail.hazquevuelva.site` como `Verified`.
 O primeiro convite nominal foi aceito pelo Resend e concluído pela outbox em
-uma tentativa, sem erro e sem conceder produto. Ainda falta a confirmação
-humana de recebimento, criação de senha e primeiro login.
+uma tentativa, sem erro e sem conceder produto. O proprietário confirmou o
+recebimento, concluiu a criação de senha, o primeiro login e a recuperação de
+senha. A biblioteca apareceu integralmente bloqueada, comprovando que o convite
+sozinho não concedeu entitlement.
 
 Aceite:
 
 1. [concluído] enviar convite a um destinatário autorizado;
-2. confirmar recebimento, idioma espanhol, links e expiração;
-3. definir senha pelo link temporário;
-4. comprovar que o convite não concede produto sem entitlement;
-5. tratar bounce, duplicidade, reenvio e e-mail já cadastrado;
+2. [concluído] confirmar recebimento, idioma espanhol e funcionamento do link
+   temporário;
+3. [concluído] definir senha pelo link temporário e validar o primeiro login;
+4. [concluído] comprovar que o convite não concede produto sem entitlement;
+5. [parcial] duplicidade, reenvio e e-mail já cadastrado possuem tratamento no
+   código; ainda falta observar e arquivar ao menos um evento real de bounce ou
+   suppression do provedor;
 6. acompanhar a reputação do domínio com o DMARC já publicado em `p=none` e
    definir o critério de avanço para `quarantine` ou `reject`.
 
@@ -278,7 +283,7 @@ Aceite:
 1. aguardar a aprovação Perfect Pay;
 2. confirmar o proprietário administrativo;
 3. publicar o conteúdo real do Haz Que Vuelva;
-4. executar convite Resend e primeiro login;
+4. observar bounce/suppression real do Resend e definir a evolução do DMARC;
 5. executar a matriz de compras e revogações;
 6. provar isolamento e downloads com duas contas;
 7. criar backup, restauração, rollback e alertas;

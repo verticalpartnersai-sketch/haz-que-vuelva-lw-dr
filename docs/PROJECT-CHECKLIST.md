@@ -368,10 +368,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Validar definição de senha, primeiro login, recuperação de senha e acesso
   owner-only do admin. Google OAuth permanece opcional e bloqueado até
   existirem credenciais próprias.
-- [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. O webhook
-  rejeita payload autenticado incorretamente, o agente responde health e nega
-  credencial inválida, mas compra, convite e geração reais aguardam fixtures ou
-  destinatários autorizados.
+- [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. Convite,
+  definição de senha, primeiro login e recuperação real por Resend foram
+  confirmados; o webhook rejeita payload autenticado incorretamente e o agente
+  responde health e nega credencial inválida, mas compra, bounce/suppression e
+  geração reais ainda aguardam evidência autorizada.
 
 ## Gate 6 — integrações futuras
 
@@ -462,7 +463,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Rotacionar antes da venda as credenciais reais compartilhadas durante a
   configuração, atualizar os Workers e comprovar revogação dos valores antigos.
 - [ ] Testar autorização por objeto, compra, revogação, download e IA.
-- [ ] Testar espanhol, desktop e celular.
+- [x] Testar em espanhol, desktop e celular o quiz público, o checkout externo,
+  o login e a recuperação anônima. O fluxo foi percorrido em produção a
+  390x844 e 1440x900 sem overflow; a validação das telas autenticadas permanece
+  aberta no P1 da auditoria de produção.
 - [x] Impedir `/up1`, `/up2` e `/gracias` de afirmar compra confirmada sem
   contexto verificável; o smoke falha se a linguagem antiga reaparecer.
 - [ ] Religar a Supabase CLI com a conta que enxerga o projeto definitivo; o

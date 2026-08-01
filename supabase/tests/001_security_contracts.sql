@@ -1,6 +1,79 @@
 begin;
 
-select plan(17);
+select plan(23);
+
+select ok(
+  not exists (
+    select 1
+    from pg_class as relation
+    join pg_namespace as namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'public'
+      and relation.relkind in ('r', 'p')
+      and not relation.relrowsecurity
+  ),
+  'every public application table has RLS enabled'
+);
+
+select ok(
+  not has_schema_privilege('anon', 'public', 'usage'),
+  'anonymous API clients cannot use the public application schema'
+);
+
+select is(
+  (
+    select count(*)::integer
+    from information_schema.role_table_grants
+    where table_schema = 'public'
+      and grantee = 'anon'
+  ),
+  0,
+  'anonymous API clients have no application table privileges'
+);
+
+select ok(
+  not exists (
+    select 1
+    from pg_proc as function_row
+    join pg_namespace as namespace on namespace.oid = function_row.pronamespace
+    where namespace.nspname = 'public'
+      and has_function_privilege('anon', function_row.oid, 'execute')
+  ),
+  'anonymous API clients cannot execute public application functions'
+);
+
+select ok(
+  not exists (
+    select 1
+    from information_schema.role_table_grants
+    where table_schema = 'public'
+      and grantee = 'authenticated'
+      and (
+        privilege_type in ('DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER')
+        or (
+          privilege_type = 'INSERT'
+          and table_name not in ('consent_records', 'privacy_requests')
+        )
+        or privilege_type = 'UPDATE'
+      )
+  ),
+  'authenticated table writes are limited to explicitly approved operations'
+);
+
+select ok(
+  has_column_privilege(
+    'authenticated',
+    'public.profiles',
+    'display_name',
+    'update'
+  )
+  and not has_column_privilege(
+    'authenticated',
+    'public.profiles',
+    'role',
+    'update'
+  ),
+  'members may update only their display name column'
+);
 
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.profiles'::regclass),

@@ -1,6 +1,6 @@
 begin;
 
-select plan(8);
+select plan(9);
 
 select is(
   (
@@ -62,6 +62,22 @@ select ok(
 );
 
 set local role authenticated;
+
+select lives_ok(
+  $$
+    select
+      (select count(*) from public.products) as products,
+      (select count(*) from public.profiles) as profiles,
+      (select count(*) from public.purchases) as purchases,
+      (select count(*) from public.access_grants) as access_grants,
+      (select count(*) from public.access_revocations) as access_revocations,
+      (select count(*) from public.external_offers) as external_offers,
+      (select count(*) from public.audit_log) as audit_log,
+      (select count(*) from public.incoming_events) as incoming_events,
+      (select count(*) from public.ai_prompt_versions) as ai_prompt_versions
+  $$,
+  'the allowlisted owner can read the complete admin workspace'
+);
 
 select lives_ok(
   $$

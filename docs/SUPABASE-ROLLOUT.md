@@ -3,9 +3,16 @@
 ## Estado atual
 
 O projeto dedicado `haz-que-vuelva-members` está ativo no Supabase Cloud, com
-as 29 migrações e testes de segurança aplicados. O catálogo possui cinco
+as 30 migrações e testes de segurança aplicados. O catálogo possui cinco
 produtos; os três produtos principais e os dois order bumps da Perfect Pay
 estão mapeados.
+
+A migration 30 removeu do papel `anon` o uso do schema público, qualquer
+privilégio em tabelas e a execução de RPCs. O papel `authenticated` mantém
+somente leituras protegidas por RLS, os inserts de consentimento/privacidade,
+a atualização da coluna `display_name` e as RPCs explícitas da aplicação.
+Também foram endurecidos os privilégios padrão dos próximos objetos criados
+por `postgres`.
 
 Um teste cloud com duas contas sintéticas comprovou isolamento de perfil e
 entitlement, negação da RPC administrativa e negação de leitura cruzada. Outro

@@ -3,7 +3,7 @@
 > Documento vivo e fonte de verdade do progresso.
 >
 > Estado em 1 de agosto de 2026: **frontend aprovado; marketing e área de
-> membros publicados; 29 migrações no Supabase Cloud; Container da VUELVE IA
+> membros publicados; 30 migrações no Supabase Cloud; Container da VUELVE IA
 > configurado com geração bloqueada por flag**.
 >
 > Gates 5–7 estão parcialmente executados por autorização explícita, mas
@@ -279,9 +279,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   autorização; a limpeza terminou com zero usuários e objetos sintéticos.
 - [ ] Validar uma geração da VUELVE IA com duas alunas depois da aprovação dos
   gates jurídico, editorial, de orçamento e paging.
-- [x] Aplicar as 29 migrações no projeto definitivo e executar as asserções
+- [x] Aplicar as 30 migrações no projeto definitivo e executar as asserções
   pgTAP remotas de segurança, RLS, atomicidade da IA e administração. Os seis
-  contratos passaram com 54/54 asserções e rollback comprovado.
+  contratos passaram com 61/61 asserções e rollback comprovado.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
 
@@ -357,7 +357,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Reduzir os três módulos legados do quiz que ultrapassam 400 linhas sem
   alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
-  aplicar as 29 migrações e executar pgTAP/RLS remotamente.
+  aplicar as 30 migrações e executar pgTAP/RLS remotamente.
+- [x] Remover privilégios padrão amplos de `anon`, reduzir `authenticated` às
+  operações previstas e fixar defaults de privilégio mínimo para novas
+  tabelas, sequências e funções criadas por `postgres`.
 - [x] Aplicar a migration 22 de health da IA depois do primeiro backup. A
   função foi registrada no histórico remoto, `anon` e `authenticated` não
   executam, `service_role` executa e o agregado retornou JSON válido sem uso.

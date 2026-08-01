@@ -176,8 +176,8 @@ Uma flag não substitui autorização; ela apenas controla rollout.
 - o bundle comprimido da área de membros mede 2,32 MiB, abaixo do limite de
   3 MiB do Workers Free; processamento real de PDF exige plano com CPU
   compatível e smoke test antes de receber tráfego.
-- `apps/agent`: Ruff format/check e 12 testes passam em Python 3.12.
-- as 29 migrações estão registradas no projeto Supabase Cloud; os cinco
+- `apps/agent`: Ruff format/check e 20 testes passam em Python 3.12.
+- as 30 migrações estão registradas no projeto Supabase Cloud; os cinco
   mapeamentos Perfect Pay foram conferidos no banco remoto;
 - chamadas reais de compra/revogação Perfect Pay, entrega Resend e geração
   Gemini ainda aguardam fixtures, destinatário e identidade de teste

@@ -26,7 +26,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
-| CI | [cinco jobs verdes no SHA `35c5b3d`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30719758893), incluindo recuperação sintética fail-closed, auditoria de dependências, validação do runner pgTAP sem Docker e rejeição automática de migrations sem RLS, `search_path` fixo ou privilégio mínimo |
+| CI | [cinco jobs verdes no SHA `5a4ee22`](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30720055587), incluindo recuperação sintética fail-closed, auditoria de dependências, validação do runner pgTAP sem Docker, preflight dos conteúdos e rejeição automática de migrations sem RLS, `search_path` fixo ou privilégio mínimo |
 | Smoke | [execução manual de 01/08](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30717223740) no SHA `011d395` cobre marketing, checkouts, rotas protegidas, reautenticação e mutação administrativa anônimas, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
@@ -131,11 +131,17 @@ Aceite:
    temporário;
 3. [concluído] definir senha pelo link temporário e validar o primeiro login;
 4. [concluído] comprovar que o convite não concede produto sem entitlement;
-5. [parcial] duplicidade, reenvio e e-mail já cadastrado possuem tratamento no
-   código; ainda falta observar e arquivar ao menos um evento real de bounce ou
-   suppression do provedor;
-6. acompanhar a reputação do domínio com o DMARC já publicado em `p=none` e
-   definir o critério de avanço para `quarantine` ou `reject`.
+5. [concluído] duplicidade, reenvio e e-mail já cadastrado possuem tratamento
+   no código. Em 01/08/2026 uma mensagem enviada ao
+   [endereço oficial de teste do Resend](https://resend.com/docs/knowledge-base/what-email-addresses-to-use-for-testing)
+   `bounced+hqv-launch-proof@resend.dev` gerou o e-mail
+   `125d8099-745b-4bf6-bf2d-20ff2ecf675c`; o webhook assinado registrou
+   `email.bounced` e criou a supressão ativa em aproximadamente dois segundos;
+6. [concluído] acompanhar a reputação com DMARC `p=none` durante o lote piloto.
+   Avançar para `quarantine` somente após 14 dias consecutivos com SPF e DKIM
+   alinhados em pelo menos 99% das mensagens legítimas e sem falha legítima não
+   explicada. Iniciar com `pct=25`, revisar semanalmente e usar `reject` apenas
+   depois de mais 14 dias estáveis em `quarantine` com `pct=100`.
 
 ### 4. Administração real
 
@@ -284,14 +290,13 @@ Aceite:
 1. aguardar a aprovação Perfect Pay;
 2. confirmar o proprietário administrativo;
 3. publicar o conteúdo real do Haz Que Vuelva;
-4. observar bounce/suppression real do Resend e definir a evolução do DMARC;
-5. executar a matriz de compras e revogações;
-6. provar isolamento e downloads com duas contas;
-7. criar backup, restauração, rollback e alertas;
-8. rotacionar credenciais e repetir os smokes;
-9. abrir um lote controlado de vendas;
-10. liberar Reconquista 30 e order bumps conforme conteúdo;
-11. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
+4. executar a matriz de compras e revogações;
+5. provar isolamento e downloads com duas contas;
+6. criar backup, restauração, rollback e alertas;
+7. rotacionar credenciais e repetir os smokes;
+8. abrir um lote controlado de vendas;
+9. liberar Reconquista 30 e order bumps conforme conteúdo;
+10. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
     testes privados.
 
 Downsells não fazem parte da matriz atual. Se continuarem no funil, precisam de

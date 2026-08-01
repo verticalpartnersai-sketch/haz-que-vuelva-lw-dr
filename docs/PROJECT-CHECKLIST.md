@@ -376,10 +376,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   owner-only do admin. Google OAuth permanece opcional e bloqueado até
   existirem credenciais próprias.
 - [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. Convite,
-  definição de senha, primeiro login e recuperação real por Resend foram
-  confirmados; o webhook rejeita payload autenticado incorretamente e o agente
-  responde health e nega credencial inválida, mas compra, bounce/suppression e
-  geração reais ainda aguardam evidência autorizada.
+  definição de senha, primeiro login, recuperação e bounce/suppression reais
+  por Resend foram confirmados; o webhook assinou, persistiu e suprimiu o
+  endereço oficial de teste em aproximadamente dois segundos. O agente
+  responde health e nega credencial inválida, mas compra e geração reais ainda
+  aguardam evidência autorizada.
 
 ## Gate 6 — integrações futuras
 

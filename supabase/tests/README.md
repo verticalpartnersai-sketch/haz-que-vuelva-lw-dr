@@ -13,6 +13,9 @@
 - `006_admin_owner_authorization.sql` prova no projeto Cloud que somente o
   proprietário da allowlist executa uma mutação crítica, que o token não pode
   ser reutilizado e que um perfil sintético com `role=admin` continua negado.
+- `007_payment_entitlement_lifecycle.sql` prova a projeção de compra principal,
+  order bump, replay idempotente, reembolso por item, evento tardio e revogação
+  dos créditos da VUELVE IA.
 
 Os testes desta aplicação serão executados no projeto Supabase Cloud dedicado,
 sempre com identidades sintéticas e antes de liberar tráfego para a área de
@@ -34,3 +37,20 @@ supabase test db supabase/tests --linked
 O `db push` real só pode ocorrer depois do dry-run, do backup inicial e da
 confirmação de que a CLI está vinculada a `haz-que-vuelva-members`, nunca ao
 projeto genérico `App`.
+
+Quando a CLI não estiver vinculada, a suíte também pode ser executada por
+PostgreSQL direto, sem Docker. O runner exige host, referência e confirmação
+coincidentes, executa tudo em transações revertidas e remove o pgTAP se ele não
+existia antes:
+
+```bash
+export HQV_SUPABASE_PROJECT_REF="<project-ref>"
+export HQV_SUPABASE_TEST_CONFIRM="RUN_PGTAP:<project-ref>"
+export PGHOST="db.<project-ref>.supabase.co"
+export PGPORT="5432"
+export PGDATABASE="postgres"
+export PGUSER="postgres"
+export PGPASSWORD="<read-from-password-manager>"
+scripts/run-supabase-contract-tests.sh
+unset PGPASSWORD
+```

@@ -21,7 +21,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima em `/` e `/administracion` é redirecionada para `/login`; login e recuperação foram inspecionados em espanhol, sem overflow em 390x844 e 1440x900; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
-| Supabase | 30 migrações aplicadas; seis contratos pgTAP passaram com 61/61 asserções; `anon` não usa o schema público, tabelas ou RPCs; `authenticated` tem privilégios mínimos explícitos; cadastro público e login anônimo estão desabilitados |
+| Supabase | 30 migrações aplicadas; sete contratos pgTAP passaram com 81/81 asserções, incluindo compra, order bump, revogação seletiva e créditos da IA; `anon` não usa o schema público, tabelas ou RPCs; `authenticated` tem privilégios mínimos explícitos; cadastro público e login anônimo estão desabilitados |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |

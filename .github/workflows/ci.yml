@@ -32,7 +32,10 @@ jobs:
           bash -n scripts/cloudflare-rollback.sh
           bash -n scripts/supabase-backup.sh
           bash -n scripts/supabase-restore.sh
+          bash -n scripts/run-supabase-contract-tests.sh
+          bash -n scripts/test-supabase-contract-runner.sh
           bash -n scripts/test-supabase-recovery.sh
+          scripts/test-supabase-contract-runner.sh
           scripts/test-supabase-recovery.sh
           npm run check:supabase:migrations
           node scripts/configure-cloudflare-rum.mjs --help

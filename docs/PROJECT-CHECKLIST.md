@@ -280,8 +280,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Validar uma geração da VUELVE IA com duas alunas depois da aprovação dos
   gates jurídico, editorial, de orçamento e paging.
 - [x] Aplicar as 30 migrações no projeto definitivo e executar as asserções
-  pgTAP remotas de segurança, RLS, atomicidade da IA e administração. Os seis
-  contratos passaram com 61/61 asserções e rollback comprovado.
+  pgTAP remotas de segurança, RLS, atomicidade da IA e administração. Os sete
+  contratos passaram com 81/81 asserções e rollback comprovado, incluindo o
+  lifecycle de compra, order bump, reembolso e créditos da VUELVE IA.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
 
@@ -350,7 +351,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 
 ### Evidência local do Gate 5
 
-- [x] `apps/web`: typecheck, lint, 104 testes e build de produção passam.
+- [x] `apps/web`: typecheck, lint, 105 testes e build de produção passam.
 - [x] `apps/agent`: Ruff format/check e 20 testes passam em Python 3.12.
 - [x] `apps/web` e `apps/marketing`: audit de dependências de produção sem
   vulnerabilidades conhecidas após overrides documentados.

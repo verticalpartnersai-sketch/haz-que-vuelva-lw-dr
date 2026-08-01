@@ -32,6 +32,22 @@ sem registrar a divergência.
 Order bumps sempre resolvem por `item:<item_code>`. O wildcard do produto
 principal nunca pode absorver um bump desconhecido.
 
+O contrato local acompanha o
+[formato oficial do webhook](https://help.perfectpay.com.br/article/597-integracao-via-webhook-com-a-perfect-pay)
+e os
+[status oficiais de transação](https://help.perfectpay.com.br/article/196-quais-status-uma-transacao-pode-assumir).
+O fixture `webhook-official-reference.json` é sanitizado e derivado do exemplo
+documental; ele não substitui um payload real redigido da conta de produção.
+
+## Cobertura automatizada antes da homologação comercial
+
+O contrato Cloud `007_payment_entitlement_lifecycle.sql` cobre, em transação
+revertida, compra principal com order bump, replay idempotente, reembolso
+seletivo, evento de concessão tardio e revogação dos créditos da VUELVE IA.
+Essa cobertura reduz o risco técnico de PP-02, PP-10, PP-11, PP-13 e PP-15,
+mas esses cenários continuam pendentes até serem disparados pela Perfect Pay
+com uma compra autorizada.
+
 ## Contas de teste
 
 Usar dois endereços reais controlados:

@@ -7,6 +7,7 @@ import {
   normalizePerfectPayPayloads,
   secureTokenMatches,
 } from "../src/modules/payments/adapters/perfect-pay-normalizer.ts";
+import { perfectPayPayloadSchema } from "../src/modules/payments/adapters/perfect-pay-schema.ts";
 import { SupabasePaymentIngress } from "../src/modules/payments/adapters/supabase-payment-ingress.ts";
 import { processPaymentEvent } from "../src/modules/payments/application/process-payment-event.ts";
 import { paymentEffectForStatus } from "../src/modules/payments/domain/payment-event.ts";
@@ -24,6 +25,27 @@ test("Perfect Pay statuses map to deterministic access effects", () => {
 test("webhook token comparison accepts only the exact token", () => {
   assert.equal(secureTokenMatches("expected-token", "expected-token"), true);
   assert.equal(secureTokenMatches("wrong-token", "expected-token"), false);
+});
+
+test("official Perfect Pay webhook reference remains compatible", () => {
+  const fixture = JSON.parse(
+    readFileSync(
+      new URL(
+        "./fixtures/perfectpay/webhook-official-reference.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const payload = perfectPayPayloadSchema.parse(fixture);
+  const event = normalizePerfectPayPayload(payload);
+
+  assert.equal(event.saleCode, "PPCONTRACTREFERENCE");
+  assert.equal(event.productCode, "PPPBF7CC");
+  assert.equal(event.planCode, "PLAN-CONTRACT-REFERENCE");
+  assert.equal(event.customerEmail, "buyer@example.invalid");
+  assert.equal(event.amountMinor, 38_500);
+  assert.equal(event.effect, "grant");
 });
 
 test("normalizer redacts payload and stores money in minor units", () => {

@@ -1,0 +1,53 @@
+{
+  "token": "00000000000000000000000000000000",
+  "code": "PPCONTRACTREFERENCE",
+  "sale_amount": 385,
+  "currency_enum": 1,
+  "coupon_code": null,
+  "installments": 12,
+  "installment_amount": null,
+  "shipping_type_enum": 1,
+  "shipping_amount": null,
+  "payment_method_enum": 4,
+  "payment_type_enum": 1,
+  "billet_url": "",
+  "billet_number": null,
+  "billet_expiration": null,
+  "quantity": 1,
+  "sale_status_enum": 2,
+  "sale_status_detail": "approved",
+  "date_created": "2026-08-01 12:00:00",
+  "date_approved": "2026-08-01 12:01:00",
+  "product": {
+    "code": "PPPBF7CC",
+    "name": "Haz Que Vuelva",
+    "external_reference": null,
+    "guarantee": 7
+  },
+  "plan": {
+    "code": "PLAN-CONTRACT-REFERENCE",
+    "name": "Haz Que Vuelva",
+    "quantity": 1
+  },
+  "plan_itens": [],
+  "customer": {
+    "customer_type_enum": 1,
+    "full_name": "REDACTED BUYER",
+    "email": "buyer@example.invalid",
+    "identification_type": "REDACTED",
+    "identification_number": "REDACTED",
+    "country": "MX"
+  },
+  "metadata": {
+    "src": null,
+    "utm_source": null,
+    "utm_medium": null,
+    "utm_campaign": null,
+    "utm_term": null,
+    "utm_content": null,
+    "utm_perfect": null
+  },
+  "webhook_owner": "REDACTED",
+  "commission": [],
+  "marketplaces": []
+}

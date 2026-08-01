@@ -10,7 +10,7 @@ mapeamento, entitlement, segredo ou feature flag estiver ausente.
 |---|---|---|
 | Perfect Pay | eventos de compra, cancelamento, reembolso e chargeback | webhook ativo; três produtos e dois order bumps mapeados |
 | Supabase Auth/PostgreSQL/Storage | identidade, banco, arquivos privados, RLS e RAG | projeto cloud e migrações ativos; cadastro público fechado e callbacks de produção configurados |
-| Resend | convites e emails transacionais | chave, outbox e DNS configurados; envio real ainda não exercitado |
+| Resend | convites e emails transacionais | chave, outbox e DNS configurados; convite, definição de senha, primeiro login e recuperação reais confirmados |
 | Gemini | geração e embeddings da VUELVE IA | Container e binding privados configurados; geração bloqueada até smoke real e gate jurídico |
 | Cloudflare Workers/Containers | borda, DNS, TLS e execução | marketing e membros publicados; agente sem rota pública após a publicação de endurecimento |
 
@@ -63,8 +63,7 @@ código.
 - aprovação comercial dos produtos no painel Perfect Pay;
 - sequência pós-compra e parâmetros reais de redirecionamento comprovados no
   painel Perfect Pay;
-- smoke de entrega para um destinatário Resend autorizado;
-- primeiro proprietário administrativo com senha definida;
+- evento real de bounce/suppression do Resend e critério de evolução do DMARC;
 - conteúdo editorial publicado no Storage privado pelo fluxo admin;
 - Supabase CLI novamente vinculada pela conta que possui o projeto;
 - backups, observabilidade, alertas e rollback no Cloudflare.

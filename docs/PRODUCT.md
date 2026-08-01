@@ -28,10 +28,10 @@ bumps e upsells.
 | `member` | Consumir produtos autorizados, usar IA quando liberada e gerenciar o próprio perfil |
 | `admin` | Operar catálogo, conteúdo, membros, permissões, compras, eventos, limites e configuração da IA |
 
-MFA deixou de ser gate obrigatório por decisão explícita do usuário. O risco
-aceito e os controles compensatórios pendentes estão em
-[Pesquisa e fontes](RESEARCH.md). Isso não torna uma sessão comum equivalente
-a MFA.
+MFA deixou de ser gate obrigatório por decisão explícita do usuário. A
+administração é owner-only e mutações críticas exigem reautenticação por senha;
+o risco aceito e os controles compensatórios estão em
+[Pesquisa e fontes](RESEARCH.md).
 
 Suporte e identidades de serviço citados nas notas Oracle são escopos
 operacionais futuros, não novos perfis de interface. O produto mantém

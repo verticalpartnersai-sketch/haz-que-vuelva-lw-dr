@@ -111,52 +111,6 @@
   margin-top: 24px;
 }
 
-.mfaState {
-  display: grid;
-  gap: 16px;
-  margin-top: 28px;
-}
-
-.securityBadge {
-  width: fit-content;
-  padding: 7px 11px;
-  border: 1px solid rgb(80 211 144 / 38%);
-  border-radius: 999px;
-  color: #a8f2ca;
-  background: rgb(31 132 80 / 18%);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.qrCode {
-  width: min(100%, 260px);
-  margin-inline: auto;
-  border: 10px solid #fff;
-  border-radius: 14px;
-  background: #fff;
-}
-
-.mfaSecret {
-  color: #b8b3b1;
-  font-size: 0.86rem;
-}
-
-.mfaSecret summary {
-  cursor: pointer;
-}
-
-.mfaSecret code {
-  display: block;
-  overflow-wrap: anywhere;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  color: #f7f4f2;
-  background: #080809;
-}
-
 .field {
   display: grid;
   gap: 8px;

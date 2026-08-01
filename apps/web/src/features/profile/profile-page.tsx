@@ -291,16 +291,6 @@ export function ProfilePage({
             {l("Cuenta", "Conta", "Account")}
           </span>
           <h2 id="account-title">{l("Acciones", "Ações", "Actions")}</h2>
-          {identity ? (
-            <Link className="button button--secondary" href="/auth/mfa?next=/perfil">
-              <Icon name="lock" />
-              {l(
-                "Autenticación en dos pasos",
-                "Autenticação em duas etapas",
-                "Two-step authentication",
-              )}
-            </Link>
-          ) : null}
           {role === "admin" ? (
             <Link className="button button--secondary" href="/administracion">
               <Icon name="settings" />

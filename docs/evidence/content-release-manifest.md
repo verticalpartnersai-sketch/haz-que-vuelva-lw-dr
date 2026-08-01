@@ -90,6 +90,6 @@ já foram publicados, sem modificar arquivos nem banco.
 ## Próximo gate
 
 Os arquivos ainda não estão no Supabase. A publicação deve ocorrer pelo módulo
-`Contenido` com uma conta administrativa real em AAL2 e reautenticação curta.
+`Contenido` com a conta do proprietário canônico e reautenticação curta.
 Depois da publicação, o aceite exige armazenamento privado, geração da cópia
 individual marcada e teste positivo/negativo com duas contas distintas.

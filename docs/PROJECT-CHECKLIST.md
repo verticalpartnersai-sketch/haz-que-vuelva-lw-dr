@@ -3,7 +3,7 @@
 > Documento vivo e fonte de verdade do progresso.
 >
 > Estado em 31 de julho de 2026: **frontend aprovado; marketing e área de
-> membros publicados; 22 migrações no Supabase Cloud; Container da VUELVE IA
+> membros publicados; 28 migrações no Supabase Cloud; Container da VUELVE IA
 > configurado com geração bloqueada por flag**.
 >
 > Gates 5–7 estão parcialmente executados por autorização explícita, mas
@@ -234,8 +234,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar recuperação e reset de senha pelo fluxo PKCE.
 - [x] Implementar troca de e-mail segura com prova da senha atual, confirmação
   dupla, sincronização do perfil e auditoria sem registrar os endereços.
-- [x] Exigir MFA TOTP `aal2` para administração no BFF, nas políticas
-  restritivas e nas RPCs sensíveis.
+- [x] Restringir a administração ao proprietário canônico em allowlist privada,
+  com validação no BFF, `is_admin()` e RLS. MFA obrigatório foi removido por
+  decisão explícita; mutações críticas mantêm reautenticação por senha.
 - [x] Implementar Google OAuth por PKCE para contas convidadas, desligado por
   padrão e sem reabrir cadastro público.
 - [x] Implementar reautenticação administrativa e controles compensatórios em
@@ -272,7 +273,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   autorização; a limpeza terminou com zero usuários e objetos sintéticos.
 - [ ] Validar uma geração da VUELVE IA com duas alunas depois da aprovação dos
   gates jurídico, editorial, de orçamento e paging.
-- [x] Aplicar as 22 migrações no projeto definitivo e executar 37 asserções
+- [x] Aplicar as 28 migrações no projeto definitivo e executar as asserções
   pgTAP remotas de segurança, RLS, atomicidade da IA e administração.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
@@ -312,7 +313,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Tratar RAG como dado sem autoridade no prompt do provider.
 - [x] Versionar, publicar e reverter prompt por RPC administrativa auditada.
 - [x] Conectar a gestão de prompts ao painel administrativo, com leitura real,
-  rascunho e publicação protegida por admin AAL2 e reautenticação.
+  rascunho e publicação protegida por proprietário canônico e reautenticação.
 - [ ] Permitir que admin defina e publique limites de uso e custo.
 - [ ] Gerenciar documentos PDF, TXT, MD, DOC e DOCX.
 - [ ] Implementar limites, telemetria e falhas seguras.
@@ -349,17 +350,17 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Reduzir os três módulos legados do quiz que ultrapassam 400 linhas sem
   alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
-  aplicar as 22 migrações e executar pgTAP/RLS remotamente.
+  aplicar as 28 migrações e executar pgTAP/RLS remotamente.
 - [x] Aplicar a migration 22 de health da IA depois do primeiro backup. A
   função foi registrada no histórico remoto, `anon` e `authenticated` não
   executam, `service_role` executa e o agregado retornou JSON válido sem uso.
-- [x] Fechar cadastro público e login anônimo, cadastrar Site URL e redirects de
-  produção e habilitar TOTP no projeto definitivo.
+- [x] Fechar cadastro público e login anônimo e cadastrar Site URL e redirects
+  de produção no projeto definitivo.
 - [x] Criar, promover e convidar o admin inicial pelo comando privado. A outbox
   concluiu o envio via Resend em uma tentativa, sem erro e sem entitlement.
-- [ ] Validar definição de senha, primeiro login e elevação TOTP do admin.
-  Google OAuth permanece opcional e bloqueado até existirem credenciais
-  próprias; esta etapa exige a ação da pessoa convidada.
+- [x] Validar definição de senha, primeiro login, recuperação de senha e acesso
+  owner-only do admin. Google OAuth permanece opcional e bloqueado até
+  existirem credenciais próprias.
 - [ ] Concluir smoke tests reais de Perfect Pay, Resend e Gemini. O webhook
   rejeita payload autenticado incorretamente, o agente responde health e nega
   credencial inválida, mas compra, convite e geração reais aguardam fixtures ou
@@ -436,7 +437,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Conectar Cloudflare DNS/TLS a `miembros.hazquevuelva.site`.
 - [x] Publicar o Container VUELVE IA e exigir a credencial interna no Worker e
   novamente no FastAPI.
-- [x] Corrigir no Supabase Auth a Site URL, redirects, cadastro público e TOTP.
+- [x] Corrigir no Supabase Auth a Site URL, redirects e cadastro público.
 - [x] Criar e validar o primeiro backup lógico criptografado. O pacote de
   01/08/2026 foi gerado por clientes PostgreSQL nativos, validado sem abrir
   conexão de restauração e registrado pelo SHA-256
@@ -461,7 +462,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   app e as migrações remotas estão ativos, mas o token CLI local atual não tem
   acesso administrativo ao projeto.
 - [x] Criar, promover e convidar o admin inicial pelo comando privado.
-- [ ] Concluir senha e TOTP do admin antes da abertura pública.
+- [x] Concluir senha do admin e comprovar que somente o proprietário canônico
+  obtém o papel administrativo efetivo.
 - [x] Exigir Auth real no modo `production`, impedir catálogo/sessão mock,
   proteger também `/`, publicar health check sem dados sensíveis, request ID e
   CSP restrita ao próprio app e ao projeto Supabase configurado.

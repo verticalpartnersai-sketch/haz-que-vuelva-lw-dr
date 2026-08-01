@@ -9,7 +9,6 @@ export type CurrentIdentity = {
   email: string;
   displayName: string | null;
   role: "member" | "admin";
-  assuranceLevel: "aal1" | "aal2";
 };
 
 export class AuthenticationRequiredError extends Error {}
@@ -20,7 +19,6 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
   const { data: claimsData, error: claimsError } = await client.auth.getClaims();
   const claims = claimsData?.claims;
   const subject = claims?.sub;
-  const assuranceLevel = claims?.aal === "aal2" ? "aal2" : "aal1";
   if (claimsError || typeof subject !== "string") {
     throw new AuthenticationRequiredError("Authentication required");
   }
@@ -45,7 +43,6 @@ export const currentIdentity = cache(async (): Promise<CurrentIdentity> => {
   }
 
   return {
-    assuranceLevel,
     id: profile.id,
     email: profile.email,
     displayName: profile.display_name,

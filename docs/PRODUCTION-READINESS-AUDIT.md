@@ -21,7 +21,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
-| Supabase | 22 migrações aplicadas; cadastro público e login anônimo desabilitados |
+| Supabase | 28 migrações aplicadas; cadastro público e login anônimo desabilitados |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
@@ -131,20 +131,22 @@ Aceite:
 6. acompanhar a reputação do domínio com o DMARC já publicado em `p=none` e
    definir o critério de avanço para `quarantine` ou `reject`.
 
-### 4. Administração real e MFA
+### 4. Administração real
 
-O primeiro perfil nominal existe, tem papel `admin` e recebeu o convite pela
-outbox. As proteções AAL2/TOTP foram implementadas, mas a pessoa ainda precisa
-definir a senha, entrar e inscrever o segundo fator.
+O primeiro perfil nominal existe, tem papel `admin`, recebeu o convite pela
+outbox e concluiu definição e recuperação de senha. A autorização efetiva é
+restrita ao proprietário canônico em allowlist privada. MFA obrigatório foi
+removido por decisão explícita; mutações críticas continuam exigindo
+reautenticação por senha com credencial curta, hasheada e de uso único.
 
 Aceite:
 
 1. [concluído] convidar a conta administrativa nominal;
 2. [concluído] promovê-la pelo comando privado;
-3. cadastrar TOTP e elevar a sessão a AAL2;
+3. [concluído] definir senha e validar o primeiro login;
 4. validar mutações administrativas autorizadas;
-5. comprovar negação em AAL1 e para uma conta membro comum;
-6. documentar recuperação segura do segundo fator.
+5. comprovar negação para uma conta membro comum e para um `role=admin` fora da
+   allowlist;
 
 ### 5. VUELVE IA
 
@@ -269,7 +271,7 @@ Aceite:
 ## Ordem recomendada
 
 1. aguardar a aprovação Perfect Pay;
-2. cadastrar primeiro admin com TOTP;
+2. confirmar o proprietário administrativo;
 3. publicar o conteúdo real do Haz Que Vuelva;
 4. executar convite Resend e primeiro login;
 5. executar a matriz de compras e revogações;

@@ -64,7 +64,7 @@ código.
 - sequência pós-compra e parâmetros reais de redirecionamento comprovados no
   painel Perfect Pay;
 - smoke de entrega para um destinatário Resend autorizado;
-- primeiro admin com TOTP;
+- primeiro proprietário administrativo com senha definida;
 - conteúdo editorial publicado no Storage privado pelo fluxo admin;
 - Supabase CLI novamente vinculada pela conta que possui o projeto;
 - backups, observabilidade, alertas e rollback no Cloudflare.

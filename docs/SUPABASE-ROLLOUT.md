@@ -3,7 +3,7 @@
 ## Estado atual
 
 O projeto dedicado `haz-que-vuelva-members` está ativo no Supabase Cloud, com
-as 22 migrações e testes de segurança aplicados. O catálogo possui cinco
+as 28 migrações e testes de segurança aplicados. O catálogo possui cinco
 produtos; os três produtos principais e os dois order bumps da Perfect Pay
 estão mapeados.
 
@@ -21,13 +21,14 @@ tratar a CLI como caminho confiável de manutenção, diff e rollback.
 
 O Auth usa `https://miembros.hazquevuelva.site` como Site URL, aceita os
 callbacks de produção e desenvolvimento explicitamente cadastrados e mantém
-cadastro público e login anônimo desabilitados. TOTP está habilitado; Google
-OAuth permanece desligado até existirem credenciais próprias.
+cadastro público e login anônimo desabilitados. A administração é restrita ao
+proprietário canônico em allowlist privada e não exige MFA. Google OAuth
+permanece desligado até existirem credenciais próprias.
 
 Antes de liberar venda real ainda são necessários:
 
-1. primeiro admin já convidado e promovido; falta definir senha e inscrever
-   TOTP;
+1. primeiro admin convidado, promovido, com senha definida e acesso owner-only
+   comprovado;
 2. Client ID e Client Secret OAuth do Google, caso esse login seja mantido;
 3. confirmar recebimento do convite real; o domínio
    `mail.hazquevuelva.site` já está `Verified` e o Worker usa
@@ -69,8 +70,8 @@ validada com execução exclusiva por `service_role`.
 - Executar os quatro arquivos pgTAP em `supabase/tests` contra o projeto
   vinculado com `supabase test db supabase/tests --linked`.
 - Testar com anônimo, dois membros separados e um administrador.
-- Comprovar que membros não leem dados entre si e que admin `aal1` não abre
-  dados administrativos nem consome reautenticação.
+- Comprovar que membros não leem dados entre si e que somente o proprietário
+  canônico abre dados administrativos ou consome reautenticação.
 
 ### 4. Bootstrap administrativo
 
@@ -82,8 +83,8 @@ validada com execução exclusiva por `service_role`.
   `BOOTSTRAP_ADMIN:admin@example.com` e repetir com `--execute`. O comando
   recusa outro projeto, recusa criar um segundo admin e enfileira o convite na
   outbox Resend canônica.
-- Configurar TOTP em `/auth/mfa`.
-- Confirmar que `/administracion` redireciona admin `aal1` para MFA.
+- Confirmar que `/administracion` rejeita membro comum mesmo que seu perfil
+  tenha sido adulterado e aceita somente o proprietário canônico.
 - Executar convite, concessão e revogação com motivo e senha novamente.
 
 ### 5. Configurar o Worker
@@ -111,14 +112,14 @@ ativos no Worker de produção. `FEATURE_VUELVE_IA` permanece falso até o smoke
 real e o gate jurídico.
 `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED` permanece falso.
 
-Uma flag nunca substitui RLS, papel, entitlement, MFA ou reautenticação.
+Uma flag nunca substitui RLS, papel, entitlement ou reautenticação.
 
 ## Critérios de aceite
 
 - login por senha, recuperação e logout funcionam;
 - Google funciona somente se for habilitado depois com credenciais próprias;
 - cadastro público continua fechado;
-- MFA TOTP eleva a sessão para `aal2`;
+- somente o proprietário canônico obtém administração efetiva;
 - painel admin carrega dados reais e audita cada mutação;
 - convites chegam por outbox sem expor chave de serviço;
 - compras idempotentes criam e revogam entitlements corretamente;

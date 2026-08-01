@@ -33,7 +33,9 @@ Implementado nesta fundação:
   aleatória de uso único, armazenada somente como SHA-256, expiração curta e
   cookie HttpOnly;
 - reautenticação transacional nas concessões, revogações, transferências e
-  versões de prompt; escrita direta de catálogo, ofertas e prompts removida;
+versões de prompt; escrita direta de catálogo, ofertas e prompts removida;
+- autorização administrativa owner-only por allowlist privada, sem MFA
+  obrigatório e sem confiar apenas no papel armazenado no perfil;
 - Cron Trigger por minuto para pagamento, convite e cópia individual, sempre
   condicionado às respectivas flags e credenciais;
 - schema inicial de VUELVE IA com pgvector 768;
@@ -107,14 +109,15 @@ conectado lê projeções reais de catálogo, perfis, ledger, compras, eventos,
 prompts e auditoria. A sessão admin não escreve catálogo, ofertas ou prompts
 diretamente. Convite, concessão, revogação, transferência, atualização de
 produto, mapeamento Perfect Pay e criação/publicação de prompt passam pelo BFF,
-exigem `aal2`, prova da senha e wrappers que consomem a credencial curta na
+exigem proprietário canônico, prova da senha e wrappers que consomem a credencial curta na
 mesma transação.
 
 O login aceita senha e, quando habilitado, Google OAuth por PKCE. Cadastro
-público continua fechado; contas entram por convite. A administração exige
-TOTP `aal2` e essa regra existe em três limites: `requireAdmin`, políticas RLS
-restritivas e `consume_admin_reauthentication`. Assim, esconder a interface ou
-interceptar somente a rota não é tratado como autorização.
+público continua fechado; contas entram por convite. A administração exige a
+identidade owner-only registrada em allowlist privada e essa regra existe em
+três limites: `requireAdmin`, políticas RLS e
+`consume_admin_reauthentication`. Assim, esconder a interface ou interceptar
+somente a rota não é tratado como autorização.
 
 No perfil conectado, a troca de e-mail passa pelo BFF e exige sessão válida,
 mesma origem, payload limitado e a senha atual. O Supabase envia confirmação

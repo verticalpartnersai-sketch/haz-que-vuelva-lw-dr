@@ -12,7 +12,8 @@ para HTTPS no Worker.
 Em 30/07/2026, a área de membros foi publicada no domínio
 `miembros.hazquevuelva.site` e o Container da VUELVE IA foi criado. O Supabase
 Auth usa esse domínio como Site URL, permite somente callbacks explícitos,
-mantém cadastro público fechado e exige TOTP para elevação administrativa.
+mantém cadastro público fechado e restringe a administração ao proprietário
+canônico, sem MFA obrigatório.
 
 ## Topologia escolhida
 
@@ -405,8 +406,8 @@ reverte Supabase, Storage nem outros recursos vinculados.
 
 ## Pendências reais
 
-- criar o primeiro admin, elevar a sessão com TOTP e testar as mutações
-  administrativas reais;
+- testar as mutações administrativas reais com o proprietário canônico e
+  reautenticação por senha;
 - aguardar a aprovação comercial dos produtos pela Perfect Pay;
 - executar compra, revogação, convite Resend e geração Gemini com identidades
   de teste autorizadas;

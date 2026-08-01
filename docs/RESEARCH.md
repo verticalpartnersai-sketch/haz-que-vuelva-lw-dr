@@ -50,9 +50,11 @@ Pesquisa realizada via Exa MCP em 24 de julho de 2026.
   sustenta sessão SSR por cookies; a página informa que `@supabase/ssr` está em
   beta e pode sofrer breaking changes.
 
-Decisão histórica: Auth SSR + RLS permanecem. A dispensa inicial de MFA foi
-substituída em 30 de julho de 2026: contas administrativas agora exigem TOTP e
-sessão `aal2` no BFF, nas políticas restritivas e no consumo da reautenticação.
+Decisão histórica: Auth SSR + RLS permanecem. Em 30 de julho de 2026, MFA foi
+implementado como requisito administrativo. Em 1 de agosto de 2026, o usuário
+removeu esse requisito. A autorização atual combina proprietário canônico em
+allowlist privada, papel efetivo no BFF/RLS e reautenticação por senha nas
+mutações críticas.
 
 ### Perfect Pay
 
@@ -338,11 +340,12 @@ Domínio, remetente e smoke test continuam pendentes.
 
 ### Risco aceito — MFA administrativo
 
-O usuário decidiu que MFA não será gate obrigatório do primeiro release. Isso
-reduz a segurança de contas administrativas e não é equivalente a
-reautenticação. Controles compensatórios previstos: sessão admin curta,
-reautenticação em mutações críticas, rate limiting, privilégio mínimo e
-auditoria append-only. A decisão deve ser revisitada antes de produção.
+O usuário decidiu que MFA não será obrigatório. Isso reduz a proteção contra
+roubo simultâneo de senha e sessão. Os controles compensatórios implementados
+são: proprietário único em allowlist privada, autorização repetida no BFF e em
+RLS, reautenticação nas mutações críticas, credencial curta de uso único,
+privilégio mínimo e auditoria append-only. Rate limiting e alertas externos
+continuam como trabalho operacional separado.
 
 - [Supabase SSR para Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs&queryGroups=framework):
   orienta usar o cliente de servidor com cookies e `getClaims` para proteger
@@ -612,12 +615,13 @@ mas respondeu `HTTP 429`; nenhuma decisão dependeu desse resultado incompleto.
   documenta a vinculação automática de identidades com o mesmo e-mail
   verificado.
 
-Decisão: cadastro público permanece desabilitado. Google OAuth é opt-in por
-configuração e serve para contas previamente convidadas; o callback preserva
-somente um caminho interno seguro. Administração exige `aal2` sem feature flag.
-Cada mutação sensível ainda exige a senha, recebe uma credencial HttpOnly curta
-e a consome uma única vez dentro da transação PostgreSQL. A função de consumo
-também exige `aal2`, impedindo bypass por chamada direta da Data API.
+Decisão histórica: cadastro público permanece desabilitado. Google OAuth é
+opt-in por configuração e serve para contas previamente convidadas; o callback
+preserva somente um caminho interno seguro. O requisito `aal2` foi removido em
+1 de agosto de 2026. Cada mutação sensível ainda exige a senha, recebe uma
+credencial HttpOnly curta e a consome uma única vez dentro da transação
+PostgreSQL. A função de consumo valida novamente o proprietário canônico,
+impedindo bypass por chamada direta da Data API.
 
 ## Registro de fontes — Perfect Pay e Service Binding
 

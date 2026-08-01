@@ -11,7 +11,8 @@ no e-mail correto e na negação correta para outra conta.
 - o token público e a autenticação do postback estão ativos;
 - o checkout principal usa `upsell=true`;
 - o painel encadeia Haz Que Vuelva → `/up1` → `/up2` → `/gracias`;
-- há um admin com TOTP/AAL2 e dois e-mails de teste controlados;
+- há um proprietário administrativo autenticado e dois e-mails de teste
+  controlados;
 - os quatro PDFs estão publicados no Storage privado;
 - nenhum payload bruto com PII será anexado ao GitHub.
 
@@ -85,7 +86,7 @@ preservar estrutura e enums, e nunca conter token, assinatura ou URL secreta.
 ## Sequência de execução
 
 1. confirmar aprovação e URLs no painel;
-2. criar o primeiro admin, habilitar TOTP e publicar os PDFs;
+2. confirmar o proprietário administrativo e publicar os PDFs;
 3. executar PP-01 e validar convite, senha, login e download;
 4. executar PP-02 a PP-08 com uma compra limpa por combinação;
 5. executar idempotência e estados negativos;
@@ -101,4 +102,3 @@ Vendas só podem abrir quando PP-01 a PP-15 estiverem aprovados, os quatro PDFs
 estiverem acessíveis apenas com entitlement, o primeiro acesso tiver entrega
 real e os segredos antigos estiverem revogados. Qualquer concessão ampla,
 duplicidade, ausência de revogação ou acesso cruzado é bloqueador P0.
-

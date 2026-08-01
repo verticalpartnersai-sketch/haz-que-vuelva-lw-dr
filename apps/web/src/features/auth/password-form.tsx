@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -20,6 +21,8 @@ export function PasswordForm({
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,23 +51,47 @@ export function PasswordForm({
     <form className={styles.form} onSubmit={submit}>
       <label className={styles.field}>
         Nueva contraseña
-        <input
-          className={styles.input}
-          minLength={12}
-          name="password"
-          type="password"
-          required
-        />
+        <span className={styles.passwordControl}>
+          <input
+            autoComplete="new-password"
+            className={styles.input}
+            minLength={12}
+            name="password"
+            type={passwordVisible ? "text" : "password"}
+            required
+          />
+          <button
+            aria-label={passwordVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+            aria-pressed={passwordVisible}
+            className={styles.passwordToggle}
+            onClick={() => setPasswordVisible((visible) => !visible)}
+            type="button"
+          >
+            {passwordVisible ? <EyeSlash aria-hidden="true" /> : <Eye aria-hidden="true" />}
+          </button>
+        </span>
       </label>
       <label className={styles.field}>
         Repite la contraseña
-        <input
-          className={styles.input}
-          minLength={12}
-          name="confirmation"
-          type="password"
-          required
-        />
+        <span className={styles.passwordControl}>
+          <input
+            autoComplete="new-password"
+            className={styles.input}
+            minLength={12}
+            name="confirmation"
+            type={confirmationVisible ? "text" : "password"}
+            required
+          />
+          <button
+            aria-label={confirmationVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+            aria-pressed={confirmationVisible}
+            className={styles.passwordToggle}
+            onClick={() => setConfirmationVisible((visible) => !visible)}
+            type="button"
+          >
+            {confirmationVisible ? <EyeSlash aria-hidden="true" /> : <Eye aria-hidden="true" />}
+          </button>
+        </span>
       </label>
       {error ? (
         <p className={styles.error} role="alert">

@@ -13,6 +13,15 @@ export default function DefinePasswordPage() {
   return (
     <main className={styles.page}>
       <section className={styles.panel} aria-labelledby="password-title">
+        {/* The public brand asset keeps the auth surface and email identity consistent. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="Haz Que Vuelva"
+          className={styles.brandLogo}
+          height="65"
+          src="https://hazquevuelva.site/images/brand/haz-que-vuelva-logo-heart-primary-v1.png"
+          width="240"
+        />
         <h1 className={styles.title} id="password-title">
           Crea tu contraseña
         </h1>

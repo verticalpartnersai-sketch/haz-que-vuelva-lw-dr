@@ -2,18 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 
-import {
-  createSupabaseBrowserClient,
-  type SupabaseBrowserConfiguration,
-} from "@/server/supabase/browser-client";
-
 import styles from "./auth-panel.module.css";
 
-export function RecoveryForm({
-  supabase,
-}: {
-  supabase: SupabaseBrowserConfiguration;
-}) {
+export function RecoveryForm() {
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [pending, setPending] = useState(false);
@@ -24,14 +15,13 @@ export function RecoveryForm({
     setError("");
     const form = new FormData(event.currentTarget);
     const email = String(form.get("email") ?? "").trim();
-    const redirectTo = new URL("/auth/confirm", window.location.origin);
-    redirectTo.searchParams.set("next", "/auth/restablecer");
 
-    const { error: recoveryError } =
-      await createSupabaseBrowserClient(supabase).auth.resetPasswordForEmail(email, {
-        redirectTo: redirectTo.toString(),
-      });
-    if (recoveryError) {
+    const response = await fetch("/api/auth/recovery", {
+      body: JSON.stringify({ email }),
+      headers: { "content-type": "application/json" },
+      method: "POST",
+    });
+    if (!response.ok) {
       setError("No pudimos enviar el enlace. Inténtalo nuevamente.");
       setPending(false);
       return;
@@ -53,7 +43,15 @@ export function RecoveryForm({
     <form className={styles.form} onSubmit={submit}>
       <label className={styles.field}>
         Correo electrónico
-        <input className={styles.input} name="email" type="email" required />
+        <input
+          autoComplete="email"
+          className={styles.input}
+          maxLength={254}
+          name="email"
+          placeholder="tu@email.com"
+          type="email"
+          required
+        />
       </label>
       {error ? (
         <p className={styles.error} role="alert">

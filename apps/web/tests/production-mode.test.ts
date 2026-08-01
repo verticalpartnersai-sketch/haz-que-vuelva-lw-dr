@@ -110,6 +110,32 @@ test("the Resend webhook verifies the raw bounded body before persistence", () =
   assert.doesNotMatch(migration, /customer_email|recipient_email text not null/);
 });
 
+test("password recovery uses the branded server path with database rate limits", () => {
+  const route = read("../src/app/api/auth/recovery/route.ts");
+  const form = read("../src/features/auth/recovery-form.tsx");
+  const migration = read(
+    "../../../supabase/migrations/202607310025_password_recovery_rate_limits.sql",
+  );
+  const clockFix = read(
+    "../../../supabase/migrations/202607310026_fix_password_recovery_rate_limit_clock.sql",
+  );
+
+  assert.match(route, /isSameOriginMutation/);
+  assert.match(route, /readBoundedJsonBody\(request, MAX_BODY_BYTES\)/);
+  assert.match(route, /clientFingerprint/);
+  assert.match(route, /status: 202/);
+  assert.match(form, /fetch\("\/api\/auth\/recovery"/);
+  assert.doesNotMatch(form, /resetPasswordForEmail/);
+  assert.match(migration, /interval '60 seconds'/);
+  assert.match(migration, /attempts >= 8/);
+  assert.match(clockFix, /request_time timestamptz := clock_timestamp\(\)/);
+  assert.doesNotMatch(clockFix, /current_time timestamptz/);
+  assert.match(
+    migration,
+    /revoke all on function public\.claim_password_recovery_request[\s\S]*authenticated/,
+  );
+});
+
 test("Supabase browser settings come from the runtime server instead of build-time substitution", () => {
   const browserClient = read("../src/server/supabase/browser-client.ts");
   const loginPage = read("../src/app/login/page.tsx");

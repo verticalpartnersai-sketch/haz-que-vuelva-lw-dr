@@ -1,7 +1,7 @@
 # Auditoria de prontidão para produção
 
 Data da evidência: 31 de julho de 2026
-Commit da aplicação e operação publicada: `2feda8894b621ea9f127d79485b6e7ec4576ebfc`
+Commit da aplicação e operação publicada: `354fce85f221c9230a5004b6a8f3260af3d2eec5`
 
 ## Veredito
 
@@ -21,7 +21,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Checkout | CTAs apontam para os três redirecionadores Centerpag; o checkout principal preserva `upsell=true` e atribuição |
 | Membros | sessão anônima é redirecionada para `/login`; `/healthz` responde `ready` |
 | Agente | URL pública antiga responde 404; entrada declarada é o Service Binding privado |
-| Supabase | 21 migrações aplicadas; cadastro público e login anônimo desabilitados |
+| Supabase | 22 migrações aplicadas; cadastro público e login anônimo desabilitados |
 | Catálogo | cinco produtos ativos no banco |
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
@@ -30,7 +30,10 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Smoke | workflow recorrente e nova execução manual em 31/07 cobrem marketing, checkouts, autenticação negativa, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
-| Resend DNS | DKIM publicado; SPF e MX publicados em `send.mail.hazquevuelva.site`; DMARC `p=none` publicado no domínio raiz |
+| Auth/RLS | teste cloud com duas contas comprovou leitura somente do próprio perfil e entitlement, negação de leitura cruzada e negação da RPC administrativa; limpeza terminou sem usuários ou concessões sintéticas |
+| Storage | os três buckets estão privados; duas contas sem entitlement foram impedidas de baixar objeto e criar URL assinada; limpeza terminou sem usuários ou objetos sintéticos |
+| Resend DNS | `mail.hazquevuelva.site` aparece como `Verified` no painel Resend; DKIM, SPF e MX estão publicados e o DMARC `p=none` existe no domínio raiz |
+| Resend Worker | segredo `RESEND_API_KEY` está vinculado ao Worker e o remetente de produção é `Haz Que Vuelva <acceso@mail.hazquevuelva.site>` |
 
 Versões Cloudflare verificadas:
 
@@ -112,8 +115,10 @@ Aceite:
 
 ### 3. Primeiro acesso e e-mail transacional
 
-O segredo Resend e a outbox estão configurados, e os registros DNS essenciais
-existem. Ainda não há prova de entrega real, criação de senha e primeiro login.
+O segredo Resend e a outbox estão configurados, os registros DNS essenciais
+existem e o painel Resend confirma `mail.hazquevuelva.site` como `Verified`.
+Isso autoriza o envio pelo domínio; não cria uma caixa postal e ainda não prova
+entrega real, criação de senha ou primeiro login.
 
 Aceite:
 
@@ -162,7 +167,8 @@ Aceite antes de habilitar:
 2. publicar documentos e prompt versionados;
 3. reconstruir e publicar a imagem do Container;
 4. validar binding, credencial inválida, limites e cancelamento;
-5. testar isolamento entre duas usuárias;
+5. repetir o isolamento já aprovado com uma geração real e confirmar que a
+   conversa, memória e consumo de tokens permanecem restritos à usuária;
 6. configurar orçamento, alertas e limite diário;
 7. executar geração real redigida e exclusão completa;
 8. somente então ativar as duas flags em sequência controlada.

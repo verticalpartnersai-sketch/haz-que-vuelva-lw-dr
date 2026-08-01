@@ -3,7 +3,7 @@
 > Documento vivo e fonte de verdade do progresso.
 >
 > Estado em 31 de julho de 2026: **frontend aprovado; marketing e área de
-> membros publicados; 21 migrações no Supabase Cloud; Container da VUELVE IA
+> membros publicados; 22 migrações no Supabase Cloud; Container da VUELVE IA
 > configurado com geração bloqueada por flag**.
 >
 > Gates 5–7 estão parcialmente executados por autorização explícita, mas
@@ -266,8 +266,13 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar fila, geração idempotente e retry da cópia com watermark.
 - [x] Conectar o download da UI ao endpoint real atrás de `FEATURE_CONTENT`.
 - [x] Agendar as outboxes no Custom Worker sem executar flags desligadas.
-- [ ] Validar migration, storage e geração com duas alunas no Supabase cloud.
-- [x] Aplicar as 21 migrações no projeto definitivo e executar 37 asserções
+- [x] Validar migrations, isolamento entre duas alunas e Storage privado no
+  Supabase Cloud. O teste real negou leitura cruzada de perfil/entitlement,
+  negou RPC administrativa e negou download/URL assinada para duas contas sem
+  autorização; a limpeza terminou com zero usuários e objetos sintéticos.
+- [ ] Validar uma geração da VUELVE IA com duas alunas depois da aprovação dos
+  gates jurídico, editorial, de orçamento e paging.
+- [x] Aplicar as 22 migrações no projeto definitivo e executar 37 asserções
   pgTAP remotas de segurança, RLS, atomicidade da IA e administração.
 - [x] Implementar progresso de leitura controlado pela aluna, persistido por
   produto e protegido por entitlement/RLS.
@@ -328,7 +333,10 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Usar somente dados sintéticos até aprovação do gate jurídico.
 - [ ] Versionar consentimentos separados.
 - [ ] Manter conversa bruta fora de logs, analytics e suporte por padrão.
-- [ ] Testar isolamento entre contas e casos.
+- [x] Testar isolamento entre contas para perfil, entitlement e Storage
+  privado com duas usuárias sintéticas no Supabase Cloud.
+- [ ] Repetir isolamento para casos, conversas, memória e telemetria da VUELVE
+  IA quando a geração for deliberadamente habilitada.
 - [ ] Testar exclusão em storage, dados derivados, cache, fila e backup.
 - [ ] Permitir desligar VUELVE IA sem derrubar a biblioteca.
 
@@ -341,7 +349,7 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Reduzir os três módulos legados do quiz que ultrapassam 400 linhas sem
   alterar a experiência aprovada.
 - [x] Criar o projeto definitivo `haz-que-vuelva-members` no Supabase Cloud,
-  aplicar as 21 migrações e executar pgTAP/RLS remotamente.
+  aplicar as 22 migrações e executar pgTAP/RLS remotamente.
 - [x] Aplicar a migration 22 de health da IA depois do primeiro backup. A
   função foi registrada no histórico remoto, `anon` e `authenticated` não
   executam, `service_role` executa e o agregado retornou JSON válido sem uso.
@@ -359,10 +367,14 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 ## Gate 6 — integrações futuras
 
 - [x] Criar projeto Supabase próprio.
-- [ ] Aplicar e validar Supabase Storage privado.
+- [x] Aplicar e validar Supabase Storage privado. Os três buckets estão
+  privados; duas contas foram impedidas de baixar o objeto sintético e de criar
+  URL assinada, e a limpeza terminou sem objetos residuais.
 - [ ] Aplicar e validar RAG no PostgreSQL/pgvector.
 - [x] Criar Resend e publicar DKIM, SPF e MX no subdomínio
   `mail.hazquevuelva.site`.
+- [x] Confirmar `mail.hazquevuelva.site` como `Verified` no painel Resend e
+  configurar `Haz Que Vuelva <acceso@mail.hazquevuelva.site>` no Worker.
 - [x] Publicar DMARC no domínio raiz em modo de monitoramento (`p=none`).
 - [x] Criar projeto/chave Gemini próprios.
 - [x] Usar somente credenciais deste projeto.

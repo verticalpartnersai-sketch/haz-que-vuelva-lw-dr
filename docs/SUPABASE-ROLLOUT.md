@@ -3,9 +3,15 @@
 ## Estado atual
 
 O projeto dedicado `haz-que-vuelva-members` está ativo no Supabase Cloud, com
-as 21 migrações e testes de segurança aplicados. O catálogo possui cinco
+as 22 migrações e testes de segurança aplicados. O catálogo possui cinco
 produtos; os três produtos principais e os dois order bumps da Perfect Pay
 estão mapeados.
+
+Um teste cloud com duas contas sintéticas comprovou isolamento de perfil e
+entitlement, negação da RPC administrativa e negação de leitura cruzada. Outro
+teste confirmou que os três buckets são privados e que duas contas sem
+autorização não conseguem baixar um objeto nem criar URL assinada. Os usuários,
+concessões e objetos sintéticos foram removidos ao final.
 
 As migrações foram aplicadas e verificadas por conexão direta ao banco. A CLI
 local não está atualmente vinculada ao projeto por uma conta com acesso: o
@@ -22,12 +28,18 @@ Antes de liberar venda real ainda são necessários:
 
 1. primeiro admin convidado, promovido e inscrito em TOTP;
 2. Client ID e Client Secret OAuth do Google, caso esse login seja mantido;
-3. teste real de entrega do remetente Resend;
+3. teste real de entrega do remetente Resend; o domínio
+   `mail.hazquevuelva.site` já está `Verified` e o Worker usa
+   `acceso@mail.hazquevuelva.site`, mas ainda falta um destinatário autorizado;
 4. payloads Perfect Pay redigidos dos cinco produtos/itens;
 5. aprovação comercial dos produtos no painel Perfect Pay;
 6. teste de restauração e orçamento operacional.
 7. recuperar o acesso da conta correta na Supabase CLI e vincular novamente o
    projeto sem reutilizar token de outra organização.
+
+O primeiro backup lógico cifrado foi criado antes da migration 22. A migration
+foi então aplicada por conexão PostgreSQL direta, registrada no histórico e
+validada com execução exclusiva por `service_role`.
 
 ## Ordem segura de ativação
 

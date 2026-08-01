@@ -149,8 +149,11 @@ não estava disponível.
 O agente agora impõe cota diária entre 1 e 20 respostas, teto configurado de
 2.048 tokens de saída e rejeita respostas do Gemini sem telemetria válida. O
 uso real de tokens é persistido junto à geração, mas não sai no contrato SSE.
-Isso cria o dado necessário para medir custo; ainda não configura orçamento,
-alerta externo nem prova uma geração real no Container publicado.
+O BFF também recusa ativação sem orçamento diário de tokens e o health interno
+sinaliza teto atingido ou geração concluída sem uso válido. Isso cria o dado e
+o detector necessários para medir custo; ainda falta escolher o valor real do
+orçamento, configurar paging externo e provar uma geração no Container
+publicado. A migration desse agregado também aguarda backup e rollout cloud.
 
 Aceite antes de habilitar:
 

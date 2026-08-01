@@ -20,6 +20,11 @@ const optionalString = (minimumLength: number) =>
     z.string().min(minimumLength).optional(),
   );
 
+const optionalPositiveInteger = z.preprocess(
+  (value) => (value === "" ? undefined : value),
+  z.coerce.number().int().positive().max(Number.MAX_SAFE_INTEGER).optional(),
+);
+
 const environmentSchema = z
   .object({
     MEMBER_APP_MODE: runtimeMode,
@@ -41,6 +46,7 @@ const environmentSchema = z
     AGENT_INTERNAL_URL: optionalUrl,
     AGENT_INTERNAL_SECRET: optionalString(32),
     WORKER_INTERNAL_SECRET: optionalString(32),
+    AI_DAILY_TOKEN_BUDGET: optionalPositiveInteger,
   })
   .superRefine((environment, context) => {
     const authConfigured =
@@ -111,6 +117,15 @@ const environmentSchema = z
       context.addIssue({
         code: "custom",
         message: "VUELVE IA requires AGENT_INTERNAL_SECRET",
+      });
+    }
+    if (
+      environment.FEATURE_VUELVE_IA &&
+      !environment.AI_DAILY_TOKEN_BUDGET
+    ) {
+      context.addIssue({
+        code: "custom",
+        message: "VUELVE IA requires AI_DAILY_TOKEN_BUDGET",
       });
     }
     if (

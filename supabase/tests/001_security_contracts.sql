@@ -1,6 +1,6 @@
 begin;
 
-select plan(15);
+select plan(17);
 
 select ok(
   (select relrowsecurity from pg_class where oid = 'public.profiles'::regclass),
@@ -96,6 +96,22 @@ select ok(
     'execute'
   ),
   'members cannot read the raw system prompt'
+);
+select ok(
+  not has_function_privilege(
+    'authenticated',
+    'public.get_ai_usage_health(timestamptz)',
+    'execute'
+  ),
+  'members cannot read aggregate AI provider usage'
+);
+select ok(
+  has_function_privilege(
+    'service_role',
+    'public.get_ai_usage_health(timestamptz)',
+    'execute'
+  ),
+  'service role can read aggregate AI provider usage'
 );
 
 select * from finish();

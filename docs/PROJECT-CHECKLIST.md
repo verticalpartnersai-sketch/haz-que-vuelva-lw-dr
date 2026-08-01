@@ -314,6 +314,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   - [x] Aplicar cota diária atômica e teto de 2.048 tokens de saída por geração.
   - [x] Persistir uso real de entrada, saída, cache, pensamento, ferramenta e
     total por geração, sem expor a telemetria privada no SSE.
+  - [x] Falhar a ativação sem orçamento diário de tokens e sinalizar no health
+    uso acima do teto ou geração concluída sem telemetria válida.
   - [ ] Publicar orçamento, alerta externo e limites administráveis antes de
     ativar as flags.
 - [ ] Implementar ciclo de caso, importação, fatos, política, análise,

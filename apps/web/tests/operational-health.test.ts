@@ -6,6 +6,9 @@ import { hasValidInternalCredential } from "../src/server/security/internal-cred
 
 test("operational health accepts an empty and current queue", () => {
   const result = evaluateOperationalHealth({
+    aiGenerations24h: 0,
+    aiTokens24h: 0,
+    aiUsageRowsMissing: 0,
     deadJobs: 0,
     overdueJobs: 0,
     staleLocks: 0,
@@ -16,6 +19,9 @@ test("operational health accepts an empty and current queue", () => {
 });
 test("operational health reports every blocking queue condition", () => {
   const result = evaluateOperationalHealth({
+    aiGenerations24h: 5,
+    aiTokens24h: 1_000,
+    aiUsageRowsMissing: 5,
     deadJobs: 2,
     overdueJobs: 1,
     staleLocks: 3,
@@ -27,6 +33,24 @@ test("operational health reports every blocking queue condition", () => {
     "overdueJobs",
     "staleLocks",
     "unprocessedEvents",
+    "aiUsageRowsMissing",
+  ]);
+});
+
+test("operational health reports the configured AI token budget", () => {
+  const snapshot = {
+    aiGenerations24h: 10,
+    aiTokens24h: 80_000,
+    aiUsageRowsMissing: 0,
+    deadJobs: 0,
+    overdueJobs: 0,
+    staleLocks: 0,
+    unprocessedEvents: 0,
+  };
+
+  assert.equal(evaluateOperationalHealth(snapshot, 80_001).healthy, true);
+  assert.deepEqual(evaluateOperationalHealth(snapshot, 80_000).issues, [
+    "aiDailyTokenBudgetExceeded",
   ]);
 });
 

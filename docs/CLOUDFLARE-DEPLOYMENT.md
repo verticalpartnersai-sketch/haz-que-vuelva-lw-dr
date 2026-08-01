@@ -214,6 +214,8 @@ Variáveis:
 - `MARKETING_APP_URL`
 - `AGENT_SERVICE_BINDING`
 - `RESEND_FROM`
+- `AI_DAILY_TOKEN_BUDGET` — positiva e obrigatória antes de ativar a IA;
+  define o teto de tokens totais em uma janela móvel de 24 horas.
 
 Segredos:
 

@@ -772,3 +772,11 @@ de consumir crédito sem contabilização. Os contadores e o modelo são
 persistidos em `ai_generations.provider_usage`, mas não são enviados à aluna
 no SSE. O cálculo monetário ficará fora do provider e dependerá de preço
 versionado, orçamento e alerta ainda pendentes.
+
+Complemento operacional: a ativação da feature exigirá um orçamento diário de
+tokens explicitamente configurado. O health interno agrega uma janela móvel de
+24 horas e falha quando o teto é alcançado ou quando uma geração concluída não
+tem uso válido. Não foi escolhido um número arbitrário: o teto real depende do
+volume contratado e precisa ser aprovado antes da ativação. O erro de Cron já
+entra na observabilidade do Worker; o destino de paging externo permanece um
+gate separado.

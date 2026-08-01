@@ -19,8 +19,11 @@ export async function POST(request: Request) {
 
   const snapshot = await new SupabaseOperationalHealth(
     createSupabaseServiceClient(),
-  ).snapshot();
-  const evaluation = evaluateOperationalHealth(snapshot);
+  ).snapshot(new Date(), config.FEATURE_VUELVE_IA);
+  const evaluation = evaluateOperationalHealth(
+    snapshot,
+    config.FEATURE_VUELVE_IA ? config.AI_DAILY_TOKEN_BUDGET : undefined,
+  );
   return NextResponse.json(evaluation, {
     headers: { "Cache-Control": "no-store" },
     status: evaluation.healthy ? 200 : 503,

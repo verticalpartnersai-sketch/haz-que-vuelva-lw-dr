@@ -4,6 +4,8 @@
 - `002_rls_isolation.sql` prova o isolamento negativo entre duas alunas.
 - `003_ai_generation_atomicity.sql` prova conclusão idempotente da IA: resposta
   e consumo são confirmados na mesma transação e o replay não duplica crédito.
+- `005_ai_usage_health.sql` prova agregação de tokens e detecção de telemetria
+  ausente sem expor o RPC a membros.
 
 Os testes desta aplicação serão executados no projeto Supabase Cloud dedicado,
 sempre com identidades sintéticas e antes de liberar tráfego para a área de

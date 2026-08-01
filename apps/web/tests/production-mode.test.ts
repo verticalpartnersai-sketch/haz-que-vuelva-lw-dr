@@ -113,6 +113,7 @@ test("VUELVE IA uses a private service binding and limits request bodies", () =>
     "authentication must happen before the request body is parsed",
   );
   assert.match(agentWrangler, /"FEATURE_GENERATION": "false"/);
+  assert.match(agentWrangler, /"MAX_OUTPUT_TOKENS": "2048"/);
   assert.match(agentWrangler, /"workers_dev": false/);
   assert.match(agentWrangler, /"preview_urls": false/);
   assert.ok(
@@ -120,6 +121,17 @@ test("VUELVE IA uses a private service binding and limits request bodies", () =>
       agentWorker.indexOf('getContainer(env.VUELVE_AGENT, "primary")'),
     "the edge credential must be checked before the container is invoked",
   );
+});
+
+test("VUELVE IA requires an explicit daily token budget before activation", () => {
+  const environment = read("../src/server/config/environment.ts");
+  const health = read(
+    "../src/modules/audit/adapters/supabase-operational-health.ts",
+  );
+
+  assert.match(environment, /AI_DAILY_TOKEN_BUDGET: optionalPositiveInteger/);
+  assert.match(environment, /VUELVE IA requires AI_DAILY_TOKEN_BUDGET/);
+  assert.match(health, /get_ai_usage_health/);
 });
 
 test("the PerfectPay webhook incrementally limits request bodies", () => {

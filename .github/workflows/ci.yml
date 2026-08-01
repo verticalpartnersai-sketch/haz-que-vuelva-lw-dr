@@ -48,6 +48,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/marketing/package-lock.json
       - run: npm ci --prefix apps/marketing
+      - run: npm --prefix apps/marketing audit --omit=dev --audit-level=high
       - run: npm run check:marketing
       - run: npm --prefix apps/marketing run lint
       - run: npm run check:cloudflare:marketing
@@ -64,6 +65,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/web/package-lock.json
       - run: npm ci --prefix apps/web
+      - run: npm --prefix apps/web audit --omit=dev --audit-level=high
       - run: npm run check:web
       - run: npm run check:cloudflare:web
 
@@ -79,6 +81,7 @@ jobs:
           cache: npm
           cache-dependency-path: apps/agent/package-lock.json
       - run: npm ci --prefix apps/agent
+      - run: npm --prefix apps/agent audit --omit=dev --audit-level=high
       - run: npm run check:cloudflare:agent
 
   agent-python:
@@ -96,6 +99,8 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install pip-audit==2.10.1
+      - run: python -m pip_audit --local
       - run: ruff format --check .
       - run: ruff check .
       - run: pytest

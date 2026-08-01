@@ -26,7 +26,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Perfect Pay | cinco mapeamentos ativos: três produtos e dois order bumps com item exato |
 | Mensagens transacionais públicas | `/up1` e `/up2` não afirmam compra; `/gracias` condiciona a orientação à aprovação do pagamento; o smoke impede regressão |
 | Webhook | smoke recorrente exige 401 para credencial inválida em probe não mutável e 413 acima de 64 KiB |
-| CI | cinco jobs do workflow CI verdes no SHA auditado, incluindo recuperação sintética fail-closed |
+| CI | cinco jobs do workflow CI verdes no SHA auditado, incluindo recuperação sintética fail-closed; audits npm e Python foram incorporados ao pipeline |
 | Smoke | [execução manual de 01/08](https://github.com/verticalpartnersai-sketch/haz-que-vuelva-lw-dr/actions/runs/30717223740) no SHA `011d395` cobre marketing, checkouts, rotas protegidas, reautenticação e mutação administrativa anônimas, webhook e agente privado |
 | Saúde operacional | rota interna rejeita chamada sem credencial com 401; o Cron da versão publicada executou a avaliação de outboxes e webhook com status `Ok` |
 | Rollback | executor fail-closed validou em modo leitura as versões recuperáveis dos três Workers; UUID inexistente e execução sem confirmação foram recusados |
@@ -34,6 +34,7 @@ Não abrir vendas até concluir todos os itens P0 abaixo.
 | Storage | os três buckets estão privados; duas contas sem entitlement foram impedidas de baixar objeto e criar URL assinada; limpeza terminou sem usuários ou objetos sintéticos |
 | Resend DNS | `mail.hazquevuelva.site` aparece como `Verified` no painel Resend; DKIM, SPF e MX estão publicados e o DMARC `p=none` existe no domínio raiz |
 | Resend Worker | segredo `RESEND_API_KEY` está vinculado ao Worker e o remetente de produção é `Haz Que Vuelva <acceso@mail.hazquevuelva.site>` |
+| GitHub | Secret Scanning, Push Protection, alertas de vulnerabilidade e Dependabot Security Updates estão ativos; atualizações continuam exigindo revisão e merge explícitos |
 
 Versões Cloudflare verificadas:
 

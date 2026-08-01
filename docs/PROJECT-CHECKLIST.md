@@ -405,6 +405,8 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   `muted=true` e zero erro no console.
 - [x] Configurar CI de marketing, membros e agente no GitHub e comprovar os
   cinco jobs verdes, incluindo recuperação sintética fail-closed.
+- [x] Habilitar alertas e correções de segurança do Dependabot e executar no CI
+  `npm audit --omit=dev` nos três apps e `pip-audit` no agente Python.
 - [x] Publicar canonical, metadata social, sitemap, manifesto, cache de assets e
   headers defensivos do marketing.
 - [x] Forçar redirecionamento permanente de HTTP para HTTPS no Worker de

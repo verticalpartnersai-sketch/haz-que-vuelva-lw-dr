@@ -33,6 +33,7 @@ test("the edge and worker layers fail closed before rendering mock data", () => 
   assert.match(worker, /"X-Request-Id": currentRequestId/);
   assert.match(worker, /"Content-Security-Policy": contentSecurityPolicy/);
   assert.match(worker, /frame-ancestors 'none'/);
+  assert.match(worker, /https:\/\/static\.cloudflareinsights\.com/);
   assert.match(worker, /connectSources\.push\(supabaseUrl\.origin\)/);
   assert.match(worker, /member_app_not_configured/);
   assert.match(worker, /\/api\/internal\/operations\/health/);

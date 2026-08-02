@@ -72,67 +72,6 @@
   color: var(--error-text);
 }
 
-.reading-progress-control {
-  align-items: end;
-  display: grid;
-  gap: var(--space-6);
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
-  margin-top: var(--space-8);
-}
-
-.reading-progress-control__copy h2 {
-  font-size: clamp(1.35rem, 2.5vw, 2rem);
-  margin: var(--space-2) 0 var(--space-2);
-}
-
-.reading-progress-control__copy p {
-  color: var(--text-secondary);
-  margin: 0;
-  max-width: 62ch;
-}
-
-.reading-progress-control__input {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.reading-progress-control__input output {
-  color: var(--text-primary);
-  font-family: var(--font-display);
-  font-size: 2rem;
-  justify-self: end;
-}
-
-.reading-progress-control__input input {
-  accent-color: var(--brand-500);
-  cursor: pointer;
-  inline-size: 100%;
-}
-
-.reading-progress-control__scale {
-  color: var(--text-muted);
-  display: flex;
-  font-size: 0.7rem;
-  justify-content: space-between;
-}
-
-.reading-progress-control__actions {
-  align-items: center;
-  display: flex;
-  gap: var(--space-3);
-  grid-column: 1 / -1;
-  justify-content: flex-end;
-}
-
-.reading-progress-control__actions > span {
-  color: var(--text-muted);
-  font-size: 0.78rem;
-}
-
-.reading-progress-control__actions > .download-status--error {
-  color: var(--error-text);
-}
-
 .pdf-reader {
   background: var(--surface-default);
   border: 1px solid var(--border-strong);
@@ -712,20 +651,6 @@
 }
 
 @media (max-width: 767px) {
-  .reading-progress-control {
-    align-items: stretch;
-    grid-template-columns: 1fr;
-  }
-
-  .reading-progress-control__actions {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .reading-progress-control__actions .button {
-    width: 100%;
-  }
-
   .product-detail__header,
   .reader-section__heading,
   .chat-panel__top {

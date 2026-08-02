@@ -8,6 +8,7 @@ import type {
 import {
   type CSSProperties,
   type RefObject,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -23,6 +24,7 @@ type AccessResponse = {
 };
 
 type ReaderState = "loading" | "ready" | "error" | "unavailable";
+type ProgressSaveState = "idle" | "saving" | "saved" | "error";
 
 const MAX_ACCESS_ATTEMPTS = 30;
 const MIN_ZOOM = 0.75;
@@ -220,26 +222,40 @@ function ProtectedPdfPage({
 export function ProtectedPdfReader({
   contentEnabled,
   fileId,
+  initialProgress,
+  productCode,
   productName,
 }: {
   contentEnabled: boolean;
   fileId: string | null;
+  initialProgress: number;
+  productCode: string;
   productName: string;
 }) {
   const { l } = useLocale();
   const stageRef = useRef<HTMLDivElement>(null);
   const scrollFrameRef = useRef<number | null>(null);
+  const progressTimerRef = useRef<number | null>(null);
+  const pendingProgressRef = useRef(initialProgress);
+  const persistedProgressRef = useRef(initialProgress);
+  const restoredProgressRef = useRef(false);
+  const [automaticProgress, setAutomaticProgress] = useState(initialProgress);
   const [document, setDocument] = useState<PDFDocumentProxy | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageWidth, setPageWidth] = useState(0);
   const [state, setState] = useState<ReaderState>("loading");
   const [reloadKey, setReloadKey] = useState(0);
+  const [progressSaveState, setProgressSaveState] =
+    useState<ProgressSaveState>("idle");
   const [zoom, setZoom] = useState(1);
 
   useEffect(
     () => () => {
       if (scrollFrameRef.current !== null) {
         window.cancelAnimationFrame(scrollFrameRef.current);
+      }
+      if (progressTimerRef.current !== null) {
+        window.clearTimeout(progressTimerRef.current);
       }
     },
     [],
@@ -272,6 +288,7 @@ export function ProtectedPdfReader({
     async function load() {
       setState("loading");
       setPageNumber(1);
+      restoredProgressRef.current = false;
       try {
         const signedUrl = await requestProtectedUrl(activeFileId, controller.signal);
         const response = await fetch(signedUrl, {
@@ -312,8 +329,126 @@ export function ProtectedPdfReader({
   }, [contentEnabled, fileId, reloadKey]);
 
   const totalPages = document?.numPages ?? 0;
-  const progress = totalPages > 0 ? Math.round((pageNumber / totalPages) * 100) : 0;
   const readerState = contentEnabled && fileId ? state : "unavailable";
+
+  const persistProgress = useCallback(
+    async (nextProgress: number, keepalive = false) => {
+      if (nextProgress <= persistedProgressRef.current) return;
+      setProgressSaveState("saving");
+      try {
+        const response = await fetch(`/api/products/${productCode}/progress`, {
+          body: JSON.stringify({ progressPercent: nextProgress }),
+          cache: "no-store",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          keepalive,
+          method: "PUT",
+        });
+        if (!response.ok) throw new Error("reading_progress_save_failed");
+        const payload = (await response.json()) as { progressPercent?: unknown };
+        if (payload.progressPercent !== nextProgress) {
+          throw new Error("reading_progress_response_invalid");
+        }
+        persistedProgressRef.current = Math.max(
+          persistedProgressRef.current,
+          nextProgress,
+        );
+        setProgressSaveState("saved");
+      } catch {
+        setProgressSaveState("error");
+      }
+    },
+    [productCode],
+  );
+
+  useEffect(() => {
+    persistedProgressRef.current = initialProgress;
+    pendingProgressRef.current = initialProgress;
+    setAutomaticProgress(initialProgress);
+    setProgressSaveState("idle");
+  }, [fileId, initialProgress, productCode]);
+
+  useEffect(() => {
+    if (readerState !== "ready" || totalPages === 0) return;
+    const reachedProgress = Math.max(
+      automaticProgress,
+      Math.round((pageNumber / totalPages) * 100),
+    );
+    if (reachedProgress > automaticProgress) {
+      setAutomaticProgress(reachedProgress);
+    }
+    if (reachedProgress <= persistedProgressRef.current) return;
+
+    pendingProgressRef.current = reachedProgress;
+    setProgressSaveState("idle");
+    if (progressTimerRef.current !== null) {
+      window.clearTimeout(progressTimerRef.current);
+    }
+    progressTimerRef.current = window.setTimeout(() => {
+      progressTimerRef.current = null;
+      void persistProgress(pendingProgressRef.current);
+    }, 1_500);
+  }, [automaticProgress, pageNumber, persistProgress, readerState, totalPages]);
+
+  useEffect(() => {
+    function flushPendingProgress() {
+      if (
+        pendingProgressRef.current <= persistedProgressRef.current ||
+        readerState !== "ready"
+      ) {
+        return;
+      }
+      if (progressTimerRef.current !== null) {
+        window.clearTimeout(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
+      void persistProgress(pendingProgressRef.current, true);
+    }
+
+    function handleVisibilityChange() {
+      if (window.document.visibilityState === "hidden") {
+        flushPendingProgress();
+      }
+    }
+
+    window.document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", flushPendingProgress);
+    return () => {
+      window.document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange,
+      );
+      window.removeEventListener("pagehide", flushPendingProgress);
+      flushPendingProgress();
+    };
+  }, [persistProgress, readerState]);
+
+  useEffect(() => {
+    if (
+      !document ||
+      pageWidth <= 0 ||
+      restoredProgressRef.current ||
+      initialProgress <= 0
+    ) {
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => {
+      const stage = stageRef.current;
+      if (!stage) return;
+      const targetPage = Math.min(
+        Math.max(Math.ceil((initialProgress / 100) * document.numPages), 1),
+        document.numPages,
+      );
+      const target = stage.querySelector<HTMLElement>(
+        `[data-pdf-page="${targetPage}"]`,
+      );
+      if (!target) return;
+      restoredProgressRef.current = true;
+      setPageNumber(targetPage);
+      stage.scrollTo({ left: 0, top: Math.max(target.offsetTop - 16, 0) });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [document, initialProgress, pageWidth]);
 
   function updateCurrentPage() {
     const stage = stageRef.current;
@@ -437,17 +572,17 @@ export function ProtectedPdfReader({
       {readerState === "ready" ? (
         <div
           aria-label={l(
-            `Progreso del documento: ${progress}%`,
-            `Progresso do documento: ${progress}%`,
-            `Document progress: ${progress}%`,
+            `Progreso del documento: ${automaticProgress}%`,
+            `Progresso do documento: ${automaticProgress}%`,
+            `Document progress: ${automaticProgress}%`,
           )}
           aria-valuemax={100}
           aria-valuemin={0}
-          aria-valuenow={progress}
+          aria-valuenow={automaticProgress}
           className="pdf-reader__progress"
           role="progressbar"
         >
-          <span style={{ width: `${progress}%` }} />
+          <span style={{ width: `${automaticProgress}%` }} />
         </div>
       ) : null}
 
@@ -534,11 +669,25 @@ export function ProtectedPdfReader({
             )}
           </span>
           <small>
-            {l(
-              "Desplázate para leer. Las flechas sirven como atajo.",
-              "Role para ler. As setas funcionam como atalho.",
-              "Scroll to read. The arrows work as shortcuts.",
-            )}
+            {progressSaveState === "saving"
+              ? l("Guardando avance…", "Salvando progresso…", "Saving progress…")
+              : progressSaveState === "saved"
+                ? l(
+                    "Avance guardado automáticamente",
+                    "Progresso salvo automaticamente",
+                    "Progress saved automatically",
+                  )
+                : progressSaveState === "error"
+                  ? l(
+                      "El avance se volverá a guardar al continuar",
+                      "O progresso será salvo novamente ao continuar",
+                      "Progress will be saved again as you continue",
+                    )
+                  : l(
+                      "Desplázate para leer. Tu avance se guarda automáticamente.",
+                      "Role para ler. Seu progresso é salvo automaticamente.",
+                      "Scroll to read. Your progress is saved automatically.",
+                    )}
           </small>
         </div>
       ) : null}

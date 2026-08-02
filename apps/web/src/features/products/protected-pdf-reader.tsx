@@ -5,7 +5,13 @@ import type {
   PDFDocumentProxy,
   RenderTask,
 } from "pdfjs-dist";
-import { useEffect, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  type RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
@@ -22,6 +28,7 @@ const MAX_ACCESS_ATTEMPTS = 30;
 const MIN_ZOOM = 0.75;
 const MAX_ZOOM = 1.75;
 const ZOOM_STEP = 0.25;
+const DEFAULT_PAGE_RATIO = 1.414;
 
 function wait(milliseconds: number, signal: AbortSignal) {
   return new Promise<void>((resolve, reject) => {
@@ -68,6 +75,148 @@ async function requestProtectedUrl(fileId: string, signal: AbortSignal) {
   throw new Error("watermark_timeout");
 }
 
+function ProtectedPdfPage({
+  document,
+  pageNumber,
+  productName,
+  scrollRootRef,
+  stageWidth,
+  zoom,
+}: {
+  document: PDFDocumentProxy;
+  pageNumber: number;
+  productName: string;
+  scrollRootRef: RefObject<HTMLDivElement | null>;
+  stageWidth: number;
+  zoom: number;
+}) {
+  const { l } = useLocale();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const renderTaskRef = useRef<RenderTask | null>(null);
+  const [isNearViewport, setIsNearViewport] = useState(pageNumber <= 2);
+  const [pageRatio, setPageRatio] = useState(DEFAULT_PAGE_RATIO);
+  const [rendered, setRendered] = useState(false);
+
+  const pageWidth = Math.max(stageWidth * zoom, 240);
+  const pageHeight = pageWidth * pageRatio;
+
+  useEffect(() => {
+    const pageElement = pageRef.current;
+    const scrollRoot = scrollRootRef.current;
+    if (!pageElement || !scrollRoot) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsNearViewport(entry.isIntersecting),
+      {
+        root: scrollRoot,
+        rootMargin: "1000px 0px",
+        threshold: 0,
+      },
+    );
+    observer.observe(pageElement);
+    return () => observer.disconnect();
+  }, [scrollRootRef]);
+
+  useEffect(() => {
+    let active = true;
+    void document.getPage(pageNumber).then((page) => {
+      if (!active) return;
+      const viewport = page.getViewport({ scale: 1 });
+      setPageRatio(viewport.height / viewport.width);
+    });
+    return () => {
+      active = false;
+    };
+  }, [document, pageNumber]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!isNearViewport || !canvas || stageWidth <= 0) return;
+
+    let active = true;
+    setRendered(false);
+    renderTaskRef.current?.cancel();
+
+    async function renderPage() {
+      const page = await document.getPage(pageNumber);
+      if (!active || !canvas) return;
+
+      const baseViewport = page.getViewport({ scale: 1 });
+      const fitScale = stageWidth / baseViewport.width;
+      const viewport = page.getViewport({ scale: fitScale * zoom });
+      const outputScale = Math.min(window.devicePixelRatio || 1, 2);
+      const context = canvas.getContext("2d", { alpha: false });
+      if (!context) throw new Error("canvas_context_unavailable");
+
+      canvas.width = Math.floor(viewport.width * outputScale);
+      canvas.height = Math.floor(viewport.height * outputScale);
+      canvas.style.width = `${Math.floor(viewport.width)}px`;
+      canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+      const renderTask = page.render({
+        canvas,
+        canvasContext: context,
+        transform:
+          outputScale === 1
+            ? undefined
+            : [outputScale, 0, 0, outputScale, 0, 0],
+        viewport,
+      });
+      renderTaskRef.current = renderTask;
+      try {
+        await renderTask.promise;
+        if (active) setRendered(true);
+      } catch (error) {
+        if (
+          active &&
+          !(error instanceof Error && error.name === "RenderingCancelledException")
+        ) {
+          throw error;
+        }
+      }
+    }
+
+    void renderPage().catch(() => {
+      if (active) setRendered(false);
+    });
+    return () => {
+      active = false;
+      renderTaskRef.current?.cancel();
+    };
+  }, [document, isNearViewport, pageNumber, stageWidth, zoom]);
+
+  return (
+    <div
+      className="pdf-reader__page-shell"
+      data-pdf-page={pageNumber}
+      ref={pageRef}
+      style={
+        {
+          "--pdf-page-height": `${pageHeight}px`,
+          "--pdf-page-width": `${pageWidth}px`,
+        } as CSSProperties
+      }
+    >
+      <canvas
+        aria-label={l(
+          `Página ${pageNumber} de ${document.numPages} de ${productName}`,
+          `Página ${pageNumber} de ${document.numPages} de ${productName}`,
+          `Page ${pageNumber} of ${document.numPages} of ${productName}`,
+        )}
+        className={`pdf-reader__page${rendered ? " is-rendered" : ""}`}
+        ref={canvasRef}
+        role="img"
+      />
+      {!rendered && isNearViewport ? (
+        <span aria-hidden="true" className="pdf-reader__page-loading">
+          <span className="pdf-reader__spinner" />
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
 export function ProtectedPdfReader({
   contentEnabled,
   fileId,
@@ -78,22 +227,34 @@ export function ProtectedPdfReader({
   productName: string;
 }) {
   const { l } = useLocale();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const renderTaskRef = useRef<RenderTask | null>(null);
+  const scrollFrameRef = useRef<number | null>(null);
   const [document, setDocument] = useState<PDFDocumentProxy | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
-  const [renderedPage, setRenderedPage] = useState(0);
-  const [stageWidth, setStageWidth] = useState(0);
+  const [pageWidth, setPageWidth] = useState(0);
   const [state, setState] = useState<ReaderState>("loading");
   const [reloadKey, setReloadKey] = useState(0);
   const [zoom, setZoom] = useState(1);
+
+  useEffect(
+    () => () => {
+      if (scrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
-    const updateWidth = () => setStageWidth(stage.clientWidth);
+    const updateWidth = () => {
+      const style = window.getComputedStyle(stage);
+      const horizontalPadding =
+        Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight);
+      setPageWidth(Math.max(stage.clientWidth - horizontalPadding, 240));
+    };
     updateWidth();
     const observer = new ResizeObserver(updateWidth);
     observer.observe(stage);
@@ -105,14 +266,12 @@ export function ProtectedPdfReader({
     const activeFileId = fileId;
 
     let active = true;
-    let loadedDocument: PDFDocumentProxy | null = null;
     let loadingTask: PDFDocumentLoadingTask | null = null;
     const controller = new AbortController();
 
     async function load() {
       setState("loading");
       setPageNumber(1);
-      setRenderedPage(0);
       try {
         const signedUrl = await requestProtectedUrl(activeFileId, controller.signal);
         const response = await fetch(signedUrl, {
@@ -128,7 +287,7 @@ export function ProtectedPdfReader({
         ]);
         pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
         loadingTask = pdfjs.getDocument({ data: new Uint8Array(bytes) });
-        loadedDocument = await loadingTask.promise;
+        const loadedDocument = await loadingTask.promise;
         if (!active) {
           await loadingTask.destroy();
           return;
@@ -148,82 +307,59 @@ export function ProtectedPdfReader({
     return () => {
       active = false;
       controller.abort();
-      renderTaskRef.current?.cancel();
       if (loadingTask) void loadingTask.destroy();
     };
   }, [contentEnabled, fileId, reloadKey]);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const stage = stageRef.current;
-    if (!document || !canvas || !stage || stageWidth === 0) return;
-    const activeDocument = document;
-    const activeCanvas = canvas;
-    const activeStage = stage;
-
-    let active = true;
-    setRenderedPage(0);
-    renderTaskRef.current?.cancel();
-
-    async function renderPage() {
-      const page = await activeDocument.getPage(pageNumber);
-      if (!active) return;
-
-      const baseViewport = page.getViewport({ scale: 1 });
-      const style = window.getComputedStyle(activeStage);
-      const horizontalPadding =
-        Number.parseFloat(style.paddingLeft) + Number.parseFloat(style.paddingRight);
-      const availableWidth = Math.max(stageWidth - horizontalPadding, 240);
-      const fitScale = availableWidth / baseViewport.width;
-      const viewport = page.getViewport({ scale: fitScale * zoom });
-      const outputScale = Math.min(window.devicePixelRatio || 1, 2);
-      const context = activeCanvas.getContext("2d", { alpha: false });
-      if (!context) throw new Error("canvas_context_unavailable");
-
-      activeCanvas.width = Math.floor(viewport.width * outputScale);
-      activeCanvas.height = Math.floor(viewport.height * outputScale);
-      activeCanvas.style.width = `${Math.floor(viewport.width)}px`;
-      activeCanvas.style.height = `${Math.floor(viewport.height)}px`;
-
-      const renderTask = page.render({
-        canvas: activeCanvas,
-        canvasContext: context,
-        transform:
-          outputScale === 1
-            ? undefined
-            : [outputScale, 0, 0, outputScale, 0, 0],
-        viewport,
-      });
-      renderTaskRef.current = renderTask;
-      try {
-        await renderTask.promise;
-        if (active) setRenderedPage(pageNumber);
-      } catch (error) {
-        if (
-          active &&
-          !(error instanceof Error && error.name === "RenderingCancelledException")
-        ) {
-          setState("error");
-        }
-      }
-    }
-
-    void renderPage();
-    return () => {
-      active = false;
-      renderTaskRef.current?.cancel();
-    };
-  }, [document, pageNumber, stageWidth, zoom]);
-
   const totalPages = document?.numPages ?? 0;
   const progress = totalPages > 0 ? Math.round((pageNumber / totalPages) * 100) : 0;
   const readerState = contentEnabled && fileId ? state : "unavailable";
-  const rendering = readerState === "ready" && renderedPage !== pageNumber;
+
+  function updateCurrentPage() {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const stageCenter = stage.getBoundingClientRect().top + stage.clientHeight / 2;
+    let closestPage = pageNumber;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    stage.querySelectorAll<HTMLElement>("[data-pdf-page]").forEach((page) => {
+      const rect = page.getBoundingClientRect();
+      const distance = Math.abs(rect.top + rect.height / 2 - stageCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestPage = Number(page.dataset.pdfPage);
+      }
+    });
+    setPageNumber(closestPage);
+  }
+
+  function handleScroll() {
+    if (scrollFrameRef.current !== null) return;
+    scrollFrameRef.current = window.requestAnimationFrame(() => {
+      scrollFrameRef.current = null;
+      updateCurrentPage();
+    });
+  }
+
+  function goToPage(nextPage: number) {
+    const stage = stageRef.current;
+    if (!stage || totalPages === 0) return;
+    const boundedPage = Math.min(Math.max(nextPage, 1), totalPages);
+    const target = stage.querySelector<HTMLElement>(
+      `[data-pdf-page="${boundedPage}"]`,
+    );
+    if (!target) return;
+    setPageNumber(boundedPage);
+    stage.scrollTo({
+      behavior: "smooth",
+      left: Math.max(target.offsetLeft - stage.clientWidth / 2 + target.clientWidth / 2, 0),
+      top: Math.max(target.offsetTop - 16, 0),
+    });
+  }
 
   function movePage(direction: -1 | 1) {
-    setPageNumber((current) =>
-      Math.min(Math.max(current + direction, 1), totalPages),
-    );
+    goToPage(pageNumber + direction);
   }
 
   return (
@@ -315,7 +451,7 @@ export function ProtectedPdfReader({
         </div>
       ) : null}
 
-      <div className="pdf-reader__stage" ref={stageRef}>
+      <div className="pdf-reader__stage" onScroll={handleScroll} ref={stageRef}>
         {readerState === "unavailable" ? (
           <div className="pdf-reader__feedback">
             <Icon name="lock" />
@@ -373,25 +509,19 @@ export function ProtectedPdfReader({
             </button>
           </div>
         ) : null}
-        <canvas
-          aria-label={l(
-            `Página ${pageNumber} de ${totalPages} de ${productName}`,
-            `Página ${pageNumber} de ${totalPages} de ${productName}`,
-            `Page ${pageNumber} of ${totalPages} of ${productName}`,
-          )}
-          className={
-            readerState === "ready"
-              ? "pdf-reader__page"
-              : "pdf-reader__page is-hidden"
-          }
-          ref={canvasRef}
-          role="img"
-        />
-        {rendering ? (
-          <span aria-hidden="true" className="pdf-reader__rendering">
-            <span className="pdf-reader__spinner" />
-          </span>
-        ) : null}
+        {readerState === "ready" && document
+          ? Array.from({ length: totalPages }, (_, index) => (
+              <ProtectedPdfPage
+                document={document}
+                key={index + 1}
+                pageNumber={index + 1}
+                productName={productName}
+                scrollRootRef={stageRef}
+                stageWidth={pageWidth}
+                zoom={zoom}
+              />
+            ))
+          : null}
       </div>
 
       {readerState === "ready" ? (
@@ -405,9 +535,9 @@ export function ProtectedPdfReader({
           </span>
           <small>
             {l(
-              "Usa las flechas del teclado para avanzar.",
-              "Use as setas do teclado para avançar.",
-              "Use the keyboard arrows to navigate.",
+              "Desplázate para leer. Las flechas sirven como atajo.",
+              "Role para ler. As setas funcionam como atalho.",
+              "Scroll to read. The arrows work as shortcuts.",
             )}
           </small>
         </div>

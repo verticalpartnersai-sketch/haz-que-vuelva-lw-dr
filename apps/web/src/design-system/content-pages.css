@@ -247,10 +247,21 @@
   width: var(--pdf-page-width);
 }
 
+.pdf-reader__page-shell::after {
+  background: var(--neutral-950);
+  content: "";
+  inset-block: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  width: 5px;
+  z-index: 2;
+}
+
 .pdf-reader__page {
   background: var(--neutral-950);
   border: 0;
-  clip-path: inset(0 2px 0 0);
+  clip-path: inset(0 5px 0 0);
   display: block;
   max-width: none;
   min-width: 0;

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 import { DownloadControl } from "@/features/products/download-control";
+import { ProtectedPdfReader } from "@/features/products/protected-pdf-reader";
 import { ReadingProgressControl } from "@/features/products/reading-progress-control";
 import { featureFlags } from "@/mocks/data";
 import type { Product } from "@/mocks/types";
@@ -73,54 +74,11 @@ export function ProductDetail({
               fileId={contentFileId}
             />
           </div>
-          <div
-            aria-label={l(
-              "Vista previa del lector PDF de ejemplo",
-              "Prévia do leitor de PDF de exemplo",
-              "Example PDF reader preview",
-            )}
-            className="pdf-reader"
-            role="img"
-          >
-            <div className="pdf-reader__toolbar">
-              <span>
-                {contentEnabled
-                  ? l("Documento privado", "Documento privado", "Private document")
-                  : l("Documento de ejemplo", "Documento de exemplo", "Example document")}
-              </span>
-              <span>
-                {l(
-                  contentEnabled ? "Vista protegida" : "Página 1 de 12 · simulación",
-                  contentEnabled ? "Visualização protegida" : "Página 1 de 12 · simulação",
-                  contentEnabled ? "Protected preview" : "Page 1 of 12 · simulation",
-                )}
-              </span>
-            </div>
-            <div className="pdf-reader__canvas">
-              <div className="pdf-page">
-                <span className="pdf-page__eyebrow">HAZ QUE VUELVA</span>
-                <strong>
-                  {l("Lectura de ejemplo", "Leitura de exemplo", "Example reading")}
-                </strong>
-                <span />
-                <span />
-                <span />
-                <small>
-                  {l(
-                    contentEnabled
-                      ? "Usa el botón para generar y descargar tu copia individual."
-                      : "Este contenedor no carga un archivo real.",
-                    contentEnabled
-                      ? "Use o botão para gerar e baixar sua cópia individual."
-                      : "Este contêiner não carrega um arquivo real.",
-                    contentEnabled
-                      ? "Use the button to generate and download your individual copy."
-                      : "This container does not load a real file.",
-                  )}
-                </small>
-              </div>
-            </div>
-          </div>
+          <ProtectedPdfReader
+            contentEnabled={contentEnabled}
+            fileId={contentFileId}
+            productName={product.name}
+          />
         </section>
 
         {product.relatedItems?.length ? (

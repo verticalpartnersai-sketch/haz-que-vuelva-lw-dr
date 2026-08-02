@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type {
   ContentAccessGateway,
+  ContentAccessPurpose,
   ContentArtifact,
   ContentSource,
 } from "../application/request-file-access.ts";
@@ -76,10 +77,15 @@ export class SupabaseContentAccess implements ContentAccessGateway {
     storageBucket: string,
     storagePath: string,
     expiresInSeconds: number,
+    purpose: ContentAccessPurpose,
   ) {
     const { data, error } = await this.client.storage
       .from(storageBucket)
-      .createSignedUrl(storagePath, expiresInSeconds, { download: true });
+      .createSignedUrl(
+        storagePath,
+        expiresInSeconds,
+        purpose === "download" ? { download: true } : undefined,
+      );
     if (error || !data) return null;
     return data.signedUrl;
   }

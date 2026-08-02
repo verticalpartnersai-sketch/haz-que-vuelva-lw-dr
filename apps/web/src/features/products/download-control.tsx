@@ -47,8 +47,10 @@ export function DownloadControl({
     try {
       for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
         const response = await fetch(`/api/content/files/${fileId}/access`, {
+          body: JSON.stringify({ purpose: "download" }),
           cache: "no-store",
           credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
           method: "POST",
         });
         const payload = (await response.json()) as AccessResponse;

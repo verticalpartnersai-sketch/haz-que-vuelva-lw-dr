@@ -2,6 +2,8 @@ export class ContentAccessDeniedError extends Error {}
 export class ContentFileNotFoundError extends Error {}
 export class WatermarkedFilePendingError extends Error {}
 
+export type ContentAccessPurpose = "download" | "view";
+
 export type ContentSource = {
   active: boolean;
   id: string;
@@ -26,6 +28,7 @@ export interface ContentAccessGateway {
     storageBucket: string,
     storagePath: string,
     expiresInSeconds: number,
+    purpose: ContentAccessPurpose,
   ): Promise<string | null>;
   recordDownload(input: {
     auditMarker: string;
@@ -39,8 +42,10 @@ export async function requestFileAccess(input: {
   fileId: string;
   memberId: string;
   expiresInSeconds?: number;
+  purpose?: ContentAccessPurpose;
 }) {
   const expiresIn = Math.min(Math.max(input.expiresInSeconds ?? 120, 30), 300);
+  const purpose = input.purpose ?? "download";
   const file = await input.gateway.file(input.fileId);
   if (!file) throw new ContentFileNotFoundError();
   if (!file.active) throw new ContentAccessDeniedError();
@@ -60,13 +65,16 @@ export async function requestFileAccess(input: {
     artifact.storageBucket,
     artifact.storagePath,
     expiresIn,
+    purpose,
   );
   if (!signedUrl) throw new ContentAccessDeniedError();
-  await input.gateway.recordDownload({
-    auditMarker: artifact.auditMarker,
-    memberId: input.memberId,
-    sourceFileId: file.id,
-  });
+  if (purpose === "download") {
+    await input.gateway.recordDownload({
+      auditMarker: artifact.auditMarker,
+      memberId: input.memberId,
+      sourceFileId: file.id,
+    });
+  }
 
   return { signedUrl, expiresIn };
 }

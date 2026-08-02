@@ -132,8 +132,13 @@
   background: var(--surface-default);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  min-height: 680px;
+  min-height: 560px;
   overflow: hidden;
+}
+
+.pdf-reader:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 3px;
 }
 
 .pdf-reader__toolbar {
@@ -143,67 +148,206 @@
   color: var(--text-secondary);
   display: flex;
   font-size: 0.75rem;
+  gap: var(--space-3);
   justify-content: space-between;
-  min-height: 52px;
-  padding: 0 var(--space-4);
+  min-height: 60px;
+  padding: var(--space-2) var(--space-3);
 }
 
-.pdf-reader__canvas {
-  align-items: flex-start;
+.pdf-reader__identity,
+.pdf-reader__controls,
+.pdf-reader__pagination,
+.pdf-reader__zoom {
+  align-items: center;
+  display: flex;
+}
+
+.pdf-reader__identity {
+  color: var(--text-primary);
+  font-weight: 650;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.pdf-reader__identity svg {
+  color: var(--brand-500);
+  height: 16px;
+  width: 16px;
+}
+
+.pdf-reader__controls {
+  gap: var(--space-3);
+}
+
+.pdf-reader__pagination,
+.pdf-reader__zoom {
+  background: var(--alpha-white-025);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  gap: var(--space-1);
+  padding: 3px;
+}
+
+.pdf-reader__pagination > span,
+.pdf-reader__zoom > span {
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  min-width: 54px;
+  text-align: center;
+}
+
+.pdf-reader__toolbar button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 1rem;
+  height: 34px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+  width: 34px;
+}
+
+.pdf-reader__toolbar button:hover:not(:disabled) {
+  background: var(--alpha-white-08);
+  color: var(--brand-300);
+}
+
+.pdf-reader__toolbar button:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 1px;
+}
+
+.pdf-reader__toolbar button:disabled {
+  cursor: default;
+  opacity: 0.32;
+}
+
+.pdf-reader__toolbar button svg {
+  height: 16px;
+  width: 16px;
+}
+
+.pdf-reader__progress {
+  background: var(--alpha-white-025);
+  height: 3px;
+  overflow: hidden;
+}
+
+.pdf-reader__progress > span {
+  background: var(--brand-500);
+  display: block;
+  height: 100%;
+  transition: width 220ms ease;
+}
+
+.pdf-reader__stage {
   background:
     linear-gradient(45deg, var(--alpha-white-015) 25%, transparent 25%) 0 0 / 16px 16px,
     var(--neutral-950);
-  display: flex;
-  justify-content: center;
-  min-height: 628px;
-  padding: var(--space-10);
+  display: grid;
+  min-height: 500px;
+  overflow: auto;
+  padding: clamp(var(--space-3), 4vw, var(--space-10));
+  place-items: start center;
+  position: relative;
 }
 
-.pdf-page {
+.pdf-reader__page {
   background: var(--paper-canvas);
+  border: 0;
   box-shadow: var(--shadow-raised);
-  color: var(--neutral-ink);
+  display: block;
+  grid-column: 1;
+  grid-row: 1;
+  max-width: none;
+}
+
+.pdf-reader__page.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pdf-reader__feedback {
+  align-items: center;
+  align-self: center;
+  color: var(--text-secondary);
   display: flex;
   flex-direction: column;
-  min-height: 530px;
-  padding: clamp(2rem, 7vw, 5rem);
-  width: min(100%, 420px);
+  gap: var(--space-3);
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  max-width: 460px;
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
 }
 
-.pdf-page__eyebrow {
-  color: var(--brand-700);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+.pdf-reader__feedback > svg {
+  color: var(--brand-500);
+  height: 28px;
+  width: 28px;
 }
 
-.pdf-page strong {
-  font-family: var(--font-display);
-  font-size: 2.4rem;
-  font-weight: 400;
-  letter-spacing: 0.025em;
-  line-height: 1;
-  margin: var(--space-6) 0 var(--space-10);
+.pdf-reader__feedback strong {
+  color: var(--text-primary);
+  font-size: 1rem;
 }
 
-.pdf-page > span:not(.pdf-page__eyebrow) {
-  background: var(--paper-line);
-  border-radius: var(--radius-pill);
-  height: 6px;
-  margin-bottom: var(--space-3);
+.pdf-reader__feedback small {
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 
-.pdf-page > span:nth-of-type(3) {
-  width: 82%;
+.pdf-reader__spinner {
+  animation: pdf-reader-spin 800ms linear infinite;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  border-top-color: var(--brand-500);
+  display: block;
+  height: 28px;
+  width: 28px;
 }
 
-.pdf-page > span:nth-of-type(4) {
-  width: 64%;
+.pdf-reader__rendering {
+  align-items: center;
+  background: color-mix(in srgb, var(--neutral-950) 58%, transparent);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
 }
 
-.pdf-page small {
-  color: var(--paper-text);
-  margin-top: auto;
+.pdf-reader__footer {
+  align-items: center;
+  background: var(--surface-elevated);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  font-size: 0.72rem;
+  gap: var(--space-3);
+  justify-content: space-between;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+}
+
+.pdf-reader__footer small {
+  color: var(--text-muted);
+}
+
+@keyframes pdf-reader-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .related-panel {
@@ -564,16 +708,40 @@
   }
 
   .pdf-reader {
-    min-height: 540px;
+    min-height: 480px;
   }
 
-  .pdf-reader__canvas {
-    min-height: 488px;
-    padding: var(--space-5);
+  .pdf-reader__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: var(--space-3);
   }
 
-  .pdf-page {
-    min-height: 440px;
+  .pdf-reader__identity {
+    justify-content: center;
+  }
+
+  .pdf-reader__controls {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .pdf-reader__pagination,
+  .pdf-reader__zoom {
+    justify-content: center;
+  }
+
+  .pdf-reader__stage {
+    min-height: 390px;
+    padding: var(--space-3);
+  }
+
+  .pdf-reader__footer {
+    justify-content: center;
+  }
+
+  .pdf-reader__footer small {
+    display: none;
   }
 
   .chat-history {

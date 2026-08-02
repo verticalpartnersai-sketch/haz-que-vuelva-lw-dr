@@ -242,3 +242,22 @@ test("la copia existente se audita antes de devolver la URL firmada", async () =
   assert.equal(result.signedUrl, "https://storage.example/signed");
   assert.deepEqual(gateway.recorded, ["source-1"]);
 });
+
+test("la vista integrada firma la copia sin registrar una descarga", async () => {
+  const gateway = new FakeAccess();
+  gateway.artifactValue = {
+    auditMarker: "marker-123",
+    storageBucket: "member-sensitive",
+    storagePath: "watermarked/member-1/source-1.pdf",
+  };
+
+  const result = await requestFileAccess({
+    fileId: "source-1",
+    gateway,
+    memberId: "member-1",
+    purpose: "view",
+  });
+
+  assert.equal(result.signedUrl, "https://storage.example/signed");
+  assert.deepEqual(gateway.recorded, []);
+});

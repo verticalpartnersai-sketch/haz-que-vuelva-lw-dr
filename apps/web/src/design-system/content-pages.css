@@ -36,10 +36,15 @@
   display: grid;
   gap: var(--space-8);
   grid-template-columns: 1fr;
+  min-width: 0;
 }
 
 .product-detail__layout--with-aside {
   grid-template-columns: minmax(0, 2fr) minmax(260px, 0.72fr);
+}
+
+.reader-section {
+  min-width: 0;
 }
 
 .reader-section__heading {
@@ -133,7 +138,9 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   min-height: 560px;
+  min-width: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 .pdf-reader:focus-visible {
@@ -253,8 +260,11 @@
   background:
     linear-gradient(45deg, var(--alpha-white-015) 25%, transparent 25%) 0 0 / 16px 16px,
     var(--neutral-950);
+  contain: inline-size;
   display: grid;
+  inline-size: 100%;
   min-height: 500px;
+  min-width: 0;
   overflow: auto;
   padding: clamp(var(--space-3), 4vw, var(--space-10));
   place-items: start center;
@@ -269,6 +279,7 @@
   grid-column: 1;
   grid-row: 1;
   max-width: none;
+  min-width: 0;
 }
 
 .pdf-reader__page.is-hidden {

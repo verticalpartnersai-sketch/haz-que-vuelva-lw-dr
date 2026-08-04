@@ -30,7 +30,7 @@ As buscas foram feitas com Agent Reach/Exa e consultas complementares em busca d
 
 1. O preço fica visível perto da ação, mas não dentro do texto do botão.
 2. Aceite é verde e recusa é vermelha; ambos têm peso visual explícito, sem seta ou ícone.
-3. A recusa da UP1 leva a `/downsell1`; a recusa do Downsell 1 leva a `/up2`; a query é preservada.
+3. A recusa da UP1 leva a `/d1`; a recusa do Downsell 1 leva a `/up2`; a query é preservada.
 4. O Downsell 1 mantém produto, acesso e garantia e altera apenas o preço para US$5.
 5. Não há cronômetro, falsa escassez nem depoimento inventado. Os relatos são rotulados como cenários ilustrativos.
 6. Páginas reais do PDF tornam o produto tangível. A coluna branca de 1 px presente nas seis exportações foi removida sem alterar o conteúdo.
@@ -45,3 +45,19 @@ As duas imagens foram pesquisadas antes da geração e seguem a direção canôn
 - `reciprocity-meeting.webp`: reencontro cauteloso em café visto pelo vidro, comunicando observação de reciprocidade em vez de reconciliação garantida.
 
 Os prompts proibiram texto, logos, marca-d'água, corações, flores, brilho rosa/magenta, mãos deformadas, bordas e faixas brancas.
+
+## Renomeação da rota e publicação
+
+Em 4 de agosto de 2026, a rota curta do Downsell 1 foi alterada de
+`/downsell1` para `/d1`. A publicação segue o adaptador OpenNext e o comando
+versionado do app, conforme a documentação oficial de
+[Next.js no Cloudflare Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/)
+e do [`wrangler deploy`](https://developers.cloudflare.com/workers/wrangler/commands/workers/#deploy).
+O dry-run deve preceder a mutação remota; depois do deploy, `/d1`, a
+preservação da query, a saída para `/up2` e a remoção da rota antiga precisam
+ser comprovadas na superfície pública.
+
+A versão `6fe59bbb-0515-4175-9022-08d3e8fa9e97` foi publicada com 100% do
+tráfego. A superfície pública comprovou `/d1` 200, `/downsell1` 404, navegação
+`/up1` → `/d1` → `/up2` com query preservada e ausência de overflow nos
+viewports 390 × 844 e 1440 × 900.

@@ -299,9 +299,9 @@ Aceite:
 10. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
     testes privados.
 
-O frontend do Downsell 1 existe e reutiliza o entitlement `reconquista_30`, mas
-o checkout, a URL pública e a prova comercial ainda não existem. Esses itens
-precisam ser configurados antes de PP-06A entrar na homologação real.
+O frontend do Downsell 1 está publicado em `/d1` e reutiliza o entitlement
+`reconquista_30`, mas o checkout e a prova comercial ainda não existem. Esses
+itens precisam ser configurados antes de PP-06A entrar na homologação real.
 
 ## Critério para declarar 100%
 

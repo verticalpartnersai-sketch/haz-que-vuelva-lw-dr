@@ -11,7 +11,7 @@ no e-mail correto e na negação correta para outra conta.
 - o token público e a autenticação do postback estão ativos;
 - o checkout principal usa `upsell=true`;
 - o painel encadeia Haz Que Vuelva → `/up1`; a recusa segue para
-  `/downsell1`; o resultado do Downsell 1 segue para `/up2`; e o resultado do
+  `/d1`; o resultado do Downsell 1 segue para `/up2`; e o resultado do
   VUELVE IA segue para `/gracias`;
 - há um proprietário administrativo autenticado e dois e-mails de teste
   controlados;
@@ -70,9 +70,9 @@ hash ou alias do e-mail nas evidências públicas.
 | PP-03 | Haz Que Vuelva + `PPPBF7EL` | libera HQV e `la_otra`, não `21_mensajes` |
 | PP-04 | Haz Que Vuelva + ambos os bumps | libera exatamente os três produtos |
 | PP-05 | aceitar Reconquista 30 em `/up1` | libera `reconquista_30` e avança a `/up2` |
-| PP-06 | recusar Reconquista 30 em `/up1` | não libera R30 e alcança `/downsell1` |
-| PP-06A | aceitar Reconquista 30 em `/downsell1` | libera o mesmo `reconquista_30` uma única vez e avança a `/up2` |
-| PP-06B | recusar Reconquista 30 em `/downsell1` | não libera R30 e alcança `/up2` |
+| PP-06 | recusar Reconquista 30 em `/up1` | não libera R30 e alcança `/d1` |
+| PP-06A | aceitar Reconquista 30 em `/d1` | libera o mesmo `reconquista_30` uma única vez e avança a `/up2` |
+| PP-06B | recusar Reconquista 30 em `/d1` | não libera R30 e alcança `/up2` |
 | PP-07 | aceitar VUELVE IA em `/up2` | libera `vuelve_ia` e conclui em `/gracias` |
 | PP-08 | recusar VUELVE IA | não libera IA e conclui em `/gracias` |
 | PP-09 | pagamento pendente ou rejeitado | não concede nenhum entitlement |

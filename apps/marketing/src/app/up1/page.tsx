@@ -27,7 +27,7 @@ export default async function Page({
         process.env.NEXT_PUBLIC_UPSELL_1_ACCEPT_URL,
         query,
       )}
-      declineHref={withPreservedQuery("/downsell1", query)}
+      declineHref={withPreservedQuery("/d1", query)}
       variant="upsell"
     />
   );

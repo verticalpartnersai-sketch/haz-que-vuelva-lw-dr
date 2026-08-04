@@ -643,8 +643,9 @@ Decisão: cada `plan_itens[].item_code` vira um evento isolado com plano
 exigem correspondência exata para impedir concessão pelo nome ou pela posição.
 O parser exige `item_code`, mas tolera a ausência dos campos auxiliares que a
 especificação não marca como obrigatórios. O BFF usa um Service Binding para o
-agente, e o agente não publica `workers.dev` nem Preview URL. A credencial
-interna continua obrigatória nas duas camadas como defesa em profundidade.
+agente. Preview URLs permanecem desligadas; `workers.dev` existe somente como
+ponte autenticada para Workers AI e backfill. A credencial interna continua
+obrigatória nas duas camadas como defesa em profundidade.
 
 ## Registro de fontes — Perfect Pay One Click
 

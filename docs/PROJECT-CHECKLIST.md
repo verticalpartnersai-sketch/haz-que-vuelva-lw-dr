@@ -461,12 +461,12 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   versionar seus valores.
 - [x] Publicar a área de membros e comprovar redirecionamento anônimo de `/` e
   `/productos` para `/login`.
-- [x] Configurar Service Binding privado entre BFF e agente e retirar
-  `workers.dev`/Preview URL do agente.
+- [x] Configurar Service Binding privado entre BFF e agente, desativar Preview
+  URLs e manter `workers.dev` somente como ponte autenticada para Workers AI e
+  backfill; chamadas anônimas são recusadas com 401 antes do payload.
 - [x] Publicar e validar o rollout de 31/07/2026: marketing e login respondem
-  200, health da área de membros responde `ready`, o smoke público passa e o
-  endpoint `workers.dev` antigo do agente responde 404. O smoke completo foi
-  reexecutado com sucesso após os controles de telemetria e orçamento da IA.
+  200, health da área de membros responde `ready` e o smoke completo passa
+  após os controles de telemetria, orçamento da IA e autenticação da ponte.
 - [x] Publicar a detecção operacional das outboxes e do webhook, comprovar 401
   sem credencial na rota interna e observar o Cron de produção concluir com
   status `Ok` na versão `637aef83-8f4a-4132-bde3-5cb4c1592302`.

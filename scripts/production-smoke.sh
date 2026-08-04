@@ -151,7 +151,7 @@ expect_status "200" "$base_url/up2?utm_source=hqv-smoke" "$upsell_2_body"
 expect_status "200" "$base_url/gracias" "$thanks_body"
 
 for upsell_body in "$upsell_1_body" "$upsell_2_body"; do
-  grep -Fq "Tu siguiente decisión ya está disponible" "$upsell_body" ||
+  grep -Eq "Tu siguiente decisión ya está disponible|OFERTA COMPLEMENTARIA DISPONIBLE" "$upsell_body" ||
     fail "upsell page is missing the transaction-neutral status"
   if grep -Fq "Tu compra principal está confirmada" "$upsell_body"; then
     fail "upsell page claims a confirmed purchase without transaction proof"
@@ -376,7 +376,7 @@ if (anonymousAdminMutation.status !== 403) {
   );
 }
 
-const disabledGeneration = await fetch(
+const anonymousGeneration = await fetch(
   `${membersUrl}/api/ai/generations/stream`,
   {
     method: "POST",
@@ -384,9 +384,9 @@ const disabledGeneration = await fetch(
     body: "{}",
   },
 );
-if (disabledGeneration.status !== 503) {
+if (anonymousGeneration.status !== 401) {
   throw new Error(
-    `disabled AI generation returned ${disabledGeneration.status}; expected 503`,
+    `anonymous AI generation returned ${anonymousGeneration.status}; expected 401`,
   );
 }
 
@@ -403,9 +403,9 @@ if (operationalHealth.status !== 401) {
 const publicAgent = await fetch(`${agentPublicUrl}/health`, {
   redirect: "manual",
 });
-if (publicAgent.status !== 404) {
+if (publicAgent.status !== 401) {
   throw new Error(
-    `public agent endpoint returned ${publicAgent.status}; expected 404`,
+    `public agent bridge returned ${publicAgent.status}; expected 401`,
   );
 }
 NODE

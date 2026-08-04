@@ -1,26 +1,26 @@
 export const reconquistaWeeks = [
   {
-    label: "Semana 1",
-    title: "No quemar la apertura",
+    label: "SEMANA 1",
+    title: "No quemas la primera apertura",
     body: "Igualas la intensidad, bajas la presión y compruebas si él también sostiene el contacto.",
     image: "/images/upsells/reconquista-30/pages/day-7.webp",
   },
   {
-    label: "Semana 2",
-    title: "Recuperar seguridad",
-    body: "Creas conversaciones naturales sin convertir cada mensaje en una prueba de amor.",
+    label: "SEMANA 2",
+    title: "La conversación vuelve a sentirse segura",
+    body: "Avanzas sin convertir cada mensaje en una prueba de amor, una explicación o una promesa anticipada.",
     image: "/images/upsells/reconquista-30/pages/day-14.webp",
   },
   {
-    label: "Semana 3",
-    title: "Medir lo que hace",
-    body: "Observas iniciativa, consistencia, reparación y respeto por tus límites, no promesas aisladas.",
+    label: "SEMANA 3",
+    title: "Sus acciones empiezan a pesar más",
+    body: "Mides iniciativa, consistencia, reparación y respeto por tus límites en vez de depender de señales aisladas.",
     image: "/images/upsells/reconquista-30/pages/reciprocity-board.webp",
   },
   {
-    label: "Semana 4",
-    title: "Decidir sin perseguir",
-    body: "Avanzas hacia una conversación real o dejas de cargar sola una reciprocidad que nunca apareció.",
+    label: "SEMANA 4",
+    title: "Tomas una decisión sin perseguir",
+    body: "Llegas al día 30 sabiendo si reconstruir, observar, reducir el contacto o cerrar con claridad.",
     image: "/images/upsells/reconquista-30/pages/day-30.webp",
   },
 ] as const;
@@ -60,41 +60,30 @@ export const reconquistaPages = [
 
 export const reconquistaDetails = [
   {
-    number: "01",
+    image: "/images/upsells/reconquista-30/pages/gate.webp",
     title: "Una puerta de entrada real",
-    body: "No empiezas por un visto, una reacción o una respuesta educada. El protocolo define cuándo existe apertura suficiente.",
+    body: "Sabes cuándo una respuesta es apenas educación y cuándo existe apertura suficiente para avanzar.",
   },
   {
-    number: "02",
+    image: "/images/upsells/reconquista-30/pages/day-7.webp",
     title: "30 decisiones guiadas",
-    body: "Cada día tiene objetivo, acción, límite y cierre para que no vuelvas a improvisar en el momento de mayor ansiedad.",
+    body: "Cada día organiza objetivo, acción, límite y cierre para que la ansiedad no decida por ti.",
   },
   {
-    number: "03",
-    title: "Conversaciones proporcionales",
-    body: "Sabes cuándo pedir consistencia, cuándo avanzar despacio y cómo responder si la respuesta de él es no.",
+    image: "/images/upsells/reconquista-30/pages/reciprocity-board.webp",
+    title: "Un panel de reciprocidad",
+    body: "Iniciativa, consistencia, reparación y respeto sustituyen nostalgia, promesas y migajas digitales.",
   },
   {
-    number: "04",
-    title: "Una decisión que no depende de nostalgia",
-    body: "Llegas al día 30 sabiendo si reconstruir, observar, reducir el contacto o cerrar con claridad.",
+    image: "/images/upsells/reconquista-30/pages/final-decision.webp",
+    title: "Una decisión clara al final",
+    body: "Reconstruyes con acuerdos o sales del ciclo sin volver a cargar sola una relación que no avanzó.",
   },
 ] as const;
 
-export const reconquistaScenarios = [
-  {
-    title: "Cuando vuelve con un mensaje mínimo",
-    quote:
-      "Antes habría intentado resolver la relación en la primera conversación. Con una ruta, la pregunta cambia: ¿él también sostiene el siguiente paso?",
-  },
-  {
-    title: "Cuando promete, pero todavía no demuestra",
-    quote:
-      "La nostalgia deja de ser la prueba. Iniciativa, consistencia, reparación y respeto pasan a decidir si vale la pena avanzar.",
-  },
-  {
-    title: "Cuando solo una persona está reconstruyendo",
-    quote:
-      "El protocolo no estira una reapertura vacía. Ayuda a reconocer cuándo reducir el contacto antes de volver al mismo ciclo.",
-  },
+export const reconquistaOfferSummary = [
+  "Protocolo digital completo de 50 páginas",
+  "30 acciones diarias y 4 revisiones semanales",
+  "Panel de reciprocidad y gate de entrada",
+  "Hoja final para decidir reconstruir, observar o cerrar",
 ] as const;

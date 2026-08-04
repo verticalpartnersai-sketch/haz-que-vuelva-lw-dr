@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { reconquistaScenarios } from "@/features/upsells/reconquista-content";
+import { QuizTestimonialCarousel } from "@/features/quiz/quiz-testimonial-carousel";
+import { previewCopyEs } from "@/features/quiz/quiz-preview-copy";
 
 export function ReconquistaMasthead() {
   return (
@@ -13,7 +14,6 @@ export function ReconquistaMasthead() {
         src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
         width={1451}
       />
-      <span>Tu siguiente decisión ya está disponible</span>
     </header>
   );
 }
@@ -31,7 +31,7 @@ export function ReconquistaBrand({ priority = false }: { priority?: boolean }) {
       />
       <div>
         <strong>RECONQUISTA 30</strong>
-        <small>Reciprocidad · acuerdos · claridad</small>
+        <small>30 días · reciprocidad · claridad</small>
       </div>
     </div>
   );
@@ -67,7 +67,7 @@ export function ProductMockup({ compact = false }: { compact?: boolean }) {
           width={300}
         />
         <strong>RECONQUISTA 30</strong>
-        <p>Treinta días para medir reciprocidad, reconstruir con acuerdos o salir con claridad.</p>
+        <p>La ruta para sostener una apertura sin volver a perseguir.</p>
       </div>
     </div>
   );
@@ -76,18 +76,17 @@ export function ProductMockup({ compact = false }: { compact?: boolean }) {
 export function OfferActions({
   acceptHref,
   declineHref,
-  downsell = false,
+  lastChance = false,
 }: {
   acceptHref: string | null;
   declineHref: string;
-  downsell?: boolean;
+  lastChance?: boolean;
 }) {
   return (
     <div className="r30-actions">
       <div className="r30-price">
-        <span>{downsell ? "Última condición poscompra" : "Añádelo ahora por"}</span>
-        {downsell ? <del>US$7,90</del> : null}
-        <strong>{downsell ? "US$5" : "US$7,90"}</strong>
+        <span>{lastChance ? "Antes de continuar" : "Añádelo ahora por"}</span>
+        <strong>US$6,90</strong>
         <small>Pago único · acceso inmediato · garantía de 7 días</small>
       </div>
       {acceptHref ? (
@@ -96,7 +95,7 @@ export function OfferActions({
           href={acceptHref}
           rel="noopener noreferrer"
         >
-          Sí, quiero Reconquista 30
+          SÍ, QUIERO AÑADIR RECONQUISTA 30
         </a>
       ) : (
         <span
@@ -104,7 +103,7 @@ export function OfferActions({
           className="r30-action r30-action--accept r30-action--disabled"
           role="link"
         >
-          Sí, quiero Reconquista 30
+          SÍ, QUIERO AÑADIR RECONQUISTA 30
         </span>
       )}
       <small className="r30-actions__note">
@@ -113,31 +112,23 @@ export function OfferActions({
           : "La aceptación todavía no está conectada al pago. Este botón no realizará ningún cargo."}
       </small>
       <Link className="r30-action r30-action--decline" href={declineHref}>
-        No, prefiero seguir solo con mi plan de 7 días.
+        No, gracias. Prefiero continuar sin Reconquista 30.
       </Link>
     </div>
   );
 }
 
-export function ScenarioStories({ compact = false }: { compact?: boolean }) {
+export function ReconquistaTestimonials({ compact = false }: { compact?: boolean }) {
   return (
-    <section className={`r30-stories${compact ? " r30-stories--compact" : ""}`}>
+    <section className={`r30-testimonials${compact ? " r30-testimonials--compact" : ""}`}>
       <header>
-        <span className="r30-kicker">Decisiones que el protocolo organiza</span>
-        <h2>No se trata de creer más fuerte. Se trata de mirar mejor.</h2>
+        <span className="r30-eyebrow">YA VISTE LO QUE CAMBIA CUANDO EXISTE UNA RUTA</span>
+        <h2>No necesitas imaginar qué ocurre cuando dejas de reaccionar desde el miedo.</h2>
         <p>
-          Estos relatos son escenarios ilustrativos de uso, no testimonios de compradoras ni promesas de resultado.
+          Estas son las mismas historias que acabas de ver en tu diagnóstico. Reconquista 30 existe para sostener esa ventaja después de la primera apertura, cuando volver a improvisar puede cerrar la puerta otra vez.
         </p>
       </header>
-      <div className="r30-stories__grid">
-        {reconquistaScenarios.map((scenario) => (
-          <article key={scenario.title}>
-            <span>Escenario ilustrativo</span>
-            <blockquote>“{scenario.quote}”</blockquote>
-            <h3>{scenario.title}</h3>
-          </article>
-        ))}
-      </div>
+      <QuizTestimonialCarousel stories={previewCopyEs.proof.stories} />
     </section>
   );
 }

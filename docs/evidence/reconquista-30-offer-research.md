@@ -21,21 +21,25 @@ As buscas foram feitas com Agent Reach/Exa e consultas complementares em busca d
 ## Fontes canônicas internas
 
 - `Operação 01 - Documentação/2. Produto, Oferta e Mecanismo`: persona, mecanismo, identidade e regra de provas.
-- `Operação 01 - Documentação/3. Esteira e Economia`: UP1 Reconquista 30; Downsell 1 com o mesmo conteúdo por US$5; recusa segue para UP2.
+- `Operação 01 - Documentação/3. Esteira e Economia`: UP1 Reconquista 30; Downsell 1 com o mesmo conteúdo; recusa segue para UP2. O preço histórico anterior foi substituído pela decisão canônica mais recente do usuário: US$6,90 para Reconquista 30 em ambas as rotas.
 - `Operação 01 - Documentação/4. Produtos e Entregáveis`: produto final de 50 páginas e protocolo de 30 dias.
 - `Operação 01 - Documentação/5. Funil Comercial/03 - Checkout e Ofertas.md`: sequência e parâmetros do funil.
 - `04_Reconquista_30_FINAL.pdf`: páginas e linguagem reais usadas nos mockups.
 
 ## Decisões implementadas
 
-1. O preço fica visível perto da ação, mas não dentro do texto do botão.
-2. Aceite é verde e recusa é vermelha; ambos têm peso visual explícito, sem seta ou ícone.
+1. O preço canônico é US$6,90 e fica visível perto da ação, mas não dentro do texto do botão.
+2. Aceite é verde e a recusa é um link secundário legível, sem confirmshaming nem competição visual com a ação principal.
 3. A recusa da UP1 leva a `/d1`; a recusa do Downsell 1 leva a `/up2`; a query é preservada.
-4. O Downsell 1 mantém produto, acesso e garantia e altera apenas o preço para US$5.
-5. Não há cronômetro, falsa escassez nem depoimento inventado. Os relatos são rotulados como cenários ilustrativos.
-6. Páginas reais do PDF tornam o produto tangível. A coluna branca de 1 px presente nas seis exportações foi removida sem alterar o conteúdo.
+4. UP1 e Downsell 1 mantêm o mesmo produto, acesso, garantia e preço canônico de US$6,90. A rota `/d1` é uma reapresentação mais curta, não um desconto fictício.
+5. Não há cronômetro, falsa escassez nem depoimento inventado. UP1 e D1 reutilizam o carrossel canônico de Camila, Valentina e Sofía já exibido no resultado final do quiz.
+6. Páginas reais do PDF tornam o produto tangível. A faixa branca residual na borda direita das exportações é mascarada na apresentação sem cortar texto ou alterar o conteúdo do material.
 7. A logo usada é `brand-v2.png`, coerente com a identidade aprovada de Reconquista 30.
 8. O rodapé inclui privacidade e termos; quando o checkout não está configurado, o aceite permanece sem cobrança e informa isso.
+
+## Alinhamento com a página final do quiz
+
+O task canônico `Criar quiz por etapas` e o código publicado da página final definem a linguagem reaproveitada em UP1 e D1: coluna única estreita, fundo preto uniforme, títulos em Source Sans 3, texto branco/cinza, CTAs verdes com pulso de borda, oferta em card off-white, ritmo mobile-first e prova social em conversas de WhatsApp. A implementação anterior em layout editorial largo e os cenários ilustrativos foram removidos por romperem essa continuidade.
 
 ## Imagens geradas com ImageGen
 

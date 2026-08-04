@@ -8,9 +8,9 @@ import {
 import { ReconquistaOfferPage } from "@/features/upsells/reconquista-offer-page";
 
 export const metadata: Metadata = {
-  title: "Última oportunidad · Reconquista 30",
+  title: "Antes de continuar · Reconquista 30",
   description:
-    "Última condición poscompra para acceder al protocolo completo Reconquista 30.",
+    "Revisión final para añadir el protocolo completo Reconquista 30.",
   robots: { follow: false, index: false },
 };
 

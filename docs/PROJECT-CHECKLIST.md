@@ -431,6 +431,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
   redirecionador preserva o parâmetro e a atribuição.
 - [x] Implementar páginas mobile-first `/up1`, `/d1`, `/up2` e
   `/gracias`, mantendo os links de aceitação externos configuráveis.
+- [x] Alinhar `/up1` e `/d1` ao sistema visual da página final do quiz,
+  reutilizar o carrossel canônico de Camila, Valentina e Sofía e fixar o preço
+  de Reconquista 30 em US$6,90 nas duas rotas.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
 - [ ] Configurar `NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` com o checkout aprovado do

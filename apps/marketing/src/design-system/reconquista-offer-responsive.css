@@ -4,7 +4,7 @@
   }
 
   .r30-masthead > img {
-    width: 14rem;
+    width: 11rem;
   }
 
   .r30-hero {
@@ -19,7 +19,8 @@
     font-size: 1.08rem;
   }
 
-  .r30-action--accept {
+  .r30-action--accept,
+  .r30-action--decline {
     min-width: 420px;
   }
 
@@ -123,11 +124,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .r30-action--accept {
+  .r30-action--accept,
+  .r30-action--decline {
     transition: none;
   }
 
-  .r30-action--accept::before {
+  .r30-action--accept::before,
+  .r30-action--decline::before {
     animation: none;
     opacity: 0.36;
   }

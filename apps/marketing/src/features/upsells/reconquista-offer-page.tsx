@@ -47,12 +47,10 @@ function Hero({
         <OfferActions
           acceptHref={acceptHref}
           declineHref={declineHref}
-          lastChance={isDownsell}
         />
       </div>
       <div className="r30-hero__visual" aria-label="Vista del producto Reconquista 30">
         <ProductMockup compact={isDownsell} />
-        <p>50 páginas · 30 acciones · 4 revisiones</p>
       </div>
     </section>
   );
@@ -162,10 +160,7 @@ function ValueStack() {
 function OfferCard({
   acceptHref,
   declineHref,
-  isDownsell,
-}: Pick<ReconquistaOfferPageProps, "acceptHref" | "declineHref"> & {
-  isDownsell: boolean;
-}) {
+}: Pick<ReconquistaOfferPageProps, "acceptHref" | "declineHref">) {
   return (
     <section className="r30-offer">
       <header>
@@ -174,14 +169,14 @@ function OfferCard({
       </header>
       <article className="r30-offer-card">
         <ReconquistaBrand />
-        <h3>Todo lo que necesitas para conducir los próximos 30 días con claridad.</h3>
+        <h3>Todo lo que necesitas para navegar los próximos 30 días con claridad.</h3>
         <ul>
           {reconquistaOfferSummary.map((item) => <li key={item}>{item}</li>)}
         </ul>
         <OfferActions
           acceptHref={acceptHref}
           declineHref={declineHref}
-          lastChance={isDownsell}
+          price="US$6,90"
         />
       </article>
     </section>
@@ -227,8 +222,12 @@ export function ReconquistaOfferPage({
         </>
       )}
       <ReconquistaTestimonials compact={isDownsell} />
-      <OfferCard acceptHref={acceptHref} declineHref={declineHref} isDownsell={isDownsell} />
-      <Guarantee />
+      {isDownsell ? null : (
+        <>
+          <OfferCard acceptHref={acceptHref} declineHref={declineHref} />
+          <Guarantee />
+        </>
+      )}
       <ReconquistaFooter />
     </main>
   );

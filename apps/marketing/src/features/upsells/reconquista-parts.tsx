@@ -8,11 +8,11 @@ export function ReconquistaMasthead() {
   return (
     <header className="r30-masthead">
       <Image
-        alt="Haz Que Vuelva"
-        height={392}
+        alt="Reconquista 30"
+        height={300}
         priority
-        src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
-        width={1451}
+        src="/images/upsells/reconquista-30/brand-transparent-light-v1.png"
+        width={300}
       />
     </header>
   );
@@ -22,17 +22,12 @@ export function ReconquistaBrand({ priority = false }: { priority?: boolean }) {
   return (
     <div className="r30-brand" aria-label="Reconquista 30">
       <Image
-        alt=""
-        aria-hidden="true"
+        alt="Reconquista 30"
         height={300}
         priority={priority}
-        src="/images/upsells/reconquista-30/brand-v2.png"
+        src="/images/upsells/reconquista-30/brand-transparent-dark-v1.png"
         width={300}
       />
-      <div>
-        <strong>RECONQUISTA 30</strong>
-        <small>30 días · reciprocidad · claridad</small>
-      </div>
     </div>
   );
 }
@@ -40,35 +35,14 @@ export function ReconquistaBrand({ priority = false }: { priority?: boolean }) {
 export function ProductMockup({ compact = false }: { compact?: boolean }) {
   return (
     <div className={`r30-mockup${compact ? " r30-mockup--compact" : ""}`}>
-      <div className="r30-mockup__page r30-mockup__page--back">
-        <Image
-          alt=""
-          fill
-          sizes="260px"
-          src="/images/upsells/reconquista-30/pages/reciprocity-board.webp"
-        />
-      </div>
-      <div className="r30-mockup__page r30-mockup__page--middle">
-        <Image
-          alt=""
-          fill
-          sizes="260px"
-          src="/images/upsells/reconquista-30/pages/day-30.webp"
-        />
-      </div>
-      <div className="r30-mockup__cover">
-        <span>HAZ QUE VUELVA</span>
-        <Image
-          alt=""
-          aria-hidden="true"
-          height={300}
-          priority={!compact}
-          src="/images/upsells/reconquista-30/brand-v2.png"
-          width={300}
-        />
-        <strong>RECONQUISTA 30</strong>
-        <p>La ruta para sostener una apertura sin volver a perseguir.</p>
-      </div>
+      <Image
+        alt="Reconquista 30 abierto en ebook, notebook, tablet y celular"
+        height={916}
+        priority
+        sizes="(max-width: 639px) calc(100vw - 20px), 860px"
+        src="/images/upsells/reconquista-30/product-bundle-mockup-v1.png"
+        width={1717}
+      />
     </div>
   );
 }
@@ -76,19 +50,22 @@ export function ProductMockup({ compact = false }: { compact?: boolean }) {
 export function OfferActions({
   acceptHref,
   declineHref,
-  lastChance = false,
+  price,
+  priceLabel = "Añádelo ahora por",
 }: {
   acceptHref: string | null;
   declineHref: string;
-  lastChance?: boolean;
+  price?: string;
+  priceLabel?: string;
 }) {
   return (
     <div className="r30-actions">
-      <div className="r30-price">
-        <span>{lastChance ? "Antes de continuar" : "Añádelo ahora por"}</span>
-        <strong>US$6,90</strong>
-        <small>Pago único · acceso inmediato · garantía de 7 días</small>
-      </div>
+      {price ? (
+        <div className="r30-price">
+          <span>{priceLabel}</span>
+          <strong>{price}</strong>
+        </div>
+      ) : null}
       {acceptHref ? (
         <a
           className="r30-action r30-action--accept"
@@ -106,13 +83,8 @@ export function OfferActions({
           SÍ, QUIERO AÑADIR RECONQUISTA 30
         </span>
       )}
-      <small className="r30-actions__note">
-        {acceptHref
-          ? "Al continuar, abrirás la página segura de pago para confirmar este acceso adicional."
-          : "La aceptación todavía no está conectada al pago. Este botón no realizará ningún cargo."}
-      </small>
       <Link className="r30-action r30-action--decline" href={declineHref}>
-        No, gracias. Prefiero continuar sin Reconquista 30.
+        NO, GRACIAS. PREFIERO CONTINUAR SIN RECONQUISTA 30
       </Link>
     </div>
   );

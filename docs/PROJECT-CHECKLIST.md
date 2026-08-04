@@ -432,8 +432,12 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Implementar páginas mobile-first `/up1`, `/d1`, `/up2` e
   `/gracias`, mantendo os links de aceitação externos configuráveis.
 - [x] Alinhar `/up1` e `/d1` ao sistema visual da página final do quiz,
-  reutilizar o carrossel canônico de Camila, Valentina e Sofía e fixar o preço
-  de Reconquista 30 em US$6,90 nas duas rotas.
+  reutilizar o carrossel manual de Camila, Valentina e Sofía, usar o mockup
+  multidevice de Reconquista 30 e manter valores fora das duas heroes. A UP1
+  custa US$6,90; a decisão comercial mais recente fixa D1 em US$4,90.
+- [ ] Definir produto, preço, checkout e transição do Downsell 2 antes de criar
+  `/d2`; o contrato atual leva aceite e recusa de VUELVE IA em `/up2` para
+  `/gracias`.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
 - [ ] Configurar `NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` com o checkout aprovado do

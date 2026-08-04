@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
@@ -9,8 +9,6 @@ import type {
   ProofPreviewStory,
   ProofPreviewStoryId,
 } from "@/features/quiz/quiz-contracts";
-
-const rotationInterval = 6500;
 
 const testimonialAssets: Record<ProofPreviewStoryId, string> = {
   camila: "/images/quiz/proof-preview/camila-chat-v3.webp",
@@ -25,27 +23,6 @@ export function QuizTestimonialCarousel({
 }) {
   const { l } = useLocale();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [hoverPaused, setHoverPaused] = useState(false);
-  const [manualPaused, setManualPaused] = useState(false);
-  const rotationPaused = manualPaused || hoverPaused;
-
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => {
-      if (query.matches) setManualPaused(true);
-    };
-    updatePreference();
-    query.addEventListener("change", updatePreference);
-    return () => query.removeEventListener("change", updatePreference);
-  }, []);
-
-  useEffect(() => {
-    if (rotationPaused || stories.length < 2) return;
-    const interval = window.setInterval(() => {
-      setActiveIndex((index) => (index + 1) % stories.length);
-    }, rotationInterval);
-    return () => window.clearInterval(interval);
-  }, [rotationPaused, stories.length]);
 
   function move(step: number) {
     setActiveIndex(
@@ -64,9 +41,6 @@ export function QuizTestimonialCarousel({
       )}
       aria-roledescription={l("carrusel", "carrossel", "carousel")}
       className="quiz-testimonial-carousel"
-      onFocusCapture={() => setManualPaused(true)}
-      onMouseEnter={() => setHoverPaused(true)}
-      onMouseLeave={() => setHoverPaused(false)}
       role="region"
     >
       <div className="quiz-testimonial-carousel__controls">
@@ -80,28 +54,6 @@ export function QuizTestimonialCarousel({
           type="button"
         >
           <Icon name="arrowLeft" weight="bold" />
-        </button>
-        <button
-          aria-label={
-            manualPaused
-              ? l(
-                  "Iniciar rotación automática",
-                  "Iniciar rotação automática",
-                  "Start automatic rotation",
-                )
-              : l(
-                  "Pausar rotación automática",
-                  "Pausar rotação automática",
-                  "Pause automatic rotation",
-                )
-          }
-          className="quiz-testimonial-carousel__toggle"
-          onClick={() => setManualPaused((paused) => !paused)}
-          type="button"
-        >
-          {manualPaused
-            ? l("Reproducir", "Reproduzir", "Play")
-            : l("Pausar", "Pausar", "Pause")}
         </button>
         <span aria-hidden="true">
           {activeIndex + 1} / {stories.length}
@@ -120,7 +72,7 @@ export function QuizTestimonialCarousel({
       </div>
 
       <div
-        aria-live={rotationPaused ? "polite" : "off"}
+        aria-live="polite"
         className="quiz-testimonial-carousel__viewport"
       >
         <div

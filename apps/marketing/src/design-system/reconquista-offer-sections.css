@@ -227,10 +227,11 @@
 
 .r30-offer-card h3 {
   color: var(--r30-ink);
-  font-size: 1.4rem;
-  line-height: 1.22;
+  font-size: clamp(1.7rem, 7vw, 2.25rem);
+  line-height: 1.14;
   margin: 1.25rem auto 0;
-  max-width: 21ch;
+  max-width: 25ch;
+  width: 100%;
 }
 
 .r30-offer-card ul {
@@ -259,18 +260,12 @@
   font-weight: 800;
 }
 
-.r30-offer-card .r30-price > span,
-.r30-offer-card .r30-price small,
-.r30-offer-card .r30-actions__note {
+.r30-offer-card .r30-price > span {
   color: #646b66;
 }
 
 .r30-offer-card .r30-price strong {
   color: #168f4d;
-}
-
-.r30-offer-card .r30-action--decline {
-  color: #606762;
 }
 
 .r30-guarantee {

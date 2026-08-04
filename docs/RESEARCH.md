@@ -823,3 +823,24 @@ As respostas conversacionais usam uma janela móvel de 24 horas e não permitem
 que o modelo decida ou altere cotas. Conteúdo real de conversas continua
 bloqueado até a aprovação jurídica prevista no Oracle para México e Colômbia;
 QA anterior a esse gate usa apenas dados sintéticos.
+
+## Registro de fontes — encadeamento comercial UP2/D2
+
+Pesquisa atualizada em 4 de agosto de 2026 com Agent Reach/Exa, documentação
+oficial da Perfect Pay e o contrato comercial canônico do produto.
+
+- [Perfect Pay — Upsell OneClick](https://help.perfectpay.com.br/article/141-upsell-one-click):
+  cada oferta pós-compra cadastra o link do upsell e a página de obrigado; a
+  página seguinte pode ser outra oferta da cadeia.
+- [Perfect Pay — Página de Obrigado](https://help.perfectpay.com.br/article/128-como-configurar-minha-pagina-de-obrigado-na-perfect-pay):
+  documenta a configuração do destino após a decisão comercial.
+- [NIST — Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence):
+  recomenda transparência sobre limites, privacidade e avaliação antes do uso.
+
+Decisão: a recusa de D1 conclui em `/gracias`; compras aceitas avançam pela
+página de obrigado configurada no painel. A recusa de UP2 abre `/d2`, e a
+recusa de D2 conclui em `/gracias`. D2 mantém exatamente os 30 dias, formatos,
+limites e funções de VUELVE IA definidos no Oracle; somente a condição
+comercial muda de US$20 para US$15. Nenhuma hero mostra preço, e o exemplo de
+análise é sintético e explicitamente rotulado. O checkout de D2 permanece
+fail-closed até existir `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` aprovada.

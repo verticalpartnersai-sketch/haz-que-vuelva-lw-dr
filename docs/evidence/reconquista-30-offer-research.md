@@ -32,7 +32,7 @@ As buscas foram feitas com Agent Reach/Exa e consultas complementares em busca d
 
 1. Nenhuma hero exibe preço. A UP1 mantém US$6,90 somente no card final; o valor comercial do Downsell 1 é US$4,90, sem inseri-lo na hero nem no texto do botão.
 2. Aceite e recusa são botões de mesma hierarquia e dimensão: verde para aceitar, vermelho para recusar, ambos com linguagem direta e sem texto auxiliar de pagamento.
-3. A recusa da UP1 leva a `/d1`; a recusa do Downsell 1 leva a `/up2`; a query é preservada.
+3. A recusa da UP1 leva a `/d1`; por decisão posterior do usuário, a recusa do Downsell 1 leva diretamente a `/gracias`. O avanço de uma compra aceita para a oferta seguinte pertence ao encadeamento de páginas de obrigado da Perfect Pay; a query continua preservada nas transições internas.
 4. UP1 e Downsell 1 mantêm o mesmo produto. `/d1` é a reapresentação reduzida por US$4,90 e contém apenas hero, prova social e rodapé; não repete card final nem seção de garantia.
 5. Não há cronômetro, falsa escassez nem depoimento inventado. UP1, D1 e a página final do quiz reutilizam Camila, Valentina e Sofía em um carrossel estritamente manual, sem autoplay e sem botão “Pausar”.
 6. O mockup multidevice usa capa e páginas reais do PDF em ebook, notebook, tablet e celular. A faixa branca residual das exportações permanece mascarada nas demais apresentações sem cortar texto.
@@ -56,12 +56,12 @@ As variantes `brand-transparent-light-v1.png` e
 preservando símbolo e vermelho da marca; muda apenas o fundo transparente e a
 cor neutra necessária para contraste no preto e no card off-white.
 
-## Limite canônico da continuação UP2/D2
+## Continuação UP2/D2
 
-O fluxo versionado atual contém `/up2` para VUELVE IA e envia tanto aceite
-quanto recusa para `/gracias`. Não existe rota `/d2`, preço de Downsell 2,
-checkout ou cenário Perfect Pay correspondente. Criar D2 exigiria uma decisão
-comercial explícita; até lá, não deve ser inferido a partir do desconto de D1.
+A revisão posterior dos documentos canônicos confirmou o Downsell 2: é o mesmo
+Diagnóstico VUELVE IA, com os mesmos 30 dias, formatos, limites e funções, por
+US$15 após a recusa da oferta de US$20. A implementação e as fontes específicas
+estão registradas em `vuelve-ia-offer-research.md`.
 
 Os prompts proibiram texto, logos, marca-d'água, corações, flores, brilho rosa/magenta, mãos deformadas, bordas e faixas brancas.
 
@@ -73,10 +73,14 @@ versionado do app, conforme a documentação oficial de
 [Next.js no Cloudflare Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/nextjs/)
 e do [`wrangler deploy`](https://developers.cloudflare.com/workers/wrangler/commands/workers/#deploy).
 O dry-run deve preceder a mutação remota; depois do deploy, `/d1`, a
-preservação da query, a saída para `/up2` e a remoção da rota antiga precisam
+preservação da query, a saída para `/gracias` e a remoção da rota antiga precisam
 ser comprovadas na superfície pública.
 
 A versão `6fe59bbb-0515-4175-9022-08d3e8fa9e97` foi publicada com 100% do
 tráfego. A superfície pública comprovou `/d1` 200, `/downsell1` 404, navegação
 `/up1` → `/d1` → `/up2` com query preservada e ausência de overflow nos
 viewports 390 × 844 e 1440 × 900.
+
+Essa última frase registra o comportamento histórico daquele rollout. A
+alteração posterior de `/d1` para `/gracias` precisa de nova publicação e nova
+evidência pública antes de substituir o registro histórico.

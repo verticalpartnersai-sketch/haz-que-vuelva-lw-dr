@@ -10,9 +10,10 @@ no e-mail correto e na negação correta para outra conta.
 - o postback aponta para `https://miembros.hazquevuelva.site/api/webhooks/perfect-pay`;
 - o token público e a autenticação do postback estão ativos;
 - o checkout principal usa `upsell=true`;
-- o painel encadeia Haz Que Vuelva → `/up1`; a recusa segue para
-  `/d1`; o resultado do Downsell 1 segue para `/up2`; e o resultado do
-  VUELVE IA segue para `/gracias`;
+- o painel encadeia Haz Que Vuelva → `/up1`; a recusa da UP1 segue para
+  `/d1`; uma compra aceita de Reconquista 30 usa a página de obrigado da
+  Perfect Pay para chegar a `/up2`; a recusa de D1 conclui em `/gracias`;
+  a recusa de UP2 segue para `/d2`; e D2 conclui em `/gracias`;
 - há um proprietário administrativo autenticado e dois e-mails de teste
   controlados;
 - os quatro PDFs estão publicados no Storage privado;
@@ -72,9 +73,11 @@ hash ou alias do e-mail nas evidências públicas.
 | PP-05 | aceitar Reconquista 30 em `/up1` | libera `reconquista_30` e avança a `/up2` |
 | PP-06 | recusar Reconquista 30 em `/up1` | não libera R30 e alcança `/d1` |
 | PP-06A | aceitar Reconquista 30 em `/d1` | libera o mesmo `reconquista_30` uma única vez e avança a `/up2` |
-| PP-06B | recusar Reconquista 30 em `/d1` | não libera R30 e alcança `/up2` |
+| PP-06B | recusar Reconquista 30 em `/d1` | não libera R30 e conclui em `/gracias` |
 | PP-07 | aceitar VUELVE IA em `/up2` | libera `vuelve_ia` e conclui em `/gracias` |
-| PP-08 | recusar VUELVE IA | não libera IA e conclui em `/gracias` |
+| PP-08 | recusar VUELVE IA em `/up2` | não libera IA e alcança `/d2` |
+| PP-08A | aceitar VUELVE IA em `/d2` | libera o mesmo `vuelve_ia` uma única vez e conclui em `/gracias` |
+| PP-08B | recusar VUELVE IA em `/d2` | não libera IA e conclui em `/gracias` |
 | PP-09 | pagamento pendente ou rejeitado | não concede nenhum entitlement |
 | PP-10 | repetir o mesmo postback aprovado | não duplica compra, acesso, convite nem outbox |
 | PP-11 | reembolso de um bump | revoga somente o bump correspondente |

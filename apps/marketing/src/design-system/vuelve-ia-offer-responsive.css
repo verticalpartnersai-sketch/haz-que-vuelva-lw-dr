@@ -1,0 +1,88 @@
+@media (min-width: 640px) {
+  .via-masthead { padding-top: 2rem; }
+  .via-masthead > img { width: 12rem; }
+  .via-hero { padding-top: 3rem; }
+  .via-hero h1 { font-size: clamp(2.6rem, 5.5vw, 3.55rem); }
+  .via-hero__copy > p { font-size: 1.08rem; }
+
+  .via-action {
+    min-width: 430px;
+  }
+
+  .via-mockup {
+    min-height: 490px;
+    padding: 0 4.5rem 2.5rem 0;
+  }
+
+  .via-ui { min-height: 400px; }
+  .via-device-bar { min-height: 31px; padding-inline: 0.8rem; }
+  .via-device-bar i { height: 7px; width: 7px; }
+  .via-ui aside { gap: 1.25rem; padding: 2rem 1.2rem; }
+  .via-ui aside b,
+  .via-ui aside span { font-size: 0.7rem; }
+  .via-ui > section { padding: 2rem 1.5rem; }
+  .via-ui > section > small { font-size: 0.62rem; }
+  .via-ui > section > h3 { font-size: 1.35rem; }
+  .via-ui__rows { gap: 0.7rem; margin-top: 1.25rem; }
+  .via-ui__rows > div { padding: 0.7rem 0.8rem; }
+  .via-ui__rows span { font-size: 0.58rem; }
+  .via-ui__rows p { font-size: 0.72rem; }
+  .via-laptop__base { height: 12px; }
+  .via-tablet { padding: 1.4rem 1rem; width: 32%; }
+  .via-phone { padding: 1.6rem 0.8rem 1rem; width: 25%; }
+  .via-tablet small,
+  .via-phone small { font-size: 0.55rem; }
+  .via-tablet strong,
+  .via-phone strong { font-size: 0.95rem; }
+  .via-tablet p,
+  .via-phone p { font-size: 0.65rem; }
+  .via-tablet > span,
+  .via-phone > span { font-size: 0.58rem; }
+
+  .via-context,
+  .via-steps,
+  .via-proof,
+  .via-details,
+  .via-offer,
+  .via-guarantee { margin-top: 5.5rem; }
+
+  .via-context h2,
+  .via-steps h2,
+  .via-proof h2,
+  .via-details h2,
+  .via-offer h2,
+  .via-guarantee h2 { font-size: clamp(2rem, 4vw, 2.7rem); }
+
+  .via-steps ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .via-steps li { grid-template-columns: 1fr; }
+  .via-details__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .via-example__topline { align-items: center; flex-direction: row; justify-content: space-between; padding: 1.1rem 1.25rem; }
+  .via-example .via-ui__rows > div { padding: 1.1rem 1.25rem; }
+  .via-offer-card { padding: 2.4rem; }
+  .via-guarantee { grid-template-columns: 210px 1fr; text-align: left; }
+  .via-guarantee h2 { margin-top: 0; }
+}
+
+@media (min-width: 900px) {
+  .via-context,
+  .via-steps,
+  .via-proof,
+  .via-details,
+  .via-offer,
+  .via-guarantee { margin-top: 6rem; }
+
+  .via-steps li { padding: 1.35rem; }
+  .via-details__grid article { padding: 1.2rem; }
+}
+
+@media (max-width: 639px) {
+  .via-page--downsell .via-hero { padding-top: 1.5rem; }
+  .via-page--downsell .via-hero__visual { margin-top: 1.5rem; }
+  .via-page--downsell .via-proof { margin-top: 3.5rem; }
+  .via-mockup--compact { min-height: 270px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .via-action { transition: none; }
+  .via-action::before { animation: none; opacity: 0.24; }
+}

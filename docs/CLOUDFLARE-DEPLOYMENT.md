@@ -196,10 +196,11 @@ comentários ou documentação.
 O checkout do produto principal está versionado no módulo de configuração do
 quiz. Os checkouts de Reconquista 30 e Diagnóstico VUELVE IA são injetados no
 build por `NEXT_PUBLIC_UPSELL_1_ACCEPT_URL` e
-`NEXT_PUBLIC_UPSELL_2_ACCEPT_URL`. O checkout do Downsell 1 será injetado por
-`NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` depois da aprovação comercial; até lá, o
-aceite de `/d1` permanece sem cobrança. O smoke confirma que as URLs publicadas
-e seus redirecionadores preservam parâmetros de atribuição.
+`NEXT_PUBLIC_UPSELL_2_ACCEPT_URL`. Os checkouts dos downsells serão injetados
+por `NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` e
+`NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` depois da aprovação comercial; até lá, os
+aceites de `/d1` e `/d2` permanecem sem cobrança. O smoke deve confirmar que
+as URLs publicadas e seus redirecionadores preservam parâmetros de atribuição.
 
 ### Área de membros
 
@@ -262,7 +263,8 @@ janela controlada ou ocorrer em uma publicação coordenada.
    embeddings; todas as rotas exigem `INTERNAL_SECRET` ou
    `PROVIDER_BACKFILL_SECRET` antes de processar qualquer payload. O tráfego da
    área de membros continua usando o Service Binding privado.
-3. Publicar marketing e confirmar a cadeia `/up1` → `/d1` → `/up2`.
+3. Publicar marketing e confirmar as saídas `/up1` → `/d1`, `/d1` →
+   `/gracias`, `/up2` → `/d2` e `/d2` → `/gracias`.
 4. Executar o smoke remoto de toda a superfície pública.
 5. Preservar os IDs das versões anteriores para rollback independente.
 
@@ -324,8 +326,10 @@ configuração real estiver incompleta.
   30 minutos no GitHub Actions.
 - [x] `/up1` e `/up2` carregam os checkouts correspondentes e preservam
   parâmetros de atribuição;
-- [x] `/d1` responde em produção, preserva parâmetros até `/up2` e mantém o
-  aceite sem cobrança enquanto o checkout próprio não está configurado.
+- [ ] Publicar a revisão em que `/d1` preserva parâmetros até `/gracias`,
+  `/up2` recusa para `/d2` e `/d2` preserva parâmetros até `/gracias`; os
+  aceites dos downsells devem continuar sem cobrança enquanto seus checkouts
+  não estiverem configurados.
 
 ### Área de membros
 

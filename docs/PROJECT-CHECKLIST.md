@@ -304,8 +304,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Validar projeções com fixtures reais redigidas e testes cloud.
 - [ ] Confirmar aprovação comercial dos três produtos no painel Perfect Pay.
 - [ ] Configurar no painel e provar o pós-compra: Haz Que Vuelva → `/up1`,
-  recusa de Reconquista 30 → `/d1`, resultado do Downsell 1 → `/up2`
-  e aceite/recusa do VUELVE IA → `/gracias`.
+  recusa de UP1 → `/d1`, recusa de D1 → `/gracias`, compra aceita de
+  Reconquista 30 → `/up2`, recusa de UP2 → `/d2` e resultado de D2 →
+  `/gracias`.
 - [ ] Cadastrar o checkout do Downsell 1, sua URL pública e o mapeamento para
   `reconquista_30` sem duplicar acesso. A página e a rota locais existem, mas
   isso ainda não prova configuração comercial nem concessão do entitlement.
@@ -429,15 +430,17 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Configurar o checkout real no CTA do quiz.
 - [x] Ativar `upsell=true` no checkout principal e comprovar que o
   redirecionador preserva o parâmetro e a atribuição.
-- [x] Implementar páginas mobile-first `/up1`, `/d1`, `/up2` e
+- [x] Implementar páginas mobile-first `/up1`, `/d1`, `/up2`, `/d2` e
   `/gracias`, mantendo os links de aceitação externos configuráveis.
 - [x] Alinhar `/up1` e `/d1` ao sistema visual da página final do quiz,
   reutilizar o carrossel manual de Camila, Valentina e Sofía, usar o mockup
   multidevice de Reconquista 30 e manter valores fora das duas heroes. A UP1
   custa US$6,90; a decisão comercial mais recente fixa D1 em US$4,90.
-- [ ] Definir produto, preço, checkout e transição do Downsell 2 antes de criar
-  `/d2`; o contrato atual leva aceite e recusa de VUELVE IA em `/up2` para
-  `/gracias`.
+- [x] Confirmar no contrato canônico que D2 mantém o mesmo Diagnóstico VUELVE
+  IA, acesso e limites por US$15; implementar `/d2` com recusa para `/gracias`
+  e UP2 com recusa para `/d2`, mantendo valores fora das heroes.
+- [ ] Configurar `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` com o checkout aprovado do
+  Downsell 2; até lá, o aceite de `/d2` permanece sem cobrança.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
 - [ ] Configurar `NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` com o checkout aprovado do

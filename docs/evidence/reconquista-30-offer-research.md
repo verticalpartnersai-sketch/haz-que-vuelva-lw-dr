@@ -82,5 +82,6 @@ tráfego. A superfície pública comprovou `/d1` 200, `/downsell1` 404, navegaç
 viewports 390 × 844 e 1440 × 900.
 
 Essa última frase registra o comportamento histórico daquele rollout. A
-alteração posterior de `/d1` para `/gracias` precisa de nova publicação e nova
-evidência pública antes de substituir o registro histórico.
+alteração posterior de `/d1` para `/gracias` foi publicada na versão
+`675a8d86-d708-4d7b-9b8e-ead4fb383036`; a nova evidência pública está
+registrada em `docs/CLOUDFLARE-DEPLOYMENT.md` sem apagar o histórico anterior.

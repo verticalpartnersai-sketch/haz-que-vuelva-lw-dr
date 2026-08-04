@@ -439,6 +439,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Confirmar no contrato canônico que D2 mantém o mesmo Diagnóstico VUELVE
   IA, acesso e limites por US$15; implementar `/d2` com recusa para `/gracias`
   e UP2 com recusa para `/d2`, mantendo valores fora das heroes.
+- [x] Publicar UP2/D2 no Worker de marketing e comprovar em produção a cadeia
+  de recusas `D1 → /gracias`, `UP2 → /d2` e `D2 → /gracias`, com query
+  preservada, ausência de overflow e console limpo.
 - [ ] Configurar `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` com o checkout aprovado do
   Downsell 2; até lá, o aceite de `/d2` permanece sem cobrança.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos

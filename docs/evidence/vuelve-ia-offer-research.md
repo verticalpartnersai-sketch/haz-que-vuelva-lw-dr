@@ -43,5 +43,7 @@ sustentam apenas a integração e os controles de transparência.
 
 Código e QA local não comprovam cadastro de oferta, one-click, entitlement ou
 redirecionamento no painel Perfect Pay. Esses pontos permanecem abertos até
-homologação com uma compra controlada. A publicação da nova rota `/d2` também
-exige deploy e smoke público separados.
+homologação com uma compra controlada. A rota `/d2` foi publicada na versão
+Cloudflare `675a8d86-d708-4d7b-9b8e-ead4fb383036`; o smoke público comprovou
+as transições, a preservação da query e a ausência de overflow, mas não
+substitui a homologação comercial.

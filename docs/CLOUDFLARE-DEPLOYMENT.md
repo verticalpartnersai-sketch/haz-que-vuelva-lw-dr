@@ -326,7 +326,7 @@ configuração real estiver incompleta.
   30 minutos no GitHub Actions.
 - [x] `/up1` e `/up2` carregam os checkouts correspondentes e preservam
   parâmetros de atribuição;
-- [ ] Publicar a revisão em que `/d1` preserva parâmetros até `/gracias`,
+- [x] Publicar a revisão em que `/d1` preserva parâmetros até `/gracias`,
   `/up2` recusa para `/d2` e `/d2` preserva parâmetros até `/gracias`; os
   aceites dos downsells devem continuar sem cobrança enquanto seus checkouts
   não estiverem configurados.
@@ -402,6 +402,26 @@ configuração real estiver incompleta.
 Essa evidência comprova roteamento e configuração pública do rollout. Ela não
 substitui os testes reais de compra, e-mail, autorização por usuário nem geração
 Gemini listados nas pendências.
+
+### Evidência do rollout de UP2/D2 em 4 de agosto de 2026
+
+- código: commit `e00d968796b2fa6042c8c946cc5f906813e76d11`, sincronizado
+  entre `main` local e `origin/main`;
+- CI do commit concluída com sucesso no GitHub;
+- marketing: versão `675a8d86-d708-4d7b-9b8e-ead4fb383036`, publicada no
+  domínio `hazquevuelva.site`;
+- `/up2`, `/d2`, `/d1` e `/gracias` responderam 200 depois da propagação;
+- Playwright comprovou em produção `D1 → /gracias`, `UP2 → /d2` e
+  `D2 → /gracias`, preservando `utm_source`, `order` e os demais parâmetros;
+- as heroes de UP2, D2 e D1 não contêm preço; o checkout configurado de UP2
+  preserva a atribuição e o aceite de D2 permanece desabilitado porque
+  `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` ainda não foi configurada;
+- não houve overflow em 390 × 844 ou 1440 × 900, nem erro ou aviso no console.
+
+O primeiro probe de `/d2` ocorreu durante a propagação e respondeu 404; uma
+nova requisição sem cache e o percurso completo no navegador responderam 200.
+Esta evidência comprova publicação e roteamento, não compra one-click,
+entitlement ou acesso ao produto.
 
 ## Rollback
 

@@ -423,6 +423,30 @@ nova requisição sem cache e o percurso completo no navegador responderam 200.
 Esta evidência comprova publicação e roteamento, não compra one-click,
 entitlement ou acesso ao produto.
 
+### Evidência do redesign de UP2/D2 em 4 de agosto de 2026
+
+- código: commit `f8c6adbeba42f7a47611be1cce276c0e97b25f14`, enviado para
+  `origin/main`;
+- marketing: versão `30b847af-8651-4051-9705-c51b9f2650b5`, publicada no
+  domínio `hazquevuelva.site`;
+- UP2 e D2 passaram a herdar o sistema visual `r30-*` da página final, de UP1
+  e de D1, com botões equivalentes, depoimentos manuais e rodapé compartilhado;
+- o mockup inventado foi substituído por capturas reais da VUELVE IA em
+  desktop e mobile, usando apenas uma conversa sintética em ambiente local;
+- `/up2`, `/d2`, `/gracias` e os novos assets responderam 200 depois da
+  propagação do Worker;
+- Playwright comprovou no domínio público `UP2 → /d2 → /gracias`, preservando
+  `utm_source`, `order` e os demais parâmetros da query;
+- as heroes de UP2 e D2 não contêm preço; as duas páginas exibem depoimentos e
+  não possuem botão de pausa;
+- não houve overflow em 390 × 844 ou 1440 × 900, nem erro ou aviso no console.
+
+A primeira leitura de UP2 e alguns assets ocorreu durante a propagação e ainda
+serviu a versão anterior. Uma nova requisição sem cache e o percurso completo
+no navegador serviram a versão `30b847af-8651-4051-9705-c51b9f2650b5`. Esta
+evidência visual e de roteamento não substitui uma compra one-click controlada,
+entitlement ou acesso autenticado ao produto.
+
 ## Rollback
 
 - Preservar a versão anterior de cada Worker.

@@ -442,6 +442,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Reconstruir UP2/D2 com o sistema visual `r30-*` aprovado na página final,
   em UP1 e em D1; usar capturas reais da VUELVE IA com conversa sintética e
   incluir o mesmo carrossel manual de depoimentos nas duas páginas.
+- [x] Publicar o redesign de UP2/D2 e comprovar no domínio público as capturas
+  reais, os depoimentos, a ausência de preço nas heroes, a cadeia de recusas,
+  a preservação da query e a responsividade em 390 × 844 e 1440 × 900.
 - [x] Publicar UP2/D2 no Worker de marketing e comprovar em produção a cadeia
   de recusas `D1 → /gracias`, `UP2 → /d2` e `D2 → /gracias`, com query
   preservada, ausência de overflow e console limpo.

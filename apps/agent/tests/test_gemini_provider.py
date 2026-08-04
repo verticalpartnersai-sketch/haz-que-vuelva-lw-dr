@@ -125,7 +125,11 @@ async def test_rejects_missing_or_invalid_usage_metadata(
     ("status", "body", "expected"),
     [
         (401, '{"error":{"message":"invalid key"}}', "provider_authentication_failed"),
-        (429, '{"error":{"message":"prepayment credits depleted"}}', "provider_quota_exhausted"),
+        (
+            429,
+            '{"error":{"message":"prepayment credits depleted"}}',
+            "provider_quota_exhausted",
+        ),
         (429, '{"error":{"message":"too many requests"}}', "provider_rate_limited"),
         (400, '{"error":{"message":"bad request"}}', "provider_request_rejected"),
         (503, '{"error":{"message":"unavailable"}}', "provider_unavailable"),
@@ -236,9 +240,7 @@ async def test_diagnostic_prompt_stays_within_worker_message_limit_for_large_exp
         + ("contenido extenso " * 20)
         for index in range(1_000)
     )
-    knowledge = [
-        RetrievedChunk(uuid4(), uuid4(), "global", "Conocimiento " * 4_000)
-    ]
+    knowledge = [RetrievedChunk(uuid4(), uuid4(), "global", "Conocimiento " * 4_000)]
 
     try:
         await provider.diagnose(

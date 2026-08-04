@@ -37,7 +37,10 @@ class DiagnosticReport(BaseModel):
         ]
         lines = [f"## {title}\n\n{body}" for title, body in sections]
         list_sections = [
-            ("Patrones que aumentan la distancia", self.patrones_que_aumentan_la_distancia),
+            (
+                "Patrones que aumentan la distancia",
+                self.patrones_que_aumentan_la_distancia,
+            ),
             ("Señales de apertura", self.senales_que_aun_favorecen_apertura),
             ("Riesgos y límites", self.riesgos_y_limites),
             ("Qué interrumpir ahora", self.que_interrumpir_ahora),

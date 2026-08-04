@@ -29,12 +29,14 @@ class GeminiEmbeddingProvider:
             json={
                 "model": f"models/{self._model}",
                 "content": {
-                    "parts": [{
-                        "text": (
-                            "Tarea: recuperar orientación relacional pertinente y "
-                            f"segura para una consulta en español.\nConsulta: {text}"
-                        )
-                    }]
+                    "parts": [
+                        {
+                            "text": (
+                                "Tarea: recuperar orientación relacional pertinente y "
+                                f"segura para una consulta en español.\nConsulta: {text}"
+                            )
+                        }
+                    ]
                 },
                 "outputDimensionality": self._dimensions,
             },

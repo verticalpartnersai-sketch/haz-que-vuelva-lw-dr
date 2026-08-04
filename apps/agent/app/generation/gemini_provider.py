@@ -285,9 +285,7 @@ class GeminiGenerationProvider:
         fixed_prompt = f"{instructions}\n\n{knowledge}\n\n{wrapper_start}"
         conversation_limit = max(
             1,
-            self._MAX_PROVIDER_MESSAGE_CHARS
-            - len(fixed_prompt)
-            - len(wrapper_end),
+            self._MAX_PROVIDER_MESSAGE_CHARS - len(fixed_prompt) - len(wrapper_end),
         )
         conversation_excerpt = self._representative_excerpt(
             conversation,

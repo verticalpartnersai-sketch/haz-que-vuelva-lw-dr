@@ -63,7 +63,9 @@ def pdf_to_markdown(path: Path, title: str) -> str:
     )
     pages = [page.strip() for page in process.stdout.split("\f") if page.strip()]
     sections = [f"# {title}"]
-    sections.extend(f"## Página {index}\n\n{page}" for index, page in enumerate(pages, 1))
+    sections.extend(
+        f"## Página {index}\n\n{page}" for index, page in enumerate(pages, 1)
+    )
     return "\n\n".join(sections)
 
 
@@ -215,7 +217,11 @@ async def main() -> None:
     prepared: list[tuple[Source, str]] = []
     for source in SOURCES:
         path = args.oracle_products / source.relative_path
-        raw = pdf_to_markdown(path, source.title) if source.kind == "pdf" else path.read_text()
+        raw = (
+            pdf_to_markdown(path, source.title)
+            if source.kind == "pdf"
+            else path.read_text()
+        )
         prepared.append((source, normalize_markdown(raw)))
     if args.dry_run:
         for source, content in prepared:

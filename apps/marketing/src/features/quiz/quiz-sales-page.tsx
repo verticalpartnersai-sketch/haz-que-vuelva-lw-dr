@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   useEffect,
   useRef,
@@ -41,6 +42,105 @@ const valueImages = {
   routes: productProofAssets.routes,
   scale: productProofAssets.scale,
 } as const;
+
+const timelineImages = [
+  "/images/quiz/timeline/day-1-break-certainty.webp",
+  "/images/quiz/timeline/day-3-absence.webp",
+  "/images/quiz/timeline/day-5-loss-fear.webp",
+  "/images/quiz/timeline/day-7-reversal.webp",
+] as const;
+
+function PaperQuizLogo() {
+  return (
+    <Image
+      alt="Haz Que Vuelva"
+      className="quiz-sales__paper-logo"
+      height={392}
+      loading="lazy"
+      src="/images/brand/haz-que-vuelva-logo-heart-paper-v1.webp"
+      width={1451}
+    />
+  );
+}
+
+function MechanismCycle({
+  centerLabel,
+  steps,
+}: {
+  centerLabel: string;
+  steps: readonly string[];
+}) {
+  return (
+    <div className="quiz-sales-cycle">
+      <svg aria-hidden="true" viewBox="0 0 600 520">
+        <defs>
+          <marker
+            id="quiz-cycle-arrow"
+            markerHeight="8"
+            markerWidth="8"
+            orient="auto"
+            refX="7"
+            refY="4"
+          >
+            <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" />
+          </marker>
+        </defs>
+        <path
+          d="M330 66 C455 78 526 156 530 247"
+          markerEnd="url(#quiz-cycle-arrow)"
+        />
+        <path
+          d="M526 286 C505 399 426 457 337 464"
+          markerEnd="url(#quiz-cycle-arrow)"
+        />
+        <path
+          d="M292 465 C188 456 106 393 78 302"
+          markerEnd="url(#quiz-cycle-arrow)"
+        />
+        <path
+          d="M72 254 C80 158 148 82 260 67"
+          markerEnd="url(#quiz-cycle-arrow)"
+        />
+      </svg>
+      <span className="quiz-sales-cycle__core">{centerLabel}</span>
+      <ol aria-label={centerLabel}>
+        {steps.map((step, index) => (
+          <li key={step}>
+            <small>{String(index + 1).padStart(2, "0")}</small>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function QuizSalesFooter() {
+  const { l } = useLocale();
+  const legalRegistration =
+    process.env.NEXT_PUBLIC_VERTICAL_PARTNERS_CNPJ?.trim();
+
+  return (
+    <footer className="quiz-sales-footer">
+      <QuizLogo compact />
+      <nav aria-label={l("Información legal", "Informações legais", "Legal information")}>
+        <Link href="/politica-de-privacidad">
+          {l("Política de privacidad", "Política de privacidade", "Privacy policy")}
+        </Link>
+        <Link href="/terminos-de-uso">
+          {l("Términos de uso", "Termos de uso", "Terms of use")}
+        </Link>
+      </nav>
+      <p>
+        Vertical Partners
+        {legalRegistration ? ` · CNPJ ${legalRegistration}` : ""}
+      </p>
+      <small>
+        © {new Date().getFullYear()} Haz Que Vuelva. {l("Todos los derechos reservados.", "Todos os direitos reservados.", "All rights reserved.")}
+      </small>
+    </footer>
+  );
+}
 
 function SalesCta({
   buttonRef,
@@ -204,7 +304,7 @@ export function QuizSalesPage({
   onCheckout: CheckoutHandler;
   route: QuizRoute;
 }) {
-  const { locale } = useLocale();
+  const { l, locale } = useLocale();
   const quizCopy = quizContentFor(locale);
   const sales = quizSalesCopyFor(locale);
   const routeCopy = sales.routes[route];
@@ -291,14 +391,14 @@ export function QuizSalesPage({
         <section className="quiz-sales-prose quiz-sales-mechanism">
           <h2>{sales.mechanism.heading}</h2>
           <p>{sales.mechanism.intro}</p>
-          <ol aria-label={sales.mechanism.heading}>
-            {sales.mechanism.sequence.map((step) => (
-              <li key={step}>
-                <span>{step}</span>
-                <Icon name="arrowDown" weight="bold" />
-              </li>
-            ))}
-          </ol>
+          <MechanismCycle
+            centerLabel={l(
+              "CICLO QUE SE REFUERZA",
+              "CICLO QUE SE REFORÇA",
+              "SELF-REINFORCING CYCLE",
+            )}
+            steps={sales.mechanism.sequence}
+          />
           <p className="quiz-sales-mechanism__claim">{sales.mechanism.claim}</p>
           <p>{sales.mechanism.closing}</p>
         </section>
@@ -309,10 +409,18 @@ export function QuizSalesPage({
             <p>{sales.timeline.body}</p>
           </header>
           <ol>
-            {sales.timeline.items.map((item) => (
+            {sales.timeline.items.map((item, index) => (
               <li key={item.day}>
-                <span>{item.day}</span>
-                <div>
+                <Image
+                  alt={item.title}
+                  height={800}
+                  loading="lazy"
+                  sizes="(max-width: 639px) calc(100vw - 42px), 340px"
+                  src={timelineImages[index]}
+                  width={1200}
+                />
+                <div className="quiz-sales-timeline__copy">
+                  <span>{item.day}</span>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
                 </div>
@@ -338,9 +446,6 @@ export function QuizSalesPage({
         </section>
 
         <section className="quiz-sales-reveal">
-          <QuizLogo compact />
-          <h2>{sales.reveal.heading}</h2>
-          <p>{sales.reveal.body}</p>
           <Image
             alt={sales.reveal.heading}
             className="quiz-sales-reveal__mockup"
@@ -350,6 +455,9 @@ export function QuizSalesPage({
             src={productProofAssets.bundleMockup}
             width={1440}
           />
+          <PaperQuizLogo />
+          <h2>{sales.reveal.heading}</h2>
+          <p>{sales.reveal.body}</p>
         </section>
 
         <section className="quiz-sales-value">
@@ -373,6 +481,7 @@ export function QuizSalesPage({
         <section className="quiz-sales-prose quiz-sales-cost">
           <h2>{sales.cost.heading}</h2>
           <p>{sales.cost.body}</p>
+          <Icon className="quiz-sales-cost__arrow" name="arrowDown" weight="bold" />
         </section>
 
         <section className="quiz-sales-social quiz-sales-social--universal">
@@ -386,7 +495,7 @@ export function QuizSalesPage({
 
         <section className="quiz-sales-offer" ref={offerRef}>
           <header>
-            <span>{sales.offer.eyebrow}</span>
+            <span className="quiz-sales-offer__eyebrow">{sales.offer.eyebrow}</span>
             <h2>{sales.offer.heading}</h2>
             <p>{sales.offer.body}</p>
             <p className="quiz-sales-offer__commitment">
@@ -395,7 +504,7 @@ export function QuizSalesPage({
           </header>
 
           <article className="quiz-sales-checkout">
-            <QuizLogo compact />
+            <PaperQuizLogo />
             <h3>{sales.checkout.heading}</h3>
             <ul>
               {sales.checkout.summary.map((item) => (
@@ -445,6 +554,8 @@ export function QuizSalesPage({
             position="after_faq"
           />
         </section>
+
+        <QuizSalesFooter />
       </main>
 
       {stickyVisible ? (

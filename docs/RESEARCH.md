@@ -784,3 +784,41 @@ tem uso válido. Não foi escolhido um número arbitrário: o teto real depende 
 volume contratado e precisa ser aprovado antes da ativação. O erro de Cron já
 entra na observabilidade do Worker; o destino de paging externo permanece um
 gate separado.
+
+## Registro de fontes — VUELVE IA conversacional, RAG e diagnóstico
+
+Pesquisa atualizada em 1 de agosto de 2026 com Agent Reach/Exa e documentação
+primária do Google.
+
+- [Gemini API — System instructions](https://ai.google.dev/gemini-api/docs/system-instructions):
+  instruções críticas pertencem a `systemInstruction`, separado do conteúdo da
+  usuária e do contexto recuperado.
+- [Gemini API — Structured outputs](https://ai.google.dev/gemini-api/docs/structured-output):
+  JSON Schema restringe a forma da resposta, mas a aplicação ainda precisa
+  validar semanticamente o conteúdo recebido.
+- [Gemini API — Embeddings](https://ai.google.dev/gemini-api/docs/embeddings):
+  `gemini-embedding-2` aceita dimensionalidade configurável; consulta e
+  documentos precisam usar instrução de tarefa compatível e o mesmo espaço de
+  embedding.
+- [Gemini API — File Search](https://ai.google.dev/gemini-api/docs/file-search):
+  a arquitetura oficial combina divisão em chunks, embeddings e recuperação
+  antes da geração, em vez de inserir todos os documentos em toda chamada.
+- [Google AI — Responsible generative AI](https://ai.google.dev/responsible):
+  recomenda políticas de uso, testes adversariais e barreiras determinísticas
+  além das instruções do modelo.
+
+Decisões: o prompt é versionado no Postgres e enviado como `systemInstruction`;
+o material recuperado é delimitado como dado sem autoridade; respostas e
+diagnósticos usam schema e validação Pydantic. A base canônica é `ai_documents`
+e `ai_chunks` no Supabase/Postgres, não R2, porque a arquitetura atual já possui
+pgvector e R2 foi removido do escopo. Documentos globais carregam `product_code`
+e só entram na busca quando o BFF confirma o entitlement correspondente.
+
+A exportação do WhatsApp é decodificada em memória, aceita apenas `.txt` UTF-8
+ou `.zip` contendo exclusivamente `.txt`, aplica limites de tamanho, quantidade
+de entradas, path traversal e taxa de compressão e não persiste o arquivo bruto.
+O diagnóstico completo é reservado transacionalmente uma vez a cada 30 dias.
+As respostas conversacionais usam uma janela móvel de 24 horas e não permitem
+que o modelo decida ou altere cotas. Conteúdo real de conversas continua
+bloqueado até a aprovação jurídica prevista no Oracle para México e Colômbia;
+QA anterior a esse gate usa apenas dados sintéticos.

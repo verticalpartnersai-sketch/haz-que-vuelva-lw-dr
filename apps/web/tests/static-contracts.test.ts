@@ -47,7 +47,7 @@ test("la IA no trata acceso desconocido como disponible", () => {
   assert.match(aiSource, /aiAccess === "unknown"/);
   assert.match(
     aiSource,
-    /<AccessUnavailable checking=\{aiAccess === "unknown"\} \/>/,
+    /<AccessUnavailable[\s\S]*checking=\{aiAccess === "unknown"\}/,
   );
 });
 

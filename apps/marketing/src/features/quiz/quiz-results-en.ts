@@ -259,7 +259,7 @@ export const resultCopyEn: ResultCopy = {
     proofTitle: "Everything waiting for you inside your protocol",
     caption:
       "You are not buying a promise about what he will do. You are buying clarity about what you do starting today.",
-    price: "Immediate access for US$7",
+    price: "Immediate access for US$7.90",
     guarantee:
       "7-day guarantee. If the protocol does not help you understand your route and execute the first decision, request a refund within the checkout period.",
     cta: "GET ACCESS TO HAZ QUE VUELVA™ NOW",
@@ -336,7 +336,7 @@ export const resultCopyEn: ResultCopy = {
       {
         question: "Is the payment monthly?",
         answer:
-          "No. Access costs US$7 and does not create a recurring subscription.",
+          "No. Access costs US$7.90 and does not create a recurring subscription.",
       },
       {
         question: "How does the 7-day guarantee work?",

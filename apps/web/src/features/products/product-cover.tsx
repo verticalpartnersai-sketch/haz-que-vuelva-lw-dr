@@ -49,7 +49,9 @@ export function ProductCover({
             <Icon name={product.accessState === "available" ? "check" : "lock"} />
             {product.accessState === "available"
               ? t("status.available")
-              : t("status.locked")}
+              : product.accessState === "expired"
+                ? t("status.expired")
+                : t("status.locked")}
           </span>
           {compact ? null : (
             <span className="product-cover__mark">

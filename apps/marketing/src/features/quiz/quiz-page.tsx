@@ -321,7 +321,7 @@ export function QuizPage() {
       <audio
         aria-hidden="true"
         loop
-        preload="metadata"
+        preload="auto"
         ref={ambientAudioRef}
         src="/audio/ambient-sound.mp3?v=1"
       />

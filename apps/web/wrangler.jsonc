@@ -50,11 +50,13 @@
         "FEATURE_CONTENT": "true",
         "FEATURE_PAYMENTS": "true",
         "FEATURE_ADMIN": "true",
-        "FEATURE_VUELVE_IA": "false",
+        "FEATURE_VUELVE_IA": "true",
+        "FEATURE_AI_DIAGNOSTICS": "true",
         "NEXT_PUBLIC_AUTH_GOOGLE_ENABLED": "false",
         "MEMBER_APP_URL": "https://miembros.hazquevuelva.site",
         "MARKETING_APP_URL": "https://hazquevuelva.site",
         "AGENT_SERVICE_BINDING": "true",
+        "AI_DAILY_TOKEN_BUDGET": "250000",
         "RESEND_FROM": "Haz Que Vuelva <acceso@mail.hazquevuelva.site>"
       },
       "secrets": {

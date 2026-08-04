@@ -14,7 +14,9 @@ class DisabledProvider:
 
 
 class EmptyRetriever:
-    async def global_knowledge(self, query: str) -> list[RetrievedChunk]:
+    async def global_knowledge(
+        self, query: str, allowed_product_codes: list[str]
+    ) -> list[RetrievedChunk]:
         return []
 
     async def member_memory(
@@ -31,6 +33,9 @@ class DisabledPromptStore:
 
 
 class DisabledPersistence:
+    async def recent_messages(self, member_id: UUID, conversation_id: UUID):
+        return []
+
     async def reserve(
         self,
         member_id: UUID,

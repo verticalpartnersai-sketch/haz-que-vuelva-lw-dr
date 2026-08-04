@@ -33,6 +33,7 @@ const environmentSchema = z
     FEATURE_PAYMENTS: booleanString,
     FEATURE_ADMIN: booleanString,
     FEATURE_VUELVE_IA: booleanString,
+    FEATURE_AI_DIAGNOSTICS: booleanString,
     NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: booleanString,
     NEXT_PUBLIC_SUPABASE_URL: optionalUrl,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalString(1),

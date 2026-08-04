@@ -1,0 +1,231 @@
+.ai-usage-backdrop {
+  align-items: center;
+  background: rgba(3, 3, 4, 0.82);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: var(--space-4);
+  position: fixed;
+  z-index: 60;
+}
+
+.ai-usage-modal,
+.ai-diagnostic-modal {
+  background: linear-gradient(180deg, var(--neutral-900), var(--surface-shell));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  max-width: 520px;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.ai-usage-modal__close {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  position: absolute;
+  right: var(--space-3);
+  top: var(--space-3);
+  width: 36px;
+}
+
+.ai-usage-modal__mark,
+.ai-diagnostic-modal__icon {
+  align-items: center;
+  background: var(--selected-bg);
+  border: 1px solid var(--brand-700);
+  border-radius: var(--radius-lg);
+  color: var(--brand-400);
+  display: inline-flex;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.ai-usage-modal__eyebrow {
+  color: var(--brand-400) !important;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  margin: var(--space-4) 0 var(--space-2) !important;
+}
+
+.ai-usage-modal h2,
+.ai-diagnostic-modal h2 {
+  font-size: clamp(1.7rem, 5vw, 2.5rem);
+  margin: var(--space-3) 0;
+}
+
+.ai-usage-modal > p,
+.ai-diagnostic-modal > p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.ai-usage-modal__stats {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: var(--space-5) 0;
+}
+
+.ai-usage-modal__stats article {
+  background: var(--surface-default);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+}
+
+.ai-usage-modal__stats strong {
+  color: var(--text-primary);
+  font-size: 1.75rem;
+}
+
+.ai-usage-modal__stats span,
+.ai-usage-modal small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.ai-usage-modal__continue {
+  background: linear-gradient(180deg, var(--brand-500), var(--brand-700));
+  border: 1px solid var(--brand-400);
+  border-radius: var(--radius-md);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  margin-top: var(--space-5);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  width: 100%;
+}
+
+.ai-usage-modal__continue:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.ai-diagnostic-modal__file {
+  align-items: center;
+  background: var(--surface-default);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-5);
+  min-height: 72px;
+  padding: var(--space-3);
+  width: 100%;
+}
+
+.ai-diagnostic-modal__consent {
+  align-items: flex-start;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 0.75rem;
+  gap: var(--space-3);
+  line-height: 1.5;
+  margin-top: var(--space-4);
+  position: relative;
+  text-align: left;
+}
+
+.ai-diagnostic-modal__consent input {
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 1px;
+}
+
+.ai-diagnostic-modal__checkbox {
+  align-items: center;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: transparent;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 22px;
+  justify-content: center;
+  margin-top: 1px;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+  width: 22px;
+}
+
+.ai-diagnostic-modal__checkbox svg {
+  height: 14px;
+  width: 14px;
+}
+
+.ai-diagnostic-modal__consent input:checked + .ai-diagnostic-modal__checkbox {
+  background: var(--brand-600);
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 3px var(--alpha-brand-18);
+  color: var(--neutral-0);
+}
+
+.ai-diagnostic-modal__consent input:focus-visible + .ai-diagnostic-modal__checkbox {
+  outline: 2px solid var(--brand-300);
+  outline-offset: 3px;
+}
+
+.ai-diagnostic-modal__consent-copy {
+  flex: 1;
+}
+
+.ai-diagnostic-modal__blocked {
+  background: var(--selected-bg);
+  border: 1px solid var(--brand-800);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+}
+
+.ai-access-state--expired {
+  border-color: color-mix(in srgb, var(--brand-500) 38%, var(--border-subtle));
+  max-width: 680px;
+}
+
+.ai-access-state--expired > span {
+  background: var(--selected-bg);
+  color: var(--brand-400);
+}
+
+.ai-access-state__eyebrow {
+  color: var(--brand-400) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.ai-access-state--expired small {
+  color: var(--text-muted);
+}
+
+@media (max-width: 560px) {
+  .ai-usage-modal__stats {
+    grid-template-columns: 1fr;
+  }
+}

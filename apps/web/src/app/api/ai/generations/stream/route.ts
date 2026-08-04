@@ -13,7 +13,7 @@ import {
 } from "@/server/ai/agent-generation-transport";
 import { environment } from "@/server/config/environment";
 import { readBoundedJsonBody } from "@/server/http/read-bounded-json-body";
-import { createSupabaseServerClient } from "@/server/supabase/server-client";
+import { memberAiProducts } from "@/server/ai/member-ai-access";
 
 const requestSchema = z.object({
   conversationId: z.uuid(),
@@ -68,14 +68,8 @@ export async function POST(request: Request) {
     }
     throw error;
   }
-  const client = await createSupabaseServerClient();
-  const { data: entitlement } = await client
-    .from("effective_entitlements")
-    .select("product_code")
-    .eq("member_id", identity.id)
-    .eq("product_code", "vuelve_ia")
-    .maybeSingle();
-  if (!entitlement) {
+  const access = await memberAiProducts(identity.id);
+  if (!access.hasAi) {
     return NextResponse.json({ code: "access_denied" }, { status: 403 });
   }
 
@@ -97,6 +91,7 @@ export async function POST(request: Request) {
         conversation_id: parsed.data.conversationId,
         message: parsed.data.message,
         request_id: parsed.data.requestId ?? crypto.randomUUID(),
+        allowed_product_codes: access.allowedKnowledgeProducts,
       }),
       request.signal,
     );

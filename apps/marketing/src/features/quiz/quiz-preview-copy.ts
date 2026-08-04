@@ -123,7 +123,7 @@ export const previewCopyEs: QuizPreviewCopy = {
         "El próximo mensaje ansioso no es solo otro mensaje. Puede ser la confirmación que él estaba buscando para mantenerse lejos. Seguir improvisando puede costarte la última apertura que todavía no aprendiste a reconocer.",
     },
     offer: {
-      price: "Acceso inmediato por US$7",
+      price: "Acceso inmediato por US$7,90",
       payment: "Pago único",
       guaranteeTitle: "Tienes 7 días para probar Haz Que Vuelva sin riesgo",
       guarantee:

@@ -85,7 +85,8 @@ export function HomePage({
     },
     {
       id: "bloqueados",
-      products: products.filter((product) => product.accessState === "locked"),
+      products: products.filter((product) =>
+        product.accessState === "locked" || product.accessState === "expired"),
     },
   ] as const;
   const railTitleKeys: Record<(typeof productGroups)[number]["id"], CopyKey> = {

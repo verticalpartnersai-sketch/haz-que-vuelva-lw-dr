@@ -24,6 +24,9 @@ class FakeStore:
     def __init__(self, fail_completion: bool = False) -> None:
         self.fail_completion = fail_completion
 
+    async def recent_messages(self, member_id, conversation_id):
+        return []
+
     async def persist_member_message(
         self, member_id, conversation_id, request_id, content
     ):
@@ -39,7 +42,8 @@ class ScopedRetriever:
     def __init__(self, member_id) -> None:
         self.member_id = member_id
 
-    async def global_knowledge(self, query):
+    async def global_knowledge(self, query, allowed_product_codes):
+        assert allowed_product_codes == ["haz_que_vuelva"]
         return [RetrievedChunk(uuid4(), uuid4(), "global", "global")]
 
     async def member_memory(self, member_id, query):
@@ -84,6 +88,7 @@ def request():
         conversation_id=uuid4(),
         message="Necesito claridad.",
         request_id=uuid4(),
+        allowed_product_codes=["haz_que_vuelva"],
     )
 
 
@@ -120,10 +125,12 @@ async def test_releases_reservation_when_provider_fails():
         provider=FakeProvider(fail=True),
     )
 
-    with pytest.raises(RuntimeError):
-        [event async for event in service.stream(input_data)]
+    events = [event async for event in service.stream(input_data)]
 
     assert ledger.reserved and ledger.released
+    assert any("event: error" in event for event in events)
+    assert any('"code": "generation_unavailable"' in event for event in events)
+    assert any('"consumed": false' in event for event in events)
 
 
 @pytest.mark.asyncio
@@ -160,10 +167,10 @@ async def test_releases_reservation_when_completion_transaction_fails():
         provider=FakeProvider(),
     )
 
-    with pytest.raises(RuntimeError, match="completion transaction failed"):
-        [event async for event in service.stream(input_data)]
+    events = [event async for event in service.stream(input_data)]
 
     assert ledger.reserved and ledger.released
+    assert any("event: error" in event for event in events)
 
 
 @pytest.mark.asyncio
@@ -178,7 +185,30 @@ async def test_releases_reservation_when_no_prompt_is_published():
         provider=FakeProvider(),
     )
 
-    with pytest.raises(RuntimeError, match="published prompt required"):
-        [event async for event in service.stream(input_data)]
+    events = [event async for event in service.stream(input_data)]
 
     assert ledger.reserved and ledger.released
+    assert any("event: error" in event for event in events)
+
+
+@pytest.mark.asyncio
+async def test_exposes_only_allowlisted_provider_failure_codes():
+    class QuotaProvider(FakeProvider):
+        async def generate(self, **kwargs):
+            raise RuntimeError("provider_quota_exhausted")
+
+    input_data = request()
+    ledger = FakeLedger()
+    service = GenerationService(
+        usage=ledger,
+        conversations=FakeStore(),
+        prompts=FakePromptStore(),
+        retriever=ScopedRetriever(input_data.member_id),
+        provider=QuotaProvider(),
+    )
+
+    events = [event async for event in service.stream(input_data)]
+
+    assert ledger.reserved and ledger.released
+    assert any('"code": "provider_quota_exhausted"' in event for event in events)
+    assert any('"retryable": false' in event for event in events)

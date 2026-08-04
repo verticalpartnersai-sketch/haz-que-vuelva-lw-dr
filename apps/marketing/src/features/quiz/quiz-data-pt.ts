@@ -200,7 +200,7 @@ export const quizCopyPt: QuizCopy = {
   loaderOne: {
     title: "Descobrindo o que está afastando ele e quanto da conexão ainda está vivo…",
     socialProof: {
-      lead: "Mais de 5.732 mulheres",
+      lead: "Mais de 2.847 mulheres",
       middle: "já trocaram a ansiedade por uma rota clara para",
       highlight: "recuperar o controle e reabrir a conexão",
     },

@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from io import BytesIO
 from pathlib import PurePosixPath
@@ -12,6 +13,17 @@ class UnsafeImportError(ValueError):
 class ImportedText:
     content: str
     source_files: int
+
+
+_EMAIL = re.compile(r"\b[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}\b")
+_URL = re.compile(r"https?://\S+|www\.\S+", re.IGNORECASE)
+_PHONE = re.compile(r"(?<!\w)(?:\+?\d[\d .()\-]{7,}\d)(?!\w)")
+
+
+def redact_sensitive_text(content: str) -> str:
+    content = _EMAIL.sub("[correo omitido]", content)
+    content = _URL.sub("[enlace omitido]", content)
+    return _PHONE.sub("[teléfono omitido]", content)
 
 
 def decode_text(payload: bytes) -> str:

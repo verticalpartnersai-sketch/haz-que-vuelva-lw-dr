@@ -1,0 +1,99 @@
+.legal-public {
+  color: #f5f2ec;
+  margin: 0 auto;
+  min-height: 100svh;
+  padding: 3rem 1.1rem 5rem;
+  width: min(100%, 760px);
+}
+
+.legal-public > .quiz-logo--step {
+  margin: 0 auto 2.25rem;
+  width: min(13rem, 60vw);
+}
+
+.legal-public > article {
+  background: #f3f1e9;
+  border-radius: 18px;
+  color: #172019;
+  padding: clamp(1.35rem, 5vw, 3rem);
+}
+
+.legal-public > article > span {
+  color: #9a171d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.legal-public h1,
+.legal-public h2 {
+  color: #172019;
+  font-family: "Source Sans 3", Arial, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.legal-public h1 {
+  font-size: clamp(2rem, 8vw, 3.4rem);
+  line-height: 1;
+  margin: 0.7rem 0 0;
+}
+
+.legal-public h2 {
+  font-size: 1.18rem;
+  margin: 0;
+}
+
+.legal-public p {
+  color: #4e5750;
+  font-size: 0.98rem;
+  line-height: 1.72;
+  margin: 0.65rem 0 0;
+}
+
+.legal-public__lead {
+  font-size: 1.05rem !important;
+  margin-top: 1rem !important;
+}
+
+.legal-public section {
+  border-top: 1px solid rgba(23, 32, 25, 0.13);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+.legal-public a {
+  color: #116f3c;
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+}
+
+.legal-public footer {
+  align-items: flex-start;
+  border-top: 1px solid rgba(23, 32, 25, 0.13);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+.legal-public footer p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .legal-public {
+    padding-block: 5rem 7rem;
+  }
+
+  .legal-public > article {
+    border-radius: 24px;
+  }
+
+  .legal-public footer {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

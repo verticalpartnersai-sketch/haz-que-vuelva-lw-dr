@@ -259,7 +259,7 @@ export const resultCopyPt: ResultCopy = {
     proofTitle: "Tudo o que você vai encontrar dentro do seu protocolo",
     caption:
       "Você não compra uma promessa sobre o que ele vai fazer. Compra uma decisão clara sobre o que faz a partir de hoje.",
-    price: "Acesso imediato por US$7",
+    price: "Acesso imediato por US$7,90",
     guarantee:
       "7 dias de garantia. Se o protocolo não ajudar você a entender sua rota e executar a primeira decisão, solicite reembolso no prazo do checkout.",
     cta: "QUERO ACESSAR HAZ QUE VUELVA™ AGORA",
@@ -336,7 +336,7 @@ export const resultCopyPt: ResultCopy = {
       {
         question: "O pagamento é mensal?",
         answer:
-          "Não. O acesso custa US$7 e não cria uma mensalidade recorrente.",
+          "Não. O acesso custa US$7,90 e não cria uma mensalidade recorrente.",
       },
       {
         question: "Como funciona a garantia de 7 dias?",

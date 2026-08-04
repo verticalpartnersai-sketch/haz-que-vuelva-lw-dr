@@ -5,6 +5,7 @@ from typing import Protocol
 from app.conversations.supabase_store import SupabaseConversationStore
 from app.core.config import get_settings
 from app.core.supabase import SupabaseServiceClient
+from app.diagnostics.service import DiagnosticService
 from app.generation.disabled import (
     DisabledPersistence,
     DisabledPromptStore,
@@ -55,10 +56,32 @@ def generation_service() -> GenerationService:
     )
 
 
+@lru_cache
+def diagnostic_service() -> DiagnosticService:
+    settings = get_settings()
+    if not settings.feature_generation:
+        raise RuntimeError("Diagnostic service is disabled")
+    client = SupabaseServiceClient(
+        settings.supabase_url,
+        settings.supabase_secret_key,
+    )
+    embeddings = GeminiEmbeddingProvider(settings)
+    provider = GeminiGenerationProvider(settings)
+    _active_resources.extend((client, embeddings, provider))
+    return DiagnosticService(
+        client=client,
+        prompts=SupabasePromptStore(client),
+        retriever=SupabaseRetriever(client, embeddings),
+        provider=provider,
+        settings=settings,
+    )
+
+
 async def close_generation_resources() -> None:
     resources = list(reversed(_active_resources))
     _active_resources.clear()
     generation_service.cache_clear()
+    diagnostic_service.cache_clear()
     await asyncio.gather(
         *(resource.close() for resource in resources),
         return_exceptions=True,

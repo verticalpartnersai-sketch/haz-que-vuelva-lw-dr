@@ -5,199 +5,43 @@ import {
   useRef,
   useState,
   type FormEvent,
-  type KeyboardEvent,
 } from "react";
 
 import { Icon } from "@/components/icon";
 import { useLocale } from "@/features/i18n/locale";
 
-import { createConversation, requestAnswer } from "./ai-client";
+import {
+  createConversation,
+  getLatestConversation,
+  requestAnswer,
+  requestDiagnostic,
+  type AiUsage,
+} from "./ai-client";
+import { AiDiagnosticDialog } from "./ai-diagnostic-dialog";
+import {
+  AiHeart,
+  ChatComposer,
+  EmptyConversation,
+  MessageBubble,
+  type ChatMessage,
+} from "./ai-chat-presentation";
 import { AiThinkingPanel } from "./ai-thinking-panel";
 
-type ChatMessage = {
-  content: string;
-  id: string;
-  role: "assistant" | "user";
-};
-
-function AiHeart({ compact = false }: { compact?: boolean }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={`oracle-heart ${compact ? "oracle-heart--compact" : ""}`.trim()}
-    >
-      <Icon name="heart" weight="fill" />
-    </span>
-  );
-}
-
-function MessageBubble({ message }: { message: ChatMessage }) {
-  const { l } = useLocale();
-
-  if (message.role === "user") {
-    return (
-      <div className="oracle-message oracle-message--user">
-        <div>{message.content}</div>
-        <small>{l("Tú", "Você", "You")}</small>
-      </div>
-    );
-  }
-
-  return (
-    <div className="oracle-message oracle-message--assistant">
-      <AiHeart compact />
-      <div>
-        <strong>VUELVE IA</strong>
-        <p>{message.content}</p>
-      </div>
-    </div>
-  );
-}
-
-function EmptyConversation({
-  onSuggestion,
+export function AiChat({
+  live = false,
+  onUsageChanged,
+  usage,
 }: {
-  onSuggestion: (value: string) => void;
+  live?: boolean;
+  onUsageChanged: () => Promise<AiUsage | undefined>;
+  usage: AiUsage | null;
 }) {
-  const { l } = useLocale();
-  const suggestions = [
-    l(
-      "Quiero entender mejor lo que estoy sintiendo",
-      "Quero entender melhor o que estou sentindo",
-      "I want to better understand what I am feeling",
-    ),
-    l(
-      "Ayúdame a organizar una conversación difícil",
-      "Ajude-me a organizar uma conversa difícil",
-      "Help me organize a difficult conversation",
-    ),
-    l(
-      "¿Cómo puedo actuar con más calma?",
-      "Como posso agir com mais calma?",
-      "How can I act more calmly?",
-    ),
-    l(
-      "Quiero pensar en mi próximo paso",
-      "Quero pensar no meu próximo passo",
-      "I want to think about my next step",
-    ),
-  ];
-
-  return (
-    <div className="oracle-empty">
-      <AiHeart />
-      <div>
-        <h2>
-          {l(
-            "¿En qué puedo acompañarte?",
-            "Como posso acompanhar você?",
-            "How can I support you?",
-          )}
-        </h2>
-        <p>
-          {l(
-            "Puedes comenzar con una idea, una duda o una situación.",
-            "Você pode começar com uma ideia, uma dúvida ou uma situação.",
-            "You can start with an idea, a question, or a situation.",
-          )}
-        </p>
-      </div>
-      <div className="oracle-suggestions">
-        {suggestions.map((suggestion) => (
-          <button
-            key={suggestion}
-            onClick={() => onSuggestion(suggestion)}
-            type="button"
-          >
-            <Icon name="spark" />
-            <span>{suggestion}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ChatComposer({
-  disabled,
-  draft,
-  onChange,
-  onSubmit,
-}: {
-  disabled: boolean;
-  draft: string;
-  onChange: (value: string) => void;
-  onSubmit: () => void;
-}) {
-  const { l } = useLocale();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 112)}px`;
-  }, [draft]);
-
-  function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      onSubmit();
-    }
-  }
-
-  return (
-    <div className="oracle-composer">
-      <textarea
-        aria-label={l("Escribe tu mensaje", "Escreva sua mensagem", "Write your message")}
-        disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={l(
-          "Cuéntame qué está pasando…",
-          "Conte-me o que está acontecendo…",
-          "Tell me what is happening…",
-        )}
-        ref={textareaRef}
-        rows={1}
-        value={draft}
-      />
-      <div className="oracle-composer__footer">
-        <small>
-          {disabled
-            ? l(
-                "Preparando una respuesta…",
-                "Preparando uma resposta…",
-                "Preparing a response…",
-              )
-            : l(
-                "Enter para enviar · Shift + Enter para una nueva línea",
-                "Enter para enviar · Shift + Enter para uma nova linha",
-                "Enter to send · Shift + Enter for a new line",
-              )}
-        </small>
-        <button
-          aria-label={l(
-            "Enviar mensaje simulado",
-            "Enviar mensagem simulada",
-            "Send simulated message",
-          )}
-          disabled={disabled || !draft.trim()}
-          onClick={onSubmit}
-          type="button"
-        >
-          <Icon name="send" weight="bold" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export function AiChat({ live = false }: { live?: boolean }) {
   const { l } = useLocale();
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [restoringConversation, setRestoringConversation] = useState(live);
   const [thinking, setThinking] = useState(false);
+  const [diagnosticOpen, setDiagnosticOpen] = useState(false);
   const responseTimer = useRef<number | null>(null);
   const conversationId = useRef<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -209,6 +53,24 @@ export function AiChat({ live = false }: { live?: boolean }) {
   }, []);
 
   useEffect(() => {
+    if (!live) return;
+    let active = true;
+    getLatestConversation()
+      .then((latest) => {
+        if (!active) return;
+        conversationId.current = latest.conversationId;
+        setMessages(latest.messages);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        if (active) setRestoringConversation(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [live]);
+
+  useEffect(() => {
     scrollRef.current?.scrollTo({
       behavior: "smooth",
       top: scrollRef.current.scrollHeight,
@@ -217,7 +79,7 @@ export function AiChat({ live = false }: { live?: boolean }) {
 
   async function submitMessage(value = draft) {
     const content = value.trim();
-    if (!content || thinking) return;
+    if (!content || thinking || (live && usage?.messages_remaining === 0)) return;
 
     setMessages((current) => [
       ...current,
@@ -237,6 +99,23 @@ export function AiChat({ live = false }: { live?: boolean }) {
           ...current,
           { content: answer, id: `assistant-${Date.now()}`, role: "assistant" },
         ]);
+        const latestUsage = await onUsageChanged();
+        const nextRemaining = latestUsage?.messages_remaining;
+        if (nextRemaining !== undefined && nextRemaining <= 5) {
+          setMessages((current) => [
+            ...current,
+            {
+              content: l(
+                `Te quedan ${nextRemaining} respuestas disponibles en tu ventana actual. Úsalas con preguntas concretas.`,
+                `Você tem ${nextRemaining} respostas disponíveis na janela atual. Use-as com perguntas objetivas.`,
+                `You have ${nextRemaining} answers left in your current window. Use them with focused questions.`,
+              ),
+              id: `assistant-limit-${Date.now()}`,
+              kind: "usage-warning",
+              role: "assistant",
+            },
+          ]);
+        }
       } catch {
         setMessages((current) => [
           ...current,
@@ -271,6 +150,53 @@ export function AiChat({ live = false }: { live?: boolean }) {
       ]);
       setThinking(false);
     }, 2400);
+  }
+
+  async function submitDiagnostic(file: File) {
+    if (!live || thinking) return;
+    setDiagnosticOpen(false);
+    setThinking(true);
+    try {
+      conversationId.current ??= await createConversation();
+      const result = await requestDiagnostic({
+        conversationId: conversationId.current,
+        file,
+      });
+      setMessages((current) => [
+        ...current,
+        {
+          content: result.formatted_report,
+          id: `assistant-diagnostic-${Date.now()}`,
+          role: "assistant",
+        },
+      ]);
+      await onUsageChanged();
+    } catch (error) {
+      const code = error instanceof Error ? error.message : "diagnostic_unavailable";
+      const limitReached = code === "diagnostic_monthly_limit_reached";
+      setMessages((current) => [
+        ...current,
+        {
+          content: limitReached
+            ? l(
+                "Ya utilizaste el diagnóstico disponible en este período. Podrás realizar uno nuevo cuando se renueve tu acceso mensual.",
+                "Você já utilizou o diagnóstico disponível neste período. Poderá fazer um novo quando seu acesso mensal for renovado.",
+                "You already used the diagnostic available in this period. You can run another when your monthly access renews.",
+              )
+            : l(
+                "No pude analizar ese archivo. Verifica que sea un .TXT de WhatsApp o un .ZIP que contenga solamente archivos .TXT.",
+                "Não consegui analisar esse arquivo. Verifique se é um .TXT do WhatsApp ou um .ZIP contendo apenas arquivos .TXT.",
+                "I could not analyze that file. Check that it is a WhatsApp .TXT or a .ZIP containing only .TXT files.",
+              ),
+          id: `assistant-diagnostic-error-${Date.now()}`,
+          kind: limitReached ? "usage-warning" : undefined,
+          role: "assistant",
+        },
+      ]);
+      await onUsageChanged();
+    } finally {
+      setThinking(false);
+    }
   }
 
   function handleSubmit(event: FormEvent) {
@@ -312,14 +238,19 @@ export function AiChat({ live = false }: { live?: boolean }) {
           onClick={resetConversation}
           type="button"
         >
-          <Icon name="message" />
+          <Icon name="plus" weight="bold" />
           <span>{l("Nueva conversación", "Nova conversa", "New conversation")}</span>
         </button>
       </header>
 
       <div className="oracle-chat__messages" ref={scrollRef}>
-        {messages.length === 0 && !thinking ? (
+        {messages.length === 0 && !thinking && !restoringConversation ? (
           <EmptyConversation onSuggestion={(value) => submitMessage(value)} />
+        ) : restoringConversation ? (
+          <div className="oracle-message oracle-message--assistant">
+            <AiHeart compact />
+            <AiThinkingPanel />
+          </div>
         ) : (
           <div className="oracle-chat__thread">
             {messages.map((message) => (
@@ -337,12 +268,21 @@ export function AiChat({ live = false }: { live?: boolean }) {
 
       <form className="oracle-chat__input" onSubmit={handleSubmit}>
         <ChatComposer
-          disabled={thinking}
+          disabled={thinking || (live && usage?.messages_remaining === 0)}
           draft={draft}
           onChange={setDraft}
           onSubmit={() => submitMessage()}
+          onUpload={() => setDiagnosticOpen(true)}
         />
       </form>
+      {diagnosticOpen ? (
+        <AiDiagnosticDialog
+          available={usage?.diagnostic_available ?? false}
+          busy={thinking}
+          onClose={() => setDiagnosticOpen(false)}
+          onSubmit={submitDiagnostic}
+        />
+      ) : null}
     </section>
   );
 }

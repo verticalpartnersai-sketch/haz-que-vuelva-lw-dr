@@ -34,7 +34,9 @@ function CardContents({
           <Icon name={product.accessState === "available" ? "check" : "lock"} />
           {product.accessState === "available"
             ? t("status.available")
-            : t("status.locked")}
+            : product.accessState === "expired"
+              ? t("status.expired")
+              : t("status.locked")}
         </span>
         {typeof product.progress === "number" ? (
           <span className="progress-block">
@@ -96,13 +98,13 @@ export function ProductCard({
     );
   }
 
-  if (product.accessState === "available") {
+  if (product.accessState === "available" || product.accessState === "expired") {
     const href =
       product.id === "vuelve_ia" ? "/ia" : `/productos/${product.slug}`;
     return (
       <Link
-        aria-label={`${product.name} — ${t("status.available")}`}
-        className="product-card"
+        aria-label={`${product.name} — ${product.accessState === "expired" ? t("status.expired") : t("status.available")}`}
+        className={`product-card${product.accessState === "expired" ? " product-card--expired" : ""}`}
         href={href}
       >
         <CardContents product={product} showCoverDetails={showCoverDetails} />

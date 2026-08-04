@@ -123,7 +123,7 @@ export const previewCopyPt: QuizPreviewCopy = {
         "A próxima mensagem ansiosa não é apenas mais uma mensagem. Pode ser a confirmação que ele procurava para continuar distante. Seguir improvisando pode custar a última abertura que você ainda não aprendeu a reconhecer.",
     },
     offer: {
-      price: "Acesso imediato por US$7",
+      price: "Acesso imediato por US$7,90",
       payment: "Pagamento único",
       guaranteeTitle: "Você tem 7 dias para testar o Haz Que Vuelva sem risco",
       guarantee:

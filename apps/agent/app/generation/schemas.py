@@ -8,12 +8,18 @@ class GenerateRequest(BaseModel):
     conversation_id: UUID
     message: str = Field(min_length=1, max_length=30_000)
     request_id: UUID
+    allowed_product_codes: list[str] = Field(default_factory=list, max_length=6)
 
 
 class SourceReference(BaseModel):
     document_id: UUID
     chunk_id: UUID
     scope: str
+
+
+class ConversationTurn(BaseModel):
+    role: str = Field(pattern="^(member|assistant)$")
+    content: str = Field(min_length=1, max_length=20_000)
 
 
 class ProviderUsage(BaseModel):

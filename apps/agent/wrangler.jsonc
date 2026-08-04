@@ -4,17 +4,24 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-07-29",
   "compatibility_flags": ["nodejs_compat"],
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": false,
   "keep_vars": true,
   "vars": {
     "ENVIRONMENT": "production",
-    "FEATURE_GENERATION": "false",
+    "FEATURE_GENERATION": "true",
     "GEMINI_MODEL": "gemini-3.6-flash",
     "EMBEDDING_MODEL": "gemini-embedding-2",
-    "EMBEDDING_DIMENSIONS": "768",
-    "DAILY_RESPONSE_LIMIT": "5",
+    "EMBEDDING_DIMENSIONS": "1024",
+    "WORKERS_AI_FALLBACK_URL": "https://haz-que-vuelva-agent.verticalpartnersai.workers.dev/v1/providers/workers-ai/generate",
+    "WORKERS_AI_MODEL": "@cf/qwen/qwen3-30b-a3b-fp8",
+    "WORKERS_AI_EMBEDDING_URL": "https://haz-que-vuelva-agent.verticalpartnersai.workers.dev/v1/providers/workers-ai/embed",
+    "WORKERS_AI_EMBEDDING_MODEL": "@cf/baai/bge-m3",
+    "DAILY_RESPONSE_LIMIT": "10",
     "MAX_OUTPUT_TOKENS": "2048"
+  },
+  "ai": {
+    "binding": "AI"
   },
   "containers": [
     {

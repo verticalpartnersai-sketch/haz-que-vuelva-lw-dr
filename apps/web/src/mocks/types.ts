@@ -1,5 +1,5 @@
 export type UserRole = "member" | "admin";
-export type AccessState = "available" | "locked" | "unknown";
+export type AccessState = "available" | "expired" | "locked" | "unknown";
 export type ProductKind = "principal" | "complemento" | "adicional";
 
 export type RelatedItem = {

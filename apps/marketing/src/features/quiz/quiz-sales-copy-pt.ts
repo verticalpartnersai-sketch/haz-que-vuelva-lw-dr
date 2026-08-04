@@ -230,7 +230,7 @@ export const salesCopyPt: SalesCopy = {
   },
   cost: {
     heading:
-      "O preço de voltar a improvisar não são US$7. Pode ser a última oportunidade que você ainda não aprendeu a reconhecer.",
+      "O preço de voltar a improvisar não são US$7,90. Pode ser a última oportunidade que você ainda não aprendeu a reconhecer.",
     body:
       "Outra mensagem enviada pelo medo pode dar exatamente a confirmação que ele precisa para continuar longe. Cada dia repetindo o padrão torna uma vida sem você mais familiar.",
   },
@@ -244,7 +244,7 @@ export const salesCopyPt: SalesCopy = {
   checkout: {
     heading: "Haz Que Vuelva: seu protocolo completo",
     compareAt: "Valor real US$97",
-    price: "Hoje por US$7",
+    price: "Hoje por US$7,90",
     access: "Acesso imediato após a confirmação",
     summary: [
       "Protocolo completo de 7 dias",
@@ -299,7 +299,7 @@ export const salesCopyPt: SalesCopy = {
       {
         question: "Como funcionam o pagamento e a garantia?",
         answer:
-          "O acesso custa US$7. Depois de entrar, você tem 7 dias para avaliar o material. Se ele não entregar a clareza e a direção descritas, pode pedir reembolso dentro do prazo.",
+          "O acesso custa US$7,90. Depois de entrar, você tem 7 dias para avaliar o material. Se ele não entregar a clareza e a direção descritas, pode pedir reembolso dentro do prazo.",
       },
     ],
   },
@@ -310,5 +310,5 @@ export const salesCopyPt: SalesCopy = {
       "A oportunidade não é protegida esperando a ansiedade desaparecer. É protegida quando você tem uma rota antes que ela volte a decidir por você.",
   },
   stickyBeforeOffer: "QUERO ATIVAR MEU PROTOCOLO",
-  stickyAfterOffer: "ACESSO IMEDIATO POR US$7",
+  stickyAfterOffer: "ACESSO IMEDIATO POR US$7,90",
 };

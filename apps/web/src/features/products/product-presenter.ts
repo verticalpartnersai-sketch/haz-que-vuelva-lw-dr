@@ -47,7 +47,7 @@ export const productPresentation: Record<ProductCode, ProductPresentation> = {
     slug: "vuelve-ia",
     eyebrow: "Producto adicional",
     description:
-      "Acceso vitalicio a VUELVE IA con una franquicia inicial de 30 respuestas.",
+      "Acompañamiento conversacional durante 90 días, con 10 respuestas cada 24 horas y un diagnóstico de WhatsApp cada 30 días.",
     kind: "adicional",
     coverImage: "/images/products/vuelve-ia.webp",
   },

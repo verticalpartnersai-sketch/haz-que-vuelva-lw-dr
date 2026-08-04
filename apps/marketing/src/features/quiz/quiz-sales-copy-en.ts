@@ -230,7 +230,7 @@ export const salesCopyEn: SalesCopy = {
   },
   cost: {
     heading:
-      "The cost of improvising again is not US$7. It may be the last opportunity you still have not learned to recognize.",
+      "The cost of improvising again is not US$7.90. It may be the last opportunity you still have not learned to recognize.",
     body:
       "Another message sent from fear may give him the exact confirmation he needs to stay away. Every repeated day makes life without you feel more familiar.",
   },
@@ -244,7 +244,7 @@ export const salesCopyEn: SalesCopy = {
   checkout: {
     heading: "Haz Que Vuelva: your complete protocol",
     compareAt: "Real value US$97",
-    price: "Today US$7",
+    price: "Today US$7.90",
     access: "Immediate access after confirmation",
     summary: [
       "Complete 7-day protocol",
@@ -299,7 +299,7 @@ export const salesCopyEn: SalesCopy = {
       {
         question: "How do payment and the guarantee work?",
         answer:
-          "Access costs US$7. You then have 7 days to review the material. If it does not provide the clarity and direction described, you can request a refund within the period.",
+          "Access costs US$7.90. You then have 7 days to review the material. If it does not provide the clarity and direction described, you can request a refund within the period.",
       },
     ],
   },
@@ -310,5 +310,5 @@ export const salesCopyEn: SalesCopy = {
       "You do not protect the opportunity by waiting for anxiety to disappear. You protect it by having a route before anxiety chooses for you again.",
   },
   stickyBeforeOffer: "ACTIVATE MY PROTOCOL",
-  stickyAfterOffer: "IMMEDIATE ACCESS FOR US$7",
+  stickyAfterOffer: "IMMEDIATE ACCESS FOR US$7.90",
 };

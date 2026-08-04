@@ -36,6 +36,7 @@ export type CopyKey =
   | "shell.language"
   | "shell.logout"
   | "status.available"
+  | "status.expired"
   | "status.locked";
 
 const copy: Record<Locale, Record<CopyKey, string>> = {
@@ -68,6 +69,7 @@ const copy: Record<Locale, Record<CopyKey, string>> = {
     "shell.language": "Cambiar idioma",
     "shell.logout": "Cerrar sesión",
     "status.available": "Disponible",
+    "status.expired": "Vencido",
     "status.locked": "Bloqueado",
   },
   pt: {
@@ -99,6 +101,7 @@ const copy: Record<Locale, Record<CopyKey, string>> = {
     "shell.language": "Alterar idioma",
     "shell.logout": "Sair",
     "status.available": "Disponível",
+    "status.expired": "Expirado",
     "status.locked": "Bloqueado",
   },
   en: {
@@ -130,6 +133,7 @@ const copy: Record<Locale, Record<CopyKey, string>> = {
     "shell.language": "Change language",
     "shell.logout": "Sign out",
     "status.available": "Available",
+    "status.expired": "Expired",
     "status.locked": "Locked",
   },
 };

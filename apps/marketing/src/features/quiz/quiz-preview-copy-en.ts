@@ -122,7 +122,7 @@ export const previewCopyEn: QuizPreviewCopy = {
         "The next anxious message is not just another message. It may be the confirmation he needs to stay away. Continuing to improvise can cost the last opening you have not yet learned to recognize.",
     },
     offer: {
-      price: "Immediate access for US$7",
+      price: "Immediate access for US$7.90",
       payment: "One-time payment",
       guaranteeTitle: "You have 7 days to try Haz Que Vuelva risk-free",
       guarantee:

@@ -15,6 +15,10 @@ type ProductLockedDialogProps = {
   simulated: boolean;
 };
 
+const checkoutUrls: Partial<Record<Product["id"], string>> = {
+  vuelve_ia: "https://go.centerpag.com/PPU38CQERFF",
+};
+
 const focusableSelector = [
   "button:not([disabled])",
   "[href]",
@@ -35,6 +39,15 @@ export function ProductLockedDialog({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [mounted, setMounted] = useState(false);
   const [notice, setNotice] = useState("");
+  const checkoutUrl = checkoutUrls[product.id];
+  const productTitle =
+    product.id === "vuelve_ia"
+      ? l(
+          "DIAGNÓSTICO VUELVE IA",
+          "DIAGNÓSTICO VUELVE IA",
+          "VUELVE AI DIAGNOSTIC",
+        )
+      : product.name;
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setMounted(true));
@@ -118,26 +131,40 @@ export function ProductLockedDialog({
         </div>
         <div className="product-dialog__content">
           <h2 id="locked-product-title" ref={titleRef} tabIndex={-1}>
-            {product.name}
+            {productTitle}
           </h2>
           <p>{product.description}</p>
           <div className="dialog-note">
             <Icon name="lock" />
             <span>
               {l(
-                simulated
+                simulated && !checkoutUrl
                   ? "En el producto real, una compra aprobada habilitará únicamente este acceso."
                   : "Este producto no está activo en tu cuenta. Una compra aprobada habilita únicamente el producto correspondiente.",
-                simulated
+                simulated && !checkoutUrl
                   ? "No produto real, uma compra aprovada liberará apenas este acesso."
                   : "Este produto não está ativo na sua conta. Uma compra aprovada libera apenas o produto correspondente.",
-                simulated
+                simulated && !checkoutUrl
                   ? "In the real product, an approved purchase will unlock only this access."
                   : "This product is not active on your account. An approved purchase unlocks only the corresponding product.",
               )}
             </span>
           </div>
-          {simulated ? (
+          {checkoutUrl ? (
+            <a
+              className="button button--primary"
+              href={checkoutUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              {l(
+                "Quiero desbloquear VUELVE IA",
+                "Quero desbloquear a VUELVE IA",
+                "I want to unlock VUELVE IA",
+              )}
+              <Icon name="external" />
+            </a>
+          ) : simulated ? (
             <button
               className="button button--primary"
               onClick={() =>

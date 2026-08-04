@@ -20,17 +20,17 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function BrandMark({ compact = false }: { compact?: boolean }) {
+function BrandMark() {
   return (
     <span aria-label="Haz Que Vuelva" className="brand-mark">
-      <span aria-hidden="true" className="brand-mark__symbol">
-        H
-      </span>
-      {compact ? null : (
-        <span aria-hidden="true" className="brand-mark__text">
-          Haz Que Vuelva
-        </span>
-      )}
+      <img
+        alt=""
+        aria-hidden="true"
+        className="brand-mark__logo"
+        height="392"
+        src="/images/brand/haz-que-vuelva-logo-horizontal.webp"
+        width="1451"
+      />
     </span>
   );
 }
@@ -160,9 +160,6 @@ export function AppShell({
           <Link aria-label="Haz Que Vuelva — Inicio" href="/">
             <BrandMark />
           </Link>
-          <span className="mock-chip">
-            {l("Prototipo", "Protótipo", "Prototype")}
-          </span>
         </header>
         <main className="app-main" id="contenido-principal" tabIndex={-1}>
           <RouteFocus />

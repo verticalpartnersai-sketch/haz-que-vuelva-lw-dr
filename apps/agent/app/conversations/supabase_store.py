@@ -1,12 +1,27 @@
 from uuid import UUID
 
 from app.core.supabase import SupabaseServiceClient
-from app.generation.schemas import GeneratedAnswer
+from app.generation.schemas import ConversationTurn, GeneratedAnswer
 
 
 class SupabaseConversationStore:
     def __init__(self, client: SupabaseServiceClient) -> None:
         self._client = client
+
+    async def recent_messages(
+        self,
+        member_id: UUID,
+        conversation_id: UUID,
+    ) -> list[ConversationTurn]:
+        rows = await self._client.rpc(
+            "recent_ai_messages",
+            {
+                "p_member_id": str(member_id),
+                "p_conversation_id": str(conversation_id),
+                "p_limit": 12,
+            },
+        )
+        return [ConversationTurn.model_validate(row) for row in rows]
 
     async def persist_member_message(
         self,

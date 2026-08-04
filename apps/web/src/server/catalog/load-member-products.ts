@@ -5,6 +5,7 @@ import { products as mockProducts } from "@/mocks/data";
 import { SupabaseMemberCatalog } from "@/modules/catalog/adapters/supabase-member-catalog";
 import { listMemberCatalog } from "@/modules/catalog/application/list-member-catalog";
 import { currentIdentity } from "@/modules/identity/application/current-identity";
+import { memberAiProducts } from "@/server/ai/member-ai-access";
 import { environment } from "@/server/config/environment";
 import { createSupabaseServerClient } from "@/server/supabase/server-client";
 
@@ -24,9 +25,23 @@ export async function loadMemberProducts() {
     gateway: new SupabaseMemberCatalog(client),
     memberId: identity.id,
   });
+  const aiAccess = environment().FEATURE_VUELVE_IA
+    ? await memberAiProducts(identity.id)
+    : null;
+  const products = presentMemberCatalog(items).map((product) => {
+    if (product.id !== "vuelve_ia" || !aiAccess) return product;
+    return {
+      ...product,
+      accessState: aiAccess.hasAi
+        ? "available" as const
+        : aiAccess.hadAi
+          ? "expired" as const
+          : "locked" as const,
+    };
+  });
 
   return {
-    products: presentMemberCatalog(items),
+    products,
     simulated: false,
   };
 }

@@ -16,6 +16,7 @@ import {
   List,
   Lock,
   PaperPlaneTilt,
+  Plus,
   SignOut,
   Sparkle,
   UploadSimple,
@@ -43,6 +44,7 @@ export type IconName =
   | "logout"
   | "menu"
   | "message"
+  | "plus"
   | "send"
   | "settings"
   | "spark"
@@ -71,6 +73,7 @@ const icons: Record<IconName, ComponentType<PhosphorIconProps>> = {
   logout: SignOut,
   menu: List,
   message: ChatCircle,
+  plus: Plus,
   send: PaperPlaneTilt,
   settings: GearSix,
   spark: Sparkle,

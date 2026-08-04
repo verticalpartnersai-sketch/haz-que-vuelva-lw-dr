@@ -6,7 +6,7 @@ from app.generation.ports import RetrievedChunk
 
 
 class EmbeddingProvider(Protocol):
-    async def embed(self, text: str) -> list[float]: ...
+    async def embed(self, text: str) -> list[float] | None: ...
 
 
 class SupabaseRetriever:
@@ -24,15 +24,17 @@ class SupabaseRetriever:
         member_id: UUID,
         query: str,
         scope: str,
+        allowed_product_codes: list[str],
     ) -> list[RetrievedChunk]:
         vector = await self._embeddings.embed(query)
         rows = await self._client.rpc(
-            "match_ai_chunks",
+            "match_ai_chunks_v2",
             {
                 "p_member_id": str(member_id),
                 "p_query": query,
                 "p_embedding": vector,
                 "p_scope": scope,
+                "p_allowed_products": allowed_product_codes,
                 "p_limit": 8,
             },
         )
@@ -46,11 +48,16 @@ class SupabaseRetriever:
             for row in rows
         ]
 
-    async def global_knowledge(self, query: str) -> list[RetrievedChunk]:
+    async def global_knowledge(
+        self,
+        query: str,
+        allowed_product_codes: list[str],
+    ) -> list[RetrievedChunk]:
         return await self._retrieve(
             member_id=UUID(int=0),
             query=query,
             scope="global",
+            allowed_product_codes=allowed_product_codes,
         )
 
     async def member_memory(
@@ -62,4 +69,5 @@ class SupabaseRetriever:
             member_id=member_id,
             query=query,
             scope="member",
+            allowed_product_codes=[],
         )

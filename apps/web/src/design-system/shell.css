@@ -27,29 +27,14 @@
 .brand-mark {
   align-items: center;
   display: inline-flex;
-  gap: var(--space-3);
 }
 
-.brand-mark__symbol {
-  align-items: center;
-  border: 1px solid var(--brand-500);
-  color: var(--brand-400);
-  display: inline-flex;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  height: 36px;
-  justify-content: center;
-  line-height: 1;
-  transform: rotate(-2deg);
-  width: 36px;
-}
-
-.brand-mark__text {
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+.brand-mark__logo {
+  display: block;
+  height: 40px;
+  object-fit: contain;
+  object-position: left center;
+  width: min(48vw, 190px);
 }
 
 .side-rail__nav {
@@ -193,7 +178,7 @@
   background: linear-gradient(var(--surface-canvas), var(--alpha-canvas-76));
   display: flex;
   height: 64px;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: var(--space-3) var(--space-4);
   position: relative;
   z-index: 20;

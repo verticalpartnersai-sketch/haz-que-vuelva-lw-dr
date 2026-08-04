@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Protocol
 from uuid import UUID
 
-from app.generation.schemas import GeneratedAnswer
+from app.generation.schemas import ConversationTurn, GeneratedAnswer
 
 
 @dataclass(frozen=True)
@@ -25,6 +25,12 @@ class UsageLedger(Protocol):
 
 
 class ConversationStore(Protocol):
+    async def recent_messages(
+        self,
+        member_id: UUID,
+        conversation_id: UUID,
+    ) -> list[ConversationTurn]: ...
+
     async def persist_member_message(
         self,
         member_id: UUID,
@@ -47,7 +53,11 @@ class PromptStore(Protocol):
 
 
 class Retriever(Protocol):
-    async def global_knowledge(self, query: str) -> list[RetrievedChunk]: ...
+    async def global_knowledge(
+        self,
+        query: str,
+        allowed_product_codes: list[str],
+    ) -> list[RetrievedChunk]: ...
 
     async def member_memory(
         self,
@@ -64,5 +74,7 @@ class GenerationProvider(Protocol):
         system_prompt: str,
         global_knowledge: list[RetrievedChunk],
         member_memory: list[RetrievedChunk],
+        history: list[ConversationTurn],
         safety_mode: bool,
+        safety_category: str | None,
     ) -> GeneratedAnswer: ...

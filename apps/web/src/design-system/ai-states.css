@@ -11,7 +11,7 @@
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
-  padding: clamp(0.75rem, 2vw, 1.5rem);
+  padding: 0;
   position: relative;
 }
 
@@ -22,69 +22,24 @@
   height: 100%;
   justify-content: center;
   min-height: 0;
-  padding-top: 2.75rem;
+  padding-top: 0;
   width: 100%;
-}
-
-.ai-access-toggle {
-  align-items: center;
-  background: var(--alpha-shell-94);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  box-shadow:
-    inset 0 1px 0 var(--alpha-neutral-15),
-    0 10px 30px var(--alpha-canvas-34);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  font: inherit;
-  font-size: 0.6875rem;
-  gap: var(--space-2);
-  min-height: 34px;
-  padding: 0.35rem 0.75rem;
-  position: absolute;
-  right: clamp(1rem, 2vw, 1.5rem);
-  top: clamp(1rem, 2vw, 1.5rem);
-  z-index: 5;
-}
-
-.ai-access-toggle::before {
-  background: var(--success-500);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--success-500);
-  content: "";
-  height: 6px;
-  width: 6px;
-}
-
-.ai-access-toggle:hover {
-  background: var(--surface-hover);
-  border-color: var(--brand-700);
-}
-
-.ai-access-toggle span {
-  color: var(--text-muted);
-}
-
-.ai-access-toggle strong {
-  color: var(--text-primary);
-  font-weight: 700;
 }
 
 .oracle-chat {
   background: linear-gradient(180deg, var(--neutral-900), var(--surface-shell));
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-radius: 0;
   box-shadow:
     inset 0 1px 0 var(--alpha-neutral-15),
     0 28px 80px var(--alpha-canvas-76);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  height: min(820px, calc(100dvh - 5.75rem));
-  max-width: 1060px;
+  height: 100%;
+  max-width: none;
   min-height: 0;
   overflow: hidden;
-  width: min(100%, 1060px);
+  width: 100%;
 }
 
 .oracle-chat__header {
@@ -192,10 +147,117 @@
   letter-spacing: 0.08em;
 }
 
-.oracle-message--assistant p {
+.oracle-message--assistant .oracle-markdown {
   color: var(--text-secondary);
   line-height: 1.7;
   margin: var(--space-2) 0 0;
+}
+
+.oracle-markdown > :first-child {
+  margin-top: 0;
+}
+
+.oracle-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.oracle-markdown p,
+.oracle-markdown ul,
+.oracle-markdown ol,
+.oracle-markdown blockquote,
+.oracle-markdown pre,
+.oracle-markdown table {
+  margin: 0 0 var(--space-3);
+}
+
+.oracle-markdown h1,
+.oracle-markdown h2,
+.oracle-markdown h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.35;
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+.oracle-markdown ul,
+.oracle-markdown ol {
+  padding-left: 1.25rem;
+}
+
+.oracle-markdown li + li {
+  margin-top: var(--space-1);
+}
+
+.oracle-markdown blockquote {
+  background: var(--alpha-neutral-06);
+  border-left: 2px solid var(--brand-500);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-primary);
+  padding: var(--space-3) var(--space-4);
+}
+
+.oracle-markdown code {
+  background: var(--surface-hover);
+  border-radius: var(--radius-xs);
+  font-size: 0.86em;
+  padding: 0.12rem 0.32rem;
+}
+
+.oracle-markdown pre {
+  background: var(--surface-hover);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  padding: var(--space-3);
+}
+
+.oracle-markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.oracle-markdown a {
+  color: var(--brand-300);
+  text-underline-offset: 0.2em;
+}
+
+.oracle-markdown table {
+  border-collapse: collapse;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.oracle-markdown th,
+.oracle-markdown td {
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.oracle-usage-warning {
+  align-items: flex-start;
+  align-self: stretch;
+  background: color-mix(in srgb, #e5a820 10%, var(--surface-default));
+  border: 1px solid color-mix(in srgb, #e5a820 48%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  color: color-mix(in srgb, #ffd77a 80%, var(--text-primary));
+  display: flex;
+  gap: var(--space-3);
+  margin: 0 auto;
+  max-width: 760px;
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+}
+
+.oracle-usage-warning > span {
+  flex: 0 0 auto;
+  line-height: 1.5;
+}
+
+.oracle-usage-warning p {
+  line-height: 1.55;
+  margin: 0;
 }
 
 .oracle-message--user {
@@ -381,32 +443,25 @@
 }
 
 @media (max-width: 767px) {
+  .app-shell__viewport:has(> .app-main > .ai-page) > .mobile-header {
+    display: none;
+  }
+
   .app-main:has(> .ai-page) {
-    height: calc(
-      100dvh - 64px - var(--dock-height) - env(safe-area-inset-bottom)
-    );
+    height: calc(100dvh - var(--dock-height) - env(safe-area-inset-bottom));
   }
 
   .ai-page {
     height: 100%;
-    padding: var(--space-2);
+    padding: 0;
   }
 
   .ai-stage {
-    padding-top: 2.25rem;
-  }
-
-  .ai-access-toggle {
-    right: var(--space-3);
-    top: var(--space-3);
-  }
-
-  .ai-access-toggle span {
-    display: none;
+    padding-top: 0;
   }
 
   .oracle-chat {
-    border-radius: var(--radius-md);
+    border-radius: 0;
     height: 100%;
   }
 
@@ -422,17 +477,17 @@
   .oracle-new-chat {
     height: 36px;
     min-height: 36px;
-    padding: 0;
-    width: 36px;
+    max-width: 54%;
+    padding: 0 var(--space-3);
+    width: auto;
   }
 
   .oracle-new-chat span {
-    clip: rect(0 0 0 0);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
+    height: auto;
+    overflow: visible;
+    position: static;
     white-space: nowrap;
-    width: 1px;
+    width: auto;
   }
 
   .oracle-chat__messages {
@@ -475,10 +530,6 @@
     max-width: 94%;
   }
 
-  .oracle-thinking {
-    min-width: min(70vw, 420px);
-  }
-
   .oracle-chat__input {
     padding: var(--space-2);
   }
@@ -492,7 +543,6 @@
   .oracle-heart::after,
   .oracle-heart svg,
   .oracle-thinking__spinner,
-  .oracle-thinking__process i span,
   .ai-access-state > span.is-checking {
     animation: none;
   }

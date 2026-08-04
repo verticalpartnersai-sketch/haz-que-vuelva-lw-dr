@@ -194,7 +194,7 @@ export const quizCopyEn: QuizCopy = {
   loaderOne: {
     title: "Finding what is pushing him away and how much of your connection is still alive…",
     socialProof: {
-      lead: "More than 5,732 women",
+      lead: "More than 2,847 women",
       middle: "replaced anxiety with a clear path to",
       highlight: "regain control and reopen the connection",
     },

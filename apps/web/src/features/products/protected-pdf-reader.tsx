@@ -364,8 +364,11 @@ export function ProtectedPdfReader({
   useEffect(() => {
     persistedProgressRef.current = initialProgress;
     pendingProgressRef.current = initialProgress;
-    setAutomaticProgress(initialProgress);
-    setProgressSaveState("idle");
+    const frame = window.requestAnimationFrame(() => {
+      setAutomaticProgress(initialProgress);
+      setProgressSaveState("idle");
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, [fileId, initialProgress, productCode]);
 
   useEffect(() => {
@@ -374,9 +377,9 @@ export function ProtectedPdfReader({
       automaticProgress,
       Math.round((pageNumber / totalPages) * 100),
     );
-    if (reachedProgress > automaticProgress) {
-      setAutomaticProgress(reachedProgress);
-    }
+    const frame = window.requestAnimationFrame(() => {
+      setAutomaticProgress((current) => Math.max(current, reachedProgress));
+    });
     if (reachedProgress <= persistedProgressRef.current) return;
 
     pendingProgressRef.current = reachedProgress;
@@ -388,6 +391,7 @@ export function ProtectedPdfReader({
       progressTimerRef.current = null;
       void persistProgress(pendingProgressRef.current);
     }, 1_500);
+    return () => window.cancelAnimationFrame(frame);
   }, [automaticProgress, pageNumber, persistProgress, readerState, totalPages]);
 
   useEffect(() => {

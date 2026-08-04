@@ -103,12 +103,28 @@ export function useQuizSoundscape(sessionHydrated: boolean) {
   }, []);
 
   function startSoundscape() {
-    setAudioStarted(true);
-    setAudioMuted(true);
-    setAudioNeedsGesture(false);
+    const ambientAudio = ambientAudioRef.current;
+    if (ambientAudio) {
+      ambientAudio.currentTime = 0;
+      ambientAudio.loop = true;
+      ambientAudio.muted = false;
+      ambientAudio.volume = fullVolume;
+    }
+
     const graph = ensureAudioGraph();
-    if (graph?.context.state === "suspended") void graph.context.resume();
-    playAmbientAudio(true, true);
+    if (graph) {
+      graph.gain.gain.value = fullVolume;
+      if (graph.context.state === "suspended") {
+        void graph.context.resume();
+      }
+    }
+
+    // Keep the first play() inside the CTA's user gesture. Mobile Chrome
+    // rejects audible playback when it is deferred to a React effect.
+    playAmbientAudio(true, false);
+    setAudioStarted(true);
+    setAudioMuted(false);
+    setAudioNeedsGesture(false);
   }
 
   function toggleAmbientAudio() {

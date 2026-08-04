@@ -1,7 +1,7 @@
 import type { UpsellOffer } from "@/features/upsells/offer-page";
 
 export const reconquista30Offer: UpsellOffer = {
-  acceptLabel: "SÍ, QUIERO RECONQUISTA 30 POR US$7",
+  acceptLabel: "SÍ, QUIERO RECONQUISTA 30 POR US$7,90",
   accessLine: "Pago único · acceso inmediato · garantía de 7 días",
   brandAlt: "Reconquista 30",
   brandSrc: "/images/upsells/reconquista-30/brand.webp",
@@ -86,7 +86,7 @@ export const reconquista30Offer: UpsellOffer = {
   offerBody:
     "Añade ahora el protocolo completo que convierte una reapertura frágil en 30 días de observación, conversación proporcional, límites y decisiones claras.",
   offerHeading: "No llegues sin ruta al momento que llevas semanas esperando.",
-  price: "US$7",
+  price: "US$7,90",
   priceContext: "Condición especial poscompra",
   proofBody:
     "Estas no son imágenes decorativas. Son páginas reales del protocolo de 50 páginas que recibirás en tu área de miembros.",

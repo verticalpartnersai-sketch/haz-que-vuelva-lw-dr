@@ -65,7 +65,9 @@ test("the production Worker owns only the member subdomain and declares required
   assert.doesNotMatch(wrangler, /"pattern": "hazquevuelva\.site"/);
   assert.match(wrangler, /"SUPABASE_SECRET_KEY"/);
   assert.match(wrangler, /"FEATURE_PAYMENTS": "true"/);
-  assert.match(wrangler, /"FEATURE_VUELVE_IA": "false"/);
+  assert.match(wrangler, /"FEATURE_VUELVE_IA": "true"/);
+  assert.match(wrangler, /"FEATURE_AI_DIAGNOSTICS": "true"/);
+  assert.match(wrangler, /"AI_DAILY_TOKEN_BUDGET": "250000"/);
   assert.match(wrangler, /"AGENT_SERVICE_BINDING": "true"/);
   assert.match(wrangler, /"binding": "VUELVE_AGENT_SERVICE"/);
   assert.match(wrangler, /"service": "haz-que-vuelva-agent"/);
@@ -147,7 +149,7 @@ test("Supabase browser settings come from the runtime server instead of build-ti
   assert.match(loginPage, /supabase=\{/);
 });
 
-test("VUELVE IA uses a private service binding and limits request bodies", () => {
+test("VUELVE IA uses a service binding and credential-gates its provider bridge", () => {
   const route = read("../src/app/api/ai/generations/stream/route.ts");
   const agentWorker = read("../../agent/worker/index.ts");
   const agentWrangler = read("../../agent/wrangler.jsonc");
@@ -161,10 +163,11 @@ test("VUELVE IA uses a private service binding and limits request bodies", () =>
       route.indexOf("readBoundedJsonBody(request"),
     "authentication must happen before the request body is parsed",
   );
-  assert.match(agentWrangler, /"FEATURE_GENERATION": "false"/);
+  assert.match(agentWrangler, /"FEATURE_GENERATION": "true"/);
   assert.match(agentWrangler, /"MAX_OUTPUT_TOKENS": "2048"/);
-  assert.match(agentWrangler, /"workers_dev": false/);
+  assert.match(agentWrangler, /"workers_dev": true/);
   assert.match(agentWrangler, /"preview_urls": false/);
+  assert.match(agentWorker, /if \(!hasInternalCredential && !hasBackfillCredential\)/);
   assert.ok(
     agentWorker.indexOf("hasValidCredential") <
       agentWorker.indexOf('getContainer(env.VUELVE_AGENT, "primary")'),

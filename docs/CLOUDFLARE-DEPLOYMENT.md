@@ -255,8 +255,11 @@ janela controlada ou ocorrer em uma publicação coordenada.
 
 1. Publicar primeiro a área de membros com o Service Binding declarado; a
    versão anterior do agente continua atendendo durante a transição.
-2. Publicar o agente com `workers_dev=false` e `preview_urls=false`, removendo
-   sua entrada pública somente depois que o BFF já depende do binding.
+2. Publicar o agente com `preview_urls=false`. O `workers_dev` permanece ativo
+   exclusivamente como ponte autenticada para o Workers AI e para o backfill de
+   embeddings; todas as rotas exigem `INTERNAL_SECRET` ou
+   `PROVIDER_BACKFILL_SECRET` antes de processar qualquer payload. O tráfego da
+   área de membros continua usando o Service Binding privado.
 3. Publicar marketing e confirmar os links dos dois upsells.
 4. Executar o smoke remoto de toda a superfície pública.
 5. Preservar os IDs das versões anteriores para rollback independente.

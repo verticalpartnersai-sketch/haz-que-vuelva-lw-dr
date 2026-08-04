@@ -8,9 +8,10 @@ import {
 import {
   VuelveActions,
   VuelveBrand,
-  VuelveExample,
   VuelveFooter,
+  VuelveMasthead,
   VuelveProductMockup,
+  VuelveTestimonials,
 } from "@/features/upsells/vuelve-ia-parts";
 
 type VuelveOfferPageProps = {
@@ -27,57 +28,61 @@ function Hero({
   isDownsell: boolean;
 }) {
   return (
-    <section className="via-hero" id="oferta">
-      <div className="via-hero__copy">
-        <span className="via-status">
-          {isDownsell ? "ANTES DE ENTRAR A TU ACCESO" : "ÚLTIMA OPCIÓN ANTES DE CONTINUAR"}
+    <section className="r30-hero" id="oferta">
+      <div className="r30-hero__copy">
+        <span className="r30-status">
+          {isDownsell ? "ANTES DE CONTINUAR" : "OFERTA COMPLEMENTARIA DISPONIBLE"}
         </span>
         <h1>
           {isDownsell
-            ? "El mismo diagnóstico completo sigue disponible antes de continuar."
-            : "Tu conversación tiene matices que un PDF no puede ver."}
+            ? "Tu conversación sigue teniendo matices que una guía no puede analizar por ti."
+            : "Un PDF te enseña la ruta. VUELVE IA analiza la conversación que estás viviendo ahora."}
         </h1>
         <p>
           {isDownsell
-            ? "Mantienes los mismos 30 días, el mismo tipo de análisis, los mismos formatos aceptados y los mismos límites de uso. El producto no pierde ninguna función."
-            : "Comparte el texto de tu conversación y recibe una lectura organizada de los hechos, las señales, lo que no se puede saber y la decisión que tiene más sentido ahora."}
+            ? "Mantienes el mismo diagnóstico completo, los mismos 30 días, los mismos formatos aceptados y los mismos límites de uso. No se elimina ninguna función."
+            : "Comparte lo que ocurrió y recibe una lectura organizada de los hechos, las señales, lo que todavía no se puede saber y la decisión que tiene más sentido antes de responder."}
         </p>
         <VuelveActions acceptHref={acceptHref} declineHref={declineHref} />
       </div>
-      <div className="via-hero__visual">
+      <div className="r30-hero__visual">
         <VuelveProductMockup compact={isDownsell} />
       </div>
     </section>
   );
 }
 
-function Context() {
+function Bridge() {
   return (
-    <section className="via-context">
-      <span className="via-eyebrow">UNA FRASE AISLADA NO CUENTA TODA LA HISTORIA</span>
+    <section className="r30-prose">
+      <span className="r30-eyebrow">UNA FRASE AISLADA NO CUENTA TODA LA HISTORIA</span>
       <h2>“Bien, ¿y tú?” puede ser una puerta, cortesía o una despedida lenta.</h2>
       <p>
         Importa quién inició, qué ocurrió antes, cuánto duró el silencio, si hizo una pregunta propia y si su conducta después coincide con sus palabras.
       </p>
       <p>
-        Cuando decides mirando una sola línea, el deseo inventa una apertura y el miedo inventa un cierre. VUELVE IA te obliga a volver a los hechos antes de actuar.
+        Cuando decides mirando una sola línea, el deseo inventa una apertura y el miedo inventa un cierre. VUELVE IA te ayuda a volver a los hechos antes de actuar.
       </p>
+      <strong>Tu conversación entra como contexto. La salida vuelve como una razón para decidir.</strong>
     </section>
   );
 }
 
 function Steps() {
   return (
-    <section className="via-steps">
+    <section className="r30-weeks vuelve-steps">
       <header>
-        <span className="via-eyebrow">DE MILES DE MENSAJES A UNA DECISIÓN REVISABLE</span>
-        <h2>La conversación entra como contexto. La salida vuelve como una razón para actuar.</h2>
+        <span className="r30-eyebrow">DE LA CONVERSACIÓN A UNA DECISIÓN REVISABLE</span>
+        <h2>Tres pasos para dejar de completar los silencios con ansiedad.</h2>
+        <p>
+          El sistema organiza el contexto sin prometer leer pensamientos ni decidir por ti.
+        </p>
       </header>
       <ol>
         {vuelveSteps.map((step) => (
           <li key={step.label}>
-            <span>{step.label}</span>
-            <div>
+            <div className="r30-weeks__copy">
+              <span>{step.label}</span>
               <h3>{step.title}</h3>
               <p>{step.body}</p>
             </div>
@@ -88,29 +93,69 @@ function Steps() {
   );
 }
 
-function Proof() {
+const productScreens = [
+  {
+    alt: "Pantalla inicial real de VUELVE IA",
+    caption: "El espacio antes de iniciar una conversación",
+    height: 1000,
+    src: "/images/upsells/vuelve-ia/member-ai-empty-v1.png",
+    width: 1384,
+  },
+  {
+    alt: "Conversación sintética dentro de la interfaz real de VUELVE IA",
+    caption: "Una pregunta concreta con respuesta contextual",
+    height: 1000,
+    src: "/images/upsells/vuelve-ia/member-ai-conversation-v1.png",
+    width: 1384,
+  },
+  {
+    alt: "Interfaz móvil real de VUELVE IA con una conversación sintética",
+    caption: "El mismo contexto disponible desde el celular",
+    height: 780,
+    src: "/images/upsells/vuelve-ia/member-ai-conversation-mobile-v1.png",
+    width: 390,
+  },
+] as const;
+
+function ProductProof() {
   return (
-    <section className="via-proof">
+    <section className="r30-proof vuelve-proof">
       <header>
-        <span className="via-eyebrow">NO RECIBES UNA FRASE MÁGICA</span>
-        <h2>Recibes una lectura que muestra de dónde sale cada decisión.</h2>
+        <span className="r30-eyebrow">CAPTURAS REALES DE LA ÁREA DE MIEMBROS</span>
+        <h2>Esto es lo que vas a abrir, no una interfaz inventada para venderte.</h2>
         <p>
-          Este ejemplo es sintético y demuestra la estructura del diagnóstico. No representa el resultado de una compradora real.
+          Las pantallas pertenecen a VUELVE IA dentro de Haz Que Vuelva. La conversación mostrada es sintética y no contiene datos de una compradora.
         </p>
       </header>
-      <VuelveExample />
+      <div className="r30-proof__rail vuelve-proof__rail">
+        {productScreens.map((screen) => (
+          <figure key={screen.src}>
+            <div className="vuelve-proof__shot">
+              <Image
+                alt={screen.alt}
+                height={screen.height}
+                loading="lazy"
+                sizes="(max-width: 639px) 78vw, 310px"
+                src={screen.src}
+                width={screen.width}
+              />
+            </div>
+            <figcaption>{screen.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }
 
-function Details() {
+function ValueStack() {
   return (
-    <section className="via-details">
+    <section className="r30-value vuelve-value">
       <header>
-        <span className="via-eyebrow">LO QUE UN CONSEJO GENÉRICO NO PUEDE VER</span>
+        <span className="r30-eyebrow">LO QUE UN CONSEJO GENÉRICO NO PUEDE VER</span>
         <h2>Un solo caso, con contexto continuo, durante los próximos 30 días.</h2>
       </header>
-      <div className="via-details__grid">
+      <div className="vuelve-value__grid">
         {vuelveDetails.map((detail) => (
           <article key={detail.title}>
             <span aria-hidden="true">✓</span>
@@ -121,10 +166,10 @@ function Details() {
           </article>
         ))}
       </div>
-      <aside className="via-boundary">
-        <strong>Transparencia antes de compartir tu conversación</strong>
+      <aside className="vuelve-boundary">
+        <strong>Transparencia antes de compartir una conversación</strong>
         <p>
-          VUELVE IA no lee pensamientos, no diagnostica personas y no garantiza reconciliación. Retira datos innecesarios de terceros antes de enviar el archivo.
+          VUELVE IA no lee pensamientos, no diagnostica personas y no garantiza una reconciliación. Retira datos innecesarios de terceros antes de enviar un archivo.
         </p>
       </aside>
     </section>
@@ -136,22 +181,18 @@ function OfferCard({
   declineHref,
 }: Pick<VuelveOfferPageProps, "acceptHref" | "declineHref">) {
   return (
-    <section className="via-offer">
+    <section className="r30-offer">
       <header>
-        <span className="via-eyebrow">COMPLETA TU ACCESO</span>
+        <span className="r30-eyebrow">COMPLETA TU ACCESO</span>
         <h2>Antes de enviar otra respuesta, entiende qué conversación estás viviendo.</h2>
       </header>
-      <article className="via-offer-card">
+      <article className="r30-offer-card">
         <VuelveBrand />
         <h3>Convierte tu conversación en hechos, señales, límites y una decisión explicada.</h3>
         <ul>
           {vuelveOfferSummary.map((item) => <li key={item}>{item}</li>)}
         </ul>
-        <div className="via-price">
-          <span>AÑADE 30 DÍAS DE ACCESO POR</span>
-          <strong>US$20</strong>
-        </div>
-        <VuelveActions acceptHref={acceptHref} declineHref={declineHref} />
+        <VuelveActions acceptHref={acceptHref} declineHref={declineHref} price="US$20" />
       </article>
     </section>
   );
@@ -159,7 +200,7 @@ function OfferCard({
 
 function Guarantee() {
   return (
-    <section className="via-guarantee">
+    <section className="r30-guarantee">
       <Image
         alt="Garantía de 7 días"
         height={640}
@@ -167,34 +208,33 @@ function Guarantee() {
         src="/images/quiz/offer/guarantee-seal-transparent-v2.webp"
         width={640}
       />
-      <div>
-        <h2>Tienes 7 días para comprobar si esta lectura organizada es para ti.</h2>
-        <p>
-          Si el acceso no corresponde a lo que esperabas, puedes solicitar el reembolso dentro de los primeros 7 días conforme a los términos de la compra.
-        </p>
-      </div>
+      <h2>Tienes 7 días para comprobar si esta lectura organizada es para ti.</h2>
+      <p>
+        Si el acceso no corresponde a lo que esperabas, puedes solicitar el reembolso dentro de los primeros 7 días conforme a los términos de la compra.
+      </p>
     </section>
   );
 }
 
-export function VuelveIaOfferPage({
-  acceptHref,
-  declineHref,
-  variant,
-}: VuelveOfferPageProps) {
+export function VuelveIaOfferPage({ acceptHref, declineHref, variant }: VuelveOfferPageProps) {
   const isDownsell = variant === "downsell";
 
   return (
-    <main className={`via-page${isDownsell ? " via-page--downsell" : ""}`}>
+    <main className={`r30-page r30-page--vuelve${isDownsell ? " r30-page--downsell" : ""}`}>
       <a className="skip-link" href="#oferta">Ir a la oferta</a>
-      <header className="via-masthead"><VuelveBrand priority /></header>
+      <VuelveMasthead />
       <Hero acceptHref={acceptHref} declineHref={declineHref} isDownsell={isDownsell} />
-      {isDownsell ? <Proof /> : (
+      {isDownsell ? null : (
         <>
-          <Context />
+          <Bridge />
           <Steps />
-          <Proof />
-          <Details />
+          <ProductProof />
+          <ValueStack />
+        </>
+      )}
+      <VuelveTestimonials compact={isDownsell} />
+      {isDownsell ? null : (
+        <>
           <OfferCard acceptHref={acceptHref} declineHref={declineHref} />
           <Guarantee />
         </>

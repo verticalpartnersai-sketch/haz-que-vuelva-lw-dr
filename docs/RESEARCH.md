@@ -834,6 +834,9 @@ oficial da Perfect Pay e o contrato comercial canônico do produto.
   página seguinte pode ser outra oferta da cadeia.
 - [Perfect Pay — Página de Obrigado](https://help.perfectpay.com.br/article/128-como-configurar-minha-pagina-de-obrigado-na-perfect-pay):
   documenta a configuração do destino após a decisão comercial.
+- [Shopify — Post-purchase product offer UX](https://shopify.dev/docs/apps/build/checkout/product-offers/ux-for-post-purchase-product-offers):
+  recomenda que a oferta pós-compra preserve a confiança na marca com estilo
+  coerente, imagem fiel do produto, descrição concisa e decisões claras.
 - [NIST — Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence):
   recomenda transparência sobre limites, privacidade e avaliação antes do uso.
 
@@ -844,3 +847,11 @@ limites e funções de VUELVE IA definidos no Oracle; somente a condição
 comercial muda de US$20 para US$15. Nenhuma hero mostra preço, e o exemplo de
 análise é sintético e explicitamente rotulado. O checkout de D2 permanece
 fail-closed até existir `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL` aprovada.
+
+Decisão visual posterior: UP2 e D2 passaram a herdar diretamente o sistema
+`r30-*` da página final, de UP1 e de D1, inclusive botões, ritmos, cards,
+depoimentos e rodapé. O mockup inventado em HTML/CSS foi substituído por
+capturas reais da VUELVE IA em desktop e mobile, obtidas localmente com uma
+conversa sintética e integrações reais desativadas. ImageGen não foi usado para
+fabricar uma tela do produto; somente variantes transparentes do logo aprovado
+foram derivadas mecanicamente.

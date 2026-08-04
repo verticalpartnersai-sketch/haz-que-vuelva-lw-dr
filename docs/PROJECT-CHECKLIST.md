@@ -439,6 +439,9 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Confirmar no contrato canônico que D2 mantém o mesmo Diagnóstico VUELVE
   IA, acesso e limites por US$15; implementar `/d2` com recusa para `/gracias`
   e UP2 com recusa para `/d2`, mantendo valores fora das heroes.
+- [x] Reconstruir UP2/D2 com o sistema visual `r30-*` aprovado na página final,
+  em UP1 e em D1; usar capturas reais da VUELVE IA com conversa sintética e
+  incluir o mesmo carrossel manual de depoimentos nas duas páginas.
 - [x] Publicar UP2/D2 no Worker de marketing e comprovar em produção a cadeia
   de recusas `D1 → /gracias`, `UP2 → /d2` e `D2 → /gracias`, com query
   preservada, ausência de overflow e console limpo.

@@ -299,8 +299,9 @@ Aceite:
 10. tratar VUELVE IA como lançamento separado depois do gate jurídico e dos
     testes privados.
 
-Downsells não fazem parte da matriz atual. Se continuarem no funil, precisam de
-códigos, checkouts e decisão explícita de mapeamento antes do teste comercial.
+O frontend do Downsell 1 existe e reutiliza o entitlement `reconquista_30`, mas
+o checkout, a URL pública e a prova comercial ainda não existem. Esses itens
+precisam ser configurados antes de PP-06A entrar na homologação real.
 
 ## Critério para declarar 100%
 

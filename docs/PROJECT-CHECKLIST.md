@@ -304,9 +304,11 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [ ] Validar projeções com fixtures reais redigidas e testes cloud.
 - [ ] Confirmar aprovação comercial dos três produtos no painel Perfect Pay.
 - [ ] Configurar no painel e provar o pós-compra: Haz Que Vuelva → `/up1`,
-  Reconquista 30 → `/up2` e aceite/recusa do VUELVE IA → `/gracias`.
-- [ ] Confirmar se existirão downsells; caso existam, cadastrar códigos,
-  checkouts e mapeamentos para o mesmo entitlement sem duplicar acesso.
+  recusa de Reconquista 30 → `/downsell1`, resultado do Downsell 1 → `/up2`
+  e aceite/recusa do VUELVE IA → `/gracias`.
+- [ ] Cadastrar o checkout do Downsell 1, sua URL pública e o mapeamento para
+  `reconquista_30` sem duplicar acesso. A página e a rota locais existem, mas
+  isso ainda não prova configuração comercial nem concessão do entitlement.
 
 ### IA
 
@@ -427,13 +429,17 @@ dados reais e o deploy dos serviços de backend ainda dependem de seus gates.
 - [x] Configurar o checkout real no CTA do quiz.
 - [x] Ativar `upsell=true` no checkout principal e comprovar que o
   redirecionador preserva o parâmetro e a atribuição.
-- [x] Implementar páginas mobile-first `/up1`, `/up2` e `/gracias`, mantendo
-  os links de aceitação externos configuráveis.
+- [x] Implementar páginas mobile-first `/up1`, `/downsell1`, `/up2` e
+  `/gracias`, mantendo os links de aceitação externos configuráveis.
 - [x] Configurar os checkouts de Reconquista 30 e Diagnóstico VUELVE IA nos
   CTAs de `/up1` e `/up2`.
+- [ ] Configurar `NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL` com o checkout aprovado do
+  Downsell 1; até lá, o aceite de `/downsell1` permanece sem cobrança.
 - [x] Remover afirmações de compra confirmada de acessos diretos a `/up1`,
   `/up2` e `/gracias`; o smoke exige linguagem condicional sem contexto de
   transação verificada.
+- [x] Usar a mesma linguagem neutra em `/downsell1`; a verificação local foi
+  concluída, mas a rota ainda precisa entrar no smoke remoto após o deploy.
 - [ ] Conectar Workers Builds do marketing ao GitHub.
 - [ ] Aplicar em Cloudflare uma Configuration Rule com `disable_rum=true` para
   `miembros.hazquevuelva.site`. A decisão de preservar a CSP e desligar o beacon

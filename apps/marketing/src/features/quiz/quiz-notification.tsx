@@ -67,6 +67,7 @@ function rememberNotification(ids: Set<QuizNotificationBeat>) {
 
 export function useQuizNotifications({
   answers,
+  cycle,
   locale,
   onSound,
   questionIndex,
@@ -74,6 +75,7 @@ export function useQuizNotifications({
   stage,
 }: {
   answers: QuizAnswers;
+  cycle: number;
   locale: Locale;
   onSound: () => void;
   questionIndex: number;
@@ -82,6 +84,11 @@ export function useQuizNotifications({
 }) {
   const [active, setActive] = useState<QuizNotificationContent | null>(null);
   const seenRef = useRef<Set<QuizNotificationBeat> | null>(null);
+
+  useEffect(() => {
+    seenRef.current = new Set<QuizNotificationBeat>();
+    window.sessionStorage.removeItem(notificationSessionKey);
+  }, [cycle]);
 
   useEffect(() => {
     const trigger = triggerFor(stage, questionIndex);
@@ -114,7 +121,7 @@ export function useQuizNotifications({
     }, trigger.delay);
 
     return () => window.clearTimeout(showTimer);
-  }, [answers, locale, onSound, questionIndex, route, stage]);
+  }, [answers, cycle, locale, onSound, questionIndex, route, stage]);
 
   useEffect(() => {
     if (!active) return;

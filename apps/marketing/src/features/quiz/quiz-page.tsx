@@ -73,6 +73,7 @@ export function QuizPage() {
   const [locked, setLocked] = useState(false);
   const [loaderTick, setLoaderTick] = useState(0);
   const [checkoutStatus, setCheckoutStatus] = useState("");
+  const [notificationCycle, setNotificationCycle] = useState(0);
   const [sessionHydrated, setSessionHydrated] = useState(false);
   const enhancedExperience = true;
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -150,16 +151,18 @@ export function QuizPage() {
     stage,
   });
   const { active: notification } = useQuizNotifications({
-      answers,
-      locale,
-      onSound: playNotificationChime,
-      questionIndex,
-      route,
-      stage,
-    });
+    answers,
+    cycle: notificationCycle,
+    locale,
+    onSound: playNotificationChime,
+    questionIndex,
+    route,
+    stage,
+  });
 
   function startQuiz() {
     userStartedQuizRef.current = true;
+    setNotificationCycle((cycle) => cycle + 1);
     startSoundscape();
 
     track("quiz_start", utmParameters());

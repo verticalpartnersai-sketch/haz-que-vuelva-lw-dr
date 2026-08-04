@@ -19,21 +19,13 @@ import { resolvedLastAction } from "@/features/quiz/quiz-engine";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import { QuizLogo } from "@/features/quiz/quiz-intro-question";
 import { productProofAssets } from "@/features/quiz/quiz-proof";
+import { QuizTestimonialCarousel } from "@/features/quiz/quiz-testimonial-carousel";
 import {
   quizSalesCopyFor,
   type SalesValueItem,
 } from "@/features/quiz/quiz-sales-copy";
 
 type CheckoutHandler = (position: string) => void;
-
-const routeProofAssets: Record<QuizRoute, string> = {
-  gray: "/images/quiz/sales-proof/route-gray-chat.webp",
-  green: "/images/quiz/sales-proof/route-green-chat.webp",
-  logistics: "/images/quiz/sales-proof/route-logistics-chat.webp",
-  red: "/images/quiz/sales-proof/route-red-chat.webp",
-  third_person: "/images/quiz/sales-proof/route-third-person-chat.webp",
-  yellow: "/images/quiz/sales-proof/route-yellow-chat.webp",
-};
 
 const valueImages = {
   calendar: productProofAssets.calendar,
@@ -131,10 +123,7 @@ function QuizSalesFooter() {
           {l("Términos de uso", "Termos de uso", "Terms of use")}
         </Link>
       </nav>
-      <p>
-        Vertical Partners
-        {legalRegistration ? ` · CNPJ ${legalRegistration}` : ""}
-      </p>
+      {legalRegistration ? <p>CNPJ {legalRegistration}</p> : null}
       <small>
         © {new Date().getFullYear()} Haz Que Vuelva. {l("Todos los derechos reservados.", "Todos os direitos reservados.", "All rights reserved.")}
       </small>
@@ -437,12 +426,7 @@ export function QuizSalesPage({
         <section className="quiz-sales-social">
           <h2>{sales.proof.heading}</h2>
           <p className="quiz-sales-social__count">{sales.proof.count}</p>
-          <SalesProof
-            alt={routeCopy.proofAlt}
-            intro={routeCopy.proofIntro}
-            outro={routeCopy.proofOutro}
-            src={routeProofAssets[route]}
-          />
+          <QuizTestimonialCarousel stories={quizCopy.preview.proof.stories} />
         </section>
 
         <section className="quiz-sales-reveal">

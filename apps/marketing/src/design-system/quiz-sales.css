@@ -395,6 +395,103 @@
   max-width: 50ch;
 }
 
+.quiz-testimonial-carousel {
+  margin-top: 2.4rem;
+  position: relative;
+}
+
+.quiz-testimonial-carousel__controls {
+  align-items: center;
+  display: flex;
+  gap: 0.55rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.quiz-testimonial-carousel__controls button {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #f6f2eb;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  height: 2.35rem;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+  width: 2.35rem;
+}
+
+.quiz-testimonial-carousel__controls button:hover,
+.quiz-testimonial-carousel__controls button:focus-visible {
+  background: rgba(88, 229, 141, 0.12);
+  border-color: rgba(88, 229, 141, 0.48);
+}
+
+.quiz-testimonial-carousel__controls .quiz-testimonial-carousel__toggle {
+  min-width: 5.6rem;
+  padding-inline: 0.9rem;
+  width: auto;
+}
+
+.quiz-testimonial-carousel__controls > span {
+  color: rgba(231, 227, 220, 0.56);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.6rem;
+}
+
+.quiz-testimonial-carousel__controls svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.quiz-testimonial-carousel__viewport {
+  overflow: hidden;
+}
+
+.quiz-testimonial-carousel__track {
+  align-items: flex-start;
+  display: flex;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.quiz-testimonial-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.quiz-testimonial-carousel__slide > p {
+  margin: 1.2rem auto 0;
+  max-width: 56ch;
+  text-align: left;
+}
+
+.quiz-testimonial-carousel__slide figure {
+  margin: 1.5rem auto 0;
+  max-width: 390px;
+}
+
+.quiz-testimonial-carousel__slide img {
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.36);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.quiz-testimonial-carousel__outro {
+  color: #9af2b9 !important;
+  font-weight: 650;
+}
+
 .quiz-sales-proof {
   margin-top: 2.4rem;
 }
@@ -994,6 +1091,19 @@
     width: 36%;
   }
 
+  .quiz-testimonial-carousel {
+    margin-top: 1.8rem;
+  }
+
+  .quiz-testimonial-carousel__slide > p {
+    font-size: 0.9rem;
+    padding-inline: 0.25rem;
+  }
+
+  .quiz-testimonial-carousel__slide figure {
+    max-width: min(100% - 1rem, 360px);
+  }
+
   .quiz-sales-reveal {
     border-radius: 17px;
   }
@@ -1043,6 +1153,12 @@
   .quiz-sales-sticky svg {
     height: 17px;
     width: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-testimonial-carousel__track {
+    transition: none;
   }
 }
 

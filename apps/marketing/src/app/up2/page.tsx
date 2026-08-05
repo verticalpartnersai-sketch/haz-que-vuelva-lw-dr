@@ -5,7 +5,7 @@ import {
   type OfferSearchParams,
   withPreservedQuery,
 } from "@/features/upsells/offer-links";
-import { VuelveIaOfferPage } from "@/features/upsells/vuelve-ia-offer-page";
+import { PostPurchaseOfferPage } from "@/features/upsells/postpurchase-offer-page";
 
 export const metadata: Metadata = {
   title: "Diagnóstico VUELVE IA",
@@ -22,13 +22,13 @@ export default async function Page({
   const query = await searchParams;
 
   return (
-    <VuelveIaOfferPage
+    <PostPurchaseOfferPage
       acceptHref={configuredOfferUrl(
         process.env.NEXT_PUBLIC_UPSELL_2_ACCEPT_URL,
         query,
       )}
       declineHref={withPreservedQuery("/d2", query)}
-      variant="upsell"
+      route="up2"
     />
   );
 }

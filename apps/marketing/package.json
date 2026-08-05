@@ -7,15 +7,18 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:cloudflare": "opennextjs-cloudflare build",
+    "build": "npm run verify:upsell-copy && next build",
+    "build:cloudflare": "npm run verify:upsell-copy && opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "check:cloudflare": "opennextjs-cloudflare build && wrangler deploy --dry-run",
+    "check:cloudflare": "npm run verify:upsell-copy && opennextjs-cloudflare build && wrangler deploy --dry-run",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "generate:upsell-copy": "node scripts/compile-upsell-copy.mjs",
+    "verify:upsell-copy": "node scripts/compile-upsell-copy.mjs --check && node scripts/verify-upsell-copy.mjs",
+    "test:upsells": "npm run verify:upsell-copy && node scripts/test-upsell-contracts.mjs",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npm run verify:upsell-copy && tsc --noEmit"
   },
   "dependencies": {
     "@fontsource/bebas-neue": "^5.2.8",

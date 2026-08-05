@@ -5,7 +5,7 @@ import {
   type OfferSearchParams,
   withPreservedQuery,
 } from "@/features/upsells/offer-links";
-import { ReconquistaOfferPage } from "@/features/upsells/reconquista-offer-page";
+import { PostPurchaseOfferPage } from "@/features/upsells/postpurchase-offer-page";
 
 export const metadata: Metadata = {
   title: "Antes de continuar · Reconquista 30",
@@ -22,13 +22,13 @@ export default async function Page({
   const query = await searchParams;
 
   return (
-    <ReconquistaOfferPage
+    <PostPurchaseOfferPage
       acceptHref={configuredOfferUrl(
         process.env.NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL,
         query,
       )}
       declineHref={withPreservedQuery("/gracias", query)}
-      variant="downsell"
+      route="d1"
     />
   );
 }

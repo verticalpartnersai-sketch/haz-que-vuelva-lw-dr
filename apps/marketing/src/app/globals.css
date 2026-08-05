@@ -3,8 +3,7 @@
 @import "../design-system/controls.css";
 @import "../design-system/quiz.css";
 @import "../design-system/upsells.css";
-@import "../design-system/reconquista-offer.css";
-@import "../design-system/reconquista-offer-sections.css";
-@import "../design-system/reconquista-offer-responsive.css";
-@import "../design-system/vuelve-ia-offer.css";
+@import "../design-system/postpurchase-foundation.css";
+@import "../design-system/postpurchase-components.css";
+@import "../design-system/postpurchase-responsive.css";
 @import "../design-system/legal-public.css";

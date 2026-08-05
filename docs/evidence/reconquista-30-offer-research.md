@@ -30,7 +30,7 @@ As buscas foram feitas com Agent Reach/Exa e consultas complementares em busca d
 
 ## Decisões implementadas
 
-1. Nenhuma hero exibe preço. A UP1 mantém US$6,90 somente no card final; o valor comercial do Downsell 1 é US$4,90, sem inseri-lo na hero nem no texto do botão.
+1. UP1 não exibe preço na hero e mantém US$6,90 somente no card final. Por decisão posterior, D1 comunica a última oportunidade na hero com o preço anterior de US$6,90 riscado e o preço final de US$4,90 em verde.
 2. Aceite e recusa são botões de mesma hierarquia e dimensão: verde para aceitar, vermelho para recusar, ambos com linguagem direta e sem texto auxiliar de pagamento.
 3. A recusa da UP1 leva a `/d1`; por decisão posterior do usuário, a recusa do Downsell 1 leva diretamente a `/gracias`. O avanço de uma compra aceita para a oferta seguinte pertence ao encadeamento de páginas de obrigado da Perfect Pay; a query continua preservada nas transições internas.
 4. UP1 e Downsell 1 mantêm o mesmo produto. `/d1` é a reapresentação reduzida por US$4,90 e contém apenas hero, prova social e rodapé; não repete card final nem seção de garantia.
@@ -38,6 +38,7 @@ As buscas foram feitas com Agent Reach/Exa e consultas complementares em busca d
 6. O mockup multidevice usa capa e páginas reais do PDF em ebook, notebook, tablet e celular. A faixa branca residual das exportações permanece mascarada nas demais apresentações sem cortar texto.
 7. O cabeçalho usa a logo clara de Reconquista 30 com transparência; o card off-white usa a variante escura transparente, sem repetir nome ou subtítulo ao lado da marca.
 8. O rodapé inclui privacidade e termos. Quando o checkout de D1 não está configurado, o aceite permanece sem cobrança; nenhuma URL fictícia é adicionada.
+9. A urgência de D1 se limita ao fato verificável de que a recusa encerra a oferta de Reconquista 30 e segue para `/gracias`; não há cronômetro, estoque falso ou prazo inventado.
 
 ## Alinhamento com a página final do quiz
 

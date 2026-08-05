@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { QuizTestimonialCarousel } from "@/features/quiz/quiz-testimonial-carousel";
 import { previewCopyEs } from "@/features/quiz/quiz-preview-copy";
+import { OfferPrice } from "@/features/upsells/offer-price";
 import { ReconquistaFooter } from "@/features/upsells/reconquista-parts";
 
 export function VuelveMasthead() {
@@ -36,19 +37,22 @@ export function VuelveBrand() {
 export function VuelveActions({
   acceptHref,
   declineHref,
+  originalPrice,
   price,
 }: {
   acceptHref: string | null;
   declineHref: string;
+  originalPrice?: string;
   price?: string;
 }) {
   return (
     <div className="r30-actions">
       {price ? (
-        <div className="r30-price">
-          <span>Añade 30 días de acceso por</span>
-          <strong>{price}</strong>
-        </div>
+        <OfferPrice
+          originalPrice={originalPrice}
+          price={price}
+          priceLabel="Añade 30 días de acceso por"
+        />
       ) : null}
       {acceptHref ? (
         <a className="r30-action r30-action--accept" href={acceptHref} rel="noopener noreferrer">
@@ -81,18 +85,18 @@ export function VuelveProductMockup({ compact = false }: { compact?: boolean }) 
             fill
             priority
             sizes="(max-width: 639px) 86vw, 760px"
-            src="/images/upsells/vuelve-ia/member-ai-conversation-v1.png"
+            src="/images/upsells/vuelve-ia/member-ai-conversation-desktop-v2.png"
           />
         </div>
       </div>
       <div className="vuelve-device__base" aria-hidden="true" />
       <div className="vuelve-device vuelve-device--tablet">
         <Image
-          alt="Pantalla inicial real de VUELVE IA"
+          alt="Conversación sintética multietapa en la interfaz real de VUELVE IA"
           fill
           priority
           sizes="(max-width: 639px) 34vw, 250px"
-          src="/images/upsells/vuelve-ia/member-ai-empty-v1.png"
+          src="/images/upsells/vuelve-ia/member-ai-conversation-tablet-v2.png"
         />
       </div>
       <div className="vuelve-device vuelve-device--phone">
@@ -101,7 +105,7 @@ export function VuelveProductMockup({ compact = false }: { compact?: boolean }) 
           fill
           priority
           sizes="(max-width: 639px) 25vw, 160px"
-          src="/images/upsells/vuelve-ia/member-ai-conversation-mobile-v1.png"
+          src="/images/upsells/vuelve-ia/member-ai-conversation-mobile-v2.png"
         />
       </div>
     </div>

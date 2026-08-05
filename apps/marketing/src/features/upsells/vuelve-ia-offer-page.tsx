@@ -31,19 +31,24 @@ function Hero({
     <section className="r30-hero" id="oferta">
       <div className="r30-hero__copy">
         <span className="r30-status">
-          {isDownsell ? "ANTES DE CONTINUAR" : "OFERTA COMPLEMENTARIA DISPONIBLE"}
+          {isDownsell ? "TU ÚLTIMA OPORTUNIDAD" : "OFERTA COMPLEMENTARIA DISPONIBLE"}
         </span>
         <h1>
           {isDownsell
-            ? "Tu conversación sigue teniendo matices que una guía no puede analizar por ti."
+            ? "Realmente creo que estarías dejando pasar una gran oportunidad de entender esta conversación antes de responder."
             : "Un PDF te enseña la ruta. VUELVE IA analiza la conversación que estás viviendo ahora."}
         </h1>
         <p>
           {isDownsell
-            ? "Mantienes el mismo diagnóstico completo, los mismos 30 días, los mismos formatos aceptados y los mismos límites de uso. No se elimina ninguna función."
+            ? "Por eso quiero darte una última oportunidad de añadir VUELVE IA por un valor menor. Recibes el mismo diagnóstico completo, los mismos 30 días, formatos y límites; solo cambia el precio. Después de esta página, la oferta se cierra. La decisión está en tus manos."
             : "Comparte lo que ocurrió y recibe una lectura organizada de los hechos, las señales, lo que todavía no se puede saber y la decisión que tiene más sentido antes de responder."}
         </p>
-        <VuelveActions acceptHref={acceptHref} declineHref={declineHref} />
+        <VuelveActions
+          acceptHref={acceptHref}
+          declineHref={declineHref}
+          originalPrice={isDownsell ? "US$20" : undefined}
+          price={isDownsell ? "US$15" : undefined}
+        />
       </div>
       <div className="r30-hero__visual">
         <VuelveProductMockup compact={isDownsell} />
@@ -89,61 +94,6 @@ function Steps() {
           </li>
         ))}
       </ol>
-    </section>
-  );
-}
-
-const productScreens = [
-  {
-    alt: "Pantalla inicial real de VUELVE IA",
-    caption: "El espacio antes de iniciar una conversación",
-    height: 1000,
-    src: "/images/upsells/vuelve-ia/member-ai-empty-v1.png",
-    width: 1384,
-  },
-  {
-    alt: "Conversación sintética dentro de la interfaz real de VUELVE IA",
-    caption: "Una pregunta concreta con respuesta contextual",
-    height: 1000,
-    src: "/images/upsells/vuelve-ia/member-ai-conversation-v1.png",
-    width: 1384,
-  },
-  {
-    alt: "Interfaz móvil real de VUELVE IA con una conversación sintética",
-    caption: "El mismo contexto disponible desde el celular",
-    height: 780,
-    src: "/images/upsells/vuelve-ia/member-ai-conversation-mobile-v1.png",
-    width: 390,
-  },
-] as const;
-
-function ProductProof() {
-  return (
-    <section className="r30-proof vuelve-proof">
-      <header>
-        <span className="r30-eyebrow">CAPTURAS REALES DE LA ÁREA DE MIEMBROS</span>
-        <h2>Esto es lo que vas a abrir, no una interfaz inventada para venderte.</h2>
-        <p>
-          Las pantallas pertenecen a VUELVE IA dentro de Haz Que Vuelva. La conversación mostrada es sintética y no contiene datos de una compradora.
-        </p>
-      </header>
-      <div className="r30-proof__rail vuelve-proof__rail">
-        {productScreens.map((screen) => (
-          <figure key={screen.src}>
-            <div className="vuelve-proof__shot">
-              <Image
-                alt={screen.alt}
-                height={screen.height}
-                loading="lazy"
-                sizes="(max-width: 639px) 78vw, 310px"
-                src={screen.src}
-                width={screen.width}
-              />
-            </div>
-            <figcaption>{screen.caption}</figcaption>
-          </figure>
-        ))}
-      </div>
     </section>
   );
 }
@@ -228,7 +178,6 @@ export function VuelveIaOfferPage({ acceptHref, declineHref, variant }: VuelveOf
         <>
           <Bridge />
           <Steps />
-          <ProductProof />
           <ValueStack />
         </>
       )}

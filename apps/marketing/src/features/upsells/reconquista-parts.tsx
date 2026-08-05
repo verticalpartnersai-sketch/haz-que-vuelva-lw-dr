@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { QuizTestimonialCarousel } from "@/features/quiz/quiz-testimonial-carousel";
 import { previewCopyEs } from "@/features/quiz/quiz-preview-copy";
+import { OfferPrice } from "@/features/upsells/offer-price";
 
 export function ReconquistaMasthead() {
   return (
@@ -50,21 +51,20 @@ export function ProductMockup({ compact = false }: { compact?: boolean }) {
 export function OfferActions({
   acceptHref,
   declineHref,
+  originalPrice,
   price,
   priceLabel = "Añádelo ahora por",
 }: {
   acceptHref: string | null;
   declineHref: string;
+  originalPrice?: string;
   price?: string;
   priceLabel?: string;
 }) {
   return (
     <div className="r30-actions">
       {price ? (
-        <div className="r30-price">
-          <span>{priceLabel}</span>
-          <strong>{price}</strong>
-        </div>
+        <OfferPrice originalPrice={originalPrice} price={price} priceLabel={priceLabel} />
       ) : null}
       {acceptHref ? (
         <a

@@ -20,12 +20,16 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
 13. [Integrações](INTEGRATIONS-FUTURE.md)
 14. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md)
 15. [Pesquisa e fontes](RESEARCH.md)
+    - [Backend e integrações](RESEARCH-BACKEND.md)
+    - [Infraestrutura e operação](RESEARCH-OPERATIONS.md)
+    - [VUELVE IA e marketing](RESEARCH-MARKETING.md)
 16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
 17. [Recuperação do Supabase](SUPABASE-RECOVERY.md)
 18. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md)
 19. [Homologação Perfect Pay](PERFECTPAY-LAUNCH-VALIDATION.md)
 20. [Manifesto dos conteúdos editoriais](evidence/content-release-manifest.md)
 21. [Checklist mestre](PROJECT-CHECKLIST.md)
+    - [Integrações, lançamento e aceite](PROJECT-CHECKLIST-LAUNCH.md)
 
 ## Estado
 

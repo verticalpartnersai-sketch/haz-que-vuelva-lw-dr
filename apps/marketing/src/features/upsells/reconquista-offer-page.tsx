@@ -32,21 +32,23 @@ function Hero({
     <section className="r30-hero" id="oferta">
       <div className="r30-hero__copy">
         <span className="r30-status">
-          {isDownsell ? "ANTES DE CONTINUAR" : "OFERTA COMPLEMENTARIA DISPONIBLE"}
+          {isDownsell ? "TU ÚLTIMA OPORTUNIDAD" : "OFERTA COMPLEMENTARIA DISPONIBLE"}
         </span>
         <h1>
           {isDownsell
-            ? "Si él vuelve a escribir, ¿sabes cómo convertir esa apertura en una reconstrucción real?"
+            ? "Realmente creo que estarías dejando pasar una gran oportunidad de sostener lo que Haz Que Vuelva puede abrir."
             : "Haz Que Vuelva puede abrir la puerta. Reconquista 30 evita que vuelvas a cerrarla cuando él reaparezca."}
         </h1>
         <p>
           {isDownsell
-            ? "El protocolo de 7 días te ayuda a cambiar el patrón. Reconquista 30 organiza lo que viene después: ritmo, reciprocidad, límites y la decisión de reconstruir sin volver a perseguir."
+            ? "Por eso quiero darte una última oportunidad de añadir Reconquista 30 por un valor menor. Recibes la misma ruta completa de 30 días; solo cambia el precio. Después de esta página, la oferta se cierra. La decisión está en tus manos."
             : "El primer mensaje no es una reconciliación. Durante los próximos 30 días necesitas saber cuánto avanzar, qué señal observar y cuándo detenerte antes de cargar otra vez toda la relación sola."}
         </p>
         <OfferActions
           acceptHref={acceptHref}
           declineHref={declineHref}
+          originalPrice={isDownsell ? "US$6,90" : undefined}
+          price={isDownsell ? "US$4,90" : undefined}
         />
       </div>
       <div className="r30-hero__visual" aria-label="Vista del producto Reconquista 30">

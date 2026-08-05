@@ -27,16 +27,16 @@ sustentam apenas a integração e os controles de transparência.
 - `3. Esteira e Economia/01 - Preços e Fluxo.md`: desconto de 25% e eventos separados para visualização, aceite e recusa de UP2/D2.
 - `4. Produtos e Entregáveis/03 - VUELVE IA.md`: 30 dias, um caso, entradas em texto, `.txt` ou `.zip`, limites e fronteiras de segurança.
 - `5. Funil Comercial/03 - Checkout e Ofertas.md`: copy, oferta e garantia de que o D2 não perde funções, formatos ou limites.
-- Instrução posterior do usuário: recusa em D1 conclui em `/gracias`; preço não aparece em hero de upsell ou downsell.
+- Instruções posteriores do usuário: recusa em D1 conclui em `/gracias`; UP1 e UP2 não exibem preço na hero; D1 e D2 comunicam a última oportunidade com o preço anterior riscado e o preço final.
 
 ## Decisões implementadas
 
 1. `/up2` e `/d2` reutilizam o mesmo sistema visual `r30-*` já aprovado na página final do quiz, em UP1 e em D1. A implementação `via-*`, visualmente isolada do restante da esteira, foi removida.
-2. Nenhuma hero exibe preço. UP2 mostra US$20 somente no card final; D2 mantém a apresentação curta e não exibe valor na hero.
+2. UP1 e UP2 continuam sem preço na hero. Como decisão comercial posterior, D1 mostra `US$6,90 → US$4,90` e D2 mostra `US$20 → US$15`, com o valor anterior riscado e o atual em verde na hero.
 3. Aceite e recusa têm a mesma estrutura e altura: verde para aceitar, vermelho para recusar. Não há texto auxiliar de pagamento na hero.
-4. O mockup multidevice usa capturas reais da área de membros VUELVE IA em desktop e mobile. A conversa foi simulada em ambiente local com dados sintéticos e todas as integrações reais desativadas; nenhum dado de aluna foi acessado.
-5. As capturas adotadas são `member-ai-empty-v1.png`, `member-ai-conversation-v1.png` e `member-ai-conversation-mobile-v1.png`. ImageGen não foi usado para inventar a interface, porque a exigência era representar fielmente o produto executável; os dois logos transparentes foram derivados mecanicamente da marca aprovada.
-6. UP2 contém mecanismo, capturas reais, limites, privacidade, oferta final, depoimentos e garantia. D2 contém somente hero, o mesmo mockup real, depoimentos e rodapé, como a estrutura curta de D1. Ambas reutilizam o carrossel manual já aprovado, sem controle de pausa.
+4. O mockup multidevice usa capturas reais da área de membros VUELVE IA em desktop, tablet e mobile. A conversa de três turnos foi simulada em ambiente local com dados sintéticos e todas as integrações reais desativadas; nenhum dado de aluna foi acessado.
+5. As capturas adotadas são `member-ai-conversation-desktop-v2.png`, `member-ai-conversation-tablet-v2.png` e `member-ai-conversation-mobile-v2.png`. ImageGen não foi usado para inventar a interface, porque a exigência era representar fielmente o produto executável.
+6. A seção de capturas separada foi removida de UP2 por instrução posterior. UP2 mantém mecanismo, limites, privacidade, oferta final, depoimentos e garantia; D2 contém hero, o mesmo mockup real, depoimentos e rodapé. Ambas reutilizam o carrossel manual já aprovado, sem controle de pausa.
 7. O roteamento interno preserva a query: recusa em UP2 segue para `/d2`; recusa em D2 segue para `/gracias`; recusa em D1 também segue para `/gracias`.
 8. O aceite de D2 depende de `NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL`. Sem URL aprovada, o controle permanece desabilitado e não executa cobrança.
 

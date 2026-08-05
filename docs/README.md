@@ -30,6 +30,8 @@ leia este índice e o checklist mestre.
 14. [Rastreabilidade Oracle](ORACLE-TRACEABILITY.md): decisões incorporadas,
     pendências e conflitos.
 15. [Pesquisa e fontes](RESEARCH.md): protocolo Exa e decisões sustentadas.
+    Os registros extensos ficam separados em [backend](RESEARCH-BACKEND.md),
+    [operação](RESEARCH-OPERATIONS.md) e [marketing](RESEARCH-MARKETING.md).
 16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md): Workers, domínios,
     smoke e rollback.
 17. [Recuperação do Supabase](SUPABASE-RECOVERY.md): backup criptografado e
@@ -37,6 +39,8 @@ leia este índice e o checklist mestre.
 18. [Homologação Perfect Pay](PERFECTPAY-LAUNCH-VALIDATION.md): matriz real de
     compra, acesso e revogação.
 19. [Checklist mestre](PROJECT-CHECKLIST.md): estado comprovado e gates.
+    Integrações, lançamento e aceite continuam no
+    [checklist de lançamento](PROJECT-CHECKLIST-LAUNCH.md).
 20. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md): evidência do
     rollout, bloqueios P0–P2 e ordem de liberação comercial.
 

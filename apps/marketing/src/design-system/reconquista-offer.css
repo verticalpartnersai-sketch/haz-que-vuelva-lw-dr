@@ -117,6 +117,37 @@
   line-height: 1;
 }
 
+.r30-price--comparison {
+  background: rgba(88, 229, 141, 0.07);
+  border: 1px solid rgba(88, 229, 141, 0.25);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+}
+
+.r30-price--comparison > span {
+  align-items: center;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.r30-price--comparison del {
+  color: #e9959a;
+  font-size: 1rem;
+  text-decoration-thickness: 2px;
+}
+
+.r30-price--comparison strong {
+  align-items: baseline;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.r30-price--comparison strong small {
+  color: var(--r30-green-soft);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+}
+
 .r30-action {
   align-items: center;
   display: flex;

@@ -17,7 +17,7 @@ function EditorialImage({ alt, portrait = false, preload = false, src }: Editori
       <Image
         alt={alt}
         fill
-        loading={preload ? undefined : "lazy"}
+        loading={preload ? "eager" : "lazy"}
         preload={preload}
         sizes={portrait ? "(max-width: 767px) 92vw, 430px" : "(max-width: 767px) 100vw, 720px"}
         src={src}
@@ -73,10 +73,12 @@ export function OfferSectionVisual({ route, anchor }: { route: OfferRoute; ancho
     (route === "up1" && anchor.startsWith("AHORA PUEDES")) ||
     (route === "d1" && anchor.startsWith("NO NECESITAS"))
   ) return <OfferProductProof product="reconquista" />;
-  if (route === "d1" && anchor === "hero") return <OfferProductProof product="reconquista" />;
+  if (route === "d1" && anchor === "hero") {
+    return <OfferProductProof preload product="reconquista" />;
+  }
 
   if ((route === "up2" || route === "d2") && anchor === "hero") {
-    return <OfferProductProof product="vuelve" />;
+    return <OfferProductProof preload product="vuelve" />;
   }
   if ((route === "up2" && anchor.startsWith("ASÍ FUNCIONA")) || (route === "d2" && anchor.startsWith("NO RECIBES"))) {
     return <ContextDecisionFlow />;

@@ -29,9 +29,19 @@ export function MobileDecisionBar({
     let frame = 0;
     const update = () => {
       frame = 0;
+      const naturalDecisionVisible = Array.from(
+        document.querySelectorAll<HTMLElement>(".pp-section .pp-decision"),
+      ).some((decision) => {
+        const rect = decision.getBoundingClientRect();
+        const calmZone = 80;
+        return (
+          rect.bottom > -calmZone &&
+          rect.top < window.innerHeight + calmZone
+        );
+      });
       const decisionPassed = firstDecision.getBoundingClientRect().bottom < 0;
       const footerNear = legalFooter.getBoundingClientRect().top < window.innerHeight + 24;
-      setVisible(decisionPassed && !footerNear);
+      setVisible(decisionPassed && !naturalDecisionVisible && !footerNear);
     };
     const schedule = () => {
       if (frame) return;

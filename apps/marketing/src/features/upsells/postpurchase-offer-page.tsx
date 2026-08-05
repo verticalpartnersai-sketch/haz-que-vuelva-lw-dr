@@ -2,7 +2,10 @@ import { MobileDecisionBar } from "@/features/upsells/mobile-decision-bar";
 import { firstCtaId, getOfferCopy, splitOfferSections, type OfferRoute } from "@/features/upsells/offer-copy";
 import { OfferCopyBlocks } from "@/features/upsells/offer-copy-blocks";
 import { offerPageConfig, sectionTone } from "@/features/upsells/offer-page-config";
-import { OfferBrand } from "@/features/upsells/offer-product-proof";
+import {
+  PostPurchaseFooter,
+  PostPurchaseHeader,
+} from "@/features/upsells/postpurchase-chrome";
 import { hasOfferSectionVisual, OfferSectionVisual } from "@/features/upsells/offer-section-visual";
 
 type PostPurchaseOfferPageProps = {
@@ -39,12 +42,14 @@ export function PostPurchaseOfferPage({
       <a className="pp-skip-link" href="#contenido-principal">
         Ir al contenido principal
       </a>
-      <header className="pp-masthead">
-        <OfferBrand product={config.product} />
-        <span className="pp-masthead__context">
-          {config.variant === "upsell" ? "COMPRA APROBADA · PASO ADICIONAL" : "OFERTA FINAL · ÚLTIMO PASO"}
-        </span>
-      </header>
+      <PostPurchaseHeader
+        context={
+          config.variant === "upsell"
+            ? "COMPRA APROBADA · PASO ADICIONAL"
+            : "OFERTA FINAL · ÚLTIMO PASO"
+        }
+        product={config.product}
+      />
 
       <div id="contenido-principal">
         {sections.map((section) => (
@@ -108,6 +113,8 @@ export function PostPurchaseOfferPage({
           </section>
         ))}
       </div>
+
+      <PostPurchaseFooter />
 
       <MobileDecisionBar
         acceptHref={acceptHref}

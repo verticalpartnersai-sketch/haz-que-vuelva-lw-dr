@@ -30,14 +30,15 @@ export function OfferBrand({ product }: { product: OfferProduct }) {
   );
 }
 
-function ReconquistaProof() {
+function ReconquistaProof({ preload = false }: { preload?: boolean }) {
   return (
     <figure className="pp-product pp-product--reconquista">
       <Image
         alt="Libro digital y paneles reales de Reconquista 30"
         className="pp-product__bundle"
         height={916}
-        loading="lazy"
+        loading={preload ? "eager" : "lazy"}
+        preload={preload}
         sizes="(max-width: 767px) 92vw, 620px"
         src="/images/upsells/reconquista-30/product-bundle-mockup-v1.png"
         width={1717}
@@ -59,7 +60,7 @@ function ReconquistaProof() {
   );
 }
 
-function VuelveProof() {
+function VuelveProof({ preload = false }: { preload?: boolean }) {
   return (
     <figure className="pp-product pp-product--vuelve">
       <div className="pp-product__desktop">
@@ -67,7 +68,8 @@ function VuelveProof() {
         <Image
           alt="Conversación real organizada por VUELVE IA"
           height={1000}
-          loading="lazy"
+          loading={preload ? "eager" : "lazy"}
+          preload={preload}
           sizes="(max-width: 767px) 90vw, 650px"
           src="/images/upsells/vuelve-ia/member-ai-conversation-desktop-v2.png"
           width={1384}
@@ -87,6 +89,16 @@ function VuelveProof() {
   );
 }
 
-export function OfferProductProof({ product }: { product: OfferProduct }) {
-  return product === "reconquista" ? <ReconquistaProof /> : <VuelveProof />;
+export function OfferProductProof({
+  preload = false,
+  product,
+}: {
+  preload?: boolean;
+  product: OfferProduct;
+}) {
+  return product === "reconquista" ? (
+    <ReconquistaProof preload={preload} />
+  ) : (
+    <VuelveProof preload={preload} />
+  );
 }

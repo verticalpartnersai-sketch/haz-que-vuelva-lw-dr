@@ -1,24 +1,165 @@
+.pp-section__enhancement:not(:empty) {
+  margin-top: 2rem;
+}
+
+.pp-hero-split__story {
+  margin-top: 3.5rem;
+}
+
+.pp-mobile-bar {
+  backdrop-filter: blur(18px) saturate(140%);
+  background: rgba(9, 9, 11, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  bottom: 0;
+  display: block;
+  inset-inline: 0;
+  padding:
+    0.65rem max(0.65rem, env(safe-area-inset-right))
+    calc(0.65rem + env(safe-area-inset-bottom, 0px))
+    max(0.65rem, env(safe-area-inset-left));
+  position: fixed;
+  transform: translateY(105%);
+  transition: transform 180ms ease;
+  z-index: 130;
+}
+
+.pp-mobile-bar--visible {
+  transform: translateY(0);
+}
+
+.pp-mobile-bar .pp-decision {
+  gap: 0.2rem;
+  margin: 0 auto !important;
+  max-width: 34rem;
+}
+
+.pp-mobile-bar .pp-decision__accept {
+  font-size: 0.72rem;
+  min-height: 52px;
+  padding: 0.65rem 0.75rem;
+}
+
+.pp-mobile-bar .pp-decision__decline {
+  font-size: 0.68rem;
+  min-height: 44px;
+  padding: 0.35rem 0.65rem;
+}
+
+@media (min-width: 640px) {
+  .pp-masthead,
+  .pp-section {
+    width: min(100% - 2.5rem, 880px);
+  }
+
+  .pp-masthead {
+    padding-top: 4rem;
+  }
+
+  .pp-site-logo {
+    width: 14.5rem;
+  }
+
+  .pp-section {
+    margin-top: 5rem;
+  }
+
+  .pp-section--hero {
+    margin-top: 4rem;
+  }
+
+  .pp-section__copy > h1,
+  .pp-section__copy > h2 {
+    font-size: clamp(2rem, 5.4vw, 2.65rem);
+  }
+
+  .pp-section__copy > h3 {
+    font-size: clamp(1.45rem, 3.3vw, 1.9rem);
+  }
+
+  .pp-section__copy > .pp-emphasis,
+  .pp-section--objection .pp-section__layout,
+  .pp-section--mechanism .pp-section__layout {
+    padding: 1.75rem;
+  }
+
+  .pp-section--offer .pp-section__layout {
+    padding: 2.5rem;
+  }
+
+  .pp-decision {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pp-decision__accept {
+    min-width: 360px;
+  }
+
+  .pp-diagram {
+    padding: 1.75rem;
+  }
+
+  .pp-cycle ol {
+    gap: 0.4rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .pp-cycle svg {
+    display: block;
+  }
+
+  .pp-reciprocity {
+    min-height: 15rem;
+  }
+
+  .pp-reciprocity__axis {
+    background: linear-gradient(90deg, var(--pp-red), var(--pp-green));
+    bottom: auto;
+    height: 1px;
+    left: 10%;
+    right: 10%;
+    top: 50%;
+    width: auto;
+  }
+
+  .pp-reciprocity ol {
+    gap: 0.4rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: 11rem;
+  }
+
+  .pp-reciprocity li {
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .pp-site-footer {
+    margin-top: 6rem;
+    width: min(100% - 2.5rem, 760px);
+  }
+}
+
 @media (min-width: 768px) {
-  .pp-hero-split__lead {
-    align-items: center;
-    display: grid;
-    gap: clamp(3rem, 6vw, 7rem);
-    grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.92fr);
+  .pp-mobile-bar {
+    display: none;
   }
 
-  .pp-hero-split__story {
-    margin-top: clamp(4rem, 8vw, 7rem);
-  }
-
+  .pp-hero-split__lead,
   .pp-section__layout--visual {
     align-items: center;
     display: grid;
-    gap: clamp(3rem, 6vw, 7rem);
-    grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.92fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.9fr);
   }
 
-  .pp-section--hero .pp-section__layout--visual {
-    align-items: start;
+  .pp-hero-split__story {
+    margin-top: 4.5rem;
+  }
+
+  .pp-hero-split__lead .pp-section__enhancement,
+  .pp-section__layout--visual .pp-section__enhancement {
+    margin-top: 0;
   }
 
   .pp-section__layout--visual .pp-section__copy {
@@ -38,7 +179,6 @@
   .pp-section--offer .pp-section__copy,
   .pp-section--guarantee .pp-section__copy,
   .pp-section--closing .pp-section__copy {
-    margin-inline: auto;
     text-align: center;
   }
 
@@ -57,193 +197,35 @@
   }
 }
 
-@media (min-width: 1180px) {
-  .pp-hero-split__lead {
-    grid-template-columns: minmax(31rem, 0.95fr) minmax(34rem, 1.05fr);
+@media (min-width: 900px) {
+  .pp-section {
+    margin-top: 6rem;
   }
 
-  .pp-hero-split__lead .pp-editorial {
-    margin-right: -7vw;
+  .pp-section--hero {
+    margin-top: 4.5rem;
   }
 
-  .pp-section--hero .pp-section__layout--visual {
-    grid-template-columns: minmax(31rem, 0.95fr) minmax(34rem, 1.05fr);
-  }
-
-  .pp-section--hero .pp-editorial {
-    margin-right: -7vw;
+  .pp-section__copy > h1,
+  .pp-section__copy > h2 {
+    font-size: clamp(2.2rem, 4vw, 2.85rem);
   }
 }
 
-@media (max-width: 767px) {
-  .pp-masthead {
-    padding: 0.8rem 1rem;
-  }
-
+@media (max-width: 374px) {
   .pp-brand span {
     display: none;
   }
 
   .pp-masthead__context {
-    font-size: 0.62rem;
-    max-width: 16rem;
-  }
-
-  .pp-section {
-    padding: 3.75rem 1rem;
-  }
-
-  .pp-section--hero {
-    min-height: auto;
-    padding-top: 3.1rem;
-  }
-
-  .pp-section__copy > :not(:first-child) {
-    margin-top: 1rem;
+    font-size: 0.54rem;
   }
 
   .pp-section__copy > h1,
   .pp-section__copy > h2 {
-    font-size: clamp(2.2rem, 12vw, 3.55rem);
+    font-size: clamp(1.55rem, 8vw, 1.9rem);
   }
 
-  .pp-page--upsell .pp-section--hero h1 {
-    font-size: 0.68rem;
-  }
-
-  .pp-page--downsell .pp-section--hero h1 {
-    font-size: clamp(2.35rem, 12.5vw, 3.7rem);
-  }
-
-  .pp-section__enhancement:not(:empty) {
-    margin-top: 2.5rem;
-  }
-
-  .pp-hero-split__story {
-    margin-top: 3.25rem;
-  }
-
-  .pp-editorial {
-    margin-inline: -1rem !important;
-  }
-
-  .pp-editorial--portrait {
-    margin-inline: auto !important;
-    width: 100%;
-  }
-
-  .pp-product {
-    width: 100%;
-  }
-
-  .pp-product--reconquista {
-    margin-inline: -0.5rem !important;
-    width: calc(100% + 1rem);
-  }
-
-  .pp-product--vuelve {
-    padding: 0 1.7rem 1.4rem 0;
-  }
-
-  .pp-copy-price {
-    font-size: clamp(4.35rem, 23vw, 6.8rem) !important;
-  }
-
-  .pp-cycle ol {
-    gap: 0.6rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .pp-cycle svg {
-    display: none;
-  }
-
-  .pp-reciprocity {
-    min-height: 18rem;
-  }
-
-  .pp-reciprocity__axis {
-    bottom: 12%;
-    height: auto;
-    left: 50%;
-    right: auto;
-    top: 12%;
-    width: 1px;
-  }
-
-  .pp-reciprocity ol {
-    gap: 0.55rem;
-    grid-template-columns: 1fr;
-    min-height: 15rem;
-  }
-
-  .pp-reciprocity li {
-    flex-direction: row;
-    justify-content: flex-start;
-    padding-left: 42%;
-    text-align: left;
-  }
-
-  .pp-decision__accept,
-  .pp-decision__decline {
-    min-height: 54px;
-  }
-
-  .pp-mobile-bar {
-    background: rgba(8, 8, 8, 0.96);
-    border-top: 1px solid rgba(153, 230, 77, 0.35);
-    bottom: 0;
-    display: block;
-    left: 0;
-    padding: 0.6rem max(0.65rem, env(safe-area-inset-left)) calc(0.6rem + env(safe-area-inset-bottom)) max(0.65rem, env(safe-area-inset-right));
-    position: fixed;
-    right: 0;
-    transform: translateY(105%);
-    transition: transform 180ms ease;
-    z-index: 120;
-  }
-
-  .pp-mobile-bar--visible {
-    transform: translateY(0);
-  }
-
-  .pp-mobile-bar .pp-decision {
-    gap: 0.35rem;
-    margin: 0 auto !important;
-    max-width: 34rem;
-  }
-
-  .pp-mobile-bar .pp-decision__accept {
-    font-size: 0.72rem;
-    min-height: 52px;
-    padding: 0.55rem 0.75rem;
-  }
-
-  .pp-mobile-bar .pp-decision__decline {
-    border: 0;
-    font-size: 0.72rem;
-    min-height: 44px;
-    padding: 0.45rem 0.75rem;
-  }
-}
-
-@media (max-width: 359px) {
-  .pp-section {
-    padding-inline: 0.75rem;
-  }
-
-  .pp-editorial {
-    margin-inline: -0.75rem !important;
-  }
-
-  .pp-section__copy > h1,
-  .pp-section__copy > h2 {
-    font-size: clamp(2rem, 12.5vw, 2.7rem);
-  }
-
-  .pp-page :where(p, li) {
-    font-size: 0.98rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -251,5 +233,31 @@
   .pp-decision__decline,
   .pp-mobile-bar {
     transition: none;
+  }
+
+  .pp-decision__accept::before {
+    animation: none;
+    opacity: 0.36;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .pp-mobile-bar {
+    backdrop-filter: none;
+    background: #09090b;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .pp-masthead__context,
+  .pp-section--objection .pp-section__layout,
+  .pp-section--mechanism .pp-section__layout,
+  .pp-diagram {
+    border-color: rgba(255, 255, 255, 0.34);
+  }
+
+  .pp-mobile-bar {
+    background: #09090b;
+    border-color: rgba(255, 255, 255, 0.45);
   }
 }

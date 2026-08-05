@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { DecisionActions } from "@/features/upsells/decision-actions";
 import type { OfferBlock } from "@/features/upsells/offer-copy";
 import { OfferInline } from "@/features/upsells/offer-inline";
@@ -80,12 +78,7 @@ export function OfferCopyBlocks({
     }
 
     if (block.type === "legal_links") {
-      return (
-        <footer className="pp-legal" data-legal-footer key={block.id}>
-          <Link href="/politica-de-privacidad">Política de privacidad</Link>
-          <Link href="/terminos-de-uso">Términos de uso</Link>
-        </footer>
-      );
+      return null;
     }
 
     if (block.type === "postscript") {

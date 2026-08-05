@@ -65,6 +65,10 @@
   público as capturas reais, os depoimentos e, naquele rollout, a ausência de
   preço nas heroes, além da cadeia de recusas, preservação da query e
   responsividade em 390 × 844 e 1440 × 900.
+- [x] Publicar o refinamento com conversa sintética multietapa nos três
+  dispositivos de UP2/D2, remoção da seção secundária de mockup e comparação
+  de preço nas heroes de D1/D2; comprovar em produção 200, query preservada,
+  ausência de overflow e console limpo em 390 × 844 e 1440 × 900.
 - [x] Publicar UP2/D2 no Worker de marketing e comprovar em produção a cadeia
   de recusas `D1 → /gracias`, `UP2 → /d2` e `D2 → /gracias`, com query
   preservada, ausência de overflow e console limpo.

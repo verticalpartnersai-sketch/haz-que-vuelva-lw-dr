@@ -24,6 +24,7 @@ alterar um gate, leia este índice, o checklist e o documento específico da fas
     - [Infraestrutura e operação](RESEARCH-OPERATIONS.md)
     - [VUELVE IA e marketing](RESEARCH-MARKETING.md)
 16. [Publicação no Cloudflare](CLOUDFLARE-DEPLOYMENT.md)
+    - [Smoke, histórico e rollback](CLOUDFLARE-DEPLOYMENT-OPERATIONS.md)
 17. [Recuperação do Supabase](SUPABASE-RECOVERY.md)
 18. [Auditoria de prontidão](PRODUCTION-READINESS-AUDIT.md)
 19. [Homologação Perfect Pay](PERFECTPAY-LAUNCH-VALIDATION.md)

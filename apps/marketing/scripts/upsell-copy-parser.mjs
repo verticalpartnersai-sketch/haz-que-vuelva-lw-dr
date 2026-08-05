@@ -73,10 +73,14 @@ function classifyBlock(raw) {
     return { type: "postscript", text: stripInlineMarkdown(raw) };
   }
 
-  if (/^Política de privacidad\s{2}/.test(raw)) {
+  if (
+    lines.length === 2 &&
+    lines[0].trim() === "Política de privacidad" &&
+    lines[1].trim() === "Términos de uso"
+  ) {
     return {
       type: "legal_links",
-      text: stripInlineMarkdown(raw.replace(/\s{2}\n/, "\n")),
+      text: stripInlineMarkdown(raw),
       items: lines.map((line) => stripInlineMarkdown(line)),
     };
   }

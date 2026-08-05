@@ -63,6 +63,11 @@ function verifyOffer(route, offer) {
 
   assert.ok(offer.raw.includes("Política de privacidad"), route + " lacks privacy link");
   assert.ok(offer.raw.includes("Términos de uso"), route + " lacks terms link");
+  assert.equal(
+    offer.blocks.filter((block) => block.type === "legal_links").length,
+    1,
+    route + " must expose exactly one legal-links block",
+  );
 }
 
 const current = await compileOffers();

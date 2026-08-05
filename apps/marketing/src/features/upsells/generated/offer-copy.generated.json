@@ -1718,8 +1718,12 @@
         "id": "up1-block-238",
         "index": 237,
         "raw": "Política de privacidad\nTérminos de uso",
-        "type": "paragraph",
-        "text": "Política de privacidad\nTérminos de uso"
+        "type": "legal_links",
+        "text": "Política de privacidad\nTérminos de uso",
+        "items": [
+          "Política de privacidad",
+          "Términos de uso"
+        ]
       }
     ]
   },
@@ -2224,8 +2228,12 @@
         "id": "d1-block-67",
         "index": 66,
         "raw": "Política de privacidad\nTérminos de uso",
-        "type": "paragraph",
-        "text": "Política de privacidad\nTérminos de uso"
+        "type": "legal_links",
+        "text": "Política de privacidad\nTérminos de uso",
+        "items": [
+          "Política de privacidad",
+          "Términos de uso"
+        ]
       }
     ]
   },
@@ -3062,8 +3070,12 @@
         "id": "up2-block-109",
         "index": 108,
         "raw": "Política de privacidad\nTérminos de uso",
-        "type": "paragraph",
-        "text": "Política de privacidad\nTérminos de uso"
+        "type": "legal_links",
+        "text": "Política de privacidad\nTérminos de uso",
+        "items": [
+          "Política de privacidad",
+          "Términos de uso"
+        ]
       }
     ]
   },
@@ -3623,8 +3635,12 @@
         "id": "d2-block-72",
         "index": 71,
         "raw": "Política de privacidad\nTérminos de uso",
-        "type": "paragraph",
-        "text": "Política de privacidad\nTérminos de uso"
+        "type": "legal_links",
+        "text": "Política de privacidad\nTérminos de uso",
+        "items": [
+          "Política de privacidad",
+          "Términos de uso"
+        ]
       }
     ]
   }

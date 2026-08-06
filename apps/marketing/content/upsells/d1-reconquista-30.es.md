@@ -144,7 +144,5 @@ No permitas que el precio sea la razón por la que enfrentes sin una ruta el mom
 
 P.D.: Esta es la misma versión completa de Reconquista 30™ presentada anteriormente. Solo cambia el precio: de US$6,90 a US$4,90.
 
-P.D. 2: Reconquista 30™ debe utilizarse únicamente cuando existe una reapertura real. Si él te bloqueó, rechazó el contacto, te pidió que no lo contactes o existe violencia, amenaza, acoso, coerción o miedo por tu seguridad, no uses el protocolo para insistir.
-
 Política de privacidad
 Términos de uso

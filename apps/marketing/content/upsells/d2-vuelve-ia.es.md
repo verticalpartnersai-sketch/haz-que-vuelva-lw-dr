@@ -167,7 +167,5 @@ Antes de tocar “enviar”.
 
 P.D.: Esta es la misma versión completa de VUELVE IA™ presentada anteriormente. Solo cambia el precio: de US$20 a US$15.
 
-P.D. 2: VUELVE IA™ no lee pensamientos, no diagnostica personas y no garantiza una reconciliación. Si existe bloqueo, pedido explícito de no contacto, violencia, amenaza, acoso, coerción o miedo por tu seguridad, no debe utilizarse para insistir o buscar canales alternativos.
-
 Política de privacidad
 Términos de uso

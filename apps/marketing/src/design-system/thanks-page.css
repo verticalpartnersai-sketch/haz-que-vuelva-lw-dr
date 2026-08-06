@@ -1,0 +1,259 @@
+.thanks-page {
+  --pp-line: rgba(255, 255, 255, 0.11);
+  --pp-green: #58e58d;
+  --pp-green-soft: #9af2b9;
+  background:
+    radial-gradient(circle at 50% 4%, rgba(88, 229, 141, 0.11), transparent 24rem),
+    radial-gradient(circle at 5% 70%, rgba(107, 21, 31, 0.14), transparent 28rem),
+    #09090b;
+  color: #f5f2ec;
+  display: block;
+  font-family: "Source Sans 3", Arial, sans-serif;
+  isolation: isolate;
+  margin: 0;
+  max-width: none;
+  min-height: 100svh;
+  overflow: clip;
+  padding: max(2.25rem, env(safe-area-inset-top)) 0 0;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.thanks-page::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 84px 84px;
+  content: "";
+  inset: 0;
+  mask-image: linear-gradient(to bottom, black, transparent 68%);
+  opacity: 0.45;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.thanks-page__hero,
+.thanks-page__steps,
+.thanks-page__access {
+  margin-inline: auto;
+  width: min(100% - 1.25rem, 760px);
+}
+
+.thanks-page__hero {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.thanks-page__logo {
+  height: auto;
+  width: min(13rem, 58vw);
+}
+
+.thanks-page__status {
+  background: rgba(88, 229, 141, 0.1);
+  border: 1px solid rgba(88, 229, 141, 0.34);
+  border-radius: 999px;
+  color: #9af2b9;
+  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 750;
+  gap: 0.45rem;
+  letter-spacing: 0.06em;
+  margin-top: 1.35rem;
+  min-height: 2.15rem;
+  padding: 0.48rem 0.8rem;
+  text-transform: none;
+}
+
+.thanks-page__status svg {
+  height: 1rem;
+  width: 1rem;
+}
+
+.thanks-page__eyebrow,
+.thanks-page__steps > header > span,
+.thanks-page__access > span {
+  color: #9af2b9;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+}
+
+.thanks-page__eyebrow {
+  margin: 2.5rem 0 0;
+  text-align: center;
+}
+
+.thanks-page__hero h1 {
+  font-size: clamp(2.15rem, 10vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  margin: 0.75rem auto 0;
+  max-width: 15ch;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.thanks-page__lead {
+  color: #c8c3bc;
+  font-size: 1.05rem;
+  line-height: 1.72;
+  margin: 1.25rem auto 0;
+  max-width: 38rem;
+  text-align: center;
+}
+
+.thanks-page__notice {
+  align-items: start;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 17px;
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  margin: 2rem 0 0;
+  padding: 1rem;
+  width: 100%;
+}
+
+.thanks-page__notice > span {
+  align-items: center;
+  background: rgba(88, 229, 141, 0.1);
+  border: 1px solid rgba(88, 229, 141, 0.26);
+  border-radius: 12px;
+  color: #9af2b9;
+  display: flex;
+  height: 2.5rem;
+  justify-content: center;
+  width: 2.5rem;
+}
+
+.thanks-page__notice svg {
+  height: 1.15rem;
+  width: 1.15rem;
+}
+
+.thanks-page__notice strong {
+  color: #fffdf8;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.thanks-page__notice p {
+  color: #aaa59e;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0.35rem 0 0;
+}
+
+.thanks-page__steps {
+  display: block;
+  margin-top: 4.5rem;
+  max-width: 880px;
+}
+
+.thanks-page__steps > header h2,
+.thanks-page__access h2 {
+  color: #f5f2ec;
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0.65rem 0 0;
+  max-width: 19ch;
+  text-wrap: balance;
+}
+
+.thanks-page__steps ol {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+}
+
+.thanks-page__steps li {
+  align-items: start;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  padding: 1rem;
+}
+
+.thanks-page__steps li > span {
+  color: #58e58d;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding-top: 0.18rem;
+}
+
+.thanks-page__steps h3 {
+  color: #f5f2ec;
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.thanks-page__steps li p {
+  color: #aaa59e;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0.38rem 0 0;
+}
+
+.thanks-page__access {
+  background: #f3f1e9;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 19px;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+  margin-top: 4.5rem;
+  padding: 1.25rem;
+}
+
+.thanks-page__access > span {
+  color: #287b49;
+}
+
+.thanks-page__access h2 {
+  color: #101512;
+}
+
+.thanks-page__access > p {
+  color: #4f5751;
+  font-size: 1rem;
+  line-height: 1.68;
+  margin: 1rem 0 0;
+  max-width: 55ch;
+}
+
+.thanks-page__cta {
+  margin-top: 1.5rem;
+  text-transform: none;
+}
+
+.thanks-page__cta:active {
+  transform: scale(0.97);
+  transition: transform 100ms ease-out;
+}
+
+.thanks-page__access > small {
+  color: #68706a;
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  margin-top: 0.85rem;
+}
+
+.thanks-page .pp-site-footer {
+  margin-top: 5rem;
+}

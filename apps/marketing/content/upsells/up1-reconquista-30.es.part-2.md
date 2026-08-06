@@ -249,7 +249,5 @@ No dejes que la ansiedad convierta esa apertura en tu Segunda Pérdida.
 
 P.D.: Haz Que Vuelva™ permanece completo en tu acceso, aceptes o no esta oferta. Reconquista 30™ fue creado para la etapa siguiente: el momento en que él empieza a acercarse y necesitas descubrir si existe una reconstrucción real o apenas otra vuelta al mismo ciclo.
 
-P.D. 2: Reconquista 30™ debe utilizarse únicamente cuando existe una reapertura real. Si él te bloqueó, rechazó el contacto, te pidió que no lo contactes o existe violencia, amenaza, acoso, coerción o miedo por tu seguridad, no uses el protocolo para insistir.
-
 Política de privacidad
 Términos de uso

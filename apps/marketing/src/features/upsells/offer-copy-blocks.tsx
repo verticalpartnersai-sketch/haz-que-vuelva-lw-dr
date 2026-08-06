@@ -20,8 +20,32 @@ function bodyRaw(block: OfferBlock) {
   return block.raw;
 }
 
+function headingDisplayRaw(raw: string) {
+  const letters = raw.match(/\p{L}/gu);
+  if (!letters?.length || letters.some((letter) => letter !== letter.toLocaleUpperCase("es"))) {
+    return raw;
+  }
+
+  let display = raw.toLocaleLowerCase("es");
+  const firstLetter = display.search(/\p{L}/u);
+  if (firstLetter >= 0) {
+    display =
+      display.slice(0, firstLetter) +
+      display[firstLetter].toLocaleUpperCase("es") +
+      display.slice(firstLetter + 1);
+  }
+
+  return display
+    .replace(/haz que vuelva™/giu, "Haz Que Vuelva™")
+    .replace(/reconquista 30™/giu, "Reconquista 30™")
+    .replace(/vuelve ia™/giu, "VUELVE IA™")
+    .replace(/whatsapp/giu, "WhatsApp")
+    .replace(/\bia\b/giu, "IA")
+    .replace(/us\$/giu, "US$");
+}
+
 function Heading({ block }: { block: OfferBlock }) {
-  const content = <OfferInline raw={bodyRaw(block)} />;
+  const content = <OfferInline raw={headingDisplayRaw(bodyRaw(block))} />;
   if (block.index === 0) return <h1>{content}</h1>;
   if ((block.level ?? 1) > 1) return <h3>{content}</h3>;
   return <h2>{content}</h2>;

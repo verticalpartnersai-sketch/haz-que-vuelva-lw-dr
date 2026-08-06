@@ -25,7 +25,6 @@ export function OfferBrand({ product }: { product: OfferProduct }) {
         }
         width={300}
       />
-      <span>{isReconquista ? "RECONQUISTA 30™" : "VUELVE IA™"}</span>
     </div>
   );
 }

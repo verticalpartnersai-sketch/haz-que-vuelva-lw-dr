@@ -26,8 +26,24 @@ function EditorialImage({ alt, portrait = false, preload = false, src }: Editori
   );
 }
 
+function GuaranteeSeal() {
+  return (
+    <figure className="pp-guarantee-seal">
+      <Image
+        alt="Sello de garantía de siete días de Haz Que Vuelva"
+        height={640}
+        loading="lazy"
+        sizes="(max-width: 767px) 220px, 280px"
+        src="/images/quiz/offer/guarantee-seal-transparent-v2.webp"
+        width={640}
+      />
+    </figure>
+  );
+}
+
 export function hasOfferSectionVisual(route: OfferRoute, anchor: string) {
   if (anchor === "hero") return true;
+  if (anchor.startsWith("TIENES 7 DÍAS")) return true;
   if (route === "up1") {
     return /^(LA MAYORÍA|TAL VEZ|EL MECANISMO|AHORA PUEDES)/.test(anchor);
   }
@@ -39,6 +55,7 @@ export function hasOfferSectionVisual(route: OfferRoute, anchor: string) {
 }
 
 export function OfferSectionVisual({ route, anchor }: { route: OfferRoute; anchor: string }) {
+  if (anchor.startsWith("TIENES 7 DÍAS")) return <GuaranteeSeal />;
   if (route === "up1" && anchor === "hero") {
     return (
       <EditorialImage

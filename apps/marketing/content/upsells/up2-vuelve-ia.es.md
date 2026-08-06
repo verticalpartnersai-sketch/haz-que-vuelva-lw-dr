@@ -248,7 +248,5 @@ Cada vez que aparezca un mensaje nuevo y todavía estés a tiempo de decidir con
 
 P.D.: VUELVE IA™ organiza la conversación compartida y ofrece una recomendación basada en hechos, señales, límites y contexto. No lee pensamientos, no diagnostica personas y no garantiza reconciliación.
 
-P.D. 2: Si existe bloqueo, pedido explícito de no contacto, violencia, amenaza, acoso, coerción o miedo por tu seguridad, el sistema no debe utilizarse para insistir o buscar canales alternativos.
-
 Política de privacidad
 Términos de uso

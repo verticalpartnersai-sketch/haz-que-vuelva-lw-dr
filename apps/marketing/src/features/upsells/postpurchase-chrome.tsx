@@ -4,29 +4,25 @@ import Link from "next/link";
 import type { OfferProduct } from "@/features/upsells/offer-page-config";
 import { OfferBrand } from "@/features/upsells/offer-product-proof";
 
-type PostPurchaseHeaderProps = {
-  context: string;
-  product: OfferProduct;
-};
+type PostPurchaseHeaderProps = { product: OfferProduct };
 
 export function PostPurchaseHeader({
-  context,
   product,
 }: PostPurchaseHeaderProps) {
   return (
     <header className="pp-masthead">
-      <Image
-        alt="Haz Que Vuelva"
-        className="pp-site-logo"
-        height={392}
-        priority
-        src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
-        width={1451}
-      />
-      <div className="pp-masthead__meta">
+      <div className="pp-masthead__brands">
+        <Image
+          alt="Haz Que Vuelva"
+          className="pp-site-logo"
+          height={392}
+          priority
+          src="/images/brand/haz-que-vuelva-logo-heart-primary-v1.webp"
+          width={1451}
+        />
         <OfferBrand product={product} />
-        <span className="pp-masthead__context">{context}</span>
       </div>
+      <span className="pp-masthead__context">COMPRA APROBADA</span>
     </header>
   );
 }

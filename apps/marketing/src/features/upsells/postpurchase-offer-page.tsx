@@ -14,16 +14,6 @@ type PostPurchaseOfferPageProps = {
   route: OfferRoute;
 };
 
-function Up1HeroPrice() {
-  return (
-    <aside className="pp-hero-price" aria-label="Precio de Reconquista 30">
-      <span>Añade Reconquista 30™ ahora</span>
-      <strong>US$6,90</strong>
-      <small>Pago único · sin mensualidad</small>
-    </aside>
-  );
-}
-
 export function PostPurchaseOfferPage({
   acceptHref,
   declineHref,
@@ -75,7 +65,6 @@ export function PostPurchaseOfferPage({
                       declineHref={declineHref}
                       firstDecisionId={decisionId}
                     />
-                    {route === "up1" ? <Up1HeroPrice /> : null}
                   </div>
                   <div className="pp-section__enhancement">
                     <OfferSectionVisual anchor={section.anchor} route={route} />
@@ -85,7 +74,9 @@ export function PostPurchaseOfferPage({
                   <OfferCopyBlocks
                     acceptHref={acceptHref}
                     allBlocks={copy.blocks}
-                    blocks={section.blocks.slice(heroLeadBlockCount)}
+                    blocks={section.blocks
+                      .slice(heroLeadBlockCount)
+                      .filter((block) => route !== "up2" || block.type !== "price")}
                     declineHref={declineHref}
                     firstDecisionId={decisionId}
                   />

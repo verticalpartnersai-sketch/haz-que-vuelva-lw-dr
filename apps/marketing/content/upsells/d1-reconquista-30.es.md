@@ -16,9 +16,9 @@ Si el precio fue lo que te hizo decir “no”, voy a reducirlo para que puedas 
 
 **Oferta final en esta página:**
 
-# US$4,90
+# US$5,00
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$4,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,00**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 
@@ -32,7 +32,7 @@ No retiramos decisiones, paneles, conversaciones ni protocolos.
 
 Recibes exactamente la misma ruta completa que acabas de ver por US$6,90.
 
-La única diferencia es que ahora puedes añadirla por **US$4,90**.
+La única diferencia es que ahora puedes añadirla por **US$5,00**.
 
 Porque sería terrible que él volviera a abrir una puerta…
 
@@ -42,7 +42,7 @@ Que sintieras que finalmente existe una nueva oportunidad entre ustedes…
 
 Y que terminaras perdiéndola por no saber si responder, esperar, acercarte, poner un límite o dejar espacio.
 
-No quiero que una diferencia de **US$2,00** te deje sola justo en la etapa más frágil de la reconquista.
+No quiero que una diferencia de **US$1,90** te deje sola justo en la etapa más frágil de la reconquista.
 
 # EL PROBLEMA NO TERMINA CUANDO ÉL VUELVE A ESCRIBIR
 
@@ -101,7 +101,7 @@ Así una frase bonita deja de borrar una semana de ausencia.
 
 Y tú dejas de entregar acceso total a cambio de una señal mínima.
 
-# TODO LO QUE RECIBES POR US$4,90
+# TODO LO QUE RECIBES POR US$5,00
 
 - protocolo digital completo de 50 páginas;
 - ruta para los 30 días después de una reapertura real;
@@ -114,7 +114,7 @@ Y tú dejas de entregar acceso total a cambio de una señal mínima.
 - hoja final de decisión.
 
 **Precio anterior:** ~~US$6,90~~
-**Precio final:** **US$4,90**
+**Precio final:** **US$5,00**
 
 Pago único.
 
@@ -122,7 +122,7 @@ Sin mensualidad.
 
 Sin completar tus datos nuevamente.
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$4,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,00**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 
@@ -134,15 +134,15 @@ Si el acceso no corresponde a lo que esperabas, puedes solicitar el reembolso de
 
 El riesgo de probarlo queda con nosotros.
 
-Después de esta página, continuarás hacia el siguiente paso del embudo y esta oferta final de US$4,90 no volverá a mostrarse en esta secuencia.
+Después de esta página, continuarás hacia el siguiente paso del embudo y esta oferta final de US$5,00 no volverá a mostrarse en esta secuencia.
 
 No permitas que el precio sea la razón por la que enfrentes sin una ruta el momento que más miedo te da perder.
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$4,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,00**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 
-P.D.: Esta es la misma versión completa de Reconquista 30™ presentada anteriormente. Solo cambia el precio: de US$6,90 a US$4,90.
+P.D.: Esta es la misma versión completa de Reconquista 30™ presentada anteriormente. Solo cambia el precio: de US$6,90 a US$5,00.
 
 Política de privacidad
 Términos de uso

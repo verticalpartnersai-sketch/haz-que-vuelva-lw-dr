@@ -28,11 +28,11 @@ Durante 90 días, VUELVE IA™ acompaña tu caso con contexto continuo para ayud
 - observar antes de avanzar;
 - o dejar de insistir cuando no existe reciprocidad.
 
-# US$20
+# US$19,90
 
 Pago único. 90 días de acceso.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$20**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -170,7 +170,7 @@ Eso puede evitar:
 - consejos contradictorios de amigas, vídeos y redes sociales;
 - volver a perseguirlo cada vez que cambia el tono.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$20**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -214,7 +214,7 @@ Su función es mucho más útil: organizar lo que sí ocurrió, mostrar lo que e
 - plan de 24 horas y siete días;
 - condiciones para volver a evaluar.
 
-# AÑADE VUELVE IA™ AHORA POR US$20
+# AÑADE VUELVE IA™ AHORA POR US$19,90
 
 Pago único.
 
@@ -224,7 +224,7 @@ Sin mensualidad automática.
 
 Sin completar tus datos nuevamente.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$20**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -242,7 +242,7 @@ No cuando todo ya salió mal.
 
 Cada vez que aparezca un mensaje nuevo y todavía estés a tiempo de decidir con calma.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$20**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 

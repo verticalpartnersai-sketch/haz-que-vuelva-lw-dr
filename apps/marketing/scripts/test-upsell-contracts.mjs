@@ -44,6 +44,25 @@ const routeContracts = {
   d2: ["NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL", 'withPreservedQuery("/gracias", query)'],
 };
 
+const wranglerSource = await readFile(path.join(marketingRoot, "wrangler.jsonc"), "utf8");
+const { config: wranglerConfig, error: wranglerParseError } = ts.parseConfigFileTextToJson(
+  "wrangler.jsonc",
+  wranglerSource,
+);
+assert.equal(wranglerParseError, undefined, "wrangler.jsonc could not be parsed");
+const downsellCheckoutContracts = {
+  NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL: "https://go.centerpag.com/PPU38CQF53H",
+  NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL: "https://go.centerpag.com/PPU38CQF54K",
+};
+
+for (const [environmentName, checkoutUrl] of Object.entries(downsellCheckoutContracts)) {
+  assert.equal(
+    wranglerConfig.vars?.[environmentName],
+    checkoutUrl,
+    environmentName + " is not configured with the approved checkout URL",
+  );
+}
+
 for (const [route, [environmentName, declineCall]] of Object.entries(routeContracts)) {
   const source = await readFile(path.join(marketingRoot, "src/app", route, "page.tsx"), "utf8");
   assert.ok(source.includes(environmentName), route + " environment mapping changed");

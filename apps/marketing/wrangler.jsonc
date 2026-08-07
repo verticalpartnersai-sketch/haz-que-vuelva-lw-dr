@@ -9,7 +9,9 @@
   "keep_vars": true,
   "vars": {
     "NEXT_PUBLIC_UPSELL_1_ACCEPT_URL": "https://go.centerpag.com/PPU38CQERET",
-    "NEXT_PUBLIC_UPSELL_2_ACCEPT_URL": "https://go.centerpag.com/PPU38CQERFF"
+    "NEXT_PUBLIC_DOWNSELL_1_ACCEPT_URL": "https://go.centerpag.com/PPU38CQF53H",
+    "NEXT_PUBLIC_UPSELL_2_ACCEPT_URL": "https://go.centerpag.com/PPU38CQERFF",
+    "NEXT_PUBLIC_DOWNSELL_2_ACCEPT_URL": "https://go.centerpag.com/PPU38CQF54K"
   },
   "routes": [
     {

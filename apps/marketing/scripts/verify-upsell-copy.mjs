@@ -23,17 +23,17 @@ const expectedCtas = Object.freeze({
   },
   d1: {
     count: 3,
-    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$4,90",
+    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,00",
     negative: "No, gracias. Voy a perder esta segunda oportunidad.",
   },
   up2: {
     count: 4,
-    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$20",
+    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90",
     negative: "No, gracias. Prefiero seguir interpretando cada mensaje sola.",
   },
   d2: {
     count: 4,
-    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$15",
+    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90",
     negative: "No, gracias. Prefiero seguir interpretando cada mensaje sola.",
   },
 });
@@ -80,7 +80,7 @@ for (const [route, offer] of Object.entries(current)) {
 }
 
 for (const route of ["up1", "d1"]) {
-  assert.match(current[route].raw, /US\$(?:6,90|4,90)/, route + " price is missing");
+  assert.match(current[route].raw, /US\$(?:6,90|5,00)/, route + " price is missing");
   assert.match(current[route].raw, /30 días/i, route + " duration is missing");
 }
 

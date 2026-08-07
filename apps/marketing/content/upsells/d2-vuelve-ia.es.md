@@ -8,19 +8,19 @@ Ya tienes la ruta para saber cómo avanzar durante las próximas semanas.
 
 Y acabas de ver cómo VUELVE IA™ puede analizar tu conversación real y ayudarte cada vez que aparece un nuevo mensaje.
 
-Si dijiste “no” porque US$20 parecía demasiado ahora, quiero ayudarte tanto como sea posible.
+Si dijiste “no” porque US$19,90 parecía demasiado ahora, quiero ayudarte tanto como sea posible.
 
 Por eso voy a reducir el precio sin retirar nada de tu acceso.
 
 **Precio anterior:**
 
-# ~~US$20~~
+# ~~US$19,90~~
 
 **Oferta final en esta página:**
 
-# US$15
+# US$11,90
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$15**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -32,11 +32,11 @@ No retiramos el análisis de la conversación.
 
 No eliminamos el contexto continuo, las decisiones explicadas, los mensajes sugeridos ni los planes de acción.
 
-Recibes exactamente el mismo acceso que acabas de ver por US$20.
+Recibes exactamente el mismo acceso que acabas de ver por US$19,90.
 
-La única diferencia es que ahora puedes añadirlo por **US$15**.
+La única diferencia es que ahora puedes añadirlo por **US$11,90**.
 
-Una reducción de **US$5** para que el precio no sea la razón por la que vuelvas a enfrentar sola cada mensaje, silencio y cambio de tono.
+Una reducción de **US$8,00** para que el precio no sea la razón por la que vuelvas a enfrentar sola cada mensaje, silencio y cambio de tono.
 
 # PORQUE TENER UNA RUTA NO SIGNIFICA QUE TODAS LAS CONVERSACIONES SERÁN FÁCILES DE ENTENDER
 
@@ -97,7 +97,7 @@ Así cada mensaje nuevo deja de convertirse en una crisis.
 
 Se transforma en información para decidir el siguiente paso.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$15**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -130,8 +130,8 @@ VUELVE IA™ mantiene un caso continuo y usa siempre la misma cadena:
 - plan de 24 horas y siete días;
 - condiciones para volver a evaluar.
 
-**Precio anterior:** ~~US$20~~
-**Precio final:** **US$15**
+**Precio anterior:** ~~US$19,90~~
+**Precio final:** **US$11,90**
 
 Pago único.
 
@@ -141,7 +141,7 @@ Sin mensualidad automática.
 
 Sin completar tus datos nuevamente.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$15**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
@@ -151,7 +151,7 @@ Entra, crea tu caso y comprueba cómo la conversación se convierte en hechos, s
 
 Si el acceso no corresponde a lo que esperabas, puedes solicitar el reembolso dentro de los primeros 7 días conforme a los términos de la compra.
 
-Después de esta página, continuarás hacia el final del embudo y esta oferta de US$15 no volverá a mostrarse en esta secuencia.
+Después de esta página, continuarás hacia el final del embudo y esta oferta de US$11,90 no volverá a mostrarse en esta secuencia.
 
 Ya tienes la ruta.
 
@@ -161,11 +161,11 @@ No después de mandar el mensaje del que te arrepientes.
 
 Antes de tocar “enviar”.
 
-**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$15**
+**SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90**
 
 `No, gracias. Prefiero seguir interpretando cada mensaje sola.`
 
-P.D.: Esta es la misma versión completa de VUELVE IA™ presentada anteriormente. Solo cambia el precio: de US$20 a US$15.
+P.D.: Esta es la misma versión completa de VUELVE IA™ presentada anteriormente. Solo cambia el precio: de US$19,90 a US$11,90.
 
 Política de privacidad
 Términos de uso

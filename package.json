@@ -18,6 +18,6 @@
     "cloudflare:rum": "node scripts/configure-cloudflare-rum.mjs",
     "check:supabase:migrations": "node scripts/check-supabase-migrations.mjs && node scripts/test-check-supabase-migrations.mjs",
     "check:web": "npm --prefix apps/web run typecheck && npm --prefix apps/web run lint && npm --prefix apps/web test",
-    "check:marketing": "npm --prefix apps/marketing run typecheck"
+    "check:marketing": "npm --prefix apps/marketing run typecheck && npm --prefix apps/marketing test"
   }
 }

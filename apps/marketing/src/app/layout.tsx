@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { MetaPixelLoader } from "@/features/analytics/meta-pixel-loader";
 import { UtmifyTrackingScript } from "@/features/analytics/utmify-tracking-script";
 import {
   htmlLanguage,
@@ -35,6 +36,7 @@ export default async function RootLayout({
   return (
     <html lang={htmlLanguage(initialLocale)}>
       <body>
+        <MetaPixelLoader pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
         <LocaleProvider initialLocale={initialLocale}>
           {children}
         </LocaleProvider>

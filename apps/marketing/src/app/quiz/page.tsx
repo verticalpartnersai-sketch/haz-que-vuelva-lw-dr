@@ -5,6 +5,7 @@ import {
   isLocale,
   localeCookieName,
 } from "@/features/i18n/locale-config";
+import { UtmifyBackRedirect } from "@/features/analytics/utmify-back-redirect";
 import { QuizPage } from "@/features/quiz/quiz-page";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -70,5 +71,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <QuizPage />;
+  return (
+    <>
+      <QuizPage />
+      <UtmifyBackRedirect
+        target={process.env.NEXT_PUBLIC_UTMIFY_BACK_REDIRECT_URL}
+      />
+    </>
+  );
 }

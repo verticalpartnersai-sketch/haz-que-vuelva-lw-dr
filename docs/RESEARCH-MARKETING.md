@@ -90,3 +90,27 @@ três interações sintéticas diferentes no modo de demonstração local. Nenhu
 integração real foi ativada e nenhum dado de aluna foi acessado. A seção
 “Esto es lo que vas a abrir...” foi removida de UP2; as capturas multietapas
 permanecem somente no mockup principal compartilhado por UP2 e D2.
+
+## Registro de fontes — atribuição UTMify no funil público
+
+Pesquisa realizada em 11 de agosto de 2026 com Agent Reach/Exa, documentação
+oficial da UTMify e inspeção dos scripts fornecidos pelo usuário.
+
+- [UTMify — soluções para vendas não trackeadas](https://utmify.help.center/article/1024-voce-esta-tendo-vendas-nao-trackeadas):
+  orienta instalar o script de UTMs em toda a estrutura do funil e, para outras
+  plataformas de venda, carregar `https://cdn.utmify.com.br/scripts/utms/latest.js`
+  com `data-utmify-prevent-xcod-sck` e `data-utmify-prevent-subids`.
+
+Decisão: o carregador oficial fica no layout compartilhado do marketing, o que
+cobre `/quiz`, `/up1`, `/up2`, `/d1` e `/d2` sem registrar listeners duplicados.
+O anexo ofuscado foi decodificado apenas para inspeção e resolve exatamente para
+o mesmo script e os mesmos dois atributos; a implementação usa a forma legível
+publicada pela UTMify.
+
+O back redirect fica restrito a `/quiz`, preserva parâmetros da URL e somente é
+ativado quando `NEXT_PUBLIC_UTMIFY_BACK_REDIRECT_URL` contém um destino HTTP(S)
+aprovado. O arquivo fornecido contém o placeholder
+`https://meubackredirect.com.br`; esse valor não foi publicado nem presumido.
+As páginas pós-compra não interceptam o botão voltar, pois isso mudaria uma
+navegação posterior à compra sem contrato explícito e poderia acumular handlers
+ao longo do funil.

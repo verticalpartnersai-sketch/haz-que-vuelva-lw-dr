@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { UtmifyTrackingScript } from "@/features/analytics/utmify-tracking-script";
 import {
   htmlLanguage,
   isLocale,
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <LocaleProvider initialLocale={initialLocale}>
           {children}
         </LocaleProvider>
+        <UtmifyTrackingScript />
       </body>
     </html>
   );

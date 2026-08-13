@@ -150,8 +150,11 @@ export function utmParameters() {
 
   const params = new URLSearchParams(window.location.search);
   return {
-    creative_id: params.get("creative_id") ?? undefined,
+    ad_id: params.get("ad_id") ?? undefined,
+    adset_id: params.get("adset_id") ?? undefined,
     campaign_id: params.get("campaign_id") ?? undefined,
+    creative_id: params.get("creative_id") ?? undefined,
+    fbclid: params.get("fbclid") ?? undefined,
     utm_source: params.get("utm_source") ?? undefined,
     utm_campaign: params.get("utm_campaign") ?? undefined,
     utm_medium: params.get("utm_medium") ?? undefined,

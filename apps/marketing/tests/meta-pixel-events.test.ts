@@ -27,14 +27,20 @@ test("builds a constrained bootstrap without firing a duplicate PageView", () =>
 test("maps quiz start to a custom Meta event and preserves attribution fields", () => {
   assert.deepEqual(
     metaEventForAnalytics("quiz_start", {
+      ad_id: "ad-01",
+      adset_id: "set-01",
       creative_id: "crt-01",
+      fbclid: "click-01",
       utm_campaign: "launch",
     }),
     {
       kind: "custom",
       name: "QuizStart",
       parameters: {
+        ad_id: "ad-01",
+        adset_id: "set-01",
         creative_id: "crt-01",
+        fbclid: "click-01",
         utm_campaign: "launch",
       },
     },

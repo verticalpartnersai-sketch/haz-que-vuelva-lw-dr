@@ -42,8 +42,11 @@ const contentByPath: Record<
 };
 
 const quizStartParameterKeys = [
+  "ad_id",
+  "adset_id",
   "creative_id",
   "campaign_id",
+  "fbclid",
   "utm_source",
   "utm_campaign",
   "utm_medium",

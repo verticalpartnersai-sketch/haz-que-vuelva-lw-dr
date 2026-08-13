@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FRONT_PRICE_USD } from "@/features/analytics/meta-pixel-events";
 import { useLocale } from "@/features/i18n/locale";
 import type {
   DesireCommitment,
@@ -299,7 +300,7 @@ export function QuizPage() {
       );
       track("checkout_start", {
         cta_position: ctaPosition,
-        price: 7,
+        price: FRONT_PRICE_USD,
         route,
       });
       const checkoutWindow = window.open(

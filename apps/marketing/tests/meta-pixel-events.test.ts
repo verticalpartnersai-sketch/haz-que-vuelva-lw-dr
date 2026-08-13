@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  FRONT_PRICE_USD,
   dispatchMetaEvent,
   isMetaPixelId,
   metaEventForAnalytics,
@@ -94,11 +95,15 @@ test("maps the result view to one quiz completion event", () => {
   );
 });
 
-test("maps the front CTA to a custom click instead of duplicating PerfectPay InitiateCheckout", () => {
+test("keeps the live front price in the public analytics contract", () => {
+  assert.equal(FRONT_PRICE_USD, 7.9);
+});
+
+test("maps the front CTA to a custom click with the live price instead of duplicating PerfectPay InitiateCheckout", () => {
   assert.deepEqual(
     metaEventForAnalytics("checkout_start", {
       cta_position: "result",
-      price: 7,
+      price: 7.9,
       route: "green",
     }),
     {
@@ -109,7 +114,7 @@ test("maps the front CTA to a custom click instead of duplicating PerfectPay Ini
         currency: "USD",
         cta_position: "result",
         route: "green",
-        value: 7,
+        value: 7.9,
       },
     },
   );

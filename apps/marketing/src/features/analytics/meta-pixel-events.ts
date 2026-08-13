@@ -8,6 +8,8 @@ export type MetaEvent = {
 
 export type MetaPixelFunction = (...args: unknown[]) => unknown;
 
+export const FRONT_PRICE_USD = 7.9;
+
 type AnalyticsPayload = Record<
   string,
   boolean | number | string | undefined
@@ -116,7 +118,7 @@ export function metaEventForAnalytics(
         currency: "USD",
         cta_position,
         route,
-        value: 7,
+        value: FRONT_PRICE_USD,
       }),
     };
   }

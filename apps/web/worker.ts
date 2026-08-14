@@ -8,6 +8,8 @@ type MemberWorkerEnvironment = Record<string, unknown> & {
   FEATURE_AUTH?: string;
   FEATURE_CONTENT?: string;
   FEATURE_PAYMENTS?: string;
+  FEATURE_CHECKOUT_RECOVERY?: string;
+  CHECKOUT_RECOVERY_CHECKOUT_URL?: string;
   MEMBER_APP_URL?: string;
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
   NEXT_PUBLIC_SUPABASE_URL?: string;
@@ -128,6 +130,17 @@ async function runScheduledOutboxes(
     environment.MEMBER_APP_URL
   ) {
     routes.push("/api/internal/outbox/invitations");
+  }
+
+  if (
+    enabled(environment.FEATURE_CHECKOUT_RECOVERY) &&
+    enabled(environment.FEATURE_PAYMENTS) &&
+    environment.RESEND_API_KEY &&
+    environment.RESEND_FROM &&
+    environment.MEMBER_APP_URL &&
+    environment.CHECKOUT_RECOVERY_CHECKOUT_URL
+  ) {
+    routes.push("/api/internal/outbox/checkout-recovery");
   }
 
   const results = await Promise.allSettled(

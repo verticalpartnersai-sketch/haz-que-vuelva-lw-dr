@@ -7,6 +7,8 @@ export const RESEND_DELIVERY_EVENT_TYPES = [
   "email.complained",
   "email.failed",
   "email.suppressed",
+  "email.opened",
+  "email.clicked",
 ] as const;
 
 const detailSchema = z.object({

@@ -10,9 +10,10 @@ export const PERFECT_PAY_REVOKE_STATUSES = [
   "charged_back",
 ] as const;
 
-export type PaymentEffect = "grant" | "revoke" | "ignore";
+export type PaymentEffect = "grant" | "revoke" | "observe" | "ignore";
 
 export function paymentEffectForStatus(status: string): PaymentEffect {
+  if (status === "precheckout") return "observe";
   if (PERFECT_PAY_GRANT_STATUSES.some((candidate) => candidate === status)) {
     return "grant";
   }

@@ -19,6 +19,7 @@ test("Perfect Pay statuses map to deterministic access effects", () => {
   assert.equal(paymentEffectForStatus("cancelled"), "revoke");
   assert.equal(paymentEffectForStatus("refunded"), "revoke");
   assert.equal(paymentEffectForStatus("charged_back"), "revoke");
+  assert.equal(paymentEffectForStatus("precheckout"), "observe");
   assert.equal(paymentEffectForStatus("pending"), "ignore");
 });
 
@@ -154,7 +155,37 @@ test("duplicate events still repair a missing outbox job", async () => {
   assert.equal(enqueued, 1);
 });
 
-test("ignored payment events are archived as processed without queue work", async () => {
+test("precheckout events are queued for observation without being treated as access grants", async () => {
+  const event = normalizePerfectPayPayload({
+    token: "not-persisted",
+    code: "SALE-PRECHECKOUT",
+    sale_amount: 7.9,
+    currency_enum: 2,
+    sale_status_enum: 12,
+    sale_status_detail: "precheckout",
+    date_created: "2026-08-14 10:00:00",
+    date_approved: null,
+    product: {
+      code: "PPPBF7CC",
+      name: "Haz Que Vuelva",
+      external_reference: null,
+    },
+    plan: { code: "PLAN-X", name: "Haz Que Vuelva", quantity: 1 },
+    plan_itens: [],
+    customer: { email: "member@example.com" },
+  });
+  let enqueued = 0;
+
+  await processPaymentEvent(event, {
+    events: { store: async () => "stored" },
+    queue: { enqueue: async () => void (enqueued += 1) },
+  });
+
+  assert.equal(event.effect, "observe");
+  assert.equal(enqueued, 1);
+});
+
+test("ignored events are archived, while observed precheckout waits for projection", async () => {
   const inserted: Record<string, unknown>[] = [];
   const client = {
     from(table: string) {
@@ -188,9 +219,29 @@ test("ignored payment events are archived as processed without queue work", asyn
   });
 
   await ingress.store(pending);
+  const precheckout = normalizePerfectPayPayload({
+    token: "not-persisted",
+    code: "SALE-PRECHECKOUT-STORAGE",
+    sale_amount: 7.9,
+    currency_enum: 2,
+    sale_status_enum: 12,
+    sale_status_detail: "precheckout",
+    date_created: "2026-08-14 10:00:00",
+    date_approved: null,
+    product: {
+      code: "PPPBF7CC",
+      name: "Haz Que Vuelva",
+      external_reference: null,
+    },
+    plan: { code: "PLAN-X", name: "Haz Que Vuelva", quantity: 1 },
+    plan_itens: [],
+    customer: { email: "member@example.com" },
+  });
+  await ingress.store(precheckout);
 
-  assert.equal(inserted.length, 1);
+  assert.equal(inserted.length, 2);
   assert.equal(typeof inserted[0]?.processed_at, "string");
+  assert.equal(inserted[1]?.processed_at, null);
 });
 
 test("terminal payment states cannot be reopened by a late grant event", () => {

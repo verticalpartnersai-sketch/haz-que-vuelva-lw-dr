@@ -65,6 +65,11 @@ test("the production Worker owns only the member subdomain and declares required
   assert.doesNotMatch(wrangler, /"pattern": "hazquevuelva\.site"/);
   assert.match(wrangler, /"SUPABASE_SECRET_KEY"/);
   assert.match(wrangler, /"FEATURE_PAYMENTS": "true"/);
+  assert.match(wrangler, /"FEATURE_CHECKOUT_RECOVERY": "false"/);
+  assert.match(
+    wrangler,
+    /"CHECKOUT_RECOVERY_CHECKOUT_URL": "https:\/\/go\.centerpag\.com\/PPU38CQER3J\?upsell=true&lang=es"/,
+  );
   assert.match(wrangler, /"FEATURE_VUELVE_IA": "true"/);
   assert.match(wrangler, /"FEATURE_AI_DIAGNOSTICS": "true"/);
   assert.match(wrangler, /"AI_DAILY_TOKEN_BUDGET": "250000"/);
@@ -184,6 +189,40 @@ test("VUELVE IA requires an explicit daily token budget before activation", () =
   assert.match(environment, /AI_DAILY_TOKEN_BUDGET: optionalPositiveInteger/);
   assert.match(environment, /VUELVE IA requires AI_DAILY_TOKEN_BUDGET/);
   assert.match(health, /get_ai_usage_health/);
+});
+
+test("checkout recovery remains disabled until its explicit rollout gate is enabled", () => {
+  const environment = read("../src/server/config/environment.ts");
+  const worker = read("../worker.ts");
+  const route = read(
+    "../src/app/api/internal/outbox/checkout-recovery/route.ts",
+  );
+
+  assert.match(environment, /FEATURE_CHECKOUT_RECOVERY: booleanString/);
+  assert.match(environment, /CHECKOUT_RECOVERY_CHECKOUT_URL: optionalUrl/);
+  assert.match(worker, /enabled\(environment\.FEATURE_CHECKOUT_RECOVERY\)/);
+  assert.match(worker, /\/api\/internal\/outbox\/checkout-recovery/);
+  assert.match(route, /hasValidInternalCredential/);
+  assert.match(route, /!config\.FEATURE_CHECKOUT_RECOVERY/);
+  assert.match(route, /config\.CHECKOUT_RECOVERY_CHECKOUT_URL/);
+  assert.match(route, /config\.RESEND_API_KEY/);
+});
+
+test("checkout recovery unsubscribe accepts only opaque tokens and exposes no recipient data", () => {
+  const route = read(
+    "../src/app/api/notifications/checkout-recovery/unsubscribe/route.ts",
+  );
+
+  assert.match(route, /z\.uuid\(\)/);
+  assert.match(route, /export async function GET/);
+  assert.match(route, /export async function POST/);
+  const getHandler = route.match(
+    /export async function GET[\s\S]*?(?=export async function POST)/,
+  )?.[0];
+  assert.ok(getHandler);
+  assert.doesNotMatch(getHandler, /unsubscribe\(request\)/);
+  assert.match(route, /unsubscribe_checkout_recovery/);
+  assert.doesNotMatch(route, /customer_email|recipient_email/);
 });
 
 test("the PerfectPay webhook incrementally limits request bodies", () => {

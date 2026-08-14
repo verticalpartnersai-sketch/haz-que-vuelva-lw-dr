@@ -54,9 +54,26 @@ export async function POST(request: Request) {
     return new NextResponse(null, { status: 204 });
   }
 
-  const recorder = new SupabaseEmailDeliveryRecorder(
-    createSupabaseServiceClient(),
-  );
+  const client = createSupabaseServiceClient();
+  if (
+    parsed.data.type === "email.opened" ||
+    parsed.data.type === "email.clicked"
+  ) {
+    const { data, error } = await client.rpc(
+      "record_checkout_recovery_engagement",
+      {
+        p_event_type: parsed.data.type,
+        p_occurred_at: parsed.data.created_at,
+        p_provider_message_id: parsed.data.data.email_id,
+      },
+    );
+    if (error) {
+      return NextResponse.json({ accepted: false }, { status: 500 });
+    }
+    return NextResponse.json({ accepted: true, recorded: data === true ? 1 : 0 });
+  }
+
+  const recorder = new SupabaseEmailDeliveryRecorder(client);
   let recorded = 0;
   for (const recipient of parsed.data.data.to) {
     if (

@@ -31,6 +31,7 @@ const environmentSchema = z
     FEATURE_AUTH: booleanString,
     FEATURE_CONTENT: booleanString,
     FEATURE_PAYMENTS: booleanString,
+    FEATURE_CHECKOUT_RECOVERY: booleanString,
     FEATURE_ADMIN: booleanString,
     FEATURE_VUELVE_IA: booleanString,
     FEATURE_AI_DIAGNOSTICS: booleanString,
@@ -44,6 +45,7 @@ const environmentSchema = z
     RESEND_WEBHOOK_SECRET: optionalString(16),
     MEMBER_APP_URL: optionalUrl,
     MARKETING_APP_URL: optionalUrl,
+    CHECKOUT_RECOVERY_CHECKOUT_URL: optionalUrl,
     AGENT_SERVICE_BINDING: booleanString,
     AGENT_INTERNAL_URL: optionalUrl,
     AGENT_INTERNAL_SECRET: optionalString(32),
@@ -140,6 +142,23 @@ const environmentSchema = z
         code: "custom",
         message:
           "Payments require PERFECT_PAY_WEBHOOK_TOKEN, NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SECRET_KEY",
+      });
+    }
+    if (
+      environment.FEATURE_CHECKOUT_RECOVERY &&
+      (!environment.FEATURE_PAYMENTS ||
+        !environment.NEXT_PUBLIC_SUPABASE_URL ||
+        !environment.SUPABASE_SECRET_KEY ||
+        !environment.RESEND_API_KEY ||
+        !environment.RESEND_FROM ||
+        !environment.MEMBER_APP_URL ||
+        !environment.CHECKOUT_RECOVERY_CHECKOUT_URL ||
+        !environment.WORKER_INTERNAL_SECRET)
+    ) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Checkout recovery requires payments, Supabase, Resend, member and checkout URLs, and the internal worker secret",
       });
     }
     if (

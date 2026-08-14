@@ -49,7 +49,7 @@
         "FEATURE_AUTH": "true",
         "FEATURE_CONTENT": "true",
         "FEATURE_PAYMENTS": "true",
-        "FEATURE_CHECKOUT_RECOVERY": "false",
+        "FEATURE_CHECKOUT_RECOVERY": "true",
         "FEATURE_ADMIN": "true",
         "FEATURE_VUELVE_IA": "true",
         "FEATURE_AI_DIAGNOSTICS": "true",

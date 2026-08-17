@@ -18,22 +18,22 @@ const artifactPath = path.join(
 const expectedCtas = Object.freeze({
   up1: {
     count: 3,
-    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$6,90",
+    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$7,42",
     negative: "No, gracias. Voy a perder esta segunda oportunidad.",
   },
   d1: {
     count: 3,
-    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,00",
+    positive: "SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$5,38",
     negative: "No, gracias. Voy a perder esta segunda oportunidad.",
   },
   up2: {
     count: 4,
-    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$19,90",
+    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$21,39",
     negative: "No, gracias. Prefiero seguir interpretando cada mensaje sola.",
   },
   d2: {
     count: 4,
-    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$11,90",
+    positive: "SÍ, QUIERO VUELVE IA™ ACOMPAÑANDO MI CASO DURANTE 90 DÍAS POR US$12,79",
     negative: "No, gracias. Prefiero seguir interpretando cada mensaje sola.",
   },
 });
@@ -80,7 +80,7 @@ for (const [route, offer] of Object.entries(current)) {
 }
 
 for (const route of ["up1", "d1"]) {
-  assert.match(current[route].raw, /US\$(?:6,90|5,00)/, route + " price is missing");
+  assert.match(current[route].raw, /US\$(?:7,42|5,38)/, route + " price is missing");
   assert.match(current[route].raw, /30 días/i, route + " duration is missing");
 }
 
@@ -92,6 +92,9 @@ for (const route of ["up2", "d2"]) {
     route + " contains the stale 30-day VUELVE IA promise",
   );
 }
+
+assert.match(current.d1.raw, /US\$2,04/, "d1 discount difference is stale");
+assert.match(current.d2.raw, /US\$8,60/, "d2 discount difference is stale");
 
 for (const sourcePath of Object.values(OFFER_SOURCES).flat()) {
   const raw = await readFile(path.join(marketingRoot, sourcePath), "utf8");

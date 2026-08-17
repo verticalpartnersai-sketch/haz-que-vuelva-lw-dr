@@ -51,9 +51,9 @@ const COPY_BY_STEP: Record<1 | 2 | 3, RecoveryCopy> = {
     paragraphs: [
       "Quizá hoy consigas esperar. Después llega una historia, una respuesta fría, otro silencio o esa sensación de que él puede olvidarte, y todo vuelve a empezar.",
       "Haz Que Vuelva te entrega una ruta de siete días, una primera decisión para las próximas 24 horas y el árbol que te ayuda a elegir entre escribir, responder o esperar sin rogar, perseguirlo ni perderte intentando recuperarlo.",
-      "El acceso cuesta US$7.90, es un pago único y tiene 7 días de garantía. No promete decidir lo que él hará. Te da claridad para dejar de empeorar lo que todavía puede tener una salida.",
+      "El acceso cuesta US$8.49, es un pago único y tiene 7 días de garantía. No promete decidir lo que él hará. Te da claridad para dejar de empeorar lo que todavía puede tener una salida.",
     ],
-    cta: "ACTIVAR MI PROTOCOLO — US$7.90",
+    cta: "ACTIVAR MI PROTOCOLO — US$8.49",
   },
 };
 

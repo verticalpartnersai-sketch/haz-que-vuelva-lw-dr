@@ -65,7 +65,7 @@ test("the production Worker owns only the member subdomain and declares required
   assert.doesNotMatch(wrangler, /"pattern": "hazquevuelva\.site"/);
   assert.match(wrangler, /"SUPABASE_SECRET_KEY"/);
   assert.match(wrangler, /"FEATURE_PAYMENTS": "true"/);
-  assert.match(wrangler, /"FEATURE_CHECKOUT_RECOVERY": "false"/);
+  assert.match(wrangler, /"FEATURE_CHECKOUT_RECOVERY": "true"/);
   assert.match(
     wrangler,
     /"CHECKOUT_RECOVERY_CHECKOUT_URL": "https:\/\/go\.centerpag\.com\/PPU38CQER3J\?upsell=true&lang=es"/,

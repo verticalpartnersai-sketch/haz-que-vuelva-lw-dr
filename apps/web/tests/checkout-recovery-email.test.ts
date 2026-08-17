@@ -20,7 +20,7 @@ test("checkout recovery sequence has three distinct Spanish direct-response emai
   assert.match(first.text, /escribir, responder o esperar/i);
   assert.match(second.text, /WhatsApp/i);
   assert.match(second.text, /Bucle de Rechazo/i);
-  assert.match(third.text, /US\$7\.90/);
+  assert.match(third.text, /US\$8\.49/);
   assert.match(third.text, /7 días de garantía/i);
 
   for (const email of [first, second, third]) {

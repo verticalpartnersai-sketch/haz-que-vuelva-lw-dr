@@ -193,7 +193,7 @@ O puedes tener la ruta abierta en tu celular antes de que el próximo impulso de
 
 Tu inversión para añadir **Reconquista 30™** ahora es de apenas:
 
-# US$6,90
+# US$7,42
 
 Pago único.
 
@@ -201,7 +201,7 @@ Sin mensualidad.
 
 Sin completar tus datos nuevamente.
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$6,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$7,42**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 
@@ -221,7 +221,7 @@ El riesgo de probarlo queda con nosotros.
 
 El riesgo de enfrentar la próxima reapertura sin saber cuánto avanzar sigue siendo tuyo.
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$6,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$7,42**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 
@@ -243,7 +243,7 @@ Ya existe una apertura.
 
 No dejes que la ansiedad convierta esa apertura en tu Segunda Pérdida.
 
-**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$6,90**
+**SÍ, QUIERO PROTEGER ESTA SEGUNDA OPORTUNIDAD POR US$7,42**
 
 `No, gracias. Voy a perder esta segunda oportunidad.`
 

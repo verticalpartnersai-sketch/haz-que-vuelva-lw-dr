@@ -102,14 +102,14 @@ test("maps the result view to one quiz completion event", () => {
 });
 
 test("keeps the live front price in the public analytics contract", () => {
-  assert.equal(FRONT_PRICE_USD, 7.9);
+  assert.equal(FRONT_PRICE_USD, 8.49);
 });
 
 test("maps the front CTA to a custom click with the live price instead of duplicating PerfectPay InitiateCheckout", () => {
   assert.deepEqual(
     metaEventForAnalytics("checkout_start", {
       cta_position: "result",
-      price: 7.9,
+      price: 8.49,
       route: "green",
     }),
     {
@@ -120,7 +120,7 @@ test("maps the front CTA to a custom click with the live price instead of duplic
         currency: "USD",
         cta_position: "result",
         route: "green",
-        value: 7.9,
+        value: 8.49,
       },
     },
   );

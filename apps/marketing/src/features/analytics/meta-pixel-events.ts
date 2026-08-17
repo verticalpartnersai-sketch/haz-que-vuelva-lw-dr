@@ -8,7 +8,7 @@ export type MetaEvent = {
 
 export type MetaPixelFunction = (...args: unknown[]) => unknown;
 
-export const FRONT_PRICE_USD = 7.9;
+export const FRONT_PRICE_USD = 8.49;
 
 type AnalyticsPayload = Record<
   string,

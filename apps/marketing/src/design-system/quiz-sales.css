@@ -88,6 +88,36 @@
   max-width: 55ch;
 }
 
+.quiz-sales-hero__price {
+  align-items: center;
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  margin: 1.5rem auto 0;
+}
+
+.quiz-sales-hero__price s {
+  color: #ff4d5d;
+  font-size: clamp(1.05rem, 4.8vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 3px;
+}
+
+.quiz-sales-hero__price strong {
+  color: var(--sales-green);
+  font-size: clamp(2.15rem, 10.5vw, 4.3rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+.quiz-sales-hero__price + .quiz-sales__cta {
+  margin-top: 1.35rem;
+}
+
 .quiz-sales-hero > small {
   color: #8f8a84;
   display: block;

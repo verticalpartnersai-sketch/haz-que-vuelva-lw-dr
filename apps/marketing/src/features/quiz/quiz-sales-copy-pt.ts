@@ -8,6 +8,10 @@ export const salesCopyPt: SalesCopy = {
     "Comece hoje com uma rota construída a partir das respostas que você acabou de dar.",
   heroSubheadline:
     "Nos próximos 7 dias, você vai destruir a certeza que ele tinha sobre você e fazer sua ausência despertar curiosidade, desejo e o medo visceral de ter perdido você.",
+  heroPrice: {
+    compareAt: "De US$97",
+    price: "Hoje por US$8,49",
+  },
   routes: {
     gray: {
       label: "Canal fechado",

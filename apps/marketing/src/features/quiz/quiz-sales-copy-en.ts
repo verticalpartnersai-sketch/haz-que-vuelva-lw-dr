@@ -8,6 +8,10 @@ export const salesCopyEn: SalesCopy = {
     "Start today with a route built from the answers you just gave.",
   heroSubheadline:
     "Over the next 7 days, you will break the certainty he had about you and make your absence awaken curiosity, desire, and the visceral fear that he may have lost you.",
+  heroPrice: {
+    compareAt: "From US$97",
+    price: "Today for US$8.49",
+  },
   routes: {
     gray: {
       label: "Closed channel",

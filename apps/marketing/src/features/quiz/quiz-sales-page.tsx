@@ -355,6 +355,13 @@ export function QuizSalesPage({
             {routeCopy.headline}
           </h1>
           <p>{sales.heroSubheadline}</p>
+          <div
+            aria-label={`${sales.heroPrice.compareAt}. ${sales.heroPrice.price}`}
+            className="quiz-sales-hero__price"
+          >
+            <s>{sales.heroPrice.compareAt}</s>
+            <strong>{sales.heroPrice.price}</strong>
+          </div>
           <SalesCta
             buttonRef={heroCtaRef}
             label={sales.cta}

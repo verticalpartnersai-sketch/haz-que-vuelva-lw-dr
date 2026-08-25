@@ -50,6 +50,10 @@ export type SalesCopy = {
     heading: string;
   };
   heroSubheadline: string;
+  heroPrice: {
+    compareAt: string;
+    price: string;
+  };
   mechanism: {
     claim: string;
     closing: string;

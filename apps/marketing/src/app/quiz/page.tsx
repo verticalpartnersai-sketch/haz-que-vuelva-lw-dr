@@ -1,45 +1,29 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
+import { Suspense } from "react";
 
-import {
-  isLocale,
-  localeCookieName,
-} from "@/features/i18n/locale-config";
 import { UtmifyBackRedirect } from "@/features/analytics/utmify-back-redirect";
-import { QuizPage } from "@/features/quiz/quiz-page";
+import { funnelLocaleForEnvironment } from "@/features/i18n/funnel-locale";
+import { QuizFlowPage } from "@/features/quiz/quiz-flow-page";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const requestedLocale = (await cookies()).get(localeCookieName)?.value;
-  const locale = isLocale(requestedLocale) ? requestedLocale : "es";
-
-  const title = {
-    es: "Diagnóstico privado de reconexión",
-    pt: "Diagnóstico privado de reconexão",
-    en: "Private reconnection diagnosis",
-  }[locale];
-  const description = {
-    es: "Responde cinco preguntas y descubre tu Índice de Distancia Emocional, la ruta de tu canal y la primera decisión para los próximos 7 días.",
-    pt: "Responda cinco perguntas e descubra seu Índice de Distância Emocional, a rota do seu canal e a primeira decisão para os próximos 7 dias.",
-    en: "Answer five questions to discover your Emotional Distance Index, the state of your channel, and the first decision for the next 7 days.",
-  }[locale];
-  const openGraphLocale = {
-    es: "es_MX",
-    pt: "pt_BR",
-    en: "en_US",
-  }[locale];
+  const locale = funnelLocaleForEnvironment(process.env.NODE_ENV);
+  const title = locale === "pt"
+    ? "Quiz privado para reconquistar o seu ex"
+    : "Quiz privado para reconquistar a tu ex";
+  const description = locale === "pt"
+    ? "Responda ao quiz e descubra sua probabilidade de reconquista e o próximo movimento para os próximos 7 dias."
+    : "Responde el quiz y descubre tu probabilidad de reconquista y el próximo movimiento para los siguientes 7 días.";
 
   return {
     title,
     description,
-    alternates: {
-      canonical: "/quiz",
-    },
+    alternates: { canonical: "/quiz" },
     openGraph: {
       title,
       description,
       url: "/quiz",
       siteName: "Haz Que Vuelva",
-      locale: openGraphLocale,
+      locale: locale === "pt" ? "pt_BR" : "es_MX",
       type: "website",
       images: [
         {
@@ -70,10 +54,20 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+function QuizFallback() {
+  return <div className="quiz-v2-fallback" aria-label="Haz Que Vuelva" />;
+}
+
 export default function Page() {
+  const locale = funnelLocaleForEnvironment(process.env.NODE_ENV);
   return (
     <>
-      <QuizPage />
+      <Suspense fallback={<QuizFallback />}>
+        <QuizFlowPage
+          development={process.env.NODE_ENV === "development"}
+          locale={locale}
+        />
+      </Suspense>
       <UtmifyBackRedirect
         target={process.env.NEXT_PUBLIC_UTMIFY_BACK_REDIRECT_URL}
       />

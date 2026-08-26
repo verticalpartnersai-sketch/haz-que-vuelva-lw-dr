@@ -8,6 +8,12 @@
 @import "./quiz-offer.css";
 @import "./quiz-sales.css";
 @import "./quiz-responsive.css";
+@import "./quiz-v2-shell.css";
+@import "./quiz-v2-content.css";
+@import "./offer-v2-shell.css";
+@import "./offer-v2-hero.css";
+@import "./offer-v2-pricing.css";
+@import "./offer-v2-proof.css";
 
 .quiz-public .quiz-stage h1,
 .quiz-public .quiz-stage h2,

@@ -1,0 +1,45 @@
+.offer-v2-testimonials { max-width: 900px; }
+.offer-v2-testimonials > header { text-align: center; }
+.offer-v2-testimonials__grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 2rem; }
+.offer-v2-testimonials figure {
+  background: #111;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  box-shadow: 0 22px 60px rgba(0,0,0,.38);
+  margin: 0;
+  overflow: hidden;
+}
+.offer-v2-testimonials figure img { display: block; height: auto; width: 100%; }
+
+.offer-v2-guarantee { max-width: 680px; text-align: center; }
+.offer-v2-guarantee > img { filter: drop-shadow(0 20px 40px rgba(0,0,0,.46)); height: auto; width: min(15rem, 66vw); }
+.offer-v2-guarantee h2 { margin-top: 1.2rem; }
+.offer-v2-guarantee p { margin: 1rem auto 0; max-width: 60ch; }
+.offer-v2-guarantee > strong { color: #ff9296; display: block; font-size: .74rem; letter-spacing: .11em; margin-top: 1rem; }
+
+.offer-v2-faq { max-width: 760px; }
+.offer-v2-faq > h2 { text-align: center; }
+.offer-v2-faq > div { display: grid; gap: .65rem; margin-top: 1.6rem; }
+.offer-v2-faq article { background: #f5f0e9; border-radius: 13px; overflow: clip; }
+.offer-v2-faq article h3 { margin: 0; }
+.offer-v2-faq button { align-items: center; background: transparent; border: 0; color: #1e1819; cursor: pointer; display: flex; font: 600 .95rem/1.35 "Source Sans 3", sans-serif; gap: 1rem; justify-content: space-between; min-height: 64px; padding: .9rem 1rem; text-align: left; width: 100%; }
+.offer-v2-faq button i { color: #c5101a; font-size: 1.2rem; font-style: normal; transition: transform 160ms ease; }
+.offer-v2-faq .is-open button i { transform: rotate(180deg); }
+.offer-v2-faq article > div p { color: #554c4d; font-size: .9rem; margin: 0; padding: 0 1rem 1.1rem; }
+
+.offer-v2-footer {
+  border-top: 1px solid rgba(255,255,255,.1);
+  margin: 5rem auto 0;
+  max-width: 1040px;
+  padding: 2.5rem 1rem calc(4rem + env(safe-area-inset-bottom));
+  text-align: center;
+}
+.offer-v2-footer .quiz-logo--step { margin: 0 auto 1.2rem; width: min(11rem, 50vw); }
+.offer-v2-footer nav { display: flex; flex-wrap: wrap; gap: .75rem 1.2rem; justify-content: center; }
+.offer-v2-footer a { color: #ddd4d0; font-size: .8rem; }
+.offer-v2-footer p { color: #817775; font-size: .72rem; margin: 1.2rem auto .5rem; max-width: 75ch; }
+.offer-v2-footer small { color: #706765; }
+
+@media (min-width: 700px) {
+  .offer-v2-testimonials__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

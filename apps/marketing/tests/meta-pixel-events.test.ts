@@ -101,6 +101,48 @@ test("maps the result view to one quiz completion event", () => {
   );
 });
 
+test("maps v2 quiz completion without sensitive answers", () => {
+  assert.deepEqual(
+    metaEventForAnalytics("quiz_complete", {
+      quiz_version: "hqv_quiz_v2",
+      score: 92,
+      score_band: "92_96",
+      private_answer: "never-send",
+    }),
+    {
+      kind: "custom",
+      name: "QuizComplete",
+      parameters: {
+        quiz_version: "hqv_quiz_v2",
+        score: 92,
+        score_band: "92_96",
+      },
+    },
+  );
+});
+
+test("maps the v2 offer CTA with score band and no legacy route", () => {
+  assert.deepEqual(
+    metaEventForAnalytics("checkout_start", {
+      cta_position: "offer_primary",
+      quiz_version: "hqv_quiz_v2",
+      score_band: "92_96",
+    }),
+    {
+      kind: "custom",
+      name: "FrontCheckoutClick",
+      parameters: {
+        content_name: "Haz Que Vuelva",
+        currency: "USD",
+        cta_position: "offer_primary",
+        quiz_version: "hqv_quiz_v2",
+        score_band: "92_96",
+        value: 8.49,
+      },
+    },
+  );
+});
+
 test("keeps the live front price in the public analytics contract", () => {
   assert.equal(FRONT_PRICE_USD, 8.49);
 });
@@ -165,6 +207,17 @@ test("emits PageView and route-specific ViewContent without inventing Purchase",
       parameters: {
         content_category: "front",
         content_name: "Haz Que Vuelva Quiz",
+      },
+    },
+  ]);
+  assert.deepEqual(metaPageEvents("/off"), [
+    { kind: "standard", name: "PageView", parameters: {} },
+    {
+      kind: "standard",
+      name: "ViewContent",
+      parameters: {
+        content_category: "front",
+        content_name: "Haz Que Vuelva Offer",
       },
     },
   ]);

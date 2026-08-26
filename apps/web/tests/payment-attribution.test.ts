@@ -94,3 +94,59 @@ test("persists only normalized attribution in the redacted payment event", async
     status: "precheckout",
   });
 });
+
+test("normalizes v2 offer attribution with score band", () => {
+  const event = normalizePerfectPayPayload(
+    perfectPayPayload("hqv2~offer_primary~92_96"),
+  );
+
+  assert.deepEqual(event.checkoutAttribution, {
+    version: "v2",
+    ctaPosition: "offer_primary",
+    scoreBand: "92_96",
+  });
+});
+
+test("drops malformed v2 attribution", () => {
+  const invalidPosition = normalizePerfectPayPayload(
+    perfectPayPayload("hqv2~tampered~92_96"),
+  );
+  const invalidBand = normalizePerfectPayPayload(
+    perfectPayPayload("hqv2~offer_primary~99_99"),
+  );
+  assert.equal(invalidPosition.checkoutAttribution, undefined);
+  assert.equal(invalidBand.checkoutAttribution, undefined);
+});
+
+test("persists only redacted v2 offer attribution", async () => {
+  let inserted: Record<string, unknown> | undefined;
+  const client = {
+    from(table: string) {
+      assert.equal(table, "incoming_events");
+      return {
+        insert(row: Record<string, unknown>) {
+          inserted = row;
+          return Promise.resolve({ error: null });
+        },
+      };
+    },
+  };
+  const ingress = new SupabasePaymentIngress(client as never);
+  const event = normalizePerfectPayPayload(
+    perfectPayPayload("hqv2~offer_repeat~87_91"),
+  );
+
+  await ingress.store(event);
+
+  assert.deepEqual(inserted?.payload_redacted, {
+    attribution: {
+      cta_position: "offer_repeat",
+      quiz_version: "hqv_quiz_v2",
+      score_band: "87_91",
+    },
+    sale_code: "SALE-ATTRIBUTION",
+    product_code: "PPPBF7CC",
+    plan_code: "PLAN-X",
+    status: "precheckout",
+  });
+});

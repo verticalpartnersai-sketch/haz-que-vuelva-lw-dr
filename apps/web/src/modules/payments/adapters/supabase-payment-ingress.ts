@@ -1,11 +1,28 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import type { NormalizedPaymentEvent } from "@/modules/payments/domain/payment-event";
+import type {
+  CheckoutAttribution,
+  NormalizedPaymentEvent,
+} from "@/modules/payments/domain/payment-event";
 import type {
   PaymentEventRepository,
   StoreEventResult,
 } from "@/modules/payments/application/payment-event-repository";
 import type { PaymentWorkQueue } from "@/modules/payments/application/process-payment-event";
+
+function redactedCheckoutAttribution(attribution: CheckoutAttribution) {
+  if ("version" in attribution) {
+    return {
+      cta_position: attribution.ctaPosition,
+      quiz_version: "hqv_quiz_v2",
+      score_band: attribution.scoreBand,
+    };
+  }
+  return {
+    cta_position: attribution.ctaPosition,
+    route: attribution.route,
+  };
+}
 
 export class SupabasePaymentIngress
   implements PaymentEventRepository, PaymentWorkQueue
@@ -31,10 +48,9 @@ export class SupabasePaymentIngress
       payload_redacted: {
         ...(event.checkoutAttribution
           ? {
-              attribution: {
-                cta_position: event.checkoutAttribution.ctaPosition,
-                route: event.checkoutAttribution.route,
-              },
+              attribution: redactedCheckoutAttribution(
+                event.checkoutAttribution,
+              ),
             }
           : {}),
         sale_code: event.saleCode,

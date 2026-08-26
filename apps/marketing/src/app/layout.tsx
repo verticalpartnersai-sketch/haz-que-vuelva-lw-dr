@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 
 import { MetaPixelLoader } from "@/features/analytics/meta-pixel-loader";
 import { UtmifyTrackingScript } from "@/features/analytics/utmify-tracking-script";
-import {
-  htmlLanguage,
-  isLocale,
-  localeCookieName,
-} from "@/features/i18n/locale-config";
+import { funnelLocaleForEnvironment } from "@/features/i18n/funnel-locale";
+import { htmlLanguage } from "@/features/i18n/locale-config";
 import { LocaleProvider } from "@/features/i18n/locale";
 
 import "@fontsource/bebas-neue/400.css";
@@ -27,11 +23,10 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const requestedLocale = (await cookies()).get(localeCookieName)?.value;
-  const initialLocale = isLocale(requestedLocale) ? requestedLocale : "es";
+  const initialLocale = funnelLocaleForEnvironment(process.env.NODE_ENV);
 
   return (
     <html lang={htmlLanguage(initialLocale)}>

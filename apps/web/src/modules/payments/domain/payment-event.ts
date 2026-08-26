@@ -12,7 +12,7 @@ export const PERFECT_PAY_REVOKE_STATUSES = [
 
 export type PaymentEffect = "grant" | "revoke" | "observe" | "ignore";
 
-export type CheckoutAttribution = {
+export type LegacyCheckoutAttribution = {
   ctaPosition:
     | "hero"
     | "timeline"
@@ -29,6 +29,20 @@ export type CheckoutAttribution = {
     | "logistics"
     | "third_person";
 };
+
+export type OfferCheckoutAttribution = {
+  ctaPosition:
+    | "guarantee"
+    | "offer_primary"
+    | "offer_repeat"
+    | "rating";
+  scoreBand: "82_86" | "87_91" | "92_96";
+  version: "v2";
+};
+
+export type CheckoutAttribution =
+  | LegacyCheckoutAttribution
+  | OfferCheckoutAttribution;
 
 export function paymentEffectForStatus(status: string): PaymentEffect {
   if (status === "precheckout") return "observe";

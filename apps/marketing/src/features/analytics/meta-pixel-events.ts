@@ -23,6 +23,10 @@ const contentByPath: Record<
     content_category: "front",
     content_name: "Haz Que Vuelva Quiz",
   },
+  "/off": {
+    content_category: "front",
+    content_name: "Haz Que Vuelva Offer",
+  },
   "/up1": {
     content_category: "upsell",
     content_name: "Reconquista 30",
@@ -61,6 +65,9 @@ const quizCompleteParameterKeys = [
   "distance_band",
   "distance_index",
   "reconquista30_eligible",
+  "quiz_version",
+  "score",
+  "score_band",
 ] as const;
 
 function definedParameters(payload: AnalyticsPayload) {
@@ -103,7 +110,7 @@ export function metaEventForAnalytics(
     };
   }
 
-  if (event === "quiz_result_view") {
+  if (event === "quiz_result_view" || event === "quiz_complete") {
     return {
       kind: "custom",
       name: "QuizComplete",
@@ -112,7 +119,7 @@ export function metaEventForAnalytics(
   }
 
   if (event === "checkout_start") {
-    const { cta_position, route } = payload;
+    const { cta_position, quiz_version, route, score_band } = payload;
     return {
       kind: "custom",
       name: "FrontCheckoutClick",
@@ -120,7 +127,9 @@ export function metaEventForAnalytics(
         content_name: "Haz Que Vuelva",
         currency: "USD",
         cta_position,
+        quiz_version,
         route,
+        score_band,
         value: FRONT_PRICE_USD,
       }),
     };

@@ -3,7 +3,9 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import {
   paymentEffectForStatus,
   type CheckoutAttribution,
+  type LegacyCheckoutAttribution,
   type NormalizedPaymentEvent,
+  type OfferCheckoutAttribution,
 } from "../domain/payment-event.ts";
 import type { PerfectPayPayload } from "./perfect-pay-schema";
 
@@ -48,24 +50,45 @@ const quizRoutes = new Set([
   "logistics",
   "third_person",
 ]);
+const offerCtaPositions = new Set([
+  "guarantee",
+  "offer_primary",
+  "offer_repeat",
+  "rating",
+]);
+const offerScoreBands = new Set(["82_86", "87_91", "92_96"]);
 
 export function parsePerfectPayCheckoutAttribution(
   value: string | null | undefined,
 ): CheckoutAttribution | undefined {
   if (!value) return undefined;
-  const [prefix, ctaPosition, route, extra] = value.split("~");
+  const [prefix, ctaPosition, segment, extra] = value.split("~");
+  if (extra !== undefined) return undefined;
+
   if (
-    prefix !== "hqv" ||
-    extra !== undefined ||
-    !checkoutCtaPositions.has(ctaPosition) ||
-    !quizRoutes.has(route)
+    prefix === "hqv" &&
+    checkoutCtaPositions.has(ctaPosition) &&
+    quizRoutes.has(segment)
   ) {
-    return undefined;
+    return {
+      ctaPosition: ctaPosition as LegacyCheckoutAttribution["ctaPosition"],
+      route: segment as LegacyCheckoutAttribution["route"],
+    };
   }
-  return {
-    ctaPosition: ctaPosition as CheckoutAttribution["ctaPosition"],
-    route: route as CheckoutAttribution["route"],
-  };
+
+  if (
+    prefix === "hqv2" &&
+    offerCtaPositions.has(ctaPosition) &&
+    offerScoreBands.has(segment)
+  ) {
+    return {
+      version: "v2",
+      ctaPosition: ctaPosition as OfferCheckoutAttribution["ctaPosition"],
+      scoreBand: segment as OfferCheckoutAttribution["scoreBand"],
+    };
+  }
+
+  return undefined;
 }
 
 export function secureTokenMatches(received: string, expected: string) {

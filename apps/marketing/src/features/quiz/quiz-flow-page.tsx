@@ -186,11 +186,12 @@ export function QuizFlowPage({
         <QuizLogo compact />
         {development && stageIndex > 0 ? (
           <button
+            aria-label={copy.ui.back}
             className="quiz-v2-back"
             onClick={() => setStageIndex((index) => Math.max(0, index - 1))}
             type="button"
           >
-            ← {copy.ui.back.toUpperCase()}
+            <span aria-hidden="true">←</span>
           </button>
         ) : null}
       </header>

@@ -16,9 +16,10 @@ export function QuizFlowOptionGrid({
   selected: readonly string[];
 }) {
   const compact = options.length <= 4;
+  const single = options.length === 1;
   return (
     <div
-      className={`quiz-v2-options${compact ? " quiz-v2-options--compact" : ""}`}
+      className={`quiz-v2-options${compact ? " quiz-v2-options--compact" : ""}${single ? " quiz-v2-options--single" : ""}`}
       role={multiple ? "group" : "radiogroup"}
     >
       {options.map((option) => {

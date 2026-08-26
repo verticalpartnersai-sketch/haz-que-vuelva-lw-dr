@@ -39,6 +39,7 @@ export function QuizFlowStage({
   return (
     <main
       className={`quiz-v2-stage quiz-v2-stage--${screen.type}`}
+      data-stage-id={screen.id}
       id="quiz-content"
     >
       {screen.asset ? (

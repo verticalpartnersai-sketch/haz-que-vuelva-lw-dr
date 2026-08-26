@@ -129,6 +129,8 @@ export type QuizFlowCopy = {
   result: {
     badge: string;
     button: string;
+    outcomesHeading: string;
+    question: string;
     scoreLabel: string;
     scoreLevel: string;
     title: string;

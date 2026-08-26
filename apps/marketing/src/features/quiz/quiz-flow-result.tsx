@@ -37,14 +37,16 @@ export function QuizFlowResult({
           </li>
         ))}
       </ol>
+      <h2 className="quiz-v2-result__outcomes-heading">{copy.result.outcomesHeading}</h2>
       <ul className="quiz-v2-outcomes">
         {copy.result.outcomes.map((outcome) => (
           <li key={outcome}>
-            <span aria-hidden="true">✓</span>
+            <span aria-hidden="true">✅</span>
             {outcome}
           </li>
         ))}
       </ul>
+      <h2 className="quiz-v2-result__question">{copy.result.question}</h2>
       <button className="quiz-v2-primary" onClick={onContinue} type="button">
         {copy.result.button}
       </button>

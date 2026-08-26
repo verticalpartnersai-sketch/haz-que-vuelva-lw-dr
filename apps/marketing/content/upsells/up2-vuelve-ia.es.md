@@ -1,6 +1,6 @@
-# FELICIDADES. ACABAS DE AÑADIR RECONQUISTA 30™ A TU ACCESO.
+# TU SIGUIENTE DECISIÓN YA ESTÁ DISPONIBLE
 
-Ahora ya tienes la ruta para proteger la reapertura, observar reciprocidad y saber cómo avanzar durante los próximos 30 días.
+Si tu pedido anterior fue aprobado, Reconquista 30™ ya está preparando tu acceso.
 
 Pero la vida real no siempre va a seguir una página escrita.
 
@@ -10,7 +10,7 @@ Puede cambiar de tono en medio de la conversación.
 
 Puede aparecer cariñoso, desaparecer, volver a escribir y dejarte sin saber si debes responder, esperar o pedir claridad.
 
-Por eso quiero ofrecerte el complemento más poderoso para la ruta que acabas de comprar:
+Por eso quiero ofrecerte el complemento más poderoso para esa ruta:
 
 # VUELVE IA™
 

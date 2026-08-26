@@ -29,6 +29,14 @@ export class SupabasePaymentIngress
       amount_minor: event.amountMinor,
       currency: event.currency,
       payload_redacted: {
+        ...(event.checkoutAttribution
+          ? {
+              attribution: {
+                cta_position: event.checkoutAttribution.ctaPosition,
+                route: event.checkoutAttribution.route,
+              },
+            }
+          : {}),
         sale_code: event.saleCode,
         product_code: event.productCode,
         plan_code: event.planCode,

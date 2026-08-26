@@ -12,6 +12,24 @@ export const PERFECT_PAY_REVOKE_STATUSES = [
 
 export type PaymentEffect = "grant" | "revoke" | "observe" | "ignore";
 
+export type CheckoutAttribution = {
+  ctaPosition:
+    | "hero"
+    | "timeline"
+    | "value_stack"
+    | "offer"
+    | "after_faq"
+    | "sticky_offer"
+    | "sticky_education";
+  route:
+    | "gray"
+    | "red"
+    | "yellow"
+    | "green"
+    | "logistics"
+    | "third_person";
+};
+
 export function paymentEffectForStatus(status: string): PaymentEffect {
   if (status === "precheckout") return "observe";
   if (PERFECT_PAY_GRANT_STATUSES.some((candidate) => candidate === status)) {
@@ -36,4 +54,5 @@ export type NormalizedPaymentEvent = {
   currency: string;
   occurredAt: Date;
   payloadHash: string;
+  checkoutAttribution?: CheckoutAttribution;
 };

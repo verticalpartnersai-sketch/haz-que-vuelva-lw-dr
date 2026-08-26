@@ -35,6 +35,11 @@ export const perfectPayPayloadSchema = z.object({
   customer: z.object({
     email: z.email(),
   }),
+  metadata: z
+    .object({
+      utm_perfect: z.string().max(100).nullable().optional(),
+    })
+    .optional(),
 });
 
 export type PerfectPayPayload = z.infer<typeof perfectPayPayloadSchema>;

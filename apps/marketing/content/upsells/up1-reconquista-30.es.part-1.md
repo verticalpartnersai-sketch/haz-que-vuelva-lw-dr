@@ -1,6 +1,6 @@
-# TU COMPRA FUE APROBADA
+# TU SIGUIENTE DECISIÓN YA ESTÁ DISPONIBLE
 
-**Haz Que Vuelva™ ya es tuyo. Tu acceso está asegurado. Lee esta página antes de volver a WhatsApp.**
+**Si tu pago fue aprobado, Haz Que Vuelva™ ya está preparando tu acceso. Revisa esta oferta complementaria antes de volver a WhatsApp.**
 
 # LO PEOR NO SERÍA QUE ÉL NO VOLVIERA.
 

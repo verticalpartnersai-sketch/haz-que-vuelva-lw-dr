@@ -2,6 +2,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 
 import {
   paymentEffectForStatus,
+  type CheckoutAttribution,
   type NormalizedPaymentEvent,
 } from "../domain/payment-event.ts";
 import type { PerfectPayPayload } from "./perfect-pay-schema";
@@ -29,6 +30,43 @@ const currencyByEnum: Record<number, string> = {
   2: "USD",
   3: "EUR",
 };
+
+const checkoutCtaPositions = new Set([
+  "hero",
+  "timeline",
+  "value_stack",
+  "offer",
+  "after_faq",
+  "sticky_offer",
+  "sticky_education",
+]);
+const quizRoutes = new Set([
+  "gray",
+  "red",
+  "yellow",
+  "green",
+  "logistics",
+  "third_person",
+]);
+
+export function parsePerfectPayCheckoutAttribution(
+  value: string | null | undefined,
+): CheckoutAttribution | undefined {
+  if (!value) return undefined;
+  const [prefix, ctaPosition, route, extra] = value.split("~");
+  if (
+    prefix !== "hqv" ||
+    extra !== undefined ||
+    !checkoutCtaPositions.has(ctaPosition) ||
+    !quizRoutes.has(route)
+  ) {
+    return undefined;
+  }
+  return {
+    ctaPosition: ctaPosition as CheckoutAttribution["ctaPosition"],
+    route: route as CheckoutAttribution["route"],
+  };
+}
 
 export function secureTokenMatches(received: string, expected: string) {
   const receivedDigest = createHash("sha256").update(received).digest();
@@ -76,6 +114,9 @@ function normalizePerfectPayLine(
       payload.date_approved ?? payload.date_created,
     ),
     payloadHash,
+    checkoutAttribution: parsePerfectPayCheckoutAttribution(
+      payload.metadata?.utm_perfect,
+    ),
   };
 }
 

@@ -18,7 +18,7 @@ import {
   resolveRoute,
 } from "@/features/quiz/quiz-engine";
 import { PublicHeader } from "@/features/quiz/quiz-intro-question";
-import { QUIZ_CHECKOUT_URL } from "@/features/quiz/quiz-checkout-config";
+import { buildQuizCheckoutUrl } from "@/features/quiz/quiz-checkout-config";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import {
   QuizNotificationBanner,
@@ -286,18 +286,13 @@ export function QuizPage() {
     });
 
     try {
-      const destination = new URL(QUIZ_CHECKOUT_URL);
-      const checkoutContext = {
+      const destination = buildQuizCheckoutUrl({
+        attribution: utmParameters(),
+        channelState: channelStateForRoute(route),
+        ctaPosition,
+        distanceBand,
         route,
-        channel_state: channelStateForRoute(route),
-        distance_band: distanceBand,
-        cta_position: ctaPosition,
-      };
-      Object.entries({ ...checkoutContext, ...utmParameters() }).forEach(
-        ([key, value]) => {
-          if (value) destination.searchParams.set(key, String(value));
-        },
-      );
+      });
       track("checkout_start", {
         cta_position: ctaPosition,
         price: FRONT_PRICE_USD,

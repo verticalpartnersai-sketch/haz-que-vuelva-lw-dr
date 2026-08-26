@@ -17,9 +17,9 @@ export const OFFER_SOURCES = Object.freeze({
 });
 
 export const CANONICAL_HASHES = Object.freeze({
-  up1: "6371912ddca1a1248fcdbfa6940b5a02624a0524b9533425adeba0762ae5c6d4",
+  up1: "3ecc52eb09177331f706162c5ab48ecc1bdd30f1df0c7327dcd2905c00c870cf",
   d1: "8f10c3917d5f019699419d0ccd23088f54d5613f9f360a0305f30111f684e92b",
-  up2: "50640dcbb4c6d4b26b3cbe0c5ee2513e7382c7afbf0730661d13e744ee1f51e1",
+  up2: "582695a0594c3707ac923c13646498675c663b5ecaaa53d09b0deb3ad80e3ff9",
   d2: "178d5864feddeb866c598d49c9d84d2932d2e3bb345bc4d655a86d7014c7cdde",
 });
 

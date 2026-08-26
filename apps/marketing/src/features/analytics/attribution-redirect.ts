@@ -1,4 +1,4 @@
-const attributionParameterKeys = [
+export const attributionParameterKeys = [
   "ad_id",
   "adset_id",
   "campaign_id",

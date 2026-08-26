@@ -14,6 +14,11 @@ import type {
 import { distanceBandLabel, resolvedLastAction } from "@/features/quiz/quiz-engine";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
 import { QuizLogo } from "@/features/quiz/quiz-intro-question";
+import {
+  desireProofLead,
+  fearMirror,
+  personalizeProofStories,
+} from "@/features/quiz/quiz-personalization";
 import { productProofAssets } from "@/features/quiz/quiz-proof";
 
 export function Prediagnosis({
@@ -33,6 +38,7 @@ export function Prediagnosis({
 }) {
   const { locale } = useLocale();
   const copy = quizContentFor(locale);
+  const fear = fearMirror(answers.dominant_fear, locale);
   const pain = copy.painImpulses[answers.dominant_pain ?? "silence"];
   const routeCopy = copy.routes[route];
   const scorePosition = Math.min(100, Math.round((index / 95) * 100));
@@ -142,6 +148,9 @@ export function Prediagnosis({
         {stageCopy.storyLead} <strong>{pain.sentence}</strong>.{" "}
         {stageCopy.storyLink} {pain.impulse}. {stageCopy.storyTail}
       </p>
+      <p className="quiz-prediagnosis__story quiz-prediagnosis__fear">
+        {fear}
+      </p>
 
       <figure className="quiz-prediagnosis__proof">
         <div>
@@ -223,6 +232,8 @@ export function Demonstration({
 
   if (enhancedExperience) {
     const preview = copy.preview.proof;
+    const proofLead = desireProofLead(answers.desire, locale);
+    const proofStories = personalizeProofStories(preview.stories, answers.desire);
 
     return (
       <main
@@ -234,7 +245,9 @@ export function Demonstration({
           <h1 ref={headingRef} tabIndex={-1}>
             {preview.headline}
           </h1>
-          <p className="quiz-demonstration__proof-lead">{preview.body}</p>
+          <p className="quiz-demonstration__proof-lead">
+            <strong>{proofLead}</strong> {preview.body}
+          </p>
         </header>
 
         <div className="quiz-demonstration__lead-image">
@@ -248,7 +261,7 @@ export function Demonstration({
         </div>
 
         <div className="quiz-testimonial-list">
-          {preview.stories.map((story) => (
+          {proofStories.map((story) => (
             <article className="quiz-testimonial" key={story.id}>
               <p className="quiz-testimonial__intro">{story.intro}</p>
               <figure className="quiz-testimonial__shot">

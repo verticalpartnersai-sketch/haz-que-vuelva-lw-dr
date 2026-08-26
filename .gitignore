@@ -8,6 +8,7 @@
 !.dev.vars.example
 .open-next/
 .wrangler/
+output/
 
 __pycache__/
 *.egg-info/

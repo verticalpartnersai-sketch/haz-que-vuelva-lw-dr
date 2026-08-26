@@ -22,7 +22,7 @@ export function PostPurchaseHeader({
         />
         <OfferBrand product={product} />
       </div>
-      <span className="pp-masthead__context">COMPRA APROBADA</span>
+      <span className="pp-masthead__context">OFERTA COMPLEMENTARIA DISPONIBLE</span>
     </header>
   );
 }

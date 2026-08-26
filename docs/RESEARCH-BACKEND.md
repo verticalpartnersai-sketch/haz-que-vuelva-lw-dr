@@ -36,15 +36,23 @@ link tokenizado é persistido em payload, log ou tabela da aplicação.
 ### Perfect Pay
 
 - [Webhook oficial](https://support.perfectpay.com.br/doc/perfect-pay/postback/integracao-via-webhook-com-a-perfect-pay):
-  documenta token, `code`, produto, plano, `plan_itens` e enums de status.
+  documenta token, `code`, produto, plano, `plan_itens`, enums de status e os
+  campos de atribuição `metadata.src`, `metadata.utm_source`,
+  `metadata.utm_medium`, `metadata.utm_campaign`, `metadata.utm_term`,
+  `metadata.utm_content` e `metadata.utm_perfect`.
 - [API oficial de vendas](https://support.perfectpay.com.br/doc/perfectpay/perfectpay-api/vendas):
-  documenta consulta autenticada, filtros por status e identificador de venda.
+  documenta consulta autenticada, filtros por status, identificador de venda e
+  o mesmo bloco `metadata` de atribuição.
 
 Decisão: `approved`, `authorized` e `completed` concedem de modo idempotente;
 `cancelled`, `refunded` e `charged_back` revogam o grant correspondente.
-Entrada persiste dados mínimos e enfileira projeção. A documentação não prova
-como order bumps reais desta conta aparecerão; nenhum mapping será ativado sem
-payloads redigidos e IDs reais.
+Entrada persiste dados mínimos e enfileira projeção. Para reconciliar a posição
+do CTA sem PII, o checkout envia em `utm_perfect` somente o contrato categórico
+`hqv~<cta_allowlisted>~<route_allowlisted>`. O webhook descarta valores fora da
+allowlist e grava apenas `{ cta_position, route }` dentro de `payload_redacted`;
+metadados brutos não são persistidos. A documentação não prova como order bumps
+reais desta conta aparecerão; nenhum mapping será ativado sem payloads redigidos
+e IDs reais.
 
 ### Gemini
 

@@ -17,6 +17,7 @@ import {
 import { AnalysisLoader } from "@/features/quiz/quiz-lead-loading";
 import { Demonstration, Prediagnosis } from "@/features/quiz/quiz-middle";
 import { quizContentFor } from "@/features/quiz/quiz-i18n";
+import { commitmentLoaderTitle } from "@/features/quiz/quiz-personalization";
 import { Result } from "@/features/quiz/quiz-result";
 import type { Locale } from "@/features/i18n/locale";
 
@@ -77,9 +78,17 @@ export function QuizStageRouter({
 
   if (stage === "loader-one" || stage === "loader-two") {
     const first = stage === "loader-one";
+    const loaderCopy = first
+      ? copy.loaderOne
+      : {
+          ...copy.loaderTwo,
+          title:
+            commitmentLoaderTitle(answers.commitment, locale) ??
+            copy.loaderTwo.title,
+        };
     return (
       <AnalysisLoader
-        copy={first ? copy.loaderOne : copy.loaderTwo}
+        copy={loaderCopy}
         headingRef={headingRef}
         enhancedExperience={enhancedExperience}
         mode={first ? "analysis" : "route"}

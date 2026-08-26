@@ -14,6 +14,10 @@ const up2 = readFileSync(
   new URL("../content/upsells/up2-vuelve-ia.es.md", import.meta.url),
   "utf8",
 );
+const gracias = readFileSync(
+  new URL("../src/app/gracias/page.tsx", import.meta.url),
+  "utf8",
+);
 
 test("public upsell pages use a transaction-neutral masthead", () => {
   assert.match(chrome, /OFERTA COMPLEMENTARIA DISPONIBLE/);
@@ -30,4 +34,13 @@ test("UP2 does not claim Reconquista 30 was added without transaction proof", ()
   assert.match(up2, /^# TU SIGUIENTE DECISIÓN YA ESTÁ DISPONIBLE/m);
   assert.match(up2, /Si tu pedido anterior fue aprobado/);
   assert.doesNotMatch(up2, /ACABAS DE AÑADIR RECONQUISTA 30/);
+});
+
+test("the public thank-you page conditions access on payment approval", () => {
+  assert.match(
+    gracias,
+    /Si tu pago fue aprobado, tu acceso ya está siendo preparado\./,
+  );
+  assert.match(gracias, /Cuando el pago sea confirmado/);
+  assert.doesNotMatch(gracias, /Compra principal confirmada/);
 });

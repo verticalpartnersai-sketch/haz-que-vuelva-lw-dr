@@ -27,15 +27,17 @@ export default function Page() {
           width={1451}
         />
         <span className="thanks-page__status">
-          <Icon name="check" weight="bold" />
-          Compra principal confirmada
+          <Icon name="spark" weight="fill" />
+          Instrucciones de acceso
         </span>
-        <p className="thanks-page__eyebrow">Ya terminaste este paso</p>
-        <h1>Tu acceso a Haz Que Vuelva está en camino.</h1>
+        <p className="thanks-page__eyebrow">
+          Si tu pago fue aprobado, tu acceso ya está siendo preparado.
+        </p>
+        <h1>Estos son tus próximos pasos para entrar.</h1>
         <p className="thanks-page__lead">
-          Revisa el email que usaste en el checkout. Allí recibirás la
-          invitación personal para crear tu contraseña y entrar al área de
-          miembros.
+          Cuando el pago sea confirmado, recibirás en el email usado en el
+          checkout la invitación personal para crear tu contraseña y entrar al
+          área de miembros.
         </p>
         <aside className="thanks-page__notice">
           <span aria-hidden="true"><Icon name="spark" weight="fill" /></span>

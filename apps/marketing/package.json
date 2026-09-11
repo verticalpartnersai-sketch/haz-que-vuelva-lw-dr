@@ -27,7 +27,7 @@
     "@fontsource/source-sans-3": "^5.2.8",
     "@opennextjs/cloudflare": "1.20.2",
     "@phosphor-icons/react": "^2.1.10",
-    "next": "16.2.12",
+    "next": "16.3.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
